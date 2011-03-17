@@ -19,7 +19,6 @@ import java.awt.Color;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JDialog;
@@ -80,8 +79,8 @@ public class MainFrame extends javax.swing.JFrame {
         closePriceJTextField = new javax.swing.JTextField();
         volumeJLabel = new javax.swing.JLabel();
         volumeJTextField = new javax.swing.JTextField();
-        final XYDataset priceDataset = createPriceDataset(AutoTradeInfo.getCurrentDate(),AutoTradeInfo.getCurrentDate(), null, "close");
-        final XYDataset volumeDataset = createVolumeDataset(AutoTradeInfo.getCurrentDate(),AutoTradeInfo.getCurrentDate(), null);
+        final XYDataset priceDataset = createPriceDataset(AutoTradeLocalData.load().getCurrentDate(),AutoTradeLocalData.load().getCurrentDate(), null, "close");
+        final XYDataset volumeDataset = createVolumeDataset(AutoTradeLocalData.load().getCurrentDate(),AutoTradeLocalData.load().getCurrentDate(), null);
         final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
         priceVolumeChartJPanel = new ChartPanel(chart);
         priceTypeJLabel = new javax.swing.JLabel();
@@ -110,6 +109,11 @@ public class MainFrame extends javax.swing.JFrame {
         dateJSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("List of existing Users");
 
@@ -196,13 +200,13 @@ public class MainFrame extends javax.swing.JFrame {
         symbolJLabel.setText("Symbol:");
 
         symbolJComboBox.setEditable(true);
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(AutoTradeInfo.getAllJSCSymbolAtThisTime(AutoTradeInfo.getCurrentDate()).toArray()));
+        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(AutoTradeInfo.LIST_ALL_JSC_SYMBOL.toArray()));
         JTextField field = (JTextField)symbolJComboBox.getEditor().getEditorComponent();
         field.setText("");
         field.addKeyListener(new ComboKeyHandler(symbolJComboBox));
-        symbolJComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                symbolJComboBoxItemStateChanged(evt);
+        symbolJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                symbolJComboBoxActionPerformed(evt);
             }
         });
 
@@ -252,9 +256,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         priceTypeJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Open", "High", "Low", "Close" }));
         priceTypeJComboBox.setSelectedIndex(3);
-        priceTypeJComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                priceTypeJComboBoxItemStateChanged(evt);
+        priceTypeJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceTypeJComboBoxActionPerformed(evt);
             }
         });
 
@@ -500,7 +504,7 @@ public class MainFrame extends javax.swing.JFrame {
         dateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         dateJLabel.setText("Date:");
 
-        dateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeInfo.getCurrentDate(), null, null, Calendar.DAY_OF_MONTH));
+        dateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCurrentDate(), null, null, Calendar.DAY_OF_MONTH));
         dateJSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dateJSpinner.setEditor(new JSpinner.DateEditor(dateJSpinner, "MM/dd/yyyy"));
         dateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -566,55 +570,31 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void dateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_dateJSpinnerStateChanged
-        java.sql.Date current_date = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        ArrayList<String> listJSCSymbol = AutoTradeInfo.getAllJSCSymbolAtThisTime(current_date);
-
-        AutoTradeInfo.setCurrentDate(current_date);
-
+        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
         String symbol = (String) symbolJComboBox.getSelectedItem();
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(listJSCSymbol.toArray()));
-        symbolJComboBox.setSelectedItem(symbol);
 
-        updatePriceAndVolume();
+//        ArrayList<String> listJSCSymbol = AutoTradeInfo.getAllJSCSymbolAtThisTime(current_date);
+//        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(listJSCSymbol.toArray()));
+//        symbolJComboBox.setSelectedItem(symbol);
+
+        AutoTradeLocalData.load().getCurrentDate().setTime(currentDate.getTime());
+        updatePriceAndVolume(currentDate);
 
         Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(current_date.getTime() - ONE_DAY * time.longValue());
-        final XYDataset priceDataset = createPriceDataset(startDate, current_date, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, current_date, symbol);
+        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
+        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
+        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
         final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
         ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
 
     }//GEN-LAST:event_dateJSpinnerStateChanged
 
-    private void symbolJComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_symbolJComboBoxItemStateChanged
-        updatePriceAndVolume();
-        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
-        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
-        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
-        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
-
-    }//GEN-LAST:event_symbolJComboBoxItemStateChanged
-
-    private void priceTypeJComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_priceTypeJComboBoxItemStateChanged
-        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
-        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
-        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
-        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
-    }//GEN-LAST:event_priceTypeJComboBoxItemStateChanged
-
     private void numberOfDayJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberOfDayJSpinnerStateChanged
         java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
+        String symbol = (String) symbolJComboBox.getSelectedItem();
+
         Integer time = (Integer) numberOfDayJSpinner.getValue();
         java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
         final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
         final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
         final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
@@ -628,6 +608,36 @@ public class MainFrame extends javax.swing.JFrame {
         datatypeDialog.pack();
         datatypeDialog.setVisible(true);
     }//GEN-LAST:event_newJButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        AutoTradeLocalData.load().saveAutoTradeLocalData();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void symbolJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_symbolJComboBoxActionPerformed
+        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
+        String symbol = (String) symbolJComboBox.getSelectedItem();
+        
+        updatePriceAndVolume(currentDate);
+
+        Integer time = (Integer) numberOfDayJSpinner.getValue();
+        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
+        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
+        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
+        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
+        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
+    }//GEN-LAST:event_symbolJComboBoxActionPerformed
+
+    private void priceTypeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTypeJComboBoxActionPerformed
+        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
+        String symbol = (String) symbolJComboBox.getSelectedItem();
+
+        Integer time = (Integer) numberOfDayJSpinner.getValue();
+        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
+        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
+        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
+        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
+        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
+    }//GEN-LAST:event_priceTypeJComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -690,13 +700,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField volumeJTextField;
     // End of variables declaration//GEN-END:variables
 
-    private void updatePriceAndVolume() {
+    private void updatePriceAndVolume(java.sql.Date current_date) {
         try {
             Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM stock_price_daily "
-                    + "WHERE date LIKE '" + AutoTradeInfo.getCurrentDate().toString() + "' "
+                    + "WHERE date LIKE '" + current_date.toString() + "' "
                     + "AND symbol LIKE '" + (String) symbolJComboBox.getSelectedItem() + "'");
             while (resultSet.next()) {
                 Double open = resultSet.getDouble("open");
@@ -717,15 +727,15 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    private XYDataset createPriceDataset(java.sql.Date startDate, java.sql.Date currentDate, String symbol, String priceType) {
-        final TimeSeries priceSeries = AutoTradeInfo.getPriceSeries(startDate, currentDate, symbol, priceType);
+    private XYDataset createPriceDataset(Date startDate, Date currentDate, String symbol, String priceType) {
+        final TimeSeries priceSeries = AutoTradeInfo.getPriceSeries(startDate.getTime(), currentDate.getTime(), symbol, priceType);
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(priceSeries);
         return dataset;
     }
 
-    private XYDataset createVolumeDataset(java.sql.Date startDate, java.sql.Date currentDate, String symbol) {
-        final TimeSeries volumeSeries = AutoTradeInfo.getVolumeSeries(startDate, currentDate, symbol);
+    private XYDataset createVolumeDataset(Date startDate, Date currentDate, String symbol) {
+        final TimeSeries volumeSeries = AutoTradeInfo.getVolumeSeries(startDate.getTime(), currentDate.getTime(), symbol);
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(volumeSeries);
         return dataset;

@@ -16,6 +16,8 @@ import java.util.ArrayList;
  */
 public class AutoTradeInfo {
 
+    public static ArrayList<String> LIST_ALL_JSC_SYMBOL = getAllJSCSymbol();
+
     public static ArrayList<String> getAllJSCSymbol() {
         ArrayList<String> allJSCSymbol = new ArrayList<String>();
 
@@ -35,7 +37,10 @@ public class AutoTradeInfo {
         return allJSCSymbol;
     }
 
-    public static TimeSeries getPriceSeries(Date startDate, Date currentDate, String companySymbol, String priceType) {
+    public static TimeSeries getPriceSeries(long startTime, long currentTime, String companySymbol, String priceType) {
+        Date startDate = new Date(startTime);
+        Date currentDate = new Date(currentTime);
+
         TimeSeries priceSeries = new TimeSeries("Price Series");
         try {
             Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
@@ -79,36 +84,10 @@ public class AutoTradeInfo {
         return allJSCSymbol;
     }
 
-    public static Date getCurrentDate() {
-        Date currentDate = null;
+    public static TimeSeries getVolumeSeries(long startTime, long currentTime, String companySymbol) {
+        Date startDate = new Date(startTime);
+        Date currentDate = new Date(currentTime);
 
-        try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM autotradeproject_info WHERE id = '1'");
-            while (resultSet.next()) {
-                currentDate = resultSet.getDate("current_date");
-            }
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-        return currentDate;
-    }
-
-    public static void setCurrentDate(Date currentDate) {
-        try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE `autotradeproject_info` SET `current_date` = '"+ currentDate.toString() +"' WHERE `id` = 1");
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static TimeSeries getVolumeSeries(Date startDate, Date currentDate, String companySymbol) {
         TimeSeries volumeSeries = new TimeSeries("Volume");
         try {
             Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
