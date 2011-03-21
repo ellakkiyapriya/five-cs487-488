@@ -18,6 +18,45 @@ public class AutoTradeInfo {
 
     public static ArrayList<String> LIST_ALL_JSC_SYMBOL = getAllJSCSymbol();
 
+    public static long getLatestTimeInDatabase() {
+        long latestTime = 0;
+
+        try {
+            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT max(date) FROM stock_price_daily");
+            resultSet.next();
+            Date date = resultSet.getDate(1);
+            latestTime = date.getTime();
+            
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return latestTime;
+    }
+
+    public static long getEarliestTimeInDatabase() {
+        long earliestTime = 0;
+
+        try {
+            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT min(date) FROM stock_price_daily");
+            resultSet.next();
+            Date date = resultSet.getDate(1);
+            earliestTime = date.getTime();
+
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return earliestTime;
+    }
+
+
     public static ArrayList<String> getAllJSCSymbol() {
         ArrayList<String> allJSCSymbol = new ArrayList<String>();
 
@@ -37,9 +76,9 @@ public class AutoTradeInfo {
         return allJSCSymbol;
     }
 
-    public static TimeSeries getPriceSeries(long startTime, long currentTime, String companySymbol, String priceType) {
+    public static TimeSeries getPriceSeries(long startTime, long endTime, String companySymbol, String priceType) {
         Date startDate = new Date(startTime);
-        Date currentDate = new Date(currentTime);
+        Date currentDate = new Date(endTime);
 
         TimeSeries priceSeries = new TimeSeries("Price Series");
         try {
@@ -84,9 +123,9 @@ public class AutoTradeInfo {
         return allJSCSymbol;
     }
 
-    public static TimeSeries getVolumeSeries(long startTime, long currentTime, String companySymbol) {
+    public static TimeSeries getVolumeSeries(long startTime, long endTime, String companySymbol) {
         Date startDate = new Date(startTime);
-        Date currentDate = new Date(currentTime);
+        Date currentDate = new Date(endTime);
 
         TimeSeries volumeSeries = new TimeSeries("Volume");
         try {
@@ -98,26 +137,35 @@ public class AutoTradeInfo {
                     + "AND `date` <= '" + currentDate.toString() + "' "
                     + "AND `date` >= '" + startDate.toString() + "'");
 
-            Double volume1, volume2;
-            Date date1, date2;
-            long oneDay = 86400000; //milisecond
+//            Double volume1, volume2;
+//            Date date1, date2;
+//            long oneDay = 86400000; //milisecond
+//
+//            if (resultSet.next()) {
+//                volume1 = resultSet.getDouble("volume");
+//                date1 = resultSet.getDate("date");
+//                volumeSeries.add(new Day(date1), volume1);
+//
+//                while (resultSet.next()) {
+//                    volume2 = resultSet.getDouble("volume");
+//                    date2 = resultSet.getDate("date");
+//                    for (Date date = new Date(date1.getTime() + oneDay); date.compareTo(date2) < 0; date = new Date(date.getTime() + oneDay)) {
+//                        volumeSeries.add(new Day(date), volume1);
+//                    }
+//
+//                    volumeSeries.add(new Day(date2), volume2);
+//                    date1 = date2;
+//                    volume1 = volume2;
+//                }
+//            }
 
-            if (resultSet.next()) {
-                volume1 = resultSet.getDouble("volume");
-                date1 = resultSet.getDate("date");
-                volumeSeries.add(new Day(date1), volume1);
-                
-                while (resultSet.next()) {
-                    volume2 = resultSet.getDouble("volume");
-                    date2 = resultSet.getDate("date");
-                    for (Date date = new Date(date1.getTime() + oneDay); date.compareTo(date2) < 0; date = new Date(date.getTime() + oneDay)) {
-                        volumeSeries.add(new Day(date), volume1);
-                    }
-                    
-                    volumeSeries.add(new Day(date2), volume2);
-                    date1 = date2;
-                    volume1 = volume2;
-                }
+            Double volume;
+            Date date;
+
+            while (resultSet.next()) {
+                volume = resultSet.getDouble("volume");
+                date = resultSet.getDate("date");
+                volumeSeries.add(new Day(date), volume);
             }
 
             conn.close();
