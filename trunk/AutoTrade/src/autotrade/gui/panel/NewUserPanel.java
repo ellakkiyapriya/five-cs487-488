@@ -12,6 +12,7 @@
 package autotrade.gui.panel;
 
 import autotrade.core.AutoTradeInfo;
+import autotrade.gui.MainFrame;
 
 /**
  *
@@ -19,8 +20,11 @@ import autotrade.core.AutoTradeInfo;
  */
 public class NewUserPanel extends javax.swing.JPanel {
 
+    private MainFrame mainFrame;
+
     /** Creates new form NewUserPanel */
-    public NewUserPanel() {
+    public NewUserPanel(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
         initComponents();
     }
 
@@ -63,6 +67,11 @@ public class NewUserPanel extends javax.swing.JPanel {
         okJButton.setText("OK");
 
         cancelJButton.setText("Cancel");
+        cancelJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,6 +146,10 @@ public class NewUserPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        mainFrame.newUserDialog.dispose();
+    }//GEN-LAST:event_cancelJButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

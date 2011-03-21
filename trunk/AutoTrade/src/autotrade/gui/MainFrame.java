@@ -15,15 +15,19 @@ import javax.swing.JTextField;
 import autotrade.core.*;
 import autotrade.core.database.AutoTradeDatabaseManagement;
 import autotrade.gui.panel.NewUserPanel;
+import autotrade.gui.panel.SettingPanel;
 import java.awt.Color;
-import java.sql.*;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.sql.*;
 import javax.swing.JDialog;
+import javax.swing.SpinnerDateModel;
 import org.jfree.data.xy.*;
 import org.jfree.chart.*;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
@@ -38,10 +42,10 @@ import org.jfree.data.time.TimeSeriesCollection;
  * @author Dinh
  */
 public class MainFrame extends javax.swing.JFrame {
-
-    private static final long ONE_DAY = 86400000; //milisecond
-
-    public static JDialog datatypeDialog;
+    public JDialog newUserDialog;
+    public JDialog settingDialog;
+    DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+    Calendar calendar = Calendar.getInstance();
 
     /** Creates new form MainFrame */
     public MainFrame() {
@@ -58,13 +62,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         mainJTabbedPane = new javax.swing.JTabbedPane();
-        managementJPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        newJButton = new javax.swing.JButton();
-        removeJButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         transactionJPanel = new javax.swing.JPanel();
         chartJPanel = new javax.swing.JPanel();
         symbolJLabel = new javax.swing.JLabel();
@@ -79,14 +76,16 @@ public class MainFrame extends javax.swing.JFrame {
         closePriceJTextField = new javax.swing.JTextField();
         volumeJLabel = new javax.swing.JLabel();
         volumeJTextField = new javax.swing.JTextField();
-        final XYDataset priceDataset = createPriceDataset(AutoTradeLocalData.load().getCurrentDate(),AutoTradeLocalData.load().getCurrentDate(), null, "close");
-        final XYDataset volumeDataset = createVolumeDataset(AutoTradeLocalData.load().getCurrentDate(),AutoTradeLocalData.load().getCurrentDate(), null);
+        final XYDataset priceDataset = createPriceDataset(AutoTradeLocalData.load().getCenter_date().getTime(),AutoTradeLocalData.load().getCurrentDate().getTime(), null, "close");
+        final XYDataset volumeDataset = createVolumeDataset(AutoTradeLocalData.load().getCenter_date().getTime(),AutoTradeLocalData.load().getCurrentDate().getTime(), null);
         final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
         priceVolumeChartJPanel = new ChartPanel(chart);
         priceTypeJLabel = new javax.swing.JLabel();
         priceTypeJComboBox = new javax.swing.JComboBox();
         numberOfDayJLabel = new javax.swing.JLabel();
         numberOfDayJSpinner = new javax.swing.JSpinner();
+        dateJSpinner = new javax.swing.JSpinner();
+        dateJLabel = new javax.swing.JLabel();
         AccountInfoJPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         userJComboBox = new javax.swing.JComboBox();
@@ -105,8 +104,21 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
         dateJPanel = new javax.swing.JPanel();
-        dateJLabel = new javax.swing.JLabel();
-        dateJSpinner = new javax.swing.JSpinner();
+        nextYearJButton = new javax.swing.JButton();
+        nextMonthJButton = new javax.swing.JButton();
+        nextDayJButton = new javax.swing.JButton();
+        currentDateJLabel = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        userManagementJPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        newJButton = new javax.swing.JButton();
+        removeJButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jMenuBar = new javax.swing.JMenuBar();
+        editJMenu = new javax.swing.JMenu();
+        settingJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -114,87 +126,6 @@ public class MainFrame extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-
-        jLabel1.setText("List of existing Users");
-
-        newJButton.setText("New");
-        newJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newJButtonActionPerformed(evt);
-            }
-        });
-
-        removeJButton.setText("Remove");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "User ID", "User Name", "User Type", "Technical Analysis Method", "Cash Remain"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(25);
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(35);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(25);
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
-        jTable1.getColumnModel().getColumn(4).setPreferredWidth(20);
-
-        jButton1.setText("Refresh");
-
-        javax.swing.GroupLayout managementJPanelLayout = new javax.swing.GroupLayout(managementJPanel);
-        managementJPanel.setLayout(managementJPanelLayout);
-        managementJPanelLayout.setHorizontalGroup(
-            managementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, managementJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(managementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 962, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(managementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                    .addComponent(removeJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        managementJPanelLayout.setVerticalGroup(
-            managementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(managementJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(managementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(managementJPanelLayout.createSequentialGroup()
-                        .addComponent(newJButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(removeJButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(119, Short.MAX_VALUE))
-        );
-
-        mainJTabbedPane.addTab("Management", managementJPanel);
 
         symbolJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         symbolJLabel.setText("Symbol:");
@@ -248,7 +179,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         priceVolumeChartJPanelLayout.setVerticalGroup(
             priceVolumeChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 557, Short.MAX_VALUE)
+            .addGap(0, 566, Short.MAX_VALUE)
         );
 
         priceTypeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -265,12 +196,26 @@ public class MainFrame extends javax.swing.JFrame {
         numberOfDayJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         numberOfDayJLabel.setText("Number of day:");
 
-        numberOfDayJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(300), Integer.valueOf(0), null, Integer.valueOf(1)));
+        numberOfDayJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(AutoTradeLocalData.load().getNumber_of_day()), Integer.valueOf(0), null, Integer.valueOf(1)));
         numberOfDayJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numberOfDayJSpinnerStateChanged(evt);
             }
         });
+
+        Date earliestDate = new Date(AutoTradeLocalData.load().getEarliestTime());
+        Date latestDate = new Date(AutoTradeLocalData.load().getLatestTime());
+        dateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCenter_date(), earliestDate, latestDate, Calendar.DAY_OF_MONTH));
+        dateJSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        dateJSpinner.setEditor(new JSpinner.DateEditor(dateJSpinner, "MM/dd/yyyy"));
+        dateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                dateJSpinnerStateChanged(evt);
+            }
+        });
+
+        dateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dateJLabel.setText("Center Date:");
 
         javax.swing.GroupLayout chartJPanelLayout = new javax.swing.GroupLayout(chartJPanel);
         chartJPanel.setLayout(chartJPanelLayout);
@@ -310,7 +255,11 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(chartJPanelLayout.createSequentialGroup()
                         .addComponent(numberOfDayJLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numberOfDayJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(numberOfDayJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dateJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
             .addComponent(priceVolumeChartJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -336,7 +285,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(priceTypeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(numberOfDayJLabel)
                     .addComponent(numberOfDayJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(priceTypeJLabel))
+                    .addComponent(priceTypeJLabel)
+                    .addComponent(dateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateJLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceVolumeChartJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -498,37 +449,62 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
         );
 
-        dateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        dateJLabel.setText("Date:");
-
-        dateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCurrentDate(), null, null, Calendar.DAY_OF_MONTH));
-        dateJSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        dateJSpinner.setEditor(new JSpinner.DateEditor(dateJSpinner, "MM/dd/yyyy"));
-        dateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                dateJSpinnerStateChanged(evt);
+        nextYearJButton.setText("Next Year");
+        nextYearJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextYearJButtonActionPerformed(evt);
             }
         });
+
+        nextMonthJButton.setText("Next Month");
+        nextMonthJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextMonthJButtonActionPerformed(evt);
+            }
+        });
+
+        nextDayJButton.setText("Next Day");
+        nextDayJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextDayJButtonActionPerformed(evt);
+            }
+        });
+
+        currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setText("Current Date: ");
 
         javax.swing.GroupLayout dateJPanelLayout = new javax.swing.GroupLayout(dateJPanel);
         dateJPanel.setLayout(dateJPanelLayout);
         dateJPanelLayout.setHorizontalGroup(
             dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dateJPanelLayout.createSequentialGroup()
-                .addContainerGap(1012, Short.MAX_VALUE)
-                .addComponent(dateJLabel)
+                .addContainerGap(647, Short.MAX_VALUE)
+                .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(currentDateJLabel)
+                .addGap(18, 18, 18)
+                .addComponent(nextDayJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextMonthJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextYearJButton)
                 .addContainerGap())
         );
         dateJPanelLayout.setVerticalGroup(
             dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(dateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(dateJLabel))
+            .addGroup(dateJPanelLayout.createSequentialGroup()
+                .addGroup(dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nextYearJButton)
+                    .addComponent(nextMonthJButton)
+                    .addComponent(nextDayJButton)
+                    .addComponent(currentDateJLabel)
+                    .addComponent(jLabel12))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout transactionJPanelLayout = new javax.swing.GroupLayout(transactionJPanel);
@@ -546,14 +522,110 @@ public class MainFrame extends javax.swing.JFrame {
             transactionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(transactionJPanelLayout.createSequentialGroup()
                 .addComponent(dateJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(transactionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AccountInfoJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chartJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(transactionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(chartJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AccountInfoJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         mainJTabbedPane.addTab("Transaction", transactionJPanel);
+
+        jLabel1.setText("List of existing Users");
+
+        newJButton.setText("New");
+        newJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newJButtonActionPerformed(evt);
+            }
+        });
+
+        removeJButton.setText("Remove");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "User ID", "User Name", "User Type", "Technical Analysis Method", "Cash Remain"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTable1.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(25);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(35);
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(25);
+        jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+        jTable1.getColumnModel().getColumn(4).setPreferredWidth(20);
+
+        jButton1.setText("Refresh");
+
+        javax.swing.GroupLayout userManagementJPanelLayout = new javax.swing.GroupLayout(userManagementJPanel);
+        userManagementJPanel.setLayout(userManagementJPanelLayout);
+        userManagementJPanelLayout.setHorizontalGroup(
+            userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userManagementJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 962, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                    .addComponent(removeJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        userManagementJPanelLayout.setVerticalGroup(
+            userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userManagementJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(userManagementJPanelLayout.createSequentialGroup()
+                        .addComponent(newJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(removeJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(119, Short.MAX_VALUE))
+        );
+
+        mainJTabbedPane.addTab("User Management", userManagementJPanel);
+
+        editJMenu.setText("Edit");
+
+        settingJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        settingJMenuItem.setText("Setting ...");
+        settingJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingJMenuItemActionPerformed(evt);
+            }
+        });
+        editJMenu.add(settingJMenuItem);
+
+        jMenuBar.add(editJMenu);
+
+        setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -569,75 +641,112 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void dateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_dateJSpinnerStateChanged
-        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
-
-//        ArrayList<String> listJSCSymbol = AutoTradeInfo.getAllJSCSymbolAtThisTime(current_date);
-//        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(listJSCSymbol.toArray()));
-//        symbolJComboBox.setSelectedItem(symbol);
-
-        AutoTradeLocalData.load().getCurrentDate().setTime(currentDate.getTime());
-        updatePriceAndVolume(currentDate);
-
-        Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
-        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
-        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
-
-    }//GEN-LAST:event_dateJSpinnerStateChanged
-
-    private void numberOfDayJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberOfDayJSpinnerStateChanged
-        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
-
-        Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
-        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
-        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
-    }//GEN-LAST:event_numberOfDayJSpinnerStateChanged
-
-    private void newJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newJButtonActionPerformed
-        datatypeDialog = new JDialog();
-        NewUserPanel panel = new NewUserPanel();
-        datatypeDialog.add(panel);
-        datatypeDialog.pack();
-        datatypeDialog.setVisible(true);
-    }//GEN-LAST:event_newJButtonActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         AutoTradeLocalData.load().saveAutoTradeLocalData();
     }//GEN-LAST:event_formWindowClosing
 
-    private void symbolJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_symbolJComboBoxActionPerformed
-        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
-        
-        updatePriceAndVolume(currentDate);
+    private void newJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newJButtonActionPerformed
+        newUserDialog = new JDialog();
+        NewUserPanel panel = new NewUserPanel(this);
+        newUserDialog.add(panel);
+        newUserDialog.pack();
+        newUserDialog.setVisible(true);
+}//GEN-LAST:event_newJButtonActionPerformed
 
+    private void nextDayJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextDayJButtonActionPerformed
+        calendar.setTime(AutoTradeLocalData.load().getCurrentDate());
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        if (calendar.getTimeInMillis() > AutoTradeLocalData.load().getLatestTime())
+            return;
+        
+        AutoTradeLocalData.load().setCurrentDate(calendar.getTime());
+        currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
+
+        //update center date
+        AutoTradeLocalData.load().setCenter_date(AutoTradeLocalData.load().getCurrentDate());
+        SpinnerDateModel dateModel = (SpinnerDateModel) dateJSpinner.getModel();
+        dateModel.setEnd(AutoTradeLocalData.load().getCurrentDate());
+        dateJSpinner.setValue(AutoTradeLocalData.load().getCurrentDate());
+        
+        updatePriceAndVolume();
+        updatePriceVolumeChart();
+}//GEN-LAST:event_nextDayJButtonActionPerformed
+
+    private void nextMonthJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMonthJButtonActionPerformed
+        calendar.setTime(AutoTradeLocalData.load().getCurrentDate());
+        calendar.add(Calendar.MONTH, 1);
+        if (calendar.getTimeInMillis() > AutoTradeLocalData.load().getLatestTime())
+            return;
+
+        AutoTradeLocalData.load().setCurrentDate(calendar.getTime());
+        currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
+
+        //update center date
+        AutoTradeLocalData.load().setCenter_date(AutoTradeLocalData.load().getCurrentDate());
+        SpinnerDateModel dateModel = (SpinnerDateModel) dateJSpinner.getModel();
+        dateModel.setEnd(AutoTradeLocalData.load().getCurrentDate());
+        dateJSpinner.setValue(AutoTradeLocalData.load().getCurrentDate());
+
+        updatePriceAndVolume();
+        updatePriceVolumeChart();
+
+}//GEN-LAST:event_nextMonthJButtonActionPerformed
+
+    private void nextYearJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextYearJButtonActionPerformed
+        calendar.setTime(AutoTradeLocalData.load().getCurrentDate());
+        calendar.add(Calendar.YEAR, 1);
+        if (calendar.getTimeInMillis() > AutoTradeLocalData.load().getLatestTime())
+            return;
+        AutoTradeLocalData.load().setCurrentDate(calendar.getTime());
+        currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
+
+        //update center date
+        AutoTradeLocalData.load().setCenter_date(AutoTradeLocalData.load().getCurrentDate());
+        SpinnerDateModel dateModel = (SpinnerDateModel) dateJSpinner.getModel();
+        dateModel.setEnd(AutoTradeLocalData.load().getCurrentDate());
+        dateJSpinner.setValue(AutoTradeLocalData.load().getCurrentDate());
+
+        updatePriceAndVolume();
+        updatePriceVolumeChart();
+    }//GEN-LAST:event_nextYearJButtonActionPerformed
+
+    private void dateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_dateJSpinnerStateChanged
+        Date centerDate = (Date) dateJSpinner.getValue();
+        AutoTradeLocalData.load().setCenter_date(centerDate);
+        //        ArrayList<String> listJSCSymbol = AutoTradeInfo.getAllJSCSymbolAtThisTime(currentDate);
+        //        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(listJSCSymbol.toArray()));
+        //        symbolJComboBox.setSelectedItem(symbol);
+
+        updatePriceAndVolume();
+        updatePriceVolumeChart();
+    }//GEN-LAST:event_dateJSpinnerStateChanged
+
+    private void numberOfDayJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberOfDayJSpinnerStateChanged
         Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
-        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
-        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
-    }//GEN-LAST:event_symbolJComboBoxActionPerformed
+        AutoTradeLocalData.load().setNumber_of_day(time.intValue());
+
+        updatePriceVolumeChart();
+}//GEN-LAST:event_numberOfDayJSpinnerStateChanged
 
     private void priceTypeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTypeJComboBoxActionPerformed
-        java.sql.Date currentDate = new java.sql.Date(((Date) dateJSpinner.getValue()).getTime());
-        String symbol = (String) symbolJComboBox.getSelectedItem();
+        updatePriceVolumeChart();
+}//GEN-LAST:event_priceTypeJComboBoxActionPerformed
 
-        Integer time = (Integer) numberOfDayJSpinner.getValue();
-        java.sql.Date startDate = new java.sql.Date(currentDate.getTime() - ONE_DAY * time.longValue());
-        final XYDataset priceDataset = createPriceDataset(startDate, currentDate, symbol, (String) priceTypeJComboBox.getSelectedItem());
-        final XYDataset volumeDataset = createVolumeDataset(startDate, currentDate, symbol);
-        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
-        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
-    }//GEN-LAST:event_priceTypeJComboBoxActionPerformed
+    private void symbolJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_symbolJComboBoxActionPerformed
+        String symbol = (String) symbolJComboBox.getSelectedItem();
+        AutoTradeLocalData.load().setSymbol(symbol);
+
+        updatePriceAndVolume();
+        updatePriceVolumeChart();
+}//GEN-LAST:event_symbolJComboBoxActionPerformed
+
+    private void settingJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingJMenuItemActionPerformed
+        settingDialog = new JDialog();
+        SettingPanel panel = new SettingPanel(this);
+        settingDialog.add(panel);
+        settingDialog.pack();
+        settingDialog.setVisible(true);
+    }//GEN-LAST:event_settingJMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -646,6 +755,8 @@ public class MainFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
+                AutoTradeLocalData.load().setEarliestTime(AutoTradeInfo.getEarliestTimeInDatabase());
+                AutoTradeLocalData.load().setLatestTime(AutoTradeInfo.getLatestTimeInDatabase());
                 new MainFrame().setVisible(true);
             }
         });
@@ -655,14 +766,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel chartJPanel;
     private javax.swing.JLabel closePriceJLabel;
     private javax.swing.JTextField closePriceJTextField;
+    private javax.swing.JLabel currentDateJLabel;
     private javax.swing.JLabel dateJLabel;
     private javax.swing.JPanel dateJPanel;
     private javax.swing.JSpinner dateJSpinner;
+    private javax.swing.JMenu editJMenu;
     private javax.swing.JLabel highPriceJLabel;
     private javax.swing.JTextField highPriceJTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -671,6 +785,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -682,8 +797,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lowPriceJLabel;
     private javax.swing.JTextField lowPriceJTextField;
     private javax.swing.JTabbedPane mainJTabbedPane;
-    private javax.swing.JPanel managementJPanel;
     private javax.swing.JButton newJButton;
+    private javax.swing.JButton nextDayJButton;
+    private javax.swing.JButton nextMonthJButton;
+    private javax.swing.JButton nextYearJButton;
     private javax.swing.JLabel numberOfDayJLabel;
     private javax.swing.JSpinner numberOfDayJSpinner;
     private javax.swing.JLabel openPriceJLabel;
@@ -692,21 +809,25 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel priceTypeJLabel;
     private javax.swing.JPanel priceVolumeChartJPanel;
     private javax.swing.JButton removeJButton;
+    private javax.swing.JMenuItem settingJMenuItem;
     private javax.swing.JComboBox symbolJComboBox;
     private javax.swing.JLabel symbolJLabel;
     private javax.swing.JPanel transactionJPanel;
     private javax.swing.JComboBox userJComboBox;
+    private javax.swing.JPanel userManagementJPanel;
     private javax.swing.JLabel volumeJLabel;
     private javax.swing.JTextField volumeJTextField;
     // End of variables declaration//GEN-END:variables
 
-    private void updatePriceAndVolume(java.sql.Date current_date) {
+    private void updatePriceAndVolume() {
+        java.sql.Date center_date = new java.sql.Date(AutoTradeLocalData.load().getCenter_date().getTime());
+        
         try {
             Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM stock_price_daily "
-                    + "WHERE date LIKE '" + current_date.toString() + "' "
+                    + "WHERE date LIKE '" + center_date.toString() + "' "
                     + "AND symbol LIKE '" + (String) symbolJComboBox.getSelectedItem() + "'");
             while (resultSet.next()) {
                 Double open = resultSet.getDouble("open");
@@ -727,15 +848,31 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    private XYDataset createPriceDataset(Date startDate, Date currentDate, String symbol, String priceType) {
-        final TimeSeries priceSeries = AutoTradeInfo.getPriceSeries(startDate.getTime(), currentDate.getTime(), symbol, priceType);
+    private void updatePriceVolumeChart() {
+        calendar.setTime(AutoTradeLocalData.load().getCenter_date());
+        calendar.add(Calendar.DAY_OF_MONTH, -AutoTradeLocalData.load().getNumber_of_day()/2);
+        long startTime = calendar.getTimeInMillis();
+        calendar.add(Calendar.DAY_OF_MONTH, AutoTradeLocalData.load().getNumber_of_day());
+        long endTime = calendar.getTimeInMillis();
+
+        if (endTime > AutoTradeLocalData.load().getCurrentDate().getTime())
+            endTime = AutoTradeLocalData.load().getCurrentDate().getTime();
+
+        final XYDataset priceDataset = createPriceDataset(startTime, endTime, AutoTradeLocalData.load().getSymbol(), (String) priceTypeJComboBox.getSelectedItem());
+        final XYDataset volumeDataset = createVolumeDataset(startTime, endTime, AutoTradeLocalData.load().getSymbol());
+        final JFreeChart chart = createPriceVolumeChart(priceDataset, volumeDataset);
+        ((ChartPanel) priceVolumeChartJPanel).setChart(chart);
+    }
+
+    private XYDataset createPriceDataset(long startTime, long endTime, String symbol, String priceType) {
+        final TimeSeries priceSeries = AutoTradeInfo.getPriceSeries(startTime, endTime, symbol, priceType);
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(priceSeries);
         return dataset;
     }
 
-    private XYDataset createVolumeDataset(Date startDate, Date currentDate, String symbol) {
-        final TimeSeries volumeSeries = AutoTradeInfo.getVolumeSeries(startDate.getTime(), currentDate.getTime(), symbol);
+    private XYDataset createVolumeDataset(long startTime, long endTime, String symbol) {
+        final TimeSeries volumeSeries = AutoTradeInfo.getVolumeSeries(startTime, endTime, symbol);
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(volumeSeries);
         return dataset;
@@ -754,12 +891,16 @@ public class MainFrame extends javax.swing.JFrame {
         chart.setBackgroundPaint(Color.white);
         XYPlot plot = chart.getXYPlot();
 
+        DateAxis dateAxis = (DateAxis) plot.getDomainAxis();
+        dateAxis.setPositiveArrowVisible(true);
+
         NumberAxis priceRangeAxis = (NumberAxis) plot.getRangeAxis();
         priceRangeAxis.setLowerMargin(0.40); // to leave room for volume bars
         DecimalFormat format = new DecimalFormat("00.00");
         priceRangeAxis.setNumberFormatOverride(format);
 
         XYItemRenderer priceRenderer = plot.getRenderer();
+
         priceRenderer.setBaseToolTipGenerator(
                 new StandardXYToolTipGenerator(
                 StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
