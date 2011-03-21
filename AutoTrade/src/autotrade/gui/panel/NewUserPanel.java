@@ -8,11 +8,12 @@
  *
  * Created on Feb 24, 2011, 10:19:46 PM
  */
-
 package autotrade.gui.panel;
 
-import autotrade.core.AutoTradeInfo;
+import autotrade.core.AutoTrade;
+import autotrade.core.User;
 import autotrade.gui.MainFrame;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -49,22 +50,33 @@ public class NewUserPanel extends javax.swing.JPanel {
         okJButton = new javax.swing.JButton();
         cancelJButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        periodJSpinner = new javax.swing.JSpinner();
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setText("User Name:");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("User Type:");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Technical Analysis Method:");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel4.setText("Inital Value:");
 
-        userTypeJComboBox.setModel(new javax.swing.DefaultComboBoxModel(AutoTradeInfo.getListUserTypeName().toArray()));
+        userTypeJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.getListUserTypeName().toArray()));
 
-        technicalAnalysisJComboBox.setModel(new javax.swing.DefaultComboBoxModel(AutoTradeInfo.getListTechnicalAnalysisMethod().toArray()));
+        technicalAnalysisJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.getListTechnicalAnalysisMethod().toArray()));
 
         jLabel5.setText("x1000 VND");
 
         okJButton.setText("OK");
+        okJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okJButtonActionPerformed(evt);
+            }
+        });
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -73,15 +85,30 @@ public class NewUserPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel6.setText("Period:");
+
+        periodJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), null, null, Integer.valueOf(1)));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 176, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(periodJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(periodJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -89,53 +116,50 @@ public class NewUserPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(initalValueJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(userTypeJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(usernameJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(okJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cancelJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(technicalAnalysisJComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 176, Short.MAX_VALUE))
-                .addGap(110, 110, 110))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(initalValueJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(110, 110, 110))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(technicalAnalysisJComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(userTypeJComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(usernameJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(okJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cancelJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(20, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
                     .addComponent(usernameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
                     .addComponent(okJButton))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(userTypeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
                     .addComponent(cancelJButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
                     .addComponent(initalValueJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -151,7 +175,30 @@ public class NewUserPanel extends javax.swing.JPanel {
         mainFrame.newUserDialog.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
+    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+        int tamID = AutoTrade.getTAMID((String) technicalAnalysisJComboBox.getSelectedItem());
+        AutoTrade.addNewTAMI(tamID, (Integer) periodJSpinner.getValue());
+        int tamiID = AutoTrade.getTAMIID(tamID, (Integer) periodJSpinner.getValue());
+        int userTypeID = AutoTrade.getUserTypeID((String) userTypeJComboBox.getSelectedItem());
+        AutoTrade.addNewUser(usernameJTextField.getText(), userTypeID, tamiID, Double.parseDouble(initalValueJTextField.getText()));
 
+        User user = AutoTrade.getUser(usernameJTextField.getText());
+        AutoTrade.LIST_ALL_USER.add(user);
+        DefaultTableModel model = (DefaultTableModel) mainFrame.listUserJTable.getModel();
+        Object[] rowData = new Object[6];
+
+        rowData[0] = new Integer(user.getUserID());
+        rowData[1] = user.getUserName();
+        rowData[2] = user.getTypeName();
+        rowData[3] = user.getTechnicalAnalysisMethod().getName();
+        rowData[4] = new Double(user.getCash_remain());
+        rowData[5] = user.isActive();
+        
+        model.addRow(rowData);
+        mainFrame.listUserJTable.repaint();
+
+        mainFrame.newUserDialog.dispose();
+    }//GEN-LAST:event_okJButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelJButton;
     private javax.swing.JTextField initalValueJTextField;
@@ -160,11 +207,12 @@ public class NewUserPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton okJButton;
+    private javax.swing.JSpinner periodJSpinner;
     private javax.swing.JComboBox technicalAnalysisJComboBox;
     private javax.swing.JComboBox userTypeJComboBox;
     private javax.swing.JTextField usernameJTextField;
     // End of variables declaration//GEN-END:variables
-
 }
