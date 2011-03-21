@@ -34,8 +34,6 @@ public class AutoTradeLocalData {
     private Date center_date;
     private int number_of_day;
     private String symbol;
-    private long earliestTime;
-    private long latestTime;
     
     private DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
     private Calendar calender = Calendar.getInstance();
@@ -44,9 +42,6 @@ public class AutoTradeLocalData {
     private File dataFile = new File("data.xml");
 
     public AutoTradeLocalData() {
-        this.earliestTime = AutoTradeInfo.getEarliestTimeInDatabase();
-        this.latestTime = AutoTradeInfo.getLatestTimeInDatabase();
-
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -71,7 +66,7 @@ public class AutoTradeLocalData {
     }
 
     private void init() {
-        current_date = new Date(AutoTradeInfo.getLatestTimeInDatabase());
+        current_date = new Date(AutoTrade.getLatestTimeInDatabase());
         number_of_day = 300;
 
         calender.setTime(current_date);
@@ -180,21 +175,4 @@ public class AutoTradeLocalData {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
-
-        public long getEarliestTime() {
-        return earliestTime;
-    }
-
-    public void setEarliestTime(long earliestTime) {
-        this.earliestTime = earliestTime;
-    }
-
-    public long getLatestTime() {
-        return latestTime;
-    }
-
-    public void setLatestTime(long latestTime) {
-        this.latestTime = latestTime;
-    }
-
 }

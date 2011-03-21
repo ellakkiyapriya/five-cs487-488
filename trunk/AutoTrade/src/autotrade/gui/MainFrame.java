@@ -14,6 +14,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import autotrade.core.*;
 import autotrade.core.database.AutoTradeDatabaseManagement;
+import autotrade.gui.panel.ImportDataPanel;
 import autotrade.gui.panel.NewUserPanel;
 import autotrade.gui.panel.SettingPanel;
 import java.awt.Color;
@@ -42,8 +43,10 @@ import org.jfree.data.time.TimeSeriesCollection;
  * @author Dinh
  */
 public class MainFrame extends javax.swing.JFrame {
+
     public JDialog newUserDialog;
     public JDialog settingDialog;
+    public JDialog importFileDialog;
     DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
     Calendar calendar = Calendar.getInstance();
 
@@ -114,11 +117,16 @@ public class MainFrame extends javax.swing.JFrame {
         newJButton = new javax.swing.JButton();
         removeJButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        listUserJTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         editJMenu = new javax.swing.JMenu();
         settingJMenuItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -131,7 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
         symbolJLabel.setText("Symbol:");
 
         symbolJComboBox.setEditable(true);
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(AutoTradeInfo.LIST_ALL_JSC_SYMBOL.toArray()));
+        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.LIST_ALL_JSC_SYMBOL.toArray()));
         JTextField field = (JTextField)symbolJComboBox.getEditor().getEditorComponent();
         field.setText("");
         field.addKeyListener(new ComboKeyHandler(symbolJComboBox));
@@ -203,8 +211,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        Date earliestDate = new Date(AutoTradeLocalData.load().getEarliestTime());
-        Date latestDate = new Date(AutoTradeLocalData.load().getLatestTime());
+        Date earliestDate = new Date(AutoTrade.earliestTime);
+        Date latestDate = new Date(AutoTrade.latestTime);
         dateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCenter_date(), earliestDate, latestDate, Calendar.DAY_OF_MONTH));
         dateJSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dateJSpinner.setEditor(new JSpinner.DateEditor(dateJSpinner, "MM/dd/yyyy"));
@@ -475,7 +483,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel12.setText("Current Date: ");
 
         javax.swing.GroupLayout dateJPanelLayout = new javax.swing.GroupLayout(dateJPanel);
@@ -542,19 +550,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         removeJButton.setText("Remove");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+        Object[][] data = AutoTrade.getTableData();
+        listUserJTable.setModel(new javax.swing.table.DefaultTableModel(
+            data,
             new String [] {
-                "User ID", "User Name", "User Type", "Technical Analysis Method", "Cash Remain"
+                "User ID", "User Name", "User Type", "Technical Analysis Method", "Cash Remain", "Active"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -565,17 +572,21 @@ public class MainFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(25);
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(35);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(25);
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
-        jTable1.getColumnModel().getColumn(4).setPreferredWidth(20);
+        listUserJTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jScrollPane1.setViewportView(listUserJTable);
+        listUserJTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listUserJTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+        listUserJTable.getColumnModel().getColumn(1).setPreferredWidth(35);
+        listUserJTable.getColumnModel().getColumn(2).setPreferredWidth(25);
+        listUserJTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+        listUserJTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+        listUserJTable.getColumnModel().getColumn(5).setPreferredWidth(5);
 
         jButton1.setText("Refresh");
+
+        jButton2.setText("Start");
+
+        jButton3.setText("Stop");
 
         javax.swing.GroupLayout userManagementJPanelLayout = new javax.swing.GroupLayout(userManagementJPanel);
         userManagementJPanel.setLayout(userManagementJPanelLayout);
@@ -588,6 +599,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 962, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                     .addComponent(removeJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
@@ -604,10 +617,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(newJButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(removeJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         mainJTabbedPane.addTab("User Management", userManagementJPanel);
@@ -624,6 +641,24 @@ public class MainFrame extends javax.swing.JFrame {
         editJMenu.add(settingJMenuItem);
 
         jMenuBar.add(editJMenu);
+
+        jMenu1.setText("Import");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Import From File");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jCheckBoxMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Auto import from internet");
+        jMenu1.add(jCheckBoxMenuItem1);
+
+        jMenuBar.add(jMenu1);
 
         setJMenuBar(jMenuBar);
 
@@ -656,9 +691,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void nextDayJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextDayJButtonActionPerformed
         calendar.setTime(AutoTradeLocalData.load().getCurrentDate());
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        if (calendar.getTimeInMillis() > AutoTradeLocalData.load().getLatestTime())
+        if (calendar.getTimeInMillis() > AutoTrade.latestTime) {
             return;
-        
+        }
+
         AutoTradeLocalData.load().setCurrentDate(calendar.getTime());
         currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
 
@@ -667,7 +703,7 @@ public class MainFrame extends javax.swing.JFrame {
         SpinnerDateModel dateModel = (SpinnerDateModel) dateJSpinner.getModel();
         dateModel.setEnd(AutoTradeLocalData.load().getCurrentDate());
         dateJSpinner.setValue(AutoTradeLocalData.load().getCurrentDate());
-        
+
         updatePriceAndVolume();
         updatePriceVolumeChart();
 }//GEN-LAST:event_nextDayJButtonActionPerformed
@@ -675,8 +711,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void nextMonthJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMonthJButtonActionPerformed
         calendar.setTime(AutoTradeLocalData.load().getCurrentDate());
         calendar.add(Calendar.MONTH, 1);
-        if (calendar.getTimeInMillis() > AutoTradeLocalData.load().getLatestTime())
+        if (calendar.getTimeInMillis() > AutoTrade.latestTime) {
             return;
+        }
 
         AutoTradeLocalData.load().setCurrentDate(calendar.getTime());
         currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
@@ -695,8 +732,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void nextYearJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextYearJButtonActionPerformed
         calendar.setTime(AutoTradeLocalData.load().getCurrentDate());
         calendar.add(Calendar.YEAR, 1);
-        if (calendar.getTimeInMillis() > AutoTradeLocalData.load().getLatestTime())
+        if (calendar.getTimeInMillis() > AutoTrade.latestTime) {
             return;
+        }
         AutoTradeLocalData.load().setCurrentDate(calendar.getTime());
         currentDateJLabel.setText(dateFormat.format(AutoTradeLocalData.load().getCurrentDate()));
 
@@ -748,6 +786,14 @@ public class MainFrame extends javax.swing.JFrame {
         settingDialog.setVisible(true);
     }//GEN-LAST:event_settingJMenuItemActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        importFileDialog = new JDialog();
+        ImportDataPanel panel = new ImportDataPanel(this);
+        importFileDialog.add(panel);
+        importFileDialog.pack();
+        importFileDialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -755,8 +801,8 @@ public class MainFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                AutoTradeLocalData.load().setEarliestTime(AutoTradeInfo.getEarliestTimeInDatabase());
-                AutoTradeLocalData.load().setLatestTime(AutoTradeInfo.getLatestTimeInDatabase());
+                AutoTrade.earliestTime = AutoTrade.getEarliestTimeInDatabase();
+                AutoTrade.latestTime = AutoTrade.getLatestTimeInDatabase();
                 new MainFrame().setVisible(true);
             }
         });
@@ -774,6 +820,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel highPriceJLabel;
     private javax.swing.JTextField highPriceJTextField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -785,15 +834,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable5;
+    public javax.swing.JTable listUserJTable;
     private javax.swing.JLabel lowPriceJLabel;
     private javax.swing.JTextField lowPriceJTextField;
     private javax.swing.JTabbedPane mainJTabbedPane;
@@ -821,7 +872,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void updatePriceAndVolume() {
         java.sql.Date center_date = new java.sql.Date(AutoTradeLocalData.load().getCenter_date().getTime());
-        
+
         try {
             Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
@@ -850,13 +901,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void updatePriceVolumeChart() {
         calendar.setTime(AutoTradeLocalData.load().getCenter_date());
-        calendar.add(Calendar.DAY_OF_MONTH, -AutoTradeLocalData.load().getNumber_of_day()/2);
+        calendar.add(Calendar.DAY_OF_MONTH, -AutoTradeLocalData.load().getNumber_of_day() / 2);
         long startTime = calendar.getTimeInMillis();
         calendar.add(Calendar.DAY_OF_MONTH, AutoTradeLocalData.load().getNumber_of_day());
         long endTime = calendar.getTimeInMillis();
 
-        if (endTime > AutoTradeLocalData.load().getCurrentDate().getTime())
+        if (endTime > AutoTradeLocalData.load().getCurrentDate().getTime()) {
             endTime = AutoTradeLocalData.load().getCurrentDate().getTime();
+        }
 
         final XYDataset priceDataset = createPriceDataset(startTime, endTime, AutoTradeLocalData.load().getSymbol(), (String) priceTypeJComboBox.getSelectedItem());
         final XYDataset volumeDataset = createVolumeDataset(startTime, endTime, AutoTradeLocalData.load().getSymbol());
@@ -865,14 +917,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private XYDataset createPriceDataset(long startTime, long endTime, String symbol, String priceType) {
-        final TimeSeries priceSeries = AutoTradeInfo.getPriceSeries(startTime, endTime, symbol, priceType);
+        final TimeSeries priceSeries = AutoTrade.getPriceSeries(startTime, endTime, symbol, priceType);
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(priceSeries);
         return dataset;
     }
 
     private XYDataset createVolumeDataset(long startTime, long endTime, String symbol) {
-        final TimeSeries volumeSeries = AutoTradeInfo.getVolumeSeries(startTime, endTime, symbol);
+        final TimeSeries volumeSeries = AutoTrade.getVolumeSeries(startTime, endTime, symbol);
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(volumeSeries);
         return dataset;
@@ -922,4 +974,5 @@ public class MainFrame extends javax.swing.JFrame {
         plot.setRenderer(1, volumeRenderer);
         return chart;
     }
+
 }

@@ -11,7 +11,7 @@
 
 package autotrade.gui.panel;
 
-import autotrade.core.AutoTradeInfo;
+import autotrade.core.AutoTrade;
 import autotrade.core.AutoTradeLocalData;
 import autotrade.gui.MainFrame;
 import java.util.Calendar;
@@ -59,8 +59,8 @@ public class SettingPanel extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Center Date:");
 
-        Date earliestDate = new Date(AutoTradeInfo.getEarliestTimeInDatabase());
-        Date latestDate = new Date(AutoTradeInfo.getLatestTimeInDatabase());
+        Date earliestDate = new Date(AutoTrade.getEarliestTimeInDatabase());
+        Date latestDate = new Date(AutoTrade.getLatestTimeInDatabase());
         currentDatejSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCurrentDate(), earliestDate, latestDate, Calendar.DAY_OF_MONTH));
         currentDatejSpinner.setEditor(new JSpinner.DateEditor(currentDatejSpinner, "MM/dd/yyyy"));
         currentDatejSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -71,7 +71,7 @@ public class SettingPanel extends javax.swing.JPanel {
 
         numberOfDayjSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(AutoTradeLocalData.load().getNumber_of_day()), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-        Date earliestCenterDate = new Date(AutoTradeInfo.getEarliestTimeInDatabase());
+        Date earliestCenterDate = new Date(AutoTrade.getEarliestTimeInDatabase());
         centerDateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCenter_date(), earliestCenterDate, AutoTradeLocalData.load().getCurrentDate(), Calendar.DAY_OF_MONTH));
         centerDateJSpinner.setEditor(new JSpinner.DateEditor(centerDateJSpinner, "MM/dd/yyyy"));
 
