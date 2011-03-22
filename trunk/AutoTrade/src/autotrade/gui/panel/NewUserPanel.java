@@ -13,6 +13,7 @@ package autotrade.gui.panel;
 import autotrade.core.AutoTrade;
 import autotrade.core.User;
 import autotrade.gui.MainFrame;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -178,11 +179,11 @@ public class NewUserPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         int tamID = AutoTrade.getTAMID((String) technicalAnalysisJComboBox.getSelectedItem());
         AutoTrade.addNewTAMI(tamID, (Integer) periodJSpinner.getValue());
-        int tamiID = AutoTrade.getTAMIID(tamID, (Integer) periodJSpinner.getValue());
+        int tamiID = AutoTrade.getGreatestIDTAMI();
         int userTypeID = AutoTrade.getUserTypeID((String) userTypeJComboBox.getSelectedItem());
         AutoTrade.addNewUser(usernameJTextField.getText(), userTypeID, tamiID, Double.parseDouble(initalValueJTextField.getText()));
 
-        User user = AutoTrade.getUser(usernameJTextField.getText());
+        User user = AutoTrade.getUserByName(usernameJTextField.getText());
         AutoTrade.LIST_ALL_USER.add(user);
         DefaultTableModel model = (DefaultTableModel) mainFrame.listUserJTable.getModel();
         Object[] rowData = new Object[6];
@@ -196,6 +197,10 @@ public class NewUserPanel extends javax.swing.JPanel {
         
         model.addRow(rowData);
         mainFrame.listUserJTable.repaint();
+
+        DefaultComboBoxModel comboModel = (DefaultComboBoxModel) mainFrame.userJComboBox.getModel();
+        comboModel.addElement(user.getUserName());
+        mainFrame.userJComboBox.repaint();
 
         mainFrame.newUserDialog.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
