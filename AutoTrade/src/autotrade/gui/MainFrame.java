@@ -24,8 +24,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.sql.*;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.SpinnerDateModel;
+import javax.swing.table.DefaultTableModel;
 import org.jfree.data.xy.*;
 import org.jfree.chart.*;
 import org.jfree.chart.axis.DateAxis;
@@ -303,7 +306,13 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("User");
 
-        userJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ArrayList<String> listUserName = new ArrayList<String>();
+        for (int i = 0; i < AutoTrade.LIST_ALL_USER.size(); ++i) {
+            if (AutoTrade.LIST_ALL_USER.get(i).isActive()) {
+                listUserName.add(AutoTrade.LIST_ALL_USER.get(i).getUserName());
+            }
+        }
+        userJComboBox.setModel(new javax.swing.DefaultComboBoxModel(listUserName.toArray()));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Cash Remain");
@@ -549,6 +558,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         removeJButton.setText("Remove");
+        removeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeJButtonActionPerformed(evt);
+            }
+        });
 
         Object[][] data = AutoTrade.getTableData();
         listUserJTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -583,6 +597,11 @@ public class MainFrame extends javax.swing.JFrame {
         listUserJTable.getColumnModel().getColumn(5).setPreferredWidth(5);
 
         jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Start");
 
@@ -794,6 +813,36 @@ public class MainFrame extends javax.swing.JFrame {
         importFileDialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void removeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeJButtonActionPerformed
+        int removeIndex = listUserJTable.getSelectedRow();
+        AutoTrade.removeUser(AutoTrade.LIST_ALL_USER.get(removeIndex).getUserID());
+        AutoTrade.LIST_ALL_USER.remove(removeIndex);
+        DefaultTableModel model = (DefaultTableModel) listUserJTable.getModel();
+        model.removeRow(removeIndex);
+        listUserJTable.repaint();
+
+        DefaultComboBoxModel comboModel = (DefaultComboBoxModel) userJComboBox.getModel();
+        comboModel.removeElementAt(removeIndex);
+        userJComboBox.repaint();
+    }//GEN-LAST:event_removeJButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AutoTrade.LIST_ALL_USER = AutoTrade.getAllUsers();
+        DefaultTableModel model = (DefaultTableModel) listUserJTable.getModel();
+        model.setDataVector(AutoTrade.getTableData(), new String[]{
+                    "User ID", "User Name", "User Type", "Technical Analysis Method", "Cash Remain", "Active"
+                });
+        listUserJTable.repaint();
+
+        ArrayList<String> listUserName = new ArrayList<String>();
+        for (int i = 0; i < AutoTrade.LIST_ALL_USER.size(); ++i) {
+            if (AutoTrade.LIST_ALL_USER.get(i).isActive()) {
+                listUserName.add(AutoTrade.LIST_ALL_USER.get(i).getUserName());
+            }
+        }
+        userJComboBox.setModel(new DefaultComboBoxModel(listUserName.toArray()));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -864,39 +913,20 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox symbolJComboBox;
     private javax.swing.JLabel symbolJLabel;
     private javax.swing.JPanel transactionJPanel;
-    private javax.swing.JComboBox userJComboBox;
+    public javax.swing.JComboBox userJComboBox;
     private javax.swing.JPanel userManagementJPanel;
     private javax.swing.JLabel volumeJLabel;
     private javax.swing.JTextField volumeJTextField;
     // End of variables declaration//GEN-END:variables
 
     private void updatePriceAndVolume() {
-        java.sql.Date center_date = new java.sql.Date(AutoTradeLocalData.load().getCenter_date().getTime());
+        StockInfoDaily stockInfo = AutoTrade.getStockInfo((String) symbolJComboBox.getSelectedItem(), AutoTradeLocalData.load().getCenter_date().getTime());
 
-        try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * "
-                    + "FROM stock_price_daily "
-                    + "WHERE date LIKE '" + center_date.toString() + "' "
-                    + "AND symbol LIKE '" + (String) symbolJComboBox.getSelectedItem() + "'");
-            while (resultSet.next()) {
-                Double open = resultSet.getDouble("open");
-                Double high = resultSet.getDouble("high");
-                Double low = resultSet.getDouble("low");
-                Double close = resultSet.getDouble("close");
-                Integer volume = resultSet.getInt("volume");
-
-                openPriceJTextField.setText(open.toString());
-                highPriceJTextField.setText(high.toString());
-                lowPriceJTextField.setText(low.toString());
-                closePriceJTextField.setText(close.toString());
-                volumeJTextField.setText(volume.toString());
-            }
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        openPriceJTextField.setText(stockInfo.getOpenPrice() + "");
+        highPriceJTextField.setText(stockInfo.getHighPrice() + "");
+        lowPriceJTextField.setText(stockInfo.getLowPrice() + "");
+        closePriceJTextField.setText(stockInfo.getClosePrice() + "");
+        volumeJTextField.setText(stockInfo.getVolume() + "");
     }
 
     private void updatePriceVolumeChart() {
@@ -974,5 +1004,4 @@ public class MainFrame extends javax.swing.JFrame {
         plot.setRenderer(1, volumeRenderer);
         return chart;
     }
-
 }

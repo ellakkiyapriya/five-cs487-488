@@ -5,6 +5,10 @@
 
 package autotrade.core.technicalanalysismethod;
 
+import autotrade.core.Order;
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  *
  * @author Dinh
@@ -19,5 +23,9 @@ public class TechnicalAnalysisMethod {
     public void setName(String name) {
         this.name = name;
     }
+
+    public ArrayList<Order> getOrders(Date date, int user_id) {
+        return null;
+    };
 
 }
