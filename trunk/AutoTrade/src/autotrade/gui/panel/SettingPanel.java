@@ -13,9 +13,11 @@ package autotrade.gui.panel;
 
 import autotrade.core.AutoTrade;
 import autotrade.core.AutoTradeLocalData;
+import autotrade.core.User;
 import autotrade.gui.MainFrame;
 import java.util.Calendar;
 import java.util.Date;
+import javax.jws.soap.SOAPBinding.Use;
 import javax.swing.JSpinner;
 
 /**
@@ -50,17 +52,17 @@ public class SettingPanel extends javax.swing.JPanel {
         saveJButton = new javax.swing.JButton();
         cancelJButton = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setText("Current Date:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Number of Day: ");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Center Date:");
 
-        Date earliestDate = new Date(AutoTrade.getEarliestTimeInDatabase());
-        Date latestDate = new Date(AutoTrade.getLatestTimeInDatabase());
+        Date earliestDate = new Date(autotrade.core.AutoTrade.getEarliestTimeInDatabase());
+        Date latestDate = new Date(autotrade.core.AutoTrade.getLatestTimeInDatabase());
         currentDatejSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCurrentDate(), earliestDate, latestDate, Calendar.DAY_OF_MONTH));
         currentDatejSpinner.setEditor(new JSpinner.DateEditor(currentDatejSpinner, "MM/dd/yyyy"));
         currentDatejSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -71,7 +73,7 @@ public class SettingPanel extends javax.swing.JPanel {
 
         numberOfDayjSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(AutoTradeLocalData.load().getNumber_of_day()), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-        Date earliestCenterDate = new Date(AutoTrade.getEarliestTimeInDatabase());
+        Date earliestCenterDate = new Date(autotrade.core.AutoTrade.getEarliestTimeInDatabase());
         centerDateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCenter_date(), earliestCenterDate, AutoTradeLocalData.load().getCurrentDate(), Calendar.DAY_OF_MONTH));
         centerDateJSpinner.setEditor(new JSpinner.DateEditor(centerDateJSpinner, "MM/dd/yyyy"));
 
@@ -131,7 +133,7 @@ public class SettingPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(centerDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -145,6 +147,7 @@ public class SettingPanel extends javax.swing.JPanel {
         AutoTradeLocalData.load().setNumber_of_day((Integer)numberOfDayjSpinner.getValue());
         mainFrame.settingDialog.dispose();
         mainFrame.dispose();
+        User.LIST_ALL_USER = User.getAllUsers();
         MainFrame.main(null);
     }//GEN-LAST:event_saveJButtonActionPerformed
 
