@@ -13,7 +13,7 @@ package autotrade.gui;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import autotrade.core.*;
-import autotrade.core.database.AutoTradeDatabaseManagement;
+import autotrade.gui.panel.AddOrderPanel;
 import autotrade.gui.panel.ImportDataPanel;
 import autotrade.gui.panel.NewUserPanel;
 import autotrade.gui.panel.SettingPanel;
@@ -23,8 +23,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.sql.*;
-import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.SpinnerDateModel;
@@ -50,12 +48,17 @@ public class MainFrame extends javax.swing.JFrame {
     public JDialog newUserDialog;
     public JDialog settingDialog;
     public JDialog importFileDialog;
+    public JDialog addOrderDialog;
+    
     DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
     Calendar calendar = Calendar.getInstance();
+    public static StockInfoDaily currentDateStockInfo;
+    public static StockInfoDaily centerDateStockInfo;
 
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
+        initOthers();
     }
 
     /** This method is called from within the constructor to
@@ -96,19 +99,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         userJComboBox = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        cashRemainJLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        userPortfolioJTable = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        gainlossjLabel = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        orderListJTable = new javax.swing.JTable();
+        removeOrderJButton = new javax.swing.JButton();
+        addOrderJButton = new javax.swing.JButton();
         dateJPanel = new javax.swing.JPanel();
         nextYearJButton = new javax.swing.JButton();
         nextMonthJButton = new javax.swing.JButton();
@@ -186,11 +188,11 @@ public class MainFrame extends javax.swing.JFrame {
         priceVolumeChartJPanel.setLayout(priceVolumeChartJPanelLayout);
         priceVolumeChartJPanelLayout.setHorizontalGroup(
             priceVolumeChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 652, Short.MAX_VALUE)
+            .addGap(0, 633, Short.MAX_VALUE)
         );
         priceVolumeChartJPanelLayout.setVerticalGroup(
             priceVolumeChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 566, Short.MAX_VALUE)
+            .addGap(0, 533, Short.MAX_VALUE)
         );
 
         priceTypeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -240,7 +242,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(chartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(priceTypeJComboBox, 0, 83, Short.MAX_VALUE))
+                    .addComponent(priceTypeJComboBox, 0, 74, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(chartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(chartJPanelLayout.createSequentialGroup()
@@ -271,7 +273,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(dateJLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(priceVolumeChartJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         chartJPanelLayout.setVerticalGroup(
@@ -306,16 +308,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("User");
 
-        ArrayList<String> listUserName = new ArrayList<String>();
-        for (int i = 0; i < AutoTrade.LIST_ALL_USER.size(); ++i) {
-            if (AutoTrade.LIST_ALL_USER.get(i).isActive()) {
-                listUserName.add(AutoTrade.LIST_ALL_USER.get(i).getUserName());
+        userJComboBox.setModel(new javax.swing.DefaultComboBoxModel(User.LIST_ALL_USER.toArray()));
+        userJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userJComboBoxActionPerformed(evt);
             }
-        }
-        userJComboBox.setModel(new javax.swing.DefaultComboBoxModel(listUserName.toArray()));
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Cash Remain");
+
+        cashRemainJLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        cashRemainJLabel.setText("1000");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 10));
         jLabel5.setText("x1000 VND");
@@ -323,9 +327,9 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel6.setText("User Portfolio");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        userPortfolioJTable.setModel(new javax.swing.table.DefaultTableModel(
 
+            new Object[][] {
             },
             new String [] {
                 "Symbol", "Volume", "Buy Price", "Current Price", "Gain/Loss"
@@ -346,58 +350,54 @@ public class MainFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(userPortfolioJTable);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel7.setText("Gain/Loss");
 
+        gainlossjLabel.setText("0.0");
+
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel9.setText("Buy stocks");
+        jLabel9.setText("Order List:");
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel10.setText("Sell stocks");
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        orderListJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Symbol", "Price", "Volume", "Value"
+                "Type", "Symbol", "Price", "Volume", "Value"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.Long.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Long.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-        });
-        jScrollPane3.setViewportView(jTable3);
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Symbol", "Price", "Volume", "Value"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.Long.class, java.lang.Double.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane3.setViewportView(orderListJTable);
+
+        removeOrderJButton.setText("Remove Order");
+        removeOrderJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeOrderJButtonActionPerformed(evt);
+            }
+        });
+
+        addOrderJButton.setText("Add Order");
+        addOrderJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addOrderJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout AccountInfoJPanelLayout = new javax.swing.GroupLayout(AccountInfoJPanel);
         AccountInfoJPanel.setLayout(AccountInfoJPanelLayout);
@@ -407,66 +407,67 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AccountInfoJPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AccountInfoJPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel6))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AccountInfoJPanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                             .addGroup(AccountInfoJPanelLayout.createSequentialGroup()
                                 .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(userJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AccountInfoJPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cashRemainJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel5)))
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                                .addComponent(gainlossjLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(AccountInfoJPanelLayout.createSequentialGroup()
-                                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)))))
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                                .addComponent(addOrderJButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(removeOrderJButton))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AccountInfoJPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        AccountInfoJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addOrderJButton, removeOrderJButton});
+
         AccountInfoJPanelLayout.setVerticalGroup(
             AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AccountInfoJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(AccountInfoJPanelLayout.createSequentialGroup()
-                        .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(userJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)
-                        .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel7))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(userJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(cashRemainJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gainlossjLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel9)
-                .addGap(7, 7, 7)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(AccountInfoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(removeOrderJButton)
+                    .addComponent(addOrderJButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         nextYearJButton.setText("Next Year");
@@ -500,7 +501,7 @@ public class MainFrame extends javax.swing.JFrame {
         dateJPanelLayout.setHorizontalGroup(
             dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dateJPanelLayout.createSequentialGroup()
-                .addContainerGap(647, Short.MAX_VALUE)
+                .addContainerGap(708, Short.MAX_VALUE)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(currentDateJLabel)
@@ -540,10 +541,10 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(transactionJPanelLayout.createSequentialGroup()
                 .addComponent(dateJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(transactionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(chartJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(transactionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chartJPanel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(AccountInfoJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(76, 76, 76))
         );
 
         mainJTabbedPane.addTab("Transaction", transactionJPanel);
@@ -564,7 +565,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        Object[][] data = AutoTrade.getTableData();
+        Object[][] data = User.getUserTableData();
         listUserJTable.setModel(new javax.swing.table.DefaultTableModel(
             data,
             new String [] {
@@ -615,7 +616,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 962, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(userManagementJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -643,7 +644,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
         mainJTabbedPane.addTab("User Management", userManagementJPanel);
@@ -685,11 +686,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainJTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1090, Short.MAX_VALUE)
+            .addComponent(mainJTabbedPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainJTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+            .addComponent(mainJTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
         );
 
         pack();
@@ -815,8 +816,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void removeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeJButtonActionPerformed
         int removeIndex = listUserJTable.getSelectedRow();
-        AutoTrade.removeUser(AutoTrade.LIST_ALL_USER.get(removeIndex).getUserID());
-        AutoTrade.LIST_ALL_USER.remove(removeIndex);
+        User.removeUser(User.LIST_ALL_USER.get(removeIndex).getUserID());
+        User.LIST_ALL_USER.remove(removeIndex);
         DefaultTableModel model = (DefaultTableModel) listUserJTable.getModel();
         model.removeRow(removeIndex);
         listUserJTable.repaint();
@@ -827,21 +828,39 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_removeJButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AutoTrade.LIST_ALL_USER = AutoTrade.getAllUsers();
+        User.LIST_ALL_USER = User.getAllUsers();
         DefaultTableModel model = (DefaultTableModel) listUserJTable.getModel();
-        model.setDataVector(AutoTrade.getTableData(), new String[]{
+        model.setDataVector(User.getUserTableData(), new String[]{
                     "User ID", "User Name", "User Type", "Technical Analysis Method", "Cash Remain", "Active"
                 });
         listUserJTable.repaint();
 
-        ArrayList<String> listUserName = new ArrayList<String>();
-        for (int i = 0; i < AutoTrade.LIST_ALL_USER.size(); ++i) {
-            if (AutoTrade.LIST_ALL_USER.get(i).isActive()) {
-                listUserName.add(AutoTrade.LIST_ALL_USER.get(i).getUserName());
-            }
-        }
-        userJComboBox.setModel(new DefaultComboBoxModel(listUserName.toArray()));
+        userJComboBox.setModel(new DefaultComboBoxModel(User.LIST_ALL_USER.toArray()));
+        userJComboBox.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void userJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userJComboBoxActionPerformed
+        updateUIUser((User)userJComboBox.getSelectedItem());
+    }//GEN-LAST:event_userJComboBoxActionPerformed
+
+    private void addOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderJButtonActionPerformed
+        addOrderDialog = new JDialog();
+        AddOrderPanel panel = new AddOrderPanel(this);
+        addOrderDialog.add(panel);
+        addOrderDialog.pack();
+        addOrderDialog.setVisible(true);
+    }//GEN-LAST:event_addOrderJButtonActionPerformed
+
+    private void removeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeOrderJButtonActionPerformed
+        int removeIndex = orderListJTable.getSelectedRow();
+        User selectedUser = (User)userJComboBox.getSelectedItem();
+        selectedUser.getListcurrentDateOrders().remove(removeIndex);
+        
+        DefaultTableModel model = (DefaultTableModel) orderListJTable.getModel();
+        model.removeRow(removeIndex);
+        orderListJTable.repaint();
+
+    }//GEN-LAST:event_removeOrderJButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -852,12 +871,16 @@ public class MainFrame extends javax.swing.JFrame {
             public void run() {
                 AutoTrade.earliestTime = AutoTrade.getEarliestTimeInDatabase();
                 AutoTrade.latestTime = AutoTrade.getLatestTimeInDatabase();
-                new MainFrame().setVisible(true);
+                MainFrame mainFrame = new MainFrame();
+                mainFrame.setVisible(true);
+                mainFrame.updateUIUser((User)mainFrame.userJComboBox.getSelectedItem());
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AccountInfoJPanel;
+    private javax.swing.JButton addOrderJButton;
+    private javax.swing.JLabel cashRemainJLabel;
     private javax.swing.JPanel chartJPanel;
     private javax.swing.JLabel closePriceJLabel;
     private javax.swing.JTextField closePriceJTextField;
@@ -866,6 +889,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel dateJPanel;
     private javax.swing.JSpinner dateJSpinner;
     private javax.swing.JMenu editJMenu;
+    private javax.swing.JLabel gainlossjLabel;
     private javax.swing.JLabel highPriceJLabel;
     private javax.swing.JTextField highPriceJTextField;
     private javax.swing.JButton jButton1;
@@ -873,15 +897,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar;
@@ -889,10 +910,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable5;
     public javax.swing.JTable listUserJTable;
     private javax.swing.JLabel lowPriceJLabel;
     private javax.swing.JTextField lowPriceJTextField;
@@ -905,22 +922,34 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner numberOfDayJSpinner;
     private javax.swing.JLabel openPriceJLabel;
     private javax.swing.JTextField openPriceJTextField;
+    private javax.swing.JTable orderListJTable;
     private javax.swing.JComboBox priceTypeJComboBox;
     private javax.swing.JLabel priceTypeJLabel;
     private javax.swing.JPanel priceVolumeChartJPanel;
     private javax.swing.JButton removeJButton;
+    private javax.swing.JButton removeOrderJButton;
     private javax.swing.JMenuItem settingJMenuItem;
     private javax.swing.JComboBox symbolJComboBox;
     private javax.swing.JLabel symbolJLabel;
     private javax.swing.JPanel transactionJPanel;
     public javax.swing.JComboBox userJComboBox;
     private javax.swing.JPanel userManagementJPanel;
+    private javax.swing.JTable userPortfolioJTable;
     private javax.swing.JLabel volumeJLabel;
     private javax.swing.JTextField volumeJTextField;
     // End of variables declaration//GEN-END:variables
 
     private void updatePriceAndVolume() {
-        StockInfoDaily stockInfo = AutoTrade.getStockInfo((String) symbolJComboBox.getSelectedItem(), AutoTradeLocalData.load().getCenter_date().getTime());
+        StockInfoDaily stockInfo = StockInfoDaily.getStockInfo((String) symbolJComboBox.getSelectedItem(), AutoTradeLocalData.load().getCenter_date().getTime());
+
+        if (stockInfo == null) {
+            openPriceJTextField.setText("");
+            highPriceJTextField.setText("");
+            lowPriceJTextField.setText("");
+            closePriceJTextField.setText("");
+            volumeJTextField.setText("");
+            return;
+        }
 
         openPriceJTextField.setText(stockInfo.getOpenPrice() + "");
         highPriceJTextField.setText(stockInfo.getHighPrice() + "");
@@ -1003,5 +1032,35 @@ public class MainFrame extends javax.swing.JFrame {
         volumeRenderer.setSeriesPaint(0, Color.GREEN);
         plot.setRenderer(1, volumeRenderer);
         return chart;
+    }
+
+    private void initOthers() {
+        //updateUIUser((User)userJComboBox.getSelectedItem());
+    }
+
+    private void updateUIUser(User selectedUser) {
+            if (selectedUser == null)
+                return;
+
+            DefaultTableModel model = (DefaultTableModel) orderListJTable.getModel();
+            model.setDataVector(selectedUser.getListOrdersTableData(), new String[]{
+                        "Type", "Symbol", "Price", "Volume", "Value"
+                    });
+            orderListJTable.repaint();
+
+            model = (DefaultTableModel) userPortfolioJTable.getModel();
+            model.setDataVector(selectedUser.getUserPortfolioTableData(), new String[]{
+                        "Symbol", "Volume", "Buy Price", "Current Price", "Gain/Loss"
+                    });
+            userPortfolioJTable.repaint();
+
+            cashRemainJLabel.setText(selectedUser.getCash_remain() + "");
+
+            double gainloss = ((selectedUser.getCash_remain() + selectedUser.getStock_value())/selectedUser.getInital_cash() - 1)*100;
+            gainlossjLabel.setText(gainloss + "");
+
+            boolean check = AutoTradeLocalData.load().getCenter_date().equals(AutoTradeLocalData.load().getCurrentDate());
+            addOrderJButton.setVisible(selectedUser.getTypeID() == 1 && check);
+            removeOrderJButton.setVisible(selectedUser.getTypeID() == 1 && check);
     }
 }

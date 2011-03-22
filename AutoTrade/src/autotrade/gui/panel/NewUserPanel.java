@@ -181,10 +181,10 @@ public class NewUserPanel extends javax.swing.JPanel {
         AutoTrade.addNewTAMI(tamID, (Integer) periodJSpinner.getValue());
         int tamiID = AutoTrade.getGreatestIDTAMI();
         int userTypeID = AutoTrade.getUserTypeID((String) userTypeJComboBox.getSelectedItem());
-        AutoTrade.addNewUser(usernameJTextField.getText(), userTypeID, tamiID, Double.parseDouble(initalValueJTextField.getText()));
-
-        User user = AutoTrade.getUserByName(usernameJTextField.getText());
-        AutoTrade.LIST_ALL_USER.add(user);
+        User.addNewUser(usernameJTextField.getText(), userTypeID, tamiID, Double.parseDouble(initalValueJTextField.getText()));
+        User user = User.getUserByName(usernameJTextField.getText());
+        User.LIST_ALL_USER.add(user);
+                
         DefaultTableModel model = (DefaultTableModel) mainFrame.listUserJTable.getModel();
         Object[] rowData = new Object[6];
 
@@ -196,10 +196,11 @@ public class NewUserPanel extends javax.swing.JPanel {
         rowData[5] = user.isActive();
         
         model.addRow(rowData);
+
         mainFrame.listUserJTable.repaint();
 
         DefaultComboBoxModel comboModel = (DefaultComboBoxModel) mainFrame.userJComboBox.getModel();
-        comboModel.addElement(user.getUserName());
+        comboModel.addElement(user);
         mainFrame.userJComboBox.repaint();
 
         mainFrame.newUserDialog.dispose();

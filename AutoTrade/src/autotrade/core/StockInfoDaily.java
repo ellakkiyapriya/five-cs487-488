@@ -5,6 +5,10 @@
 
 package autotrade.core;
 
+import autotrade.core.database.AutoTradeDatabaseManagement;
+import java.sql.*;
+import java.util.TreeMap;
+
 /**
  *
  * @author Dinh
@@ -71,5 +75,72 @@ public class StockInfoDaily {
         this.volume = volume;
     }
 
-    
+    public static StockInfoDaily getStockInfo(String symbol, long dateTime) {
+        StockInfoDaily stockInfo = null;
+
+        Date date = new Date(dateTime);
+
+        try {
+            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * "
+                    + "FROM stock_price_daily "
+                    + "WHERE date LIKE '" + date.toString() + "' "
+                    + "AND symbol LIKE '" + symbol + "'");
+
+            while (resultSet.next()) {
+                stockInfo = new StockInfoDaily();
+                stockInfo.setDateTime(dateTime);
+                stockInfo.setSymbol(symbol);
+                stockInfo.setOpenPrice(resultSet.getDouble("open"));
+                stockInfo.setHighPrice(resultSet.getDouble("high"));
+                stockInfo.setLowPrice(resultSet.getDouble("low"));
+                stockInfo.setClosePrice(resultSet.getDouble("close"));
+                stockInfo.setVolume(resultSet.getInt("volume"));
+            }
+
+            conn.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return stockInfo;
+    }
+
+    public static TreeMap<String, StockInfoDaily> getMapSymbolStockInfo(long dateTime) {
+        TreeMap<String, StockInfoDaily> mapSymbolStockInfo = new TreeMap<String, StockInfoDaily>();
+
+        Date date = new Date(dateTime);
+
+        try {
+            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * "
+                    + "FROM stock_price_daily "
+                    + "WHERE date LIKE '" + date.toString() + "'");
+
+            while (resultSet.next()) {
+                StockInfoDaily stockInfo = new StockInfoDaily();
+                stockInfo = new StockInfoDaily();
+                stockInfo.setDateTime(dateTime);
+                stockInfo.setSymbol(resultSet.getString("symbol"));
+                stockInfo.setOpenPrice(resultSet.getDouble("open"));
+                stockInfo.setHighPrice(resultSet.getDouble("high"));
+                stockInfo.setLowPrice(resultSet.getDouble("low"));
+                stockInfo.setClosePrice(resultSet.getDouble("close"));
+                stockInfo.setVolume(resultSet.getInt("volume"));
+
+                mapSymbolStockInfo.put(stockInfo.getSymbol(),stockInfo);
+            }
+
+            conn.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return mapSymbolStockInfo;
+    }
+
 }
