@@ -726,6 +726,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         updatePriceAndVolume();
         updatePriceVolumeChart();
+
+        for (User user : User.LIST_ALL_USER) {
+            user.updateUserInfoCurrentDateChange();
+        }
+
+        updateUIUser((User)userJComboBox.getSelectedItem());
 }//GEN-LAST:event_nextDayJButtonActionPerformed
 
     private void nextMonthJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMonthJButtonActionPerformed
@@ -747,6 +753,11 @@ public class MainFrame extends javax.swing.JFrame {
         updatePriceAndVolume();
         updatePriceVolumeChart();
 
+        for (User user : User.LIST_ALL_USER) {
+            user.updateUserInfoCurrentDateChange();
+        }
+
+        updateUIUser((User)userJComboBox.getSelectedItem());
 }//GEN-LAST:event_nextMonthJButtonActionPerformed
 
     private void nextYearJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextYearJButtonActionPerformed
@@ -766,6 +777,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         updatePriceAndVolume();
         updatePriceVolumeChart();
+
+        for (User user : User.LIST_ALL_USER) {
+            user.updateUserInfoCurrentDateChange();
+        }
+
+        updateUIUser((User)userJComboBox.getSelectedItem());
     }//GEN-LAST:event_nextYearJButtonActionPerformed
 
     private void dateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_dateJSpinnerStateChanged
@@ -777,6 +794,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         updatePriceAndVolume();
         updatePriceVolumeChart();
+
+        ((User)userJComboBox.getSelectedItem()).updateUserInfoCenterDateChange();
+        updateUIUser((User)userJComboBox.getSelectedItem());
+
     }//GEN-LAST:event_dateJSpinnerStateChanged
 
     private void numberOfDayJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberOfDayJSpinnerStateChanged

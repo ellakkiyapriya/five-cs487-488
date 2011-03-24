@@ -11,13 +11,13 @@
 
 package autotrade.gui.panel;
 
-import autotrade.core.AutoTrade;
 import autotrade.core.AutoTradeLocalData;
+import autotrade.core.Order;
 import autotrade.core.User;
+import autotrade.core.UserPortfolio;
 import autotrade.gui.MainFrame;
 import java.util.Calendar;
 import java.util.Date;
-import javax.jws.soap.SOAPBinding.Use;
 import javax.swing.JSpinner;
 
 /**
@@ -147,6 +147,8 @@ public class SettingPanel extends javax.swing.JPanel {
         AutoTradeLocalData.load().setNumber_of_day((Integer)numberOfDayjSpinner.getValue());
         mainFrame.settingDialog.dispose();
         mainFrame.dispose();
+        UserPortfolio.emptyUserPortfolioTable();
+        Order.emptyOrderTable();
         User.LIST_ALL_USER = User.getAllUsers();
         MainFrame.main(null);
     }//GEN-LAST:event_saveJButtonActionPerformed

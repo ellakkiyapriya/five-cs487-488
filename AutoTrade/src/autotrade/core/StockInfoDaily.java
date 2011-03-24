@@ -5,7 +5,6 @@
 
 package autotrade.core;
 
-import autotrade.core.database.AutoTradeDatabaseManagement;
 import java.sql.*;
 import java.util.TreeMap;
 
@@ -81,8 +80,7 @@ public class StockInfoDaily {
         Date date = new Date(dateTime);
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM stock_price_daily "
                     + "WHERE date LIKE '" + date.toString() + "' "
@@ -99,7 +97,6 @@ public class StockInfoDaily {
                 stockInfo.setVolume(resultSet.getInt("volume"));
             }
 
-            conn.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -114,8 +111,7 @@ public class StockInfoDaily {
         Date date = new Date(dateTime);
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM stock_price_daily "
                     + "WHERE date LIKE '" + date.toString() + "'");
@@ -134,7 +130,6 @@ public class StockInfoDaily {
                 mapSymbolStockInfo.put(stockInfo.getSymbol(),stockInfo);
             }
 
-            conn.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();

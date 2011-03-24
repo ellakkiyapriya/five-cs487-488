@@ -62,8 +62,7 @@ public class UserPortfolio {
 
     public static void addUserPortfolios(UserPortfolio userPortfolio) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "INSERT user_portfolio VALUES(";
             sqlStatement += "NULL ,";
@@ -74,7 +73,6 @@ public class UserPortfolio {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -82,8 +80,7 @@ public class UserPortfolio {
 
     public static void updateUserPortfolios(UserPortfolio userPortfolio) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "UPDATE user_portfolio SET ";
             sqlStatement += "user_id = '" + userPortfolio.getUser_id() + "',";
@@ -94,7 +91,6 @@ public class UserPortfolio {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -104,8 +100,7 @@ public class UserPortfolio {
         UserPortfolio userPortfolio = null;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM user_portfolio "
                     + "WHERE user_id = '" + user_id + "' "
@@ -120,7 +115,6 @@ public class UserPortfolio {
                 userPortfolio.setVolume(resultSet.getInt("volume"));
             }
 
-            conn.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -131,14 +125,12 @@ public class UserPortfolio {
 
     public static void removeUserPortfolio(int userportfolioID) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "DELETE FROM user_portfolio WHERE id = '" + userportfolioID + "'";
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -148,8 +140,7 @@ public class UserPortfolio {
         ArrayList<UserPortfolio> listUserPortfolios = new ArrayList<UserPortfolio>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM user_portfolio "
                     + "WHERE user_id = '" + user_id + "'");
@@ -164,7 +155,6 @@ public class UserPortfolio {
                 listUserPortfolios.add(userPortfolio);
             }
 
-            conn.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -186,5 +176,19 @@ public class UserPortfolio {
         }
 
         return data;
+    }
+
+    public static void emptyUserPortfolioTable() {
+       try {
+            Statement statement = AutoTrade.conn.createStatement();
+
+            String sqlStatement = "TRUNCATE TABLE  `user_portfolio`";
+
+            statement.executeUpdate(sqlStatement);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
     }
 }

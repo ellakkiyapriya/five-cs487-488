@@ -22,6 +22,10 @@ public class SimpleMovingAverage extends TechnicalAnalysisMethod {
 
     private int period;
 
+//    public SimpleMovingAverage(int period) {
+//        this.period = period;
+//    }
+
     public int getPeriod() {
         return period;
     }
@@ -71,6 +75,7 @@ public class SimpleMovingAverage extends TechnicalAnalysisMethod {
                     time++;
                 }
             }
+            
             if (time == period) {
                 maPrice /= time;
                 if (currentStockInfo.getClosePrice() > maPrice && previousStockInfo.getClosePrice() <= maPrice) {
