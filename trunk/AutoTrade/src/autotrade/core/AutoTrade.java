@@ -19,20 +19,20 @@ import java.util.ArrayList;
  */
 public class AutoTrade {
 
+    public static Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
     public static ArrayList<String> LIST_ALL_JSC_SYMBOL = getAllJSCSymbol();
     public static long earliestTime = AutoTrade.getEarliestTimeInDatabase();
     public static long latestTime = AutoTrade.getLatestTimeInDatabase();
+//    TreeMap<Date, TreeMap<String, StockInfoDaily>> mapStockDaily = new TreeMap<Date, TreeMap<String, StockInfoDaily>>();
 
     public static void removeTAMI(int tamiID) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
 
             String sqlStatement = "DELETE FROM technical_analysis_method_instance WHERE id = '" + tamiID + "'";
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -40,7 +40,6 @@ public class AutoTrade {
 
     public static void addNewTAMI(int tamID, int period) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
 
             String sqlStatement = "INSERT `technical_analysis_method_instance` VALUES(";
@@ -50,7 +49,6 @@ public class AutoTrade {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -60,14 +58,12 @@ public class AutoTrade {
         int tamID = 0;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM `technical_analysis_method` "
                     + "WHERE `name` LIKE '" + TAMName + "'");
 
             resultSet.next();
             tamID = resultSet.getInt("id");
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -80,14 +76,12 @@ public class AutoTrade {
         int userTypeID = 0;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM `user_type` "
                     + "WHERE `user_type_name` LIKE '" + userTypeName + "'");
 
             resultSet.next();
             userTypeID = resultSet.getInt("user_type_id");
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -99,14 +93,12 @@ public class AutoTrade {
         String userTypeName = "";
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM `user_type` "
                     + "WHERE `user_type_id` = '" + userTypeID + "'");
 
             resultSet.next();
             userTypeName = resultSet.getString("user_type_name");
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -118,13 +110,11 @@ public class AutoTrade {
         int greatestID = 0;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT max(id) FROM technical_analysis_method_instance");
             resultSet.next();
             greatestID = resultSet.getInt(1);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -137,14 +127,12 @@ public class AutoTrade {
         long latestTime = 0;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT max(date) FROM stock_price_daily");
             resultSet.next();
             Date date = resultSet.getDate(1);
             latestTime = date.getTime();
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -156,14 +144,12 @@ public class AutoTrade {
         long earliestTime = 0;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT min(date) FROM stock_price_daily");
             resultSet.next();
             Date date = resultSet.getDate(1);
             earliestTime = date.getTime();
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -175,14 +161,12 @@ public class AutoTrade {
         ArrayList<String> allJSCSymbol = new ArrayList<String>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM joint_stock_company");
             while (resultSet.next()) {
                 String symbol = resultSet.getString("symbol");
                 allJSCSymbol.add(symbol);
             }
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -196,7 +180,6 @@ public class AutoTrade {
 
         TimeSeries priceSeries = new TimeSeries("Price Series");
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `stock_price_daily`"
@@ -210,7 +193,6 @@ public class AutoTrade {
                 priceSeries.add(new Day(date), price);
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -222,14 +204,12 @@ public class AutoTrade {
         ArrayList<String> allJSCSymbol = new ArrayList<String>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM stock_price_daily WHERE date LIKE '" + current_date.toString() + "'");
             while (resultSet.next()) {
                 String symbol = resultSet.getString("symbol");
                 allJSCSymbol.add(symbol);
             }
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -243,7 +223,6 @@ public class AutoTrade {
 
         TimeSeries volumeSeries = new TimeSeries("Volume");
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `stock_price_daily`"
@@ -282,7 +261,6 @@ public class AutoTrade {
                 volumeSeries.add(new Day(date), volume);
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -294,7 +272,6 @@ public class AutoTrade {
         ArrayList<String> listUserTypeName = new ArrayList<String>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `user_type`");
@@ -304,7 +281,6 @@ public class AutoTrade {
                 listUserTypeName.add(userTypeName);
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -316,7 +292,6 @@ public class AutoTrade {
         ArrayList<String> listTechnicalAnalysisMethod = new ArrayList<String>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `technical_analysis_method`");
@@ -326,7 +301,6 @@ public class AutoTrade {
                 listTechnicalAnalysisMethod.add(technical_analysis_method_name);
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -338,7 +312,6 @@ public class AutoTrade {
         TechnicalAnalysisMethod tami = null;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `technical_analysis_method_instance` AS A, `technical_analysis_method` AS B "
@@ -358,7 +331,6 @@ public class AutoTrade {
                 }
             }
 
-            conn.close();
         } catch (InstantiationException ex) {
             Logger.getLogger(AutoTrade.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -371,5 +343,5 @@ public class AutoTrade {
 
         return tami;
     }
-    
+
 }

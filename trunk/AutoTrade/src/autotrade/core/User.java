@@ -5,10 +5,10 @@
 
 package autotrade.core;
 
-import autotrade.core.database.AutoTradeDatabaseManagement;
 import autotrade.core.technicalanalysismethod.TechnicalAnalysisMethod;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -26,9 +26,22 @@ public class User {
     private double cash_remain;
     private double stock_value;
     private boolean active;
+    private long currentDateTime;
     private ArrayList<UserPortfolio> listUserPortfolios;
     private ArrayList<Order> listcenterDateOrders;
     private ArrayList<Order> listcurrentDateOrders;
+
+    public User() {
+        currentDateTime = AutoTradeLocalData.load().getCurrentDate().getTime();
+    }
+
+    public long getCurrentDateTime() {
+        return currentDateTime;
+    }
+
+    public void setCurrentDateTime(long currentDate) {
+        this.currentDateTime = currentDate;
+    }
 
     public double getStock_value() {
         return stock_value;
@@ -145,8 +158,7 @@ public class User {
 
     public static void addNewUser(String userName, int typeId, int tamiID, double initialCash) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "INSERT user VALUES(";
             sqlStatement += "NULL ,";
@@ -159,7 +171,6 @@ public class User {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -167,8 +178,7 @@ public class User {
 
     public static void removeUser(int userID) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             int tamiID = 0;
 
             ResultSet resultSet = statement.executeQuery("SELECT * "
@@ -185,7 +195,6 @@ public class User {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -193,8 +202,7 @@ public class User {
 
     public static void saveUserInfo(User user) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "UPDATE user SET ";
             sqlStatement += "name = '" + user.getUserName() + "',";
@@ -210,7 +218,6 @@ public class User {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -220,13 +227,11 @@ public class User {
         int greatestID = 0;
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT max(id) FROM user");
             resultSet.next();
             greatestID = resultSet.getInt(1);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -238,8 +243,7 @@ public class User {
         User user = new User();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `user` "
                     + "WHERE `name` LIKE '" + userName + "'");
@@ -255,7 +259,6 @@ public class User {
                 user.setTechnicalAnalysisMethod(AutoTrade.getTAMI(resultSet.getInt("technical_analysis_method_instance_id")));
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -267,8 +270,7 @@ public class User {
         User user = new User();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `user` "
                     + "WHERE `id` = '" + userID + "'");
@@ -284,7 +286,6 @@ public class User {
                 user.setTechnicalAnalysisMethod(AutoTrade.getTAMI(resultSet.getInt("technical_analysis_method_instance_id")));
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -296,8 +297,7 @@ public class User {
         ArrayList<User> allUser = new ArrayList<User>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * "
                     + "FROM `user`");
 
@@ -320,7 +320,6 @@ public class User {
                 allUser.add(user);
             }
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -331,7 +330,7 @@ public class User {
     public void calStockValue() {
         stock_value = 0;
         for (UserPortfolio userPortfolio : listUserPortfolios) {
-            stock_value += StockInfoDaily.getStockInfo(userPortfolio.getSymbol(), AutoTradeLocalData.load().getCurrentDate().getTime()).getClosePrice()*userPortfolio.getVolume();
+            stock_value += StockInfoDaily.getStockInfo(userPortfolio.getSymbol(), currentDateTime).getClosePrice()*userPortfolio.getVolume();
         }
     }
 
@@ -350,4 +349,69 @@ public class User {
 
         return data;
     }
+
+    public void updateUserInfoCurrentDateChange() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentDateTime);
+
+        while (calendar.getTime().before(AutoTradeLocalData.load().getCurrentDate())) {
+            for (Order order : listcurrentDateOrders) {
+                if (order.getOrder_type() == Order.SELL) {
+                    for (UserPortfolio userPortfolio : listUserPortfolios) {
+                        if (userPortfolio.getSymbol().equals(order.getSymbol())) {
+                            listUserPortfolios.remove(userPortfolio);
+                        }
+                    }
+                    this.cash_remain += order.getPrice()*order.getVolume();
+                    Order.addOrder(order);
+                }
+            }
+
+            for (Order order : listcurrentDateOrders) {
+                if (order.getOrder_type() == Order.BUY) {
+                    boolean check = true;
+                    for (UserPortfolio userPortfolio : listUserPortfolios) {
+                        if (userPortfolio.getSymbol().equals(order.getSymbol())) {
+                            check = false;
+                            userPortfolio.setVolume(userPortfolio.getVolume() + order.getVolume());
+                            double buyprice = (userPortfolio.getBuy_price()*userPortfolio.getVolume() + order.getPrice()*order.getVolume())/(userPortfolio.getVolume() + order.getVolume());
+                            userPortfolio.setBuy_price(buyprice);
+                        }
+                    }
+
+                    if (check) {
+                        UserPortfolio userPortfolio = new UserPortfolio();
+                        userPortfolio.setPortfolio_id(-1);
+                        userPortfolio.setSymbol(order.getSymbol());
+                        userPortfolio.setUser_id(this.userID);
+                        userPortfolio.setBuy_price(order.getPrice());
+                        userPortfolio.setVolume(order.getVolume());
+                        listUserPortfolios.add(userPortfolio);
+                    }
+
+                    this.cash_remain -= order.getPrice()*order.getVolume();
+                    Order.addOrder(order);
+                }
+            }
+
+            for (UserPortfolio userPortfolio : listUserPortfolios) {
+                if (userPortfolio.getPortfolio_id() == -1) {
+                    UserPortfolio.addUserPortfolios(userPortfolio);
+                } else {
+                    UserPortfolio.updateUserPortfolios(userPortfolio);
+                }
+            }
+
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            listcurrentDateOrders = technicalAnalysisMethod.getOrders(calendar.getTime(), userID);
+        }
+
+        currentDateTime = AutoTradeLocalData.load().getCurrentDate().getTime();
+        this.calStockValue();
+    }
+
+    public void updateUserInfoCenterDateChange() {
+        listcenterDateOrders = Order.getListOrders(userID, AutoTradeLocalData.load().getCenter_date().getTime());
+    }
+
 }

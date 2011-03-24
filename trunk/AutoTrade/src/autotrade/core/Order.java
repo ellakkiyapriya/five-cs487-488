@@ -5,7 +5,6 @@
 
 package autotrade.core;
 
-import autotrade.core.database.AutoTradeDatabaseManagement;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -83,8 +82,7 @@ public class Order {
 
     public static void addOrder(Order order) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "INSERT order VALUES(";
             sqlStatement += "NULL ,";
@@ -97,7 +95,6 @@ public class Order {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -105,8 +102,7 @@ public class Order {
 
     public static void updateOrder(Order order) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "UPDATE order SET ";
             sqlStatement += "order_type = '" + order.order_type + "',";
@@ -119,7 +115,6 @@ public class Order {
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -129,8 +124,8 @@ public class Order {
 //        UserPortfolio userPortfolio = null;
 //
 //        try {
-//            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-//            Statement statement = conn.createStatement();
+//            AutoTrade.connection AutoTrade.conn = AutoTradeDatabaseManagement.getAutoTrade.connectionWithDatabase();
+//            Statement statement = AutoTrade.conn.createStatement();
 //            ResultSet resultSet = statement.executeQuery("SELECT * "
 //                    + "FROM user_portfolio "
 //                    + "WHERE user_id = '" + user_id + "' "
@@ -145,7 +140,7 @@ public class Order {
 //                userPortfolio.setVolume(resultSet.getInt("volume"));
 //            }
 //
-//            conn.close();
+//            AutoTrade.conn.close();
 //
 //        } catch (SQLException ex) {
 //            ex.printStackTrace();
@@ -156,14 +151,12 @@ public class Order {
 
     public static void removeOrder(int orderID) {
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
 
             String sqlStatement = "DELETE FROM order WHERE id = '" + orderID + "'";
 
             statement.executeUpdate(sqlStatement);
 
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -173,8 +166,7 @@ public class Order {
         ArrayList<Order> listOrders = new ArrayList<Order>();
 
         try {
-            Connection conn = AutoTradeDatabaseManagement.getConnectionWithDatabase();
-            Statement statement = conn.createStatement();
+            Statement statement = AutoTrade.conn.createStatement();
             String sqlStatement = "SELECT * "
                     + "FROM `order` "
                     + "WHERE `user_id` = '" + user_id + "' "
@@ -195,7 +187,6 @@ public class Order {
                 listOrders.add(order);
             }
 
-            conn.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -222,5 +213,19 @@ public class Order {
 
         return data;
     }
-    
+
+    public static void emptyOrderTable() {
+       try {
+            Statement statement = AutoTrade.conn.createStatement();
+
+            String sqlStatement = "TRUNCATE TABLE `order`";
+
+            statement.executeUpdate(sqlStatement);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
 }
