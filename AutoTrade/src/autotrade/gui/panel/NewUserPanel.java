@@ -11,7 +11,7 @@
 package autotrade.gui.panel;
 
 import autotrade.core.AutoTrade;
-import autotrade.core.User;
+import autotrade.core.database.User;
 import autotrade.gui.MainFrame;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
