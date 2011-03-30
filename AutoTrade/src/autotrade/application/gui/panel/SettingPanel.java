@@ -9,13 +9,13 @@
  * Created on Mar 21, 2011, 12:32:27 PM
  */
 
-package autotrade.gui.panel;
+package autotrade.application.gui.panel;
 
-import autotrade.core.AutoTradeLocalData;
+import autotrade.application.AutoTradeLocalData;
 import autotrade.core.database.Order;
 import autotrade.core.database.User;
 import autotrade.core.database.UserPortfolio;
-import autotrade.gui.MainFrame;
+import autotrade.application.gui.MainFrame;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JSpinner;
@@ -61,8 +61,8 @@ public class SettingPanel extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Center Date:");
 
-        Date earliestDate = new Date(autotrade.core.AutoTrade.getEarliestTimeInDatabase());
-        Date latestDate = new Date(autotrade.core.AutoTrade.getLatestTimeInDatabase());
+        Date earliestDate = new Date(autotrade.core.virtualsystem.AutoTrade.getEarliestTimeInDatabase());
+        Date latestDate = new Date(autotrade.core.virtualsystem.AutoTrade.getLatestTimeInDatabase());
         currentDatejSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCurrentDate(), earliestDate, latestDate, Calendar.DAY_OF_MONTH));
         currentDatejSpinner.setEditor(new JSpinner.DateEditor(currentDatejSpinner, "MM/dd/yyyy"));
         currentDatejSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -73,7 +73,7 @@ public class SettingPanel extends javax.swing.JPanel {
 
         numberOfDayjSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(AutoTradeLocalData.load().getNumber_of_day()), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-        Date earliestCenterDate = new Date(autotrade.core.AutoTrade.getEarliestTimeInDatabase());
+        Date earliestCenterDate = new Date(autotrade.core.virtualsystem.AutoTrade.getEarliestTimeInDatabase());
         centerDateJSpinner.setModel(new javax.swing.SpinnerDateModel(AutoTradeLocalData.load().getCenter_date(), earliestCenterDate, AutoTradeLocalData.load().getCurrentDate(), Calendar.DAY_OF_MONTH));
         centerDateJSpinner.setEditor(new JSpinner.DateEditor(centerDateJSpinner, "MM/dd/yyyy"));
 

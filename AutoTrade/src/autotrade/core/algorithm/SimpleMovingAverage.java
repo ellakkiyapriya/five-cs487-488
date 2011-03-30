@@ -4,7 +4,7 @@
  */
 package autotrade.core.algorithm;
 
-import autotrade.core.AutoTrade;
+import autotrade.core.virtualsystem.AutoTrade;
 import autotrade.core.database.Order;
 import autotrade.core.database.StockInfoDaily;
 import autotrade.core.database.User;

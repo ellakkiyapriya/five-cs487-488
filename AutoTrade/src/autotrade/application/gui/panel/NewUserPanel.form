@@ -124,14 +124,14 @@
     <Component class="javax.swing.JComboBox" name="userTypeJComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.getListUserTypeName().toArray())" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel(autotrade.core.virtualsystem.AutoTrade.getListUserTypeName().toArray())" type="code"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="technicalAnalysisJComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.getListTechnicalAnalysisMethod().toArray())" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel(autotrade.core.virtualsystem.AutoTrade.getListTechnicalAnalysisMethod().toArray())" type="code"/>
         </Property>
       </Properties>
     </Component>

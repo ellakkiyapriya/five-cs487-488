@@ -9,9 +9,9 @@
  * Created on Mar 22, 2011, 10:09:56 PM
  */
 
-package autotrade.gui.panel;
+package autotrade.application.gui.panel;
 
-import autotrade.gui.MainFrame;
+import autotrade.application.gui.MainFrame;
 import javax.swing.JTextField;
 
 /**
@@ -51,7 +51,7 @@ public class AddOrderPanel extends javax.swing.JPanel {
         jLabel1.setText("Type:");
 
         symbolJComboBox.setEditable(true);
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.LIST_ALL_JSC_SYMBOL.toArray()));
+        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.virtualsystem.AutoTrade.LIST_ALL_JSC_SYMBOL.toArray()));
         JTextField field = (JTextField)symbolJComboBox.getEditor().getEditorComponent();
         field.setText("");
         field.addKeyListener(new ComboKeyHandler(symbolJComboBox));

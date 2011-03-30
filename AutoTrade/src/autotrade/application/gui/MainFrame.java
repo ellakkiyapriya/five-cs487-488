@@ -8,17 +8,19 @@
  *
  * Created on Feb 11, 2011, 9:56:00 PM
  */
-package autotrade.gui;
+package autotrade.application.gui;
 
+import autotrade.application.AutoTradeLocalData;
 import autotrade.core.database.StockInfoDaily;
 import autotrade.core.database.User;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import autotrade.core.*;
-import autotrade.gui.panel.AddOrderPanel;
-import autotrade.gui.panel.ImportDataPanel;
-import autotrade.gui.panel.NewUserPanel;
-import autotrade.gui.panel.SettingPanel;
+import autotrade.core.virtualsystem.AutoTrade;
+import autotrade.application.gui.panel.AddOrderPanel;
+import autotrade.application.gui.panel.ImportDataPanel;
+import autotrade.application.gui.panel.NewUserPanel;
+import autotrade.application.gui.panel.SettingPanel;
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -146,7 +148,7 @@ public class MainFrame extends javax.swing.JFrame {
         symbolJLabel.setText("Symbol:");
 
         symbolJComboBox.setEditable(true);
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.LIST_ALL_JSC_SYMBOL.toArray()));
+        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.virtualsystem.AutoTrade.LIST_ALL_JSC_SYMBOL.toArray()));
         JTextField field = (JTextField)symbolJComboBox.getEditor().getEditorComponent();
         field.setText("");
         field.addKeyListener(new ComboKeyHandler(symbolJComboBox));
