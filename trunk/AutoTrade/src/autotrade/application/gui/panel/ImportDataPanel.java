@@ -9,9 +9,9 @@
  * Created on Mar 21, 2011, 9:42:40 PM
  */
 
-package autotrade.gui.panel;
+package autotrade.application.gui.panel;
 
-import autotrade.gui.MainFrame;
+import autotrade.application.gui.MainFrame;
 
 /**
  *

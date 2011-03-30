@@ -106,7 +106,7 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="currentDatejSpinner.setEditor(new JSpinner.DateEditor(currentDatejSpinner, &quot;MM/dd/yyyy&quot;));"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Date earliestDate = new Date(autotrade.core.AutoTrade.getEarliestTimeInDatabase());&#xa;Date latestDate = new Date(autotrade.core.AutoTrade.getLatestTimeInDatabase());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Date earliestDate = new Date(autotrade.core.virtualsystem.AutoTrade.getEarliestTimeInDatabase());&#xa;Date latestDate = new Date(autotrade.core.virtualsystem.AutoTrade.getLatestTimeInDatabase());"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JSpinner" name="numberOfDayjSpinner">
@@ -124,7 +124,7 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="centerDateJSpinner.setEditor(new JSpinner.DateEditor(centerDateJSpinner, &quot;MM/dd/yyyy&quot;));"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Date earliestCenterDate = new Date(autotrade.core.AutoTrade.getEarliestTimeInDatabase());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Date earliestCenterDate = new Date(autotrade.core.virtualsystem.AutoTrade.getEarliestTimeInDatabase());"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="saveJButton">

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package autotrade.gui.panel;
+package autotrade.application.gui.panel;
 
 import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;

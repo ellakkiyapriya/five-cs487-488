@@ -8,11 +8,11 @@
  *
  * Created on Feb 24, 2011, 10:19:46 PM
  */
-package autotrade.gui.panel;
+package autotrade.application.gui.panel;
 
-import autotrade.core.AutoTrade;
+import autotrade.core.virtualsystem.AutoTrade;
 import autotrade.core.database.User;
-import autotrade.gui.MainFrame;
+import autotrade.application.gui.MainFrame;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -66,9 +66,9 @@ public class NewUserPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel4.setText("Inital Value:");
 
-        userTypeJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.getListUserTypeName().toArray()));
+        userTypeJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.virtualsystem.AutoTrade.getListUserTypeName().toArray()));
 
-        technicalAnalysisJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.AutoTrade.getListTechnicalAnalysisMethod().toArray()));
+        technicalAnalysisJComboBox.setModel(new javax.swing.DefaultComboBoxModel(autotrade.core.virtualsystem.AutoTrade.getListTechnicalAnalysisMethod().toArray()));
 
         jLabel5.setText("x1000 VND");
 

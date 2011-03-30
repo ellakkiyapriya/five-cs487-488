@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package autotrade.core;
+package autotrade.application;
 
+import autotrade.core.virtualsystem.AutoTrade;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import java.io.File;

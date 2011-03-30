@@ -5,8 +5,8 @@
 
 package autotrade.core.database;
 
-import autotrade.core.AutoTrade;
-import autotrade.core.AutoTradeLocalData;
+import autotrade.core.virtualsystem.AutoTrade;
+import autotrade.application.AutoTradeLocalData;
 import autotrade.core.algorithm.Algorithm;
 import java.sql.*;
 import java.util.ArrayList;
