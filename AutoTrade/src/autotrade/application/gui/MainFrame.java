@@ -11,11 +11,11 @@
 package autotrade.application.gui;
 
 import autotrade.application.AutoTradeLocalData;
+import autotrade.core.database.Order;
 import autotrade.core.database.StockInfoDaily;
 import autotrade.core.database.User;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import autotrade.core.*;
 import autotrade.core.virtualsystem.AutoTrade;
 import autotrade.application.gui.panel.AddOrderPanel;
 import autotrade.application.gui.panel.ImportDataPanel;
