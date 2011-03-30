@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package autotrade.core.technicalanalysismethod;
+package autotrade.core.algorithm;
 
-import autotrade.core.Order;
+import autotrade.core.database.Order;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author Dinh
  */
-public class TechnicalAnalysisMethod {
+public class Algorithm {
     private String name;
 
     public String getName() {

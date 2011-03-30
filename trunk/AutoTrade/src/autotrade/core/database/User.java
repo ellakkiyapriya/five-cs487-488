@@ -3,9 +3,11 @@
  * and open the template in the editor.
  */
 
-package autotrade.core;
+package autotrade.core.database;
 
-import autotrade.core.technicalanalysismethod.TechnicalAnalysisMethod;
+import autotrade.core.AutoTrade;
+import autotrade.core.AutoTradeLocalData;
+import autotrade.core.algorithm.Algorithm;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +23,7 @@ public class User {
     private String userName;
     private int typeID;
     private String typeName;
-    private TechnicalAnalysisMethod technicalAnalysisMethod;
+    private Algorithm technicalAnalysisMethod;
     private double inital_cash;
     private double cash_remain;
     private double stock_value;
@@ -99,11 +101,11 @@ public class User {
         this.cash_remain = cash_remain;
     }
 
-    public TechnicalAnalysisMethod getTechnicalAnalysisMethod() {
+    public Algorithm getTechnicalAnalysisMethod() {
         return technicalAnalysisMethod;
     }
 
-    public void setTechnicalAnalysisMethod(TechnicalAnalysisMethod technicalAnalysisMethod) {
+    public void setTechnicalAnalysisMethod(Algorithm technicalAnalysisMethod) {
         this.technicalAnalysisMethod = technicalAnalysisMethod;
     }
 

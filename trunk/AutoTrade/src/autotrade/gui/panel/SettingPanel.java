@@ -12,9 +12,9 @@
 package autotrade.gui.panel;
 
 import autotrade.core.AutoTradeLocalData;
-import autotrade.core.Order;
-import autotrade.core.User;
-import autotrade.core.UserPortfolio;
+import autotrade.core.database.Order;
+import autotrade.core.database.User;
+import autotrade.core.database.UserPortfolio;
 import autotrade.gui.MainFrame;
 import java.util.Calendar;
 import java.util.Date;

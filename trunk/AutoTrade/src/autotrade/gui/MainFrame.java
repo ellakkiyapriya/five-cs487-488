@@ -10,6 +10,8 @@
  */
 package autotrade.gui;
 
+import autotrade.core.database.StockInfoDaily;
+import autotrade.core.database.User;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import autotrade.core.*;

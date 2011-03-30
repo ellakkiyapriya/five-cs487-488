@@ -5,8 +5,8 @@
 package autotrade.core;
 
 import autotrade.core.database.AutoTradeDatabaseManagement;
-import autotrade.core.technicalanalysismethod.SimpleMovingAverage;
-import autotrade.core.technicalanalysismethod.TechnicalAnalysisMethod;
+import autotrade.core.algorithm.SimpleMovingAverage;
+import autotrade.core.algorithm.Algorithm;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -308,8 +308,8 @@ public class AutoTrade {
         return listTechnicalAnalysisMethod;
     }
 
-    public static TechnicalAnalysisMethod getTAMI(int tamiID) {
-        TechnicalAnalysisMethod tami = null;
+    public static Algorithm getTAMI(int tamiID) {
+        Algorithm tami = null;
 
         try {
             Statement statement = conn.createStatement();
@@ -323,7 +323,7 @@ public class AutoTrade {
                 int period = resultSet.getInt("period");
                 String name = resultSet.getString("name");
 
-                tami = (TechnicalAnalysisMethod) Class.forName(className).newInstance();
+                tami = (Algorithm) Class.forName(className).newInstance();
                 tami.setName(name);
 
                 if (tami instanceof SimpleMovingAverage) {

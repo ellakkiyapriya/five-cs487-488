@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package autotrade.core.technicalanalysismethod;
+package autotrade.core.algorithm;
 
 import autotrade.core.AutoTrade;
-import autotrade.core.Order;
-import autotrade.core.StockInfoDaily;
-import autotrade.core.User;
-import autotrade.core.UserPortfolio;
+import autotrade.core.database.Order;
+import autotrade.core.database.StockInfoDaily;
+import autotrade.core.database.User;
+import autotrade.core.database.UserPortfolio;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,7 +18,7 @@ import java.util.TreeMap;
  *
  * @author Dinh
  */
-public class SimpleMovingAverage extends TechnicalAnalysisMethod {
+public class SimpleMovingAverage extends Algorithm {
 
     private int period;
 

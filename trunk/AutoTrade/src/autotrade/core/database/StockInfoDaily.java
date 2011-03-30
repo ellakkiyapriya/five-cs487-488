@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package autotrade.core;
+package autotrade.core.database;
 
+import autotrade.core.AutoTrade;
 import java.sql.*;
 import java.util.TreeMap;
 
