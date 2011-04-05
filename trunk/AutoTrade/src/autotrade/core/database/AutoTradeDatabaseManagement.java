@@ -17,7 +17,7 @@ public class AutoTradeDatabaseManagement {
     private static String url = "jdbc:mysql://localhost:3306/";
     private static String dbName = "autotradeproject_v1";
     private static String userName = "root";
-    private static String password = "YES";
+    private static String password = "";
 
     public static Connection getConnectionWithDatabase() {
         try {
