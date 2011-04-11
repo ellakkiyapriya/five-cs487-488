@@ -11,7 +11,6 @@
 package autotrade.application.gui;
 
 import autotrade.application.AutoTradeLocalData;
-import autotrade.core.database.Order;
 import autotrade.core.database.StockInfoDaily;
 import autotrade.core.database.User;
 import javax.swing.JSpinner;
@@ -130,12 +129,18 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        updateDataPanel = new javax.swing.JPanel();
+        pickFileJButton = new javax.swing.JButton();
+        importJButton = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        filePathJTextPane = new javax.swing.JTextPane();
+        jButton4 = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         editJMenu = new javax.swing.JMenu();
         settingJMenuItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -653,6 +658,50 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainJTabbedPane.addTab("User Management", userManagementJPanel);
 
+        pickFileJButton.setText("Pick a file");
+
+        importJButton.setText("Import");
+
+        jScrollPane4.setViewportView(filePathJTextPane);
+
+        jButton4.setText("Force Update Data");
+
+        javax.swing.GroupLayout updateDataPanelLayout = new javax.swing.GroupLayout(updateDataPanel);
+        updateDataPanel.setLayout(updateDataPanelLayout);
+        updateDataPanelLayout.setHorizontalGroup(
+            updateDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(updateDataPanelLayout.createSequentialGroup()
+                .addGroup(updateDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(updateDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(updateDataPanelLayout.createSequentialGroup()
+                            .addGap(252, 252, 252)
+                            .addComponent(importJButton))
+                        .addGroup(updateDataPanelLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(pickFileJButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jScrollPane4)))
+                    .addGroup(updateDataPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton4)))
+                .addContainerGap(829, Short.MAX_VALUE))
+        );
+        updateDataPanelLayout.setVerticalGroup(
+            updateDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(updateDataPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(updateDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pickFileJButton)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(importJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addContainerGap(549, Short.MAX_VALUE))
+        );
+
+        mainJTabbedPane.addTab("Update Data", updateDataPanel);
+
         editJMenu.setText("Edit");
 
         settingJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -677,10 +726,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jCheckBoxMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Auto import from internet");
-        jMenu1.add(jCheckBoxMenuItem1);
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Force update data");
+        jMenu1.add(jMenuItem2);
 
         jMenuBar.add(jMenu1);
 
@@ -914,13 +962,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel dateJPanel;
     private javax.swing.JSpinner dateJSpinner;
     private javax.swing.JMenu editJMenu;
+    private javax.swing.JTextPane filePathJTextPane;
     private javax.swing.JLabel gainlossjLabel;
     private javax.swing.JLabel highPriceJLabel;
     private javax.swing.JTextField highPriceJTextField;
+    private javax.swing.JButton importJButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -932,9 +982,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     public javax.swing.JTable listUserJTable;
     private javax.swing.JLabel lowPriceJLabel;
     private javax.swing.JTextField lowPriceJTextField;
@@ -948,6 +1000,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel openPriceJLabel;
     private javax.swing.JTextField openPriceJTextField;
     private javax.swing.JTable orderListJTable;
+    private javax.swing.JButton pickFileJButton;
     private javax.swing.JComboBox priceTypeJComboBox;
     private javax.swing.JLabel priceTypeJLabel;
     private javax.swing.JPanel priceVolumeChartJPanel;
@@ -957,6 +1010,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox symbolJComboBox;
     private javax.swing.JLabel symbolJLabel;
     private javax.swing.JPanel transactionJPanel;
+    private javax.swing.JPanel updateDataPanel;
     public javax.swing.JComboBox userJComboBox;
     private javax.swing.JPanel userManagementJPanel;
     private javax.swing.JTable userPortfolioJTable;
@@ -1041,6 +1095,8 @@ public class MainFrame extends javax.swing.JFrame {
                 new StandardXYToolTipGenerator(
                 StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
+
+
 
         NumberAxis volumeRangeAxis = new NumberAxis("Volume");
         volumeRangeAxis.setUpperMargin(1.00); // to leave room for price line
