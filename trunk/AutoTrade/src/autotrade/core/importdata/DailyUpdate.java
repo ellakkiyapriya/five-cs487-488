@@ -36,7 +36,7 @@ public class DailyUpdate {
             ex.printStackTrace();
         }
     }
-	public void run() {
+	public static void run() {
 		try {
 			// System.setProperty("http.proxyHost","myproxy");
 			// System.setProperty("http.proxyPort", "myport");
