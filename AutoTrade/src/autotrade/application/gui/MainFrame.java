@@ -20,6 +20,7 @@ import autotrade.application.gui.panel.AddOrderPanel;
 import autotrade.application.gui.panel.ImportDataPanel;
 import autotrade.application.gui.panel.NewUserPanel;
 import autotrade.application.gui.panel.SettingPanel;
+import autotrade.core.importdata.DailyUpdate;
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -665,6 +666,11 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane4.setViewportView(filePathJTextPane);
 
         jButton4.setText("Force Update Data");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout updateDataPanelLayout = new javax.swing.GroupLayout(updateDataPanel);
         updateDataPanel.setLayout(updateDataPanelLayout);
@@ -934,6 +940,11 @@ public class MainFrame extends javax.swing.JFrame {
         orderListJTable.repaint();
 
     }//GEN-LAST:event_removeOrderJButtonActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        System.out.println("update data");
+        DailyUpdate.run();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
