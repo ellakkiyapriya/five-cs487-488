@@ -26,7 +26,7 @@ public class PriceManager {
 	}
 
 	public void add(PriceEntity priceEntity) {
-		String queryString = "INSERT INTO price(asset_id, date, delivery_date, volume, open, close, high, low)";
+		String queryString = "INSERT INTO price(asset_id, date, delivery_date, volume, open, close, high, low) VALUES(?,?,?,?,?,?,?,?)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);

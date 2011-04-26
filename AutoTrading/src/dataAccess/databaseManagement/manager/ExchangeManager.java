@@ -24,7 +24,7 @@ public class ExchangeManager {
 	}
 
 	public void add(ExchangeEntity exchangeEntity) {
-		String queryString = "INSERT INTO exchange(name, fluctuation_range)";
+		String queryString = "INSERT INTO exchange(name, fluctuation_range) VALUES(?,?)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);

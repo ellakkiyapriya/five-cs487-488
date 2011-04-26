@@ -25,7 +25,7 @@ public class AssetManager {
 	}
 
 	public void add(AssetEntity assetEntity) {
-		String queryString = "INSERT INTO asset(asset_id, name, symbol, exchange_name, asset_info, fluctuation_range)";
+		String queryString = "INSERT INTO asset(asset_id, name, symbol, exchange_name, asset_info, fluctuation_range) VALUES(?,?,?,?,?,?)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
