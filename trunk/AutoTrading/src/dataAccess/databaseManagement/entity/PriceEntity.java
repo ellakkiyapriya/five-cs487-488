@@ -1,4 +1,4 @@
-package dataAccess.databaseManagement;
+package dataAccess.databaseManagement.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
