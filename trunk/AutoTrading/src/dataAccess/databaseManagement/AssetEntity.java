@@ -19,6 +19,15 @@ public class AssetEntity implements Serializable {
 		
 	}
 	
+	public AssetEntity(int asset_id, String name, String symbol, String exchange_name, String asset_info, double fluctuation_range) {
+		this.asset_id = asset_id;
+		this.name = name;
+		this.symbol = symbol;
+		this.exchange_name = exchange_name;
+		this.asset_info = asset_info;
+		this.fluctuation_range = fluctuation_range;
+	}
+	
 	public void setAsset_id(int asset_id) {
 		this.asset_id = asset_id;
 	}

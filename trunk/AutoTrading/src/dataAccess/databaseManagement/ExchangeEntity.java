@@ -3,6 +3,11 @@ package dataAccess.databaseManagement;
 import java.io.Serializable;
 
 public class ExchangeEntity implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5854103809456038716L;
+	
 	private String name;
 	private double fluctuation_range;
 	
