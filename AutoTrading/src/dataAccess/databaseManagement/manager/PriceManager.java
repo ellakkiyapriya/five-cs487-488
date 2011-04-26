@@ -1,4 +1,4 @@
-package dataAccess.databaseManagement;
+package dataAccess.databaseManagement.manager;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import dataAccess.databaseManagement.ConnectionFactory;
+import dataAccess.databaseManagement.entity.PriceEntity;
 
 public class PriceManager {
 	private Connection connection = null;
