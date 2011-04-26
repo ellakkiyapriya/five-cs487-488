@@ -1,9 +1,14 @@
 package dataAccess.databaseManagement;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 public class PriceEntity implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5374209810328051221L;
+	
 	private int asset_id;
 	private Date date;
 	private Date delivery_date;
@@ -12,6 +17,7 @@ public class PriceEntity implements Serializable{
 	private double open;
 	private double high;
 	private double low;
+	
 	public void setAsset_id(int asset_id) {
 		this.asset_id = asset_id;
 	}
