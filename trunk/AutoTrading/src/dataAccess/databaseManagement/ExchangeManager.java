@@ -6,13 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AssetManager {
+public class ExchangeManager {
 	private Connection connection = null;
 	private PreparedStatement ptmt = null;
 	private ResultSet resultSet = null;
 
-	public AssetManager() {
-
+	public ExchangeManager() {
 	}
 
 	private Connection getConnection() throws SQLException {
@@ -21,17 +20,13 @@ public class AssetManager {
 		return conn;
 	}
 
-	public void add(AssetEntity assetEntity) {
-		String queryString = "INSERT INTO asset(asset_id, name, symbol, exchange_name, asset_info, fluctuation_range)";
+	public void add(ExchangeEntity exchangeEntity) {
+		String queryString = "INSERT INTO exchange(name, fluctuation_range)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setString(2, assetEntity.getName());
-			ptmt.setString(3, assetEntity.getSymbol());
-			ptmt.setString(4, assetEntity.getExchange_name());
-			ptmt.setString(5, assetEntity.getAsset_info());
-			ptmt.setDouble(6, assetEntity.getFluctuation_range());
+			ptmt.setString(1, exchangeEntity.getName());
+			ptmt.setDouble(2, exchangeEntity.getFluctuation_range());
 			ptmt.executeUpdate();
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
@@ -51,17 +46,13 @@ public class AssetManager {
 		}
 	}
 
-	public void update(AssetEntity assetEntity) {
+	public void update(ExchangeEntity exchangeEntity) {
 		try {
-			String queryString = "UPDATE asset SET name=?, symbol=?, exchange_name=?, asset_info=?, fluctuation_range=? WHERE asset_id=?";
+			String queryString = "UPDATE exchange SET fluctuation_range=? WHERE name=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, assetEntity.getName());
-			ptmt.setString(2, assetEntity.getSymbol());
-			ptmt.setString(3, assetEntity.getExchange_name());
-			ptmt.setString(4, assetEntity.getAsset_info());
-			ptmt.setDouble(5, assetEntity.getFluctuation_range());
-			ptmt.setInt(6, assetEntity.getAsset_id());
+			ptmt.setDouble(1, exchangeEntity.getFluctuation_range());
+			ptmt.setString(2, exchangeEntity.getName());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -83,12 +74,12 @@ public class AssetManager {
 		}
 	}
 
-	public void delete(int asset_id) {
+	public void delete(String name) {
 		try {
-			String queryString = "DELETE FROM asset WHERE asset_id=?";
+			String queryString = "DELETE FROM exchange WHERE name=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, asset_id);
+			ptmt.setString(1, name);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -110,28 +101,23 @@ public class AssetManager {
 		}
 	}
 
-	public AssetEntity getAssetByID(int asset_id) {
+	public ExchangeEntity getExchangeByName(String name) {
 		try {
-			AssetEntity assetEntity = new AssetEntity();
+			ExchangeEntity exchangeEntity = new ExchangeEntity();
 
-			String queryString = "SELECT * FROM asset WHERE asset_id=?";
+			String queryString = "SELECT * FROM exchange WHERE name=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, asset_id);
+			ptmt.setString(1, name);
 			resultSet = ptmt.executeQuery();
 
 			while (resultSet.next()) {
-				assetEntity.setAsset_id(asset_id);
-				assetEntity.setName(resultSet.getString("name"));
-				assetEntity.setSymbol(resultSet.getString("symbol"));
-				assetEntity.setExchange_name(resultSet
-						.getString("exchange_name"));
-				assetEntity.setAsset_info(resultSet.getString("asset_info"));
-				assetEntity.setFluctuation_range(resultSet
+				exchangeEntity.setName(name);
+				exchangeEntity.setFluctuation_range(resultSet
 						.getDouble("fluctuation_range"));
 			}
 
-			return assetEntity;
+			return exchangeEntity;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -152,31 +138,26 @@ public class AssetManager {
 		return null;
 	}
 
-	public ArrayList<AssetEntity> getAllAssets() {
+	public ArrayList<ExchangeEntity> getAllExchangeEntities() {
 		try {
-			ArrayList<AssetEntity> listAllAssets = new ArrayList<AssetEntity>();
+			ArrayList<ExchangeEntity> listAllExchangeEntities = new ArrayList<ExchangeEntity>();
 
-			String queryString = "SELECT * FROM asset";
+			String queryString = "SELECT * FROM exchange";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
 
 			while (resultSet.next()) {
-				AssetEntity assetEntity = new AssetEntity();
+				ExchangeEntity exchangeEntity = new ExchangeEntity();
 
-				assetEntity.setAsset_id(resultSet.getInt("asset_id"));
-				assetEntity.setName(resultSet.getString("name"));
-				assetEntity.setSymbol(resultSet.getString("symbol"));
-				assetEntity.setExchange_name(resultSet
-						.getString("exchange_name"));
-				assetEntity.setAsset_info(resultSet.getString("asset_info"));
-				assetEntity.setFluctuation_range(resultSet
+				exchangeEntity.setName(resultSet.getString("name"));
+				exchangeEntity.setFluctuation_range(resultSet
 						.getDouble("fluctuation_range"));
 
-				listAllAssets.add(assetEntity);
+				listAllExchangeEntities.add(exchangeEntity);
 			}
 
-			return listAllAssets;
+			return listAllExchangeEntities;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -197,4 +178,5 @@ public class AssetManager {
 
 		return null;
 	}
+
 }

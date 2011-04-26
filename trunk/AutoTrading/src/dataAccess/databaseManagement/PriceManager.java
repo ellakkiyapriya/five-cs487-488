@@ -1,17 +1,18 @@
 package dataAccess.databaseManagement;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AssetManager {
+public class PriceManager {
 	private Connection connection = null;
 	private PreparedStatement ptmt = null;
 	private ResultSet resultSet = null;
 
-	public AssetManager() {
+	public PriceManager() {
 
 	}
 
@@ -21,17 +22,19 @@ public class AssetManager {
 		return conn;
 	}
 
-	public void add(AssetEntity assetEntity) {
-		String queryString = "INSERT INTO asset(asset_id, name, symbol, exchange_name, asset_info, fluctuation_range)";
+	public void add(PriceEntity priceEntity) {
+		String queryString = "INSERT INTO price(asset_id, date, delivery_date, volume, open, close, high, low)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setString(2, assetEntity.getName());
-			ptmt.setString(3, assetEntity.getSymbol());
-			ptmt.setString(4, assetEntity.getExchange_name());
-			ptmt.setString(5, assetEntity.getAsset_info());
-			ptmt.setDouble(6, assetEntity.getFluctuation_range());
+			ptmt.setInt(1, priceEntity.getAsset_id());
+			ptmt.setDate(2, priceEntity.getDate());
+			ptmt.setDate(3, priceEntity.getDelivery_date());
+			ptmt.setDouble(4, priceEntity.getVolume());
+			ptmt.setDouble(5, priceEntity.getOpen());
+			ptmt.setDouble(6, priceEntity.getClose());
+			ptmt.setDouble(7, priceEntity.getHigh());
+			ptmt.setDouble(8, priceEntity.getLow());
 			ptmt.executeUpdate();
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
@@ -51,17 +54,19 @@ public class AssetManager {
 		}
 	}
 
-	public void update(AssetEntity assetEntity) {
+	public void update(PriceEntity priceEntity) {
 		try {
-			String queryString = "UPDATE asset SET name=?, symbol=?, exchange_name=?, asset_info=?, fluctuation_range=? WHERE asset_id=?";
+			String queryString = "UPDATE price SET volume=?, open=?, close=?, high=?, low=? WHERE asset_id=? AND date=? AND delivery_date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, assetEntity.getName());
-			ptmt.setString(2, assetEntity.getSymbol());
-			ptmt.setString(3, assetEntity.getExchange_name());
-			ptmt.setString(4, assetEntity.getAsset_info());
-			ptmt.setDouble(5, assetEntity.getFluctuation_range());
-			ptmt.setInt(6, assetEntity.getAsset_id());
+			ptmt.setDouble(1, priceEntity.getVolume());
+			ptmt.setDouble(2, priceEntity.getOpen());
+			ptmt.setDouble(3, priceEntity.getClose());
+			ptmt.setDouble(4, priceEntity.getHigh());
+			ptmt.setDouble(5, priceEntity.getLow());
+			ptmt.setInt(6, priceEntity.getAsset_id());
+			ptmt.setDate(7, priceEntity.getDate());
+			ptmt.setDate(8, priceEntity.getDelivery_date());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -83,12 +88,14 @@ public class AssetManager {
 		}
 	}
 
-	public void delete(int asset_id) {
+	public void delete(int asset_id, Date date, Date delivery_date) {
 		try {
-			String queryString = "DELETE FROM asset WHERE asset_id=?";
+			String queryString = "DELETE FROM price WHERE asset_id=? AND date=? AND delivery_date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setInt(1, asset_id);
+			ptmt.setDate(2, date);
+			ptmt.setDate(3, delivery_date);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -110,28 +117,30 @@ public class AssetManager {
 		}
 	}
 
-	public AssetEntity getAssetByID(int asset_id) {
+	public PriceEntity getPrice(int asset_id, Date date, Date delivery_date) {
 		try {
-			AssetEntity assetEntity = new AssetEntity();
-
-			String queryString = "SELECT * FROM asset WHERE asset_id=?";
+			PriceEntity priceEntity = new PriceEntity();
+			
+			String queryString = "SELECT * FROM price WHERE asset_id=? AND date=? AND delivery_date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setInt(1, asset_id);
+			ptmt.setDate(2, date);
+			ptmt.setDate(3, delivery_date);
 			resultSet = ptmt.executeQuery();
-
+			
 			while (resultSet.next()) {
-				assetEntity.setAsset_id(asset_id);
-				assetEntity.setName(resultSet.getString("name"));
-				assetEntity.setSymbol(resultSet.getString("symbol"));
-				assetEntity.setExchange_name(resultSet
-						.getString("exchange_name"));
-				assetEntity.setAsset_info(resultSet.getString("asset_info"));
-				assetEntity.setFluctuation_range(resultSet
-						.getDouble("fluctuation_range"));
+				priceEntity.setAsset_id(asset_id);
+				priceEntity.setDate(date);
+				priceEntity.setDelivery_date(delivery_date);
+				priceEntity.setVolume(resultSet.getDouble("volume"));
+				priceEntity.setOpen(resultSet.getDouble("open"));
+				priceEntity.setClose(resultSet.getDouble("close"));
+				priceEntity.setHigh(resultSet.getDouble("high"));
+				priceEntity.setLow(resultSet.getDouble("low"));
 			}
-
-			return assetEntity;
+			
+			return priceEntity;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -151,32 +160,32 @@ public class AssetManager {
 		}
 		return null;
 	}
-
-	public ArrayList<AssetEntity> getAllAssets() {
+	
+	public ArrayList<PriceEntity> getAllPriceEntities() {
 		try {
-			ArrayList<AssetEntity> listAllAssets = new ArrayList<AssetEntity>();
-
-			String queryString = "SELECT * FROM asset";
+			ArrayList<PriceEntity> listAllPriceEntities = new ArrayList<PriceEntity>();
+			
+			String queryString = "SELECT * FROM price";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
-
+			
 			while (resultSet.next()) {
-				AssetEntity assetEntity = new AssetEntity();
+				PriceEntity priceEntity = new PriceEntity();
 
-				assetEntity.setAsset_id(resultSet.getInt("asset_id"));
-				assetEntity.setName(resultSet.getString("name"));
-				assetEntity.setSymbol(resultSet.getString("symbol"));
-				assetEntity.setExchange_name(resultSet
-						.getString("exchange_name"));
-				assetEntity.setAsset_info(resultSet.getString("asset_info"));
-				assetEntity.setFluctuation_range(resultSet
-						.getDouble("fluctuation_range"));
-
-				listAllAssets.add(assetEntity);
+				priceEntity.setAsset_id(resultSet.getInt("asset_id"));
+				priceEntity.setDate(resultSet.getDate("date"));
+				priceEntity.setDelivery_date(resultSet.getDate("delivery_date"));
+				priceEntity.setVolume(resultSet.getDouble("volume"));
+				priceEntity.setOpen(resultSet.getDouble("open"));
+				priceEntity.setClose(resultSet.getDouble("close"));
+				priceEntity.setHigh(resultSet.getDouble("high"));
+				priceEntity.setLow(resultSet.getDouble("low"));
+				
+				listAllPriceEntities.add(priceEntity);
 			}
-
-			return listAllAssets;
+			
+			return listAllPriceEntities;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -197,4 +206,5 @@ public class AssetManager {
 
 		return null;
 	}
+
 }

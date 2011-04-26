@@ -18,6 +18,20 @@ public class PriceEntity implements Serializable{
 	private double high;
 	private double low;
 	
+	public PriceEntity() {
+	}
+
+	public PriceEntity(int asset_id, Date date, Date delivery_date, double volume, double close, double open, double high, double low) {
+		this.asset_id = asset_id;
+		this.date = date;
+		this.delivery_date = delivery_date;
+		this.volume = volume;
+		this.close = close;
+		this.open = open;
+		this.high = high;
+		this.low = low;
+	}
+	
 	public void setAsset_id(int asset_id) {
 		this.asset_id = asset_id;
 	}
