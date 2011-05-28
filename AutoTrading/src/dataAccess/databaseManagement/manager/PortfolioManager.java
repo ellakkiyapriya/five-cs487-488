@@ -8,14 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import dataAccess.databaseManagement.ConnectionFactory;
-import dataAccess.databaseManagement.entity.ExchangeEntity;
+import dataAccess.databaseManagement.entity.PortfolioEntity;
 
-public class ExchangeManager {
+public class PortfolioManager {
 	private Connection connection = null;
 	private PreparedStatement ptmt = null;
 	private ResultSet resultSet = null;
 
-	public ExchangeManager() {
+	public PortfolioManager() {
+
 	}
 
 	private Connection getConnection() throws SQLException {
@@ -24,14 +25,17 @@ public class ExchangeManager {
 		return conn;
 	}
 
-	public void add(ExchangeEntity exchangeEntity) {
-		String queryString = "INSERT INTO exchange(exchange_id, name, fluctuation_range) VALUES(?,?,?)";
+	public void add(PortfolioEntity portfolioEntity) {
+		String queryString = "INSERT INTO portfolio(portfolio_id, user_id, asset_id, price, volume, date) VALUES(?,?,?,?,?,?)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setString(2, exchangeEntity.getName());
-			ptmt.setDouble(3, exchangeEntity.getFluctuationRange());
+			ptmt.setInt(2, portfolioEntity.getUserID());
+			ptmt.setInt(3, portfolioEntity.getAssetID());
+			ptmt.setDouble(4, portfolioEntity.getPrice());
+			ptmt.setDouble(5, portfolioEntity.getVolume());
+			ptmt.setDate(6, portfolioEntity.getDate());
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
@@ -41,8 +45,7 @@ public class ExchangeManager {
 				autoIncValue = rs.getInt(1);
 			}
 			
-			exchangeEntity.setExchangeID(autoIncValue);
-
+			portfolioEntity.setPortfolioID(autoIncValue);
 			
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
@@ -62,14 +65,17 @@ public class ExchangeManager {
 		}
 	}
 
-	public void update(ExchangeEntity exchangeEntity) {
+	public void update(PortfolioEntity portfolioEntity) {
 		try {
-			String queryString = "UPDATE exchange SET name=?, fluctuation_range=? WHERE exchange_id=?";
+			String queryString = "UPDATE portfolio SET user_id=?, asset_id=?, price=?, volume=?, date=? WHERE portfolio_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, exchangeEntity.getName());
-			ptmt.setDouble(2, exchangeEntity.getFluctuationRange());
-			ptmt.setInt(3, exchangeEntity.getExchangeID());
+			ptmt.setInt(1, portfolioEntity.getUserID());
+			ptmt.setInt(2, portfolioEntity.getAssetID());
+			ptmt.setDouble(3, portfolioEntity.getPrice());
+			ptmt.setDouble(4, portfolioEntity.getVolume());
+			ptmt.setDate(5, portfolioEntity.getDate());
+			ptmt.setInt(6, portfolioEntity.getPortfolioID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -91,12 +97,12 @@ public class ExchangeManager {
 		}
 	}
 
-	public void delete(int exchangeID) {
+	public void delete(int portfolioID) {
 		try {
-			String queryString = "DELETE FROM exchange WHERE exchange_id=?";
+			String queryString = "DELETE FROM portfolio WHERE portfolio_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setInt(1, portfolioID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -118,25 +124,27 @@ public class ExchangeManager {
 		}
 	}
 
-	public ExchangeEntity getExchangeByID(int exchangeID) {
+	public PortfolioEntity getPortfolioByID(int portfolioID) {
 		try {
-			ExchangeEntity exchangeEntity = null;
+			PortfolioEntity portfolioEntity = null;
 
-			String queryString = "SELECT * FROM exchange WHERE exchange_id=?";
+			String queryString = "SELECT * FROM portfolio WHERE portfolio_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setInt(1, portfolioID);
 			resultSet = ptmt.executeQuery();
 
 			if (resultSet.next()) {
-				exchangeEntity = new ExchangeEntity();
-				exchangeEntity.setExchangeID(exchangeID);
-				exchangeEntity.setName(resultSet.getString("name"));
-				exchangeEntity.setFluctuationRange(resultSet
-						.getDouble("fluctuation_range"));
+				portfolioEntity = new PortfolioEntity();
+				portfolioEntity.setPortfolioID(portfolioID);
+				portfolioEntity.setUserID(resultSet.getInt("user_id"));
+				portfolioEntity.setAssetID(resultSet.getInt("asset_id"));
+				portfolioEntity.setPrice(resultSet.getDouble("price"));
+				portfolioEntity.setVolume(resultSet.getDouble("volume"));
+				portfolioEntity.setDate(resultSet.getDate("date"));
 			}
 
-			return exchangeEntity;
+			return portfolioEntity;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -157,27 +165,29 @@ public class ExchangeManager {
 		return null;
 	}
 
-	public ArrayList<ExchangeEntity> getAllExchanges() {
+	public ArrayList<PortfolioEntity> getAllPortfolios() {
 		try {
-			ArrayList<ExchangeEntity> listAllExchanges = new ArrayList<ExchangeEntity>();
+			ArrayList<PortfolioEntity> listAllPortfolios = new ArrayList<PortfolioEntity>();
 
-			String queryString = "SELECT * FROM exchange";
+			String queryString = "SELECT * FROM portfolio";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
 
 			while (resultSet.next()) {
-				ExchangeEntity exchangeEntity = new ExchangeEntity();
+				PortfolioEntity portfolioEntity = new PortfolioEntity();
 
-				exchangeEntity.setExchangeID(resultSet.getInt("exchange_id"));
-				exchangeEntity.setName(resultSet.getString("name"));
-				exchangeEntity.setFluctuationRange(resultSet
-						.getDouble("fluctuation_range"));
+				portfolioEntity.setPortfolioID(resultSet.getInt("portfolio_id"));
+				portfolioEntity.setUserID(resultSet.getInt("user_id"));
+				portfolioEntity.setAssetID(resultSet.getInt("asset_id"));
+				portfolioEntity.setPrice(resultSet.getDouble("price"));
+				portfolioEntity.setVolume(resultSet.getDouble("volume"));
+				portfolioEntity.setDate(resultSet.getDate("date"));
 
-				listAllExchanges.add(exchangeEntity);
+				listAllPortfolios.add(portfolioEntity);
 			}
 
-			return listAllExchanges;
+			return listAllPortfolios;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -198,5 +208,4 @@ public class ExchangeManager {
 
 		return null;
 	}
-
 }
