@@ -8,31 +8,30 @@ public class AssetEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = -1106350892914906725L;
 	
-	private int asset_id;
+	private int assetID;
 	private String name;
 	private String symbol;
-	private String exchange_name;
-	private String asset_info;
-	private double fluctuation_range;
+	private int exchangeID;
+	private String assetInfo;
+	private double fluctuationRange;
 	
 	public AssetEntity() {
 		
 	}
 	
-	public AssetEntity(int asset_id, String name, String symbol, String exchange_name, String asset_info, double fluctuation_range) {
-		this.asset_id = asset_id;
+	public AssetEntity(String name, String symbol, int exchangeID, String assetInfo, double fluctuationRange) {
 		this.name = name;
 		this.symbol = symbol;
-		this.exchange_name = exchange_name;
-		this.asset_info = asset_info;
-		this.fluctuation_range = fluctuation_range;
+		this.exchangeID = exchangeID;
+		this.assetInfo = assetInfo;
+		this.fluctuationRange = fluctuationRange;
 	}
 	
-	public void setAsset_id(int asset_id) {
-		this.asset_id = asset_id;
+	public void setAssetID(int assetID) {
+		this.assetID = assetID;
 	}
-	public int getAsset_id() {
-		return asset_id;
+	public int getAssetID() {
+		return assetID;
 	}
 	public void setName(String name) {
 		this.name = name;
@@ -46,22 +45,22 @@ public class AssetEntity implements Serializable {
 	public String getSymbol() {
 		return symbol;
 	}
-	public void setExchange_name(String exchange_name) {
-		this.exchange_name = exchange_name;
+	public void setExchangeID(int exchangeID) {
+		this.exchangeID = exchangeID;
 	}
-	public String getExchange_name() {
-		return exchange_name;
+	public int getExchangeID() {
+		return exchangeID;
 	}
-	public void setAsset_info(String asset_info) {
-		this.asset_info = asset_info;
+	public void setAssetInfo(String assetInfo) {
+		this.assetInfo = assetInfo;
 	}
-	public String getAsset_info() {
-		return asset_info;
+	public String getAssetInfo() {
+		return assetInfo;
 	}
-	public void setFluctuation_range(double fluctuation_range) {
-		this.fluctuation_range = fluctuation_range;
+	public void setFluctuationRange(double fluctuationRange) {
+		this.fluctuationRange = fluctuationRange;
 	}
-	public double getFluctuation_range() {
-		return fluctuation_range;
+	public double getFluctuationRange() {
+		return fluctuationRange;
 	}
 }

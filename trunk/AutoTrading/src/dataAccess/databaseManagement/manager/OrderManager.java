@@ -8,14 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import dataAccess.databaseManagement.ConnectionFactory;
-import dataAccess.databaseManagement.entity.ExchangeEntity;
+import dataAccess.databaseManagement.entity.OrderEntity;
 
-public class ExchangeManager {
+public class OrderManager {
 	private Connection connection = null;
 	private PreparedStatement ptmt = null;
 	private ResultSet resultSet = null;
 
-	public ExchangeManager() {
+	public OrderManager() {
+		
 	}
 
 	private Connection getConnection() throws SQLException {
@@ -24,14 +25,19 @@ public class ExchangeManager {
 		return conn;
 	}
 
-	public void add(ExchangeEntity exchangeEntity) {
-		String queryString = "INSERT INTO exchange(exchange_id, name, fluctuation_range) VALUES(?,?,?)";
+	public void add(OrderEntity orderEntity) {
+		String queryString = "INSERT INTO order(order_id, order_type, user_id, date, asset_id, price, volume, matched) VALUES(?,?,?,?,?,?,?,?)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setString(2, exchangeEntity.getName());
-			ptmt.setDouble(3, exchangeEntity.getFluctuationRange());
+			ptmt.setBoolean(2, orderEntity.getOrderType());
+			ptmt.setInt(3, orderEntity.getUserID());
+			ptmt.setDate(4, orderEntity.getDate());
+			ptmt.setInt(5, orderEntity.getAssetID());
+			ptmt.setDouble(6, orderEntity.getPrice());
+			ptmt.setDouble(7, orderEntity.getVolume());
+			ptmt.setBoolean(8, orderEntity.isMatched());
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
@@ -41,8 +47,7 @@ public class ExchangeManager {
 				autoIncValue = rs.getInt(1);
 			}
 			
-			exchangeEntity.setExchangeID(autoIncValue);
-
+			orderEntity.setOrderID(autoIncValue);
 			
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
@@ -62,14 +67,19 @@ public class ExchangeManager {
 		}
 	}
 
-	public void update(ExchangeEntity exchangeEntity) {
+	public void update(OrderEntity orderEntity) {
 		try {
-			String queryString = "UPDATE exchange SET name=?, fluctuation_range=? WHERE exchange_id=?";
+			String queryString = "UPDATE order SET order_type=?, user_id=?, date=?, asset_id=?, price=?, volume=?, matched=? WHERE order_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, exchangeEntity.getName());
-			ptmt.setDouble(2, exchangeEntity.getFluctuationRange());
-			ptmt.setInt(3, exchangeEntity.getExchangeID());
+			ptmt.setBoolean(1, orderEntity.getOrderType());
+			ptmt.setInt(2, orderEntity.getUserID());
+			ptmt.setDate(3, orderEntity.getDate());
+			ptmt.setInt(4, orderEntity.getAssetID());
+			ptmt.setDouble(5, orderEntity.getPrice());
+			ptmt.setDouble(6, orderEntity.getVolume());
+			ptmt.setBoolean(7, orderEntity.isMatched());
+			ptmt.setInt(8, orderEntity.getOrderID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -91,12 +101,12 @@ public class ExchangeManager {
 		}
 	}
 
-	public void delete(int exchangeID) {
+	public void delete(int orderID) {
 		try {
-			String queryString = "DELETE FROM exchange WHERE exchange_id=?";
+			String queryString = "DELETE FROM order WHERE order_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setInt(1, orderID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -118,25 +128,29 @@ public class ExchangeManager {
 		}
 	}
 
-	public ExchangeEntity getExchangeByID(int exchangeID) {
+	public OrderEntity getOrderByID(int orderID) {
 		try {
-			ExchangeEntity exchangeEntity = null;
-
-			String queryString = "SELECT * FROM exchange WHERE exchange_id=?";
+			OrderEntity orderEntity = null;
+			
+			String queryString = "SELECT * FROM order WHERE order_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setInt(1, orderID);
 			resultSet = ptmt.executeQuery();
-
+			
 			if (resultSet.next()) {
-				exchangeEntity = new ExchangeEntity();
-				exchangeEntity.setExchangeID(exchangeID);
-				exchangeEntity.setName(resultSet.getString("name"));
-				exchangeEntity.setFluctuationRange(resultSet
-						.getDouble("fluctuation_range"));
+				orderEntity = new OrderEntity();
+				orderEntity.setOrderID(orderID);
+				orderEntity.setOrderType(resultSet.getBoolean("order_type"));
+				orderEntity.setUserID(resultSet.getInt("user_id"));
+				orderEntity.setDate(resultSet.getDate("date"));
+				orderEntity.setAssetID(resultSet.getInt("asset_id"));
+				orderEntity.setPrice(resultSet.getDouble("price"));
+				orderEntity.setVolume(resultSet.getDouble("volume"));
+				orderEntity.setMatched(resultSet.getBoolean("matched"));
 			}
-
-			return exchangeEntity;
+			
+			return orderEntity;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -156,28 +170,32 @@ public class ExchangeManager {
 		}
 		return null;
 	}
-
-	public ArrayList<ExchangeEntity> getAllExchanges() {
+	
+	public ArrayList<OrderEntity> getAllOrders() {
 		try {
-			ArrayList<ExchangeEntity> listAllExchanges = new ArrayList<ExchangeEntity>();
-
-			String queryString = "SELECT * FROM exchange";
+			ArrayList<OrderEntity> listAllOrders = new ArrayList<OrderEntity>();
+			
+			String queryString = "SELECT * FROM order";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
-
+			
 			while (resultSet.next()) {
-				ExchangeEntity exchangeEntity = new ExchangeEntity();
+				OrderEntity orderEntity = new OrderEntity();
 
-				exchangeEntity.setExchangeID(resultSet.getInt("exchange_id"));
-				exchangeEntity.setName(resultSet.getString("name"));
-				exchangeEntity.setFluctuationRange(resultSet
-						.getDouble("fluctuation_range"));
-
-				listAllExchanges.add(exchangeEntity);
+				orderEntity.setOrderID(resultSet.getInt("order_id"));
+				orderEntity.setOrderType(resultSet.getBoolean("order_type"));
+				orderEntity.setUserID(resultSet.getInt("user_id"));
+				orderEntity.setDate(resultSet.getDate("date"));
+				orderEntity.setAssetID(resultSet.getInt("asset_id"));
+				orderEntity.setPrice(resultSet.getDouble("price"));
+				orderEntity.setVolume(resultSet.getDouble("volume"));
+				orderEntity.setMatched(resultSet.getBoolean("matched"));
+				
+				listAllOrders.add(orderEntity);
 			}
-
-			return listAllExchanges;
+			
+			return listAllOrders;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -198,5 +216,4 @@ public class ExchangeManager {
 
 		return null;
 	}
-
 }

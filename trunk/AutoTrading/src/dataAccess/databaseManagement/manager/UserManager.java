@@ -8,30 +8,30 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import dataAccess.databaseManagement.ConnectionFactory;
-import dataAccess.databaseManagement.entity.ExchangeEntity;
+import dataAccess.databaseManagement.entity.UserEntity;
 
-public class ExchangeManager {
+public class UserManager {
 	private Connection connection = null;
 	private PreparedStatement ptmt = null;
 	private ResultSet resultSet = null;
 
-	public ExchangeManager() {
+	public UserManager() {
 	}
-
+	
 	private Connection getConnection() throws SQLException {
 		Connection conn;
 		conn = ConnectionFactory.getInstance().getConnection();
 		return conn;
 	}
 
-	public void add(ExchangeEntity exchangeEntity) {
-		String queryString = "INSERT INTO exchange(exchange_id, name, fluctuation_range) VALUES(?,?,?)";
+	public void add(UserEntity userEntity) {
+		String queryString = "INSERT INTO user(user_id, name, cash) VALUES(?,?,?)";
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setString(2, exchangeEntity.getName());
-			ptmt.setDouble(3, exchangeEntity.getFluctuationRange());
+			ptmt.setString(2, userEntity.getName());
+			ptmt.setDouble(3, userEntity.getCash());
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
@@ -41,8 +41,7 @@ public class ExchangeManager {
 				autoIncValue = rs.getInt(1);
 			}
 			
-			exchangeEntity.setExchangeID(autoIncValue);
-
+			userEntity.setUserID(autoIncValue);
 			
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
@@ -62,14 +61,14 @@ public class ExchangeManager {
 		}
 	}
 
-	public void update(ExchangeEntity exchangeEntity) {
+	public void update(UserEntity userEntity) {
 		try {
-			String queryString = "UPDATE exchange SET name=?, fluctuation_range=? WHERE exchange_id=?";
+			String queryString = "UPDATE user SET name=?, cash=? WHERE user_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setString(1, exchangeEntity.getName());
-			ptmt.setDouble(2, exchangeEntity.getFluctuationRange());
-			ptmt.setInt(3, exchangeEntity.getExchangeID());
+			ptmt.setString(1, userEntity.getName());
+			ptmt.setDouble(2, userEntity.getCash());
+			ptmt.setInt(3, userEntity.getUserID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -91,12 +90,12 @@ public class ExchangeManager {
 		}
 	}
 
-	public void delete(int exchangeID) {
+	public void delete(int userID) {
 		try {
-			String queryString = "DELETE FROM exchange WHERE exchange_id=?";
+			String queryString = "DELETE FROM user WHERE user_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setInt(1, userID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -118,25 +117,25 @@ public class ExchangeManager {
 		}
 	}
 
-	public ExchangeEntity getExchangeByID(int exchangeID) {
+	public UserEntity getUserByID(int userID) {
 		try {
-			ExchangeEntity exchangeEntity = null;
+			UserEntity userEntity = null;
 
-			String queryString = "SELECT * FROM exchange WHERE exchange_id=?";
+			String queryString = "SELECT * FROM user WHERE user_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setInt(1, userID);
 			resultSet = ptmt.executeQuery();
 
 			if (resultSet.next()) {
-				exchangeEntity = new ExchangeEntity();
-				exchangeEntity.setExchangeID(exchangeID);
-				exchangeEntity.setName(resultSet.getString("name"));
-				exchangeEntity.setFluctuationRange(resultSet
-						.getDouble("fluctuation_range"));
+				userEntity = new UserEntity();
+				userEntity.setUserID(userID);
+				userEntity.setName(resultSet.getString("name"));
+				userEntity.setCash(resultSet
+						.getDouble("cash"));
 			}
 
-			return exchangeEntity;
+			return userEntity;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -157,27 +156,27 @@ public class ExchangeManager {
 		return null;
 	}
 
-	public ArrayList<ExchangeEntity> getAllExchanges() {
+	public ArrayList<UserEntity> getAllUsers() {
 		try {
-			ArrayList<ExchangeEntity> listAllExchanges = new ArrayList<ExchangeEntity>();
+			ArrayList<UserEntity> listAllUsers = new ArrayList<UserEntity>();
 
-			String queryString = "SELECT * FROM exchange";
+			String queryString = "SELECT * FROM user";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			resultSet = ptmt.executeQuery();
 
 			while (resultSet.next()) {
-				ExchangeEntity exchangeEntity = new ExchangeEntity();
+				UserEntity userEntity = new UserEntity();
 
-				exchangeEntity.setExchangeID(resultSet.getInt("exchange_id"));
-				exchangeEntity.setName(resultSet.getString("name"));
-				exchangeEntity.setFluctuationRange(resultSet
-						.getDouble("fluctuation_range"));
+				userEntity.setUserID(resultSet.getInt("user_id"));
+				userEntity.setName(resultSet.getString("name"));
+				userEntity.setCash(resultSet
+						.getDouble("cash"));
 
-				listAllExchanges.add(exchangeEntity);
+				listAllUsers.add(userEntity);
 			}
 
-			return listAllExchanges;
+			return listAllUsers;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
