@@ -156,6 +156,46 @@ public class ExchangeManager {
 		}
 		return null;
 	}
+	
+	public ExchangeEntity getExchangeByName(String exchangeName) {
+		try {
+			ExchangeEntity exchangeEntity = null;
+
+			String queryString = "SELECT * FROM exchange WHERE name=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setString(1, exchangeName);
+			resultSet = ptmt.executeQuery();
+
+			if (resultSet.next()) {
+				exchangeEntity = new ExchangeEntity();
+				exchangeEntity.setExchangeID(resultSet.getInt("exchange_id"));
+				exchangeEntity.setName(exchangeName);
+				exchangeEntity.setFluctuationRange(resultSet
+						.getDouble("fluctuation_range"));
+			}
+
+			return exchangeEntity;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (ptmt != null)
+					ptmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+	}
+
 
 	public ArrayList<ExchangeEntity> getAllExchanges() {
 		try {

@@ -166,6 +166,48 @@ public class AssetManager {
 		}
 		return null;
 	}
+	
+	public AssetEntity getAssetBySymbolAndExchange(String symbol, String exchangeName) {
+		try {
+			AssetEntity assetEntity = null;
+
+			String queryString = "SELECT t1.* FROM asset as t1, exchange as t2 WHERE t1.symbol=? AND t2.name=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setString(1, symbol);
+			ptmt.setString(2, exchangeName);
+			resultSet = ptmt.executeQuery();
+
+			if (resultSet.next()) {
+				assetEntity = new AssetEntity();
+				assetEntity.setAssetID(resultSet.getInt("asset_id"));
+				assetEntity.setName(resultSet.getString("name"));
+				assetEntity.setSymbol(resultSet.getString("symbol"));
+				assetEntity.setExchangeID(resultSet.getInt("exchange_id"));
+				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
+				assetEntity.setFluctuationRange(resultSet.getDouble("fluctuation_range"));
+			}
+
+			return assetEntity;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (ptmt != null)
+					ptmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+	}
 
 	public ArrayList<AssetEntity> getAllAssets() {
 		try {
