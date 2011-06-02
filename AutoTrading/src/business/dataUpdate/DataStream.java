@@ -3,7 +3,7 @@ package business.dataUpdate;
 import java.io.BufferedReader;
 import java.util.Date;
 
-public class DataStream extends InputForDataProcessor {
+public class DataStream{
 	public BufferedReader br;
 	public Date date;
 	public DataStream(BufferedReader br1, Date date) {
