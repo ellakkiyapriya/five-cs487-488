@@ -254,4 +254,55 @@ public class AssetManager {
 
 		return null;
 	}
+	public ArrayList<AssetEntity> getAssetsBySymbol(String symbol) {
+		try
+		{
+			ArrayList<AssetEntity> listAssets = new ArrayList<AssetEntity>();
+			String queryString = "SELECT * FROM asset WHERE symbol LIKE";
+			String temp = "\'" + symbol + "\'";
+			queryString.concat(temp);
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			resultSet = ptmt.executeQuery();
+
+			while (resultSet.next()) {
+				AssetEntity assetEntity = new AssetEntity();
+
+				assetEntity.setAssetID(resultSet.getInt("asset_id"));
+				assetEntity.setName(resultSet.getString("name"));
+				assetEntity.setSymbol(resultSet.getString("symbol"));
+				assetEntity.setExchangeID(resultSet
+						.getInt("exchange_id"));
+				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
+				assetEntity.setFluctuationRange(resultSet
+						.getDouble("fluctuation_range"));
+
+				listAssets.add(assetEntity);
+			}
+
+			return listAssets;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+		{
+			try 
+			{
+				if (resultSet != null)
+					resultSet.close();
+				if (ptmt != null)
+					ptmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+	}
 }

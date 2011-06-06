@@ -1,7 +1,7 @@
 package business.dataUpdate.DataProcessor;
 
-import business.dataUpdate.InputForDataProcessor;
+import business.dataUpdate.DataStream;
 
 public abstract class DataProcessor {
-	protected abstract void processData(InputForDataProcessor input);
+	protected abstract void processData(DataStream input);
 }
