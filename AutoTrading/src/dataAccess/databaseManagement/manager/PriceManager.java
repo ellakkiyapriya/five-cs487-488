@@ -26,19 +26,26 @@ public class PriceManager {
 	}
 
 	public void add(PriceEntity priceEntity) {
-		String queryString = "INSERT INTO price(price_id, asset_id, date, delivery_date, volume, open, close, high, low) VALUES(?,?,?,?,?,?,?,?,?)";
+		String queryString = "INSERT INTO price(price_id, asset_id, date, volume, open, close, high, low, delivery_date) VALUES(?,?,?,?,?,?,?,?,?)";
+		if (priceEntity.getDeliveryDate() == null) {
+			queryString = "INSERT INTO price(price_id, asset_id, date, volume, open, close, high, low) VALUES(?,?,?,?,?,?,?,?)";
+		}
 		try {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
 			ptmt.setInt(2, priceEntity.getAssetID());
 			ptmt.setDate(3, priceEntity.getDate());
-			ptmt.setDate(4, priceEntity.getDeliveryDate());
-			ptmt.setDouble(5, priceEntity.getVolume());
-			ptmt.setDouble(6, priceEntity.getOpen());
-			ptmt.setDouble(7, priceEntity.getClose());
-			ptmt.setDouble(8, priceEntity.getHigh());
-			ptmt.setDouble(9, priceEntity.getLow());
+			ptmt.setDouble(4, priceEntity.getVolume());
+			ptmt.setDouble(5, priceEntity.getOpen());
+			ptmt.setDouble(6, priceEntity.getClose());
+			ptmt.setDouble(7, priceEntity.getHigh());
+			ptmt.setDouble(8, priceEntity.getLow());
+			
+			if (priceEntity.getDeliveryDate() != null) {
+				ptmt.setDate(9, priceEntity.getDeliveryDate());
+			}
+			
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
