@@ -255,41 +255,37 @@ public class AssetManager {
 		return null;
 	}
 	public ArrayList<AssetEntity> getAssetsBySymbol(String symbol) {
-		try
-		{
-			ArrayList<AssetEntity> listAssets = new ArrayList<AssetEntity>();
-			String queryString = "SELECT * FROM asset WHERE symbol LIKE";
-			String temp = "\'" + symbol + "\'";
-			queryString.concat(temp);
+		try {
+
+			String queryString = "SELECT * FROM asset WHERE symbol=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
+			ptmt.setString(1, symbol);
 			resultSet = ptmt.executeQuery();
 
+			ArrayList<AssetEntity> listAssets = new ArrayList<AssetEntity>();
+			
 			while (resultSet.next()) {
 				AssetEntity assetEntity = new AssetEntity();
 
 				assetEntity.setAssetID(resultSet.getInt("asset_id"));
 				assetEntity.setName(resultSet.getString("name"));
-				assetEntity.setSymbol(resultSet.getString("symbol"));
+				assetEntity.setSymbol(symbol);
 				assetEntity.setExchangeID(resultSet
 						.getInt("exchange_id"));
 				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
 				assetEntity.setFluctuationRange(resultSet
 						.getDouble("fluctuation_range"));
 
-				listAssets.add(assetEntity);
+				listAssets .add(assetEntity);
 			}
 
 			return listAssets;
-		}
-		catch (Exception e)
-		{
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally 
-		{
-			try 
-			{
+		} finally {
+			try {
 				if (resultSet != null)
 					resultSet.close();
 				if (ptmt != null)
@@ -303,6 +299,7 @@ public class AssetManager {
 			}
 
 		}
-		return null;
+		
+		return null;		
 	}
 }
