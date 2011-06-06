@@ -9,7 +9,7 @@ public class ConnectionFactory {
     String driverClassName = "com.mysql.jdbc.Driver";
     String connectionUrl = "jdbc:mysql://localhost:3306/auto_trading_database";
     String dbUser = "root";
-    String dbPwd = "YES";
+    String dbPwd = "";
 
     private static ConnectionFactory connectionFactory = null;
 

@@ -12,16 +12,15 @@ import java.util.Date;
 
 import business.dataUpdate.Cophieu68OnlineResource;
 import business.dataUpdate.DataStream;
-import business.dataUpdate.InputForDataProcessor;
 import business.dataUpdate.OnlineResource;
 
 public class DataGetterForCophieu68 extends DataGetter {
 
 	@Override
-	public InputForDataProcessor getData(OnlineResource or) throws Exception {
+	public DataStream getData(OnlineResource or) throws Exception {
 		// TODO Auto-generated method stub
 		BufferedReader in = new BufferedReader(new InputStreamReader(((Cophieu68OnlineResource)or).uc.getInputStream()));
-		return new DataStream(in, new Date());
+		return new DataStream(in);
 	}
 
 	@Override
