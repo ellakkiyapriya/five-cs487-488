@@ -1,28 +1,13 @@
 package business.dataUpdate.DataProcessor;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
-import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
-import dataAccess.databaseManagement.manager.ExchangeManager;
 import dataAccess.databaseManagement.manager.PriceManager;
 
-import business.dataUpdate.Cophieu68OnlineResource;
 import business.dataUpdate.DataStream;
 import business.dataUpdate.OnlineResource;
 import business.dataUpdate.DataGetter.DataGetter;
@@ -38,9 +23,10 @@ public class DataProcessorForCophieu68 extends DataProcessor {
 		// TODO Auto-generated method stub
 		double open, high, low, close;
 		double volume;
-		DateFormat dateFormat2 = new SimpleDateFormat("yyyyMMdd");
+		//DateFormat dateFormat2 = new SimpleDateFormat("yyyyMMdd");
 		String str, symbol;
-		String currentDate = dateFormat2.format(new Date());
+		//String currentDate = dateFormat2.format(new Date());
+		String currentDate = "20110607";
 		try {
 			// Open an output stream
 			String[] splitString;
@@ -60,10 +46,14 @@ public class DataProcessorForCophieu68 extends DataProcessor {
 					close = Double.valueOf(splitString[5]);
 					volume = Integer.valueOf(splitString[6]);
 					ArrayList<AssetEntity> listAssets = assetManager.getAssetsBySymbol(symbol);
-					PriceEntity priceEntity = new PriceEntity(listAssets.get(0).getAssetID(), new java.sql.Date(new Date().getTime()), null, volume, close, open, high, low);
+					PriceEntity priceEntity = null;
+					if (listAssets.size() > 0)
+						priceEntity = new PriceEntity(listAssets.get(0).getAssetID(), new java.sql.Date(new Date().getTime()), null, volume, close, open, high, low);
+					else
+						System.out.println(symbol);
 					priceManager.add(priceEntity);
 					
-					for (int i = 0; i < splitString.length; i ++)
+					for (int i = 0; i < splitString.length; i++)
 						System.out.println(splitString[i]);	
 				}
 			}
@@ -81,8 +71,11 @@ public class DataProcessorForCophieu68 extends DataProcessor {
 			OnlineResource or = dataGetter.initOnlineResource();
 			DataProcessor dataProcessor = new DataProcessorForCophieu68();
 			dataProcessor.processData(dataGetter.getData(or));		
+			System.out.println("Update sucessfully");
 		}
 		catch(Exception e)
-		{}
+		{
+			e.printStackTrace();
+		}
 	}
 }

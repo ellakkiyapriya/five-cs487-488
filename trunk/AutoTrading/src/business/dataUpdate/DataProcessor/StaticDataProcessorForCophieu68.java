@@ -133,7 +133,9 @@ public class StaticDataProcessorForCophieu68 {
 			br.close();
 		}
 		catch(Exception e)
-		{}
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public static void updateHistoricalData(String hose_file, String hastc_file, String vnindex_file, String hastcindex_file)
@@ -157,6 +159,10 @@ public class StaticDataProcessorForCophieu68 {
 	public static void main(String args[])
 	{
 		//updateSymbolAndExchangeMarket("company.csv");
-		updateHistoricalData("hose.csv", "hnx.csv", "excel_^vnindex.csv", "excel_^hastc.csv");
+		//updateHistoricalData("hose.csv", "hnx.csv", "excel_^vnindex.csv", "excel_^hastc.csv");
+		updateHistoricalData("hose.csv", "HOSE");
+		//updateHistoricalData("hnx.csv", "HASTC");
+		//updateHistoricalData("excel_^vnindex.csv", "HOSE");
+		//updateHistoricalData("excel_^hastc.csv", "HASTC");
 	}
 }
