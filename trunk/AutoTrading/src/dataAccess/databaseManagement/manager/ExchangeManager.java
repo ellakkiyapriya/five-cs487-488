@@ -35,10 +35,10 @@ public class ExchangeManager {
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
-			int autoIncValue = -1;
+			long autoIncValue = -1;
 			
 			if (rs.next()) {
-				autoIncValue = rs.getInt(1);
+				autoIncValue = rs.getLong(1);
 			}
 			
 			exchangeEntity.setExchangeID(autoIncValue);
@@ -69,7 +69,7 @@ public class ExchangeManager {
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, exchangeEntity.getName());
 			ptmt.setDouble(2, exchangeEntity.getFluctuationRange());
-			ptmt.setInt(3, exchangeEntity.getExchangeID());
+			ptmt.setLong(3, exchangeEntity.getExchangeID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -91,12 +91,12 @@ public class ExchangeManager {
 		}
 	}
 
-	public void delete(int exchangeID) {
+	public void delete(long exchangeID) {
 		try {
 			String queryString = "DELETE FROM exchange WHERE exchange_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setLong(1, exchangeID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -118,14 +118,14 @@ public class ExchangeManager {
 		}
 	}
 
-	public ExchangeEntity getExchangeByID(int exchangeID) {
+	public ExchangeEntity getExchangeByID(long exchangeID) {
 		try {
 			ExchangeEntity exchangeEntity = null;
 
 			String queryString = "SELECT * FROM exchange WHERE exchange_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, exchangeID);
+			ptmt.setLong(1, exchangeID);
 			resultSet = ptmt.executeQuery();
 
 			if (resultSet.next()) {
@@ -169,7 +169,7 @@ public class ExchangeManager {
 
 			if (resultSet.next()) {
 				exchangeEntity = new ExchangeEntity();
-				exchangeEntity.setExchangeID(resultSet.getInt("exchange_id"));
+				exchangeEntity.setExchangeID(resultSet.getLong("exchange_id"));
 				exchangeEntity.setName(exchangeName);
 				exchangeEntity.setFluctuationRange(resultSet
 						.getDouble("fluctuation_range"));
@@ -209,7 +209,7 @@ public class ExchangeManager {
 			while (resultSet.next()) {
 				ExchangeEntity exchangeEntity = new ExchangeEntity();
 
-				exchangeEntity.setExchangeID(resultSet.getInt("exchange_id"));
+				exchangeEntity.setExchangeID(resultSet.getLong("exchange_id"));
 				exchangeEntity.setName(resultSet.getString("name"));
 				exchangeEntity.setFluctuationRange(resultSet
 						.getDouble("fluctuation_range"));

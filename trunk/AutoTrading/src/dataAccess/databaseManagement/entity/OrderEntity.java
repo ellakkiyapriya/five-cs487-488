@@ -10,11 +10,11 @@ public class OrderEntity implements Serializable{
 	 */
 	private static final long serialVersionUID = -2692898077054296095L;
 
-	private int orderID;
+	private long orderID;
 	private boolean orderType;
-	private int userID;
+	private long userID;
 	private Date date;
-	private int assetID;
+	private long assetID;
 	private double price;
 	private double volume;
 	private boolean matched;
@@ -23,7 +23,7 @@ public class OrderEntity implements Serializable{
 		
 	}
 	
-	public OrderEntity(	boolean orderType, int userID, Date date, int assetID, double price, double volume, boolean matched) {
+	public OrderEntity(	boolean orderType, long userID, Date date, long assetID, double price, double volume, boolean matched) {
 		this.orderType = orderType;
 		this.userID = userID;
 		this.date = date;
@@ -33,10 +33,10 @@ public class OrderEntity implements Serializable{
 		this.matched = matched;
 	}
 	
-	public void setOrderID(int orderID) {
+	public void setOrderID(long orderID) {
 		this.orderID = orderID;
 	}
-	public int getOrderID() {
+	public long getOrderID() {
 		return orderID;
 	}
 	
@@ -54,10 +54,10 @@ public class OrderEntity implements Serializable{
 	public boolean getOrderType() {
 		return orderType;
 	}
-	public void setUserID(int userID) {
+	public void setUserID(long userID) {
 		this.userID = userID;
 	}
-	public int getUserID() {
+	public long getUserID() {
 		return userID;
 	}
 	public void setDate(Date date) {
@@ -66,10 +66,10 @@ public class OrderEntity implements Serializable{
 	public Date getDate() {
 		return date;
 	}
-	public void setAssetID(int assetID) {
+	public void setAssetID(long assetID) {
 		this.assetID = assetID;
 	}
-	public int getAssetID() {
+	public long getAssetID() {
 		return assetID;
 	}
 	public void setPrice(double price) {

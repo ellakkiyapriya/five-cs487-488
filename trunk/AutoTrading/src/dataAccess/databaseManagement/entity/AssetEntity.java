@@ -8,10 +8,10 @@ public class AssetEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = -1106350892914906725L;
 	
-	private int assetID;
+	private long assetID;
 	private String name;
 	private String symbol;
-	private int exchangeID;
+	private long exchangeID;
 	private String assetInfo;
 	private double fluctuationRange;
 	
@@ -19,7 +19,7 @@ public class AssetEntity implements Serializable {
 		
 	}
 	
-	public AssetEntity(String name, String symbol, int exchangeID, String assetInfo, double fluctuationRange) {
+	public AssetEntity(String name, String symbol, long exchangeID, String assetInfo, double fluctuationRange) {
 		this.name = name;
 		this.symbol = symbol;
 		this.exchangeID = exchangeID;
@@ -27,10 +27,10 @@ public class AssetEntity implements Serializable {
 		this.fluctuationRange = fluctuationRange;
 	}
 	
-	public void setAssetID(int assetID) {
+	public void setAssetID(long assetID) {
 		this.assetID = assetID;
 	}
-	public int getAssetID() {
+	public long getAssetID() {
 		return assetID;
 	}
 	public void setName(String name) {
@@ -45,10 +45,10 @@ public class AssetEntity implements Serializable {
 	public String getSymbol() {
 		return symbol;
 	}
-	public void setExchangeID(int exchangeID) {
+	public void setExchangeID(long exchangeID) {
 		this.exchangeID = exchangeID;
 	}
-	public int getExchangeID() {
+	public long getExchangeID() {
 		return exchangeID;
 	}
 	public void setAssetInfo(String assetInfo) {

@@ -32,19 +32,19 @@ public class OrderManager {
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
 			ptmt.setBoolean(2, orderEntity.getOrderType());
-			ptmt.setInt(3, orderEntity.getUserID());
+			ptmt.setLong(3, orderEntity.getUserID());
 			ptmt.setDate(4, orderEntity.getDate());
-			ptmt.setInt(5, orderEntity.getAssetID());
+			ptmt.setLong(5, orderEntity.getAssetID());
 			ptmt.setDouble(6, orderEntity.getPrice());
 			ptmt.setDouble(7, orderEntity.getVolume());
 			ptmt.setBoolean(8, orderEntity.isMatched());
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
-			int autoIncValue = -1;
+			long autoIncValue = -1;
 			
 			if (rs.next()) {
-				autoIncValue = rs.getInt(1);
+				autoIncValue = rs.getLong(1);
 			}
 			
 			orderEntity.setOrderID(autoIncValue);
@@ -73,13 +73,13 @@ public class OrderManager {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setBoolean(1, orderEntity.getOrderType());
-			ptmt.setInt(2, orderEntity.getUserID());
+			ptmt.setLong(2, orderEntity.getUserID());
 			ptmt.setDate(3, orderEntity.getDate());
-			ptmt.setInt(4, orderEntity.getAssetID());
+			ptmt.setLong(4, orderEntity.getAssetID());
 			ptmt.setDouble(5, orderEntity.getPrice());
 			ptmt.setDouble(6, orderEntity.getVolume());
 			ptmt.setBoolean(7, orderEntity.isMatched());
-			ptmt.setInt(8, orderEntity.getOrderID());
+			ptmt.setLong(8, orderEntity.getOrderID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -101,12 +101,12 @@ public class OrderManager {
 		}
 	}
 
-	public void delete(int orderID) {
+	public void delete(long orderID) {
 		try {
 			String queryString = "DELETE FROM order WHERE order_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, orderID);
+			ptmt.setLong(1, orderID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -128,23 +128,23 @@ public class OrderManager {
 		}
 	}
 
-	public OrderEntity getOrderByID(int orderID) {
+	public OrderEntity getOrderByID(long orderID) {
 		try {
 			OrderEntity orderEntity = null;
 			
 			String queryString = "SELECT * FROM order WHERE order_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, orderID);
+			ptmt.setLong(1, orderID);
 			resultSet = ptmt.executeQuery();
 			
 			if (resultSet.next()) {
 				orderEntity = new OrderEntity();
 				orderEntity.setOrderID(orderID);
 				orderEntity.setOrderType(resultSet.getBoolean("order_type"));
-				orderEntity.setUserID(resultSet.getInt("user_id"));
+				orderEntity.setUserID(resultSet.getLong("user_id"));
 				orderEntity.setDate(resultSet.getDate("date"));
-				orderEntity.setAssetID(resultSet.getInt("asset_id"));
+				orderEntity.setAssetID(resultSet.getLong("asset_id"));
 				orderEntity.setPrice(resultSet.getDouble("price"));
 				orderEntity.setVolume(resultSet.getDouble("volume"));
 				orderEntity.setMatched(resultSet.getBoolean("matched"));
@@ -183,11 +183,11 @@ public class OrderManager {
 			while (resultSet.next()) {
 				OrderEntity orderEntity = new OrderEntity();
 
-				orderEntity.setOrderID(resultSet.getInt("order_id"));
+				orderEntity.setOrderID(resultSet.getLong("order_id"));
 				orderEntity.setOrderType(resultSet.getBoolean("order_type"));
-				orderEntity.setUserID(resultSet.getInt("user_id"));
+				orderEntity.setUserID(resultSet.getLong("user_id"));
 				orderEntity.setDate(resultSet.getDate("date"));
-				orderEntity.setAssetID(resultSet.getInt("asset_id"));
+				orderEntity.setAssetID(resultSet.getLong("asset_id"));
 				orderEntity.setPrice(resultSet.getDouble("price"));
 				orderEntity.setVolume(resultSet.getDouble("volume"));
 				orderEntity.setMatched(resultSet.getBoolean("matched"));

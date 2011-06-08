@@ -33,16 +33,16 @@ public class AssetManager {
 			ptmt.setNull(1, java.sql.Types.INTEGER);
 			ptmt.setString(2, assetEntity.getName());
 			ptmt.setString(3, assetEntity.getSymbol());
-			ptmt.setInt(4, assetEntity.getExchangeID());
+			ptmt.setLong(4, assetEntity.getExchangeID());
 			ptmt.setString(5, assetEntity.getAssetInfo());
 			ptmt.setDouble(6, assetEntity.getFluctuationRange());
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
-			int autoIncValue = -1;
+			long autoIncValue = -1;
 			
 			if (rs.next()) {
-				autoIncValue = rs.getInt(1);
+				autoIncValue = rs.getLong(1);
 			}
 			
 			assetEntity.setAssetID(autoIncValue);
@@ -72,10 +72,10 @@ public class AssetManager {
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, assetEntity.getName());
 			ptmt.setString(2, assetEntity.getSymbol());
-			ptmt.setInt(3, assetEntity.getExchangeID());
+			ptmt.setLong(3, assetEntity.getExchangeID());
 			ptmt.setString(4, assetEntity.getAssetInfo());
 			ptmt.setDouble(5, assetEntity.getFluctuationRange());
-			ptmt.setInt(6, assetEntity.getAssetID());
+			ptmt.setLong(6, assetEntity.getAssetID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -97,12 +97,12 @@ public class AssetManager {
 		}
 	}
 
-	public void delete(int assetID) {
+	public void delete(long assetID) {
 		try {
 			String queryString = "DELETE FROM asset WHERE asset_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, assetID);
+			ptmt.setLong(1, assetID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -124,14 +124,14 @@ public class AssetManager {
 		}
 	}
 
-	public AssetEntity getAssetByID(int assetID) {
+	public AssetEntity getAssetByID(long assetID) {
 		try {
 			AssetEntity assetEntity = null;
 
 			String queryString = "SELECT * FROM asset WHERE asset_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, assetID);
+			ptmt.setLong(1, assetID);
 			resultSet = ptmt.executeQuery();
 
 			if (resultSet.next()) {
@@ -140,7 +140,7 @@ public class AssetManager {
 				assetEntity.setName(resultSet.getString("name"));
 				assetEntity.setSymbol(resultSet.getString("symbol"));
 				assetEntity.setExchangeID(resultSet
-						.getInt("exchange_id"));
+						.getLong("exchange_id"));
 				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
 				assetEntity.setFluctuationRange(resultSet
 						.getDouble("fluctuation_range"));
@@ -180,10 +180,10 @@ public class AssetManager {
 
 			if (resultSet.next()) {
 				assetEntity = new AssetEntity();
-				assetEntity.setAssetID(resultSet.getInt("asset_id"));
+				assetEntity.setAssetID(resultSet.getLong("asset_id"));
 				assetEntity.setName(resultSet.getString("name"));
 				assetEntity.setSymbol(resultSet.getString("symbol"));
-				assetEntity.setExchangeID(resultSet.getInt("exchange_id"));
+				assetEntity.setExchangeID(resultSet.getLong("exchange_id"));
 				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
 				assetEntity.setFluctuationRange(resultSet.getDouble("fluctuation_range"));
 			}
@@ -221,11 +221,11 @@ public class AssetManager {
 			while (resultSet.next()) {
 				AssetEntity assetEntity = new AssetEntity();
 
-				assetEntity.setAssetID(resultSet.getInt("asset_id"));
+				assetEntity.setAssetID(resultSet.getLong("asset_id"));
 				assetEntity.setName(resultSet.getString("name"));
 				assetEntity.setSymbol(resultSet.getString("symbol"));
 				assetEntity.setExchangeID(resultSet
-						.getInt("exchange_id"));
+						.getLong("exchange_id"));
 				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
 				assetEntity.setFluctuationRange(resultSet
 						.getDouble("fluctuation_range"));
@@ -268,11 +268,11 @@ public class AssetManager {
 			while (resultSet.next()) {
 				AssetEntity assetEntity = new AssetEntity();
 
-				assetEntity.setAssetID(resultSet.getInt("asset_id"));
+				assetEntity.setAssetID(resultSet.getLong("asset_id"));
 				assetEntity.setName(resultSet.getString("name"));
 				assetEntity.setSymbol(symbol);
 				assetEntity.setExchangeID(resultSet
-						.getInt("exchange_id"));
+						.getLong("exchange_id"));
 				assetEntity.setAssetInfo(resultSet.getString("asset_info"));
 				assetEntity.setFluctuationRange(resultSet
 						.getDouble("fluctuation_range"));

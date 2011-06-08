@@ -9,7 +9,7 @@ public class UserEntity implements Serializable{
 	 */
 	private static final long serialVersionUID = -8627210132728983694L;
 	
-	private int userID;
+	private long userID;
 	private String name;
 	private double cash;
 	
@@ -22,10 +22,10 @@ public class UserEntity implements Serializable{
 		this.cash = cash;
 	}
 	
-	public void setUserID(int userID) {
+	public void setUserID(long userID) {
 		this.userID = userID;
 	}
-	public int getUserID() {
+	public long getUserID() {
 		return userID;
 	}
 	public void setName(String name) {

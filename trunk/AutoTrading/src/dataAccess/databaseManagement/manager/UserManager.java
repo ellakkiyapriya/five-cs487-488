@@ -35,10 +35,10 @@ public class UserManager {
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
-			int autoIncValue = -1;
+			long autoIncValue = -1;
 			
 			if (rs.next()) {
-				autoIncValue = rs.getInt(1);
+				autoIncValue = rs.getLong(1);
 			}
 			
 			userEntity.setUserID(autoIncValue);
@@ -68,7 +68,7 @@ public class UserManager {
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setString(1, userEntity.getName());
 			ptmt.setDouble(2, userEntity.getCash());
-			ptmt.setInt(3, userEntity.getUserID());
+			ptmt.setLong(3, userEntity.getUserID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -90,12 +90,12 @@ public class UserManager {
 		}
 	}
 
-	public void delete(int userID) {
+	public void delete(long userID) {
 		try {
 			String queryString = "DELETE FROM user WHERE user_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, userID);
+			ptmt.setLong(1, userID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -117,14 +117,14 @@ public class UserManager {
 		}
 	}
 
-	public UserEntity getUserByID(int userID) {
+	public UserEntity getUserByID(long userID) {
 		try {
 			UserEntity userEntity = null;
 
 			String queryString = "SELECT * FROM user WHERE user_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, userID);
+			ptmt.setLong(1, userID);
 			resultSet = ptmt.executeQuery();
 
 			if (resultSet.next()) {
@@ -168,7 +168,7 @@ public class UserManager {
 			while (resultSet.next()) {
 				UserEntity userEntity = new UserEntity();
 
-				userEntity.setUserID(resultSet.getInt("user_id"));
+				userEntity.setUserID(resultSet.getLong("user_id"));
 				userEntity.setName(resultSet.getString("name"));
 				userEntity.setCash(resultSet
 						.getDouble("cash"));

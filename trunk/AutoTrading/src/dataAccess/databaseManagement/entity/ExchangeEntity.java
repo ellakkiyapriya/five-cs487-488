@@ -8,7 +8,7 @@ public class ExchangeEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = -5854103809456038716L;
 
-	private int exchangeID;
+	private long exchangeID;
 	private String name;
 	private double fluctuationRange;
 
@@ -20,11 +20,11 @@ public class ExchangeEntity implements Serializable {
 		this.fluctuationRange = fluctuationRange;
 	}
 
-	public void setExchangeID(int exchangeID) {
+	public void setExchangeID(long exchangeID) {
 		this.exchangeID = exchangeID;
 	}
 
-	public int getExchangeID() {
+	public long getExchangeID() {
 		return exchangeID;
 	}
 
