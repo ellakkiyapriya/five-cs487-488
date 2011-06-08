@@ -10,9 +10,9 @@ public class PortfolioEntity implements Serializable{
 	 */
 	private static final long serialVersionUID = -7320439639218180861L;
 
-	private int portfolioID;
-	private int userID;
-	private int assetID;
+	private long portfolioID;
+	private long userID;
+	private long assetID;
 	private double price;
 	private double volume;
 	private Date date;
@@ -20,7 +20,7 @@ public class PortfolioEntity implements Serializable{
 	public PortfolioEntity() {
 	}
 
-	public PortfolioEntity(int userID, int assetID, double price, double volume, Date date) {
+	public PortfolioEntity(long userID, long assetID, double price, double volume, Date date) {
 		this.userID = userID;
 		this.assetID = assetID;
 		this.price = price;
@@ -28,22 +28,22 @@ public class PortfolioEntity implements Serializable{
 		this.date = date;
 	}
 	
-	public void setPortfolioID(int portfolioID) {
+	public void setPortfolioID(long portfolioID) {
 		this.portfolioID = portfolioID;
 	}
-	public int getPortfolioID() {
+	public long getPortfolioID() {
 		return portfolioID;
 	}
-	public void setUserID(int userID) {
+	public void setUserID(long userID) {
 		this.userID = userID;
 	}
-	public int getUserID() {
+	public long getUserID() {
 		return userID;
 	}
-	public void setAssetID(int assetID) {
+	public void setAssetID(long assetID) {
 		this.assetID = assetID;
 	}
-	public int getAssetID() {
+	public long getAssetID() {
 		return assetID;
 	}
 	public void setPrice(double price) {

@@ -31,18 +31,18 @@ public class PortfolioManager {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setInt(2, portfolioEntity.getUserID());
-			ptmt.setInt(3, portfolioEntity.getAssetID());
+			ptmt.setLong(2, portfolioEntity.getUserID());
+			ptmt.setLong(3, portfolioEntity.getAssetID());
 			ptmt.setDouble(4, portfolioEntity.getPrice());
 			ptmt.setDouble(5, portfolioEntity.getVolume());
 			ptmt.setDate(6, portfolioEntity.getDate());
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
-			int autoIncValue = -1;
+			long autoIncValue = -1;
 			
 			if (rs.next()) {
-				autoIncValue = rs.getInt(1);
+				autoIncValue = rs.getLong(1);
 			}
 			
 			portfolioEntity.setPortfolioID(autoIncValue);
@@ -70,12 +70,12 @@ public class PortfolioManager {
 			String queryString = "UPDATE portfolio SET user_id=?, asset_id=?, price=?, volume=?, date=? WHERE portfolio_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, portfolioEntity.getUserID());
-			ptmt.setInt(2, portfolioEntity.getAssetID());
+			ptmt.setLong(1, portfolioEntity.getUserID());
+			ptmt.setLong(2, portfolioEntity.getAssetID());
 			ptmt.setDouble(3, portfolioEntity.getPrice());
 			ptmt.setDouble(4, portfolioEntity.getVolume());
 			ptmt.setDate(5, portfolioEntity.getDate());
-			ptmt.setInt(6, portfolioEntity.getPortfolioID());
+			ptmt.setLong(6, portfolioEntity.getPortfolioID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -97,12 +97,12 @@ public class PortfolioManager {
 		}
 	}
 
-	public void delete(int portfolioID) {
+	public void delete(long portfolioID) {
 		try {
 			String queryString = "DELETE FROM portfolio WHERE portfolio_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, portfolioID);
+			ptmt.setLong(1, portfolioID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -124,21 +124,21 @@ public class PortfolioManager {
 		}
 	}
 
-	public PortfolioEntity getPortfolioByID(int portfolioID) {
+	public PortfolioEntity getPortfolioByID(long portfolioID) {
 		try {
 			PortfolioEntity portfolioEntity = null;
 
 			String queryString = "SELECT * FROM portfolio WHERE portfolio_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, portfolioID);
+			ptmt.setLong(1, portfolioID);
 			resultSet = ptmt.executeQuery();
 
 			if (resultSet.next()) {
 				portfolioEntity = new PortfolioEntity();
 				portfolioEntity.setPortfolioID(portfolioID);
-				portfolioEntity.setUserID(resultSet.getInt("user_id"));
-				portfolioEntity.setAssetID(resultSet.getInt("asset_id"));
+				portfolioEntity.setUserID(resultSet.getLong("user_id"));
+				portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
 				portfolioEntity.setPrice(resultSet.getDouble("price"));
 				portfolioEntity.setVolume(resultSet.getDouble("volume"));
 				portfolioEntity.setDate(resultSet.getDate("date"));
@@ -177,9 +177,9 @@ public class PortfolioManager {
 			while (resultSet.next()) {
 				PortfolioEntity portfolioEntity = new PortfolioEntity();
 
-				portfolioEntity.setPortfolioID(resultSet.getInt("portfolio_id"));
-				portfolioEntity.setUserID(resultSet.getInt("user_id"));
-				portfolioEntity.setAssetID(resultSet.getInt("asset_id"));
+				portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
+				portfolioEntity.setUserID(resultSet.getLong("user_id"));
+				portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
 				portfolioEntity.setPrice(resultSet.getDouble("price"));
 				portfolioEntity.setVolume(resultSet.getDouble("volume"));
 				portfolioEntity.setDate(resultSet.getDate("date"));

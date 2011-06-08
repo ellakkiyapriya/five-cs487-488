@@ -9,8 +9,8 @@ public class PriceEntity implements Serializable{
 	 */
 	private static final long serialVersionUID = -5374209810328051221L;
 	
-	private int priceID;
-	private int assetID;
+	private long priceID;
+	private long assetID;
 	private Date date;
 	private Date deliveryDate;
 	private double volume;
@@ -22,7 +22,7 @@ public class PriceEntity implements Serializable{
 	public PriceEntity() {
 	}
 
-	public PriceEntity(int assetID, Date date, Date deliveryDate, double volume, double close, double open, double high, double low) {
+	public PriceEntity(long assetID, Date date, Date deliveryDate, double volume, double close, double open, double high, double low) {
 		this.assetID = assetID;
 		this.date = date;
 		this.deliveryDate = deliveryDate;
@@ -33,18 +33,18 @@ public class PriceEntity implements Serializable{
 		this.low = low;
 	}
 	
-	public void setPriceID(int priceID) {
+	public void setPriceID(long priceID) {
 		this.priceID = priceID;
 	}
 
-	public int getPriceID() {
+	public long getPriceID() {
 		return priceID;
 	}
 
-	public void setAssetID(int assetID) {
+	public void setAssetID(long assetID) {
 		this.assetID = assetID;
 	}
-	public int getAssetID() {
+	public long getAssetID() {
 		return assetID;
 	}
 	public void setDate(Date date) {

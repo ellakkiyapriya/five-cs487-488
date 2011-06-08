@@ -34,7 +34,7 @@ public class PriceManager {
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setInt(2, priceEntity.getAssetID());
+			ptmt.setLong(2, priceEntity.getAssetID());
 			ptmt.setDate(3, priceEntity.getDate());
 			ptmt.setDouble(4, priceEntity.getVolume());
 			ptmt.setDouble(5, priceEntity.getOpen());
@@ -49,10 +49,10 @@ public class PriceManager {
 			ptmt.executeUpdate();
 			
 			ResultSet rs = ptmt.getGeneratedKeys();
-			int autoIncValue = -1;
+			long autoIncValue = -1;
 			
 			if (rs.next()) {
-				autoIncValue = rs.getInt(1);
+				autoIncValue = rs.getLong(1);
 			}
 			
 			priceEntity.setPriceID(autoIncValue);
@@ -80,7 +80,7 @@ public class PriceManager {
 			String queryString = "UPDATE price SET asset_id=?, date=?, delivery_date=?, volume=?, open=?, close=?, high=?, low=? WHERE price_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, priceEntity.getAssetID());
+			ptmt.setLong(1, priceEntity.getAssetID());
 			ptmt.setDate(2, priceEntity.getDate());
 			ptmt.setDate(3, priceEntity.getDeliveryDate());
 			ptmt.setDouble(4, priceEntity.getVolume());
@@ -88,7 +88,7 @@ public class PriceManager {
 			ptmt.setDouble(6, priceEntity.getClose());
 			ptmt.setDouble(7, priceEntity.getHigh());
 			ptmt.setDouble(8, priceEntity.getLow());
-			ptmt.setInt(9, priceEntity.getPriceID());
+			ptmt.setLong(9, priceEntity.getPriceID());
 			ptmt.executeUpdate();
 			System.out.println("Table Updated Successfully");
 		} catch (SQLException e) {
@@ -110,12 +110,12 @@ public class PriceManager {
 		}
 	}
 
-	public void delete(int priceID) {
+	public void delete(long priceID) {
 		try {
 			String queryString = "DELETE FROM price WHERE price_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, priceID);
+			ptmt.setLong(1, priceID);
 			ptmt.executeUpdate();
 			System.out.println("Data deleted Successfully");
 		} catch (SQLException e) {
@@ -137,20 +137,20 @@ public class PriceManager {
 		}
 	}
 
-	public PriceEntity getPriceByID(int priceID) {
+	public PriceEntity getPriceByID(long priceID) {
 		try {
 			PriceEntity priceEntity = null;
 			
 			String queryString = "SELECT * FROM price WHERE price_id=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setInt(1, priceID);
+			ptmt.setLong(1, priceID);
 			resultSet = ptmt.executeQuery();
 			
 			if (resultSet.next()) {
 				priceEntity = new PriceEntity();
 				priceEntity.setPriceID(priceID);
-				priceEntity.setAssetID(resultSet.getInt("asset_id"));
+				priceEntity.setAssetID(resultSet.getLong("asset_id"));
 				priceEntity.setDate(resultSet.getDate("date"));
 				priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
 				priceEntity.setVolume(resultSet.getDouble("volume"));
@@ -193,8 +193,8 @@ public class PriceManager {
 			while (resultSet.next()) {
 				PriceEntity priceEntity = new PriceEntity();
 
-				priceEntity.setPriceID(resultSet.getInt("price_id"));
-				priceEntity.setAssetID(resultSet.getInt("asset_id"));
+				priceEntity.setPriceID(resultSet.getLong("price_id"));
+				priceEntity.setAssetID(resultSet.getLong("asset_id"));
 				priceEntity.setDate(resultSet.getDate("date"));
 				priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
 				priceEntity.setVolume(resultSet.getDouble("volume"));
