@@ -11,17 +11,19 @@
 
 package presentation.guiForVirtualTrading;
 
+import javax.swing.JDialog;
+
 /**
  *
  * @author Dinh
  */
 public class AddNewOrderJPanel extends javax.swing.JPanel {
 
-    private VirtualTradingJPanel parent;
+    private JDialog parent;
 
     /** Creates new form AddNewOrderJPanel */
-    public AddNewOrderJPanel(VirtualTradingJPanel virtualTradingJPanel) {
-        this.parent = virtualTradingJPanel;
+    public AddNewOrderJPanel(JDialog jDialog) {
+        this.parent = jDialog;
         initComponents();
     }
 
@@ -40,7 +42,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         symbolJComboBox = new javax.swing.JComboBox();
         priceJLabel = new javax.swing.JLabel();
         priceJSpinner = new javax.swing.JSpinner();
-        jLabel4 = new javax.swing.JLabel();
+        vndJLabel = new javax.swing.JLabel();
         volumeJLabel = new javax.swing.JLabel();
         volumeJSpinner = new javax.swing.JSpinner();
         cancelJButton = new javax.swing.JButton();
@@ -61,7 +63,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
         priceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
 
-        jLabel4.setText("VND");
+        vndJLabel.setText("VND");
 
         volumeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         volumeJLabel.setText("Volume:");
@@ -100,7 +102,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(vndJLabel)
                 .addGap(18, 18, 18)
                 .addComponent(volumeJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -127,7 +129,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
                     .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(priceJLabel)
                     .addComponent(priceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
+                    .addComponent(vndJLabel)
                     .addComponent(volumeJLabel)
                     .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -141,11 +143,11 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         //Add new order
 
-        this.parent.getAddNewOrderJDialog().dispose();
+        this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
-        this.parent.getAddNewOrderJDialog().dispose();
+        this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
 
@@ -153,12 +155,12 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox buySellJComboBox;
     private javax.swing.JLabel buySellJLabel;
     private javax.swing.JButton cancelJButton;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JButton okJButton;
     private javax.swing.JLabel priceJLabel;
     private javax.swing.JSpinner priceJSpinner;
     private javax.swing.JComboBox symbolJComboBox;
     private javax.swing.JLabel symbolJLabel;
+    private javax.swing.JLabel vndJLabel;
     private javax.swing.JLabel volumeJLabel;
     private javax.swing.JSpinner volumeJSpinner;
     // End of variables declaration//GEN-END:variables

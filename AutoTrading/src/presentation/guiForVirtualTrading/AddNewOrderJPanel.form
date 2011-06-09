@@ -30,7 +30,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="priceJSpinner" min="-2" pref="79" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+              <Component id="vndJLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="volumeJLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -57,7 +57,7 @@
                   <Component id="symbolJComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="priceJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="priceJSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="vndJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="volumeJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="volumeJSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -125,7 +125,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
+    <Component class="javax.swing.JLabel" name="vndJLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="VND"/>
       </Properties>
