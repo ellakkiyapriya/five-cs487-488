@@ -11,17 +11,19 @@
 
 package presentation.guiForVirtualTrading;
 
+import javax.swing.JDialog;
+
 /**
  *
  * @author Dinh
  */
 public class AddNewUserJPanel extends javax.swing.JPanel {
 
-    private VirtualTradingJPanel parent = null;
+    private JDialog parent = null;
 
     /** Creates new form AddNewUserJPanel */
-    public AddNewUserJPanel(VirtualTradingJPanel virtualTradingJPanel) {
-        this.parent = virtualTradingJPanel;
+    public AddNewUserJPanel(JDialog jDialog) {
+        this.parent = jDialog;
         initComponents();
     }
 
@@ -40,12 +42,12 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         cashRemainJSpinner = new javax.swing.JSpinner();
         vndJLabel = new javax.swing.JLabel();
         portfolioJLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        portfolioJTable = new javax.swing.JTable();
         addPortfolioEntrryJButton = new javax.swing.JButton();
         removePortfolioEntryJButton = new javax.swing.JButton();
         cancelJButton = new javax.swing.JButton();
         okJButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        portfolioJTable = new javax.swing.JTable();
 
         userNameJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         userNameJLabel.setText("User Name:");
@@ -60,36 +62,19 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         portfolioJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         portfolioJLabel.setText("User Portfolio:");
 
-        portfolioJTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Symbol", "Buy Price", "Current Price", "Volume", "Gain/Loss (%)"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        addPortfolioEntrryJButton.setText("Add");
+        addPortfolioEntrryJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPortfolioEntrryJButtonActionPerformed(evt);
             }
         });
-        portfolioJTable.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(portfolioJTable);
-        portfolioJTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-        addPortfolioEntrryJButton.setText("Add");
 
         removePortfolioEntryJButton.setText("Remove");
+        removePortfolioEntryJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removePortfolioEntryJButtonActionPerformed(evt);
+            }
+        });
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -104,6 +89,9 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                 okJButtonActionPerformed(evt);
             }
         });
+
+        portfolioJTable.setModel(new PortfolioTableModel());
+        jScrollPane1.setViewportView(portfolioJTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -131,11 +119,11 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(addPortfolioEntrryJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(removePortfolioEntryJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(407, Short.MAX_VALUE)
                 .addComponent(okJButton)
@@ -168,8 +156,8 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                         .addComponent(addPortfolioEntrryJButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(removePortfolioEntryJButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelJButton)
                     .addComponent(okJButton))
@@ -185,12 +173,24 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         //Add new user
 
-        this.parent.getAddNewUserJDialog().dispose();
+        this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
-        this.parent.getAddNewUserJDialog().dispose();
+        this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
+
+    private void addPortfolioEntrryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPortfolioEntrryJButtonActionPerformed
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.insertRow(portfolioTableModel.getRowCount(), null);
+        portfolioJTable.updateUI();
+    }//GEN-LAST:event_addPortfolioEntrryJButtonActionPerformed
+
+    private void removePortfolioEntryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePortfolioEntryJButtonActionPerformed
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.deleteRows(portfolioJTable.getSelectedRows());
+        portfolioJTable.updateUI();
+    }//GEN-LAST:event_removePortfolioEntryJButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
