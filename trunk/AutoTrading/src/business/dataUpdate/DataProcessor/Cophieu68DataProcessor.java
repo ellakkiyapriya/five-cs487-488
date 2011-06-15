@@ -246,5 +246,6 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 			e.printStackTrace();
 		}
 		updateDataFromSpecificDate(date);
+		
 	}
 }
