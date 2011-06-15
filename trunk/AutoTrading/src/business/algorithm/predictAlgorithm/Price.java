@@ -2,7 +2,7 @@ package business.algorithm.predictAlgorithm;
 
 public class Price {
 	private long assetID;
-	double price;
+	private double price;
 	public Price(long assetID, double price) {
 		super();
 		this.assetID = assetID;
@@ -20,5 +20,4 @@ public class Price {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
 }
