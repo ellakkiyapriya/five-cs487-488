@@ -1,6 +1,7 @@
 package dataAccess.databaseManagement.manager;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import dataAccess.databaseManagement.ConnectionFactory;
+import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 
 public class PortfolioManager {
@@ -164,6 +166,52 @@ public class PortfolioManager {
 		}
 		return null;
 	}
+	
+	public ArrayList<PortfolioEntity> getPortfolioByDate(Date date) {
+		try {
+			ArrayList<PortfolioEntity> listPortfolios = new ArrayList<PortfolioEntity>();
+			
+			String queryString = "SELECT * FROM portfolio WHERE date=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setDate(1, date);
+			resultSet = ptmt.executeQuery();
+			
+			while (resultSet.next()) {
+				PortfolioEntity portfolioEntity = new PortfolioEntity();
+
+				portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
+				portfolioEntity.setUserID(resultSet.getLong("user_id"));
+				portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
+				portfolioEntity.setPrice(resultSet.getDouble("price"));
+				portfolioEntity.setVolume(resultSet.getDouble("volume"));
+				portfolioEntity.setDate(resultSet.getDate("date"));
+
+				listPortfolios.add(portfolioEntity);
+			}
+			
+			return listPortfolios;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (ptmt != null)
+					ptmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return null;
+	}
+
 
 	public ArrayList<PortfolioEntity> getAllPortfolios() {
 		try {
