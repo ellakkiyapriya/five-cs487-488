@@ -1,6 +1,7 @@
 package dataAccess.databaseManagement.manager;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -168,6 +169,53 @@ public class OrderManager {
 			}
 
 		}
+		return null;
+	}
+
+	public ArrayList<OrderEntity> getOrderByDate(Date date) {
+		try {
+			ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();
+			
+			String queryString = "SELECT * FROM order WHERE date=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setDate(1, date);
+			resultSet = ptmt.executeQuery();
+			
+			while (resultSet.next()) {
+				OrderEntity orderEntity = new OrderEntity();
+
+				orderEntity.setOrderID(resultSet.getLong("order_id"));
+				orderEntity.setOrderType(resultSet.getBoolean("order_type"));
+				orderEntity.setUserID(resultSet.getLong("user_id"));
+				orderEntity.setDate(resultSet.getDate("date"));
+				orderEntity.setAssetID(resultSet.getLong("asset_id"));
+				orderEntity.setPrice(resultSet.getDouble("price"));
+				orderEntity.setVolume(resultSet.getDouble("volume"));
+				orderEntity.setMatched(resultSet.getBoolean("matched"));
+				
+				listOrders.add(orderEntity);
+			}
+			
+			return listOrders;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (ptmt != null)
+					ptmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
 		return null;
 	}
 	
