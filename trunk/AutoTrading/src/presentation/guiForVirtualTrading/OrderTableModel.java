@@ -19,7 +19,7 @@ public class OrderTableModel extends AbstractTableModel{
     };
 
     boolean[] canEdit = new boolean [] {
-        true, true, false, true, false
+        false, false, false, false, false
     };
 
     private String[] columnNames = {
