@@ -55,6 +55,10 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         removeOrderJButton = new javax.swing.JButton();
         addCashJSpinner = new javax.swing.JSpinner();
         vndJLabel = new javax.swing.JLabel();
+        portfolioDateJSpinner = new javax.swing.JSpinner();
+        portfolioDatejLabel = new javax.swing.JLabel();
+        orderDatejLabel = new javax.swing.JLabel();
+        orderLogDateJSpinner = new javax.swing.JSpinner();
 
         userJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         userJLabel.setText("User:");
@@ -111,6 +115,16 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
 
         vndJLabel.setText("VND");
 
+        portfolioDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
+
+        portfolioDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        portfolioDatejLabel.setText("Date:");
+
+        orderDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        orderDatejLabel.setText("Date:");
+
+        orderLogDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -152,8 +166,18 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gainLossJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(orderLogJLabel)
-                    .addComponent(portfolioJLabel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(orderLogJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                        .addComponent(orderDatejLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(orderLogDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(portfolioJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                        .addComponent(portfolioDatejLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(portfolioDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -186,7 +210,9 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
                         .addGap(93, 93, 93)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(todayOrderJLabel)
-                            .addComponent(portfolioJLabel))))
+                            .addComponent(portfolioJLabel)
+                            .addComponent(portfolioDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(portfolioDatejLabel))))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -198,7 +224,10 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
-                        .addComponent(orderLogJLabel)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(orderLogJLabel)
+                            .addComponent(orderLogDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(orderDatejLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -255,8 +284,12 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel orderDatejLabel;
+    private javax.swing.JSpinner orderLogDateJSpinner;
     private javax.swing.JLabel orderLogJLabel;
     private javax.swing.JTable orderLogJTable;
+    private javax.swing.JSpinner portfolioDateJSpinner;
+    private javax.swing.JLabel portfolioDatejLabel;
     private javax.swing.JLabel portfolioJLabel;
     private javax.swing.JTable portfolioJTable;
     private javax.swing.JButton removeOrderJButton;
