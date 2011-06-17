@@ -1,7 +1,7 @@
 package business.virtualTrading;
 
 /* TODO @Dinh : put getLatestDate() in PorfolioManager.java 
- * 		and	  execute in OrderEntity.java	
+ * 		and	  execute() in OrderEntity.java	
  * 
  public Date getLatestDate() {
 		try {
