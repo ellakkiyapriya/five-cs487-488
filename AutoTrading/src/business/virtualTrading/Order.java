@@ -1,32 +1,21 @@
 package business.virtualTrading;
 
-/*
- *public ArrayList<OrderEntity> getOrderByDate(Date date) {
+/* TODO @Dinh : put getLatestDate() in PorfolioManager.java 
+ * 		and	  execute in OrderEntity.java	
+ * 
+ public Date getLatestDate() {
 		try {
-			ArrayList<OrderEntity> listAllOrders = new ArrayList<OrderEntity>();
-			
-			String queryString = "SELECT * FROM order";
+			Date date = null;
+			String queryString = "SELECT max(date) as date FROM portfolio";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setDate(1, date);
 			resultSet = ptmt.executeQuery();
 			
-			while (resultSet.next()) {
-				OrderEntity orderEntity = new OrderEntity();
-
-				orderEntity.setOrderID(resultSet.getLong("order_id"));
-				orderEntity.setOrderType(resultSet.getBoolean("order_type"));
-				orderEntity.setUserID(resultSet.getLong("user_id"));
-				orderEntity.setDate(date);
-				orderEntity.setAssetID(resultSet.getLong("asset_id"));
-				orderEntity.setPrice(resultSet.getDouble("price"));
-				orderEntity.setVolume(resultSet.getDouble("volume"));
-				orderEntity.setMatched(resultSet.getBoolean("matched"));
-				
-				listAllOrders.add(orderEntity);
+			if (resultSet.next()) {
+				date = resultSet.getDate("date"); 
 			}
 			
-			return listAllOrders;
+			return date;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -44,13 +33,57 @@ package business.virtualTrading;
 			}
 
 		}
-
 		return null;
 	}
  */
 
+/*
+ public void execute() {
+		
+		// Update user's cash
+		 
+		UserManager userManager = new UserManager();
+		UserEntity user = userManager.getUserByID(userID);
+		if (this.orderType)
+			user.setCash(user.getCash() - price*volume);
+		else
+			user.setCash(user.getCash() + price*volume);
+		
+		
+		// Update user's portfolio 
+		
+		PortfolioManager portfolioManager = new PortfolioManager();
+		PortfolioEntity portfolioTemp;
+		Double priceTemp;
+		Double volumeTemp;
+		ArrayList<PortfolioEntity> portfolios = portfolioManager.getPortfolioByDate(portfolioManager.getLatestDate());
+		for(int i = 0; i < portfolios.size(); i++) {
+			portfolioTemp = portfolios.get(i);
+			portfolioTemp.setDate(date);
+			if (portfolioTemp.getAssetID() == assetID) {
+				if (orderType) { // buy
+					priceTemp = (portfolioTemp.getPrice()* portfolioTemp.getVolume() + price*volume )/ (portfolioTemp.getVolume()+volume);
+					volumeTemp = portfolioTemp.getVolume() + volume;
+					portfolioTemp.setPrice(priceTemp);
+					portfolioTemp.setVolume(volumeTemp);
+					portfolioManager.add(portfolioTemp);
+				} else { // sell
+					if(portfolioTemp.getVolume() > volume) {
+						priceTemp = (portfolioTemp.getPrice()* portfolioTemp.getVolume() - price*volume )/ (portfolioTemp.getVolume()+volume);
+						volumeTemp = portfolioTemp.getVolume() - volume;
+						portfolioTemp.setPrice(priceTemp);
+						portfolioTemp.setVolume(volumeTemp);
+						portfolioManager.add(portfolioTemp);
+					}
+				}
+			} else
+				portfolioManager.add(portfolioTemp);
+		}
+	}
+  
+ */
+
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dataAccess.databaseManagement.entity.OrderEntity;
@@ -97,6 +130,21 @@ public class Order {
 		return orderManager.getOrderByDate(date);
 	}
 	
+	public void execute(){
+		orderEntity.execute();
+	}
+	
+	public static void main(String args[]) {
+//		AssetEntity asset = new AssetEntity("so xo", "SXS", 1, null, 0.05);
+//		AssetManager assetManager = new AssetManager();
+//		assetManager.add(asset);
+
+		Date date = Date.valueOf("2001-01-05");
+		Order order = new Order(true, 1, date,	1, 1.77, 22, true);
+		order.add();
+//		order.execute();
+		
+	}
 	
 
 }
