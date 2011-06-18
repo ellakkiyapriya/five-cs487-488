@@ -12,6 +12,7 @@
 package presentation;
 
 import presentation.guiForDataUpdate.DataUpdateJPanel;
+import presentation.guiForDataVisualization.DataVisualizationJPanel;
 import presentation.guiForVirtualTrading.VirtualTradingJPanel;
 
 /**
@@ -71,6 +72,9 @@ public class mainJFrame extends javax.swing.JFrame {
 
         VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
         mainJTabbedPane.addTab("Virtual Trading", virtualTradingJPanel);
+
+        DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
+        mainJTabbedPane.addTab("Data Visualization", dataVisualizationJPanel);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

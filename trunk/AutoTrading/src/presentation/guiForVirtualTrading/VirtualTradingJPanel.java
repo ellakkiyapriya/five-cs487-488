@@ -12,6 +12,7 @@
 package presentation.guiForVirtualTrading;
 
 import javax.swing.JDialog;
+import javax.swing.JSpinner;
 
 /**
  *
@@ -110,20 +111,27 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         });
 
         removeOrderJButton.setText("Remove");
+        removeOrderJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeOrderJButtonActionPerformed(evt);
+            }
+        });
 
         addCashJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
 
         vndJLabel.setText("VND");
 
         portfolioDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
+        portfolioDateJSpinner.setEditor(new JSpinner.DateEditor(portfolioDateJSpinner, "MM/dd/yyyy"));
 
-        portfolioDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        portfolioDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         portfolioDatejLabel.setText("Date:");
 
-        orderDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        orderDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         orderDatejLabel.setText("Date:");
 
         orderLogDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
+        orderLogDateJSpinner.setEditor(new JSpinner.DateEditor(orderLogDateJSpinner, "MM/dd/yyyy"));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -165,7 +173,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
                         .addComponent(ganiLossJLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gainLossJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(orderLogJLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
@@ -178,8 +186,8 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
                         .addComponent(portfolioDatejLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(portfolioDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addUserJButton, removeUserJButton});
@@ -246,6 +254,12 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     private void addOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderJButtonActionPerformed
         addNewOrderJDialog.setVisible(true);
     }//GEN-LAST:event_addOrderJButtonActionPerformed
+
+    private void removeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeOrderJButtonActionPerformed
+        OrderTableModel portfolioTableModel = (OrderTableModel) this.todayOrderJTable.getModel();
+        portfolioTableModel.deleteRows(todayOrderJTable.getSelectedRows());
+        todayOrderJTable.updateUI();
+    }//GEN-LAST:event_removeOrderJButtonActionPerformed
 
     public JDialog getAddNewUserJDialog() {
         return addNewUserJDialog;

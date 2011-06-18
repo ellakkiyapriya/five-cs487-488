@@ -3,44 +3,49 @@ package dataAccess.databaseManagement.entity;
 import java.io.Serializable;
 
 public class ExchangeEntity implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5854103809456038716L;
 
-	private long exchangeID;
-	private String name;
-	private double fluctuationRange;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5854103809456038716L;
+    private long exchangeID;
+    private String name;
+    private double fluctuationRange;
 
-	public ExchangeEntity() {
-	}
-	
-	public ExchangeEntity(String name, double fluctuationRange) {
-		this.name = name;
-		this.fluctuationRange = fluctuationRange;
-	}
+    public ExchangeEntity() {
+    }
 
-	public void setExchangeID(long exchangeID) {
-		this.exchangeID = exchangeID;
-	}
+    public ExchangeEntity(String name, double fluctuationRange) {
+        this.name = name;
+        this.fluctuationRange = fluctuationRange;
+    }
 
-	public long getExchangeID() {
-		return exchangeID;
-	}
+    public void setExchangeID(long exchangeID) {
+        this.exchangeID = exchangeID;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public long getExchangeID() {
+        return exchangeID;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setFluctuationRange(double fluctuationRange) {
-		this.fluctuationRange = fluctuationRange;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public double getFluctuationRange() {
-		return fluctuationRange;
-	}
+    public void setFluctuationRange(double fluctuationRange) {
+        this.fluctuationRange = fluctuationRange;
+    }
+
+    public double getFluctuationRange() {
+        return fluctuationRange;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
