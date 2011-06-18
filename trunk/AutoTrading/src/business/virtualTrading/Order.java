@@ -131,7 +131,7 @@ public class Order {
 	}
 	
 	public void execute(){
-		orderEntity.execute();
+//		orderEntity.execute();
 	}
 	
 	public static void main(String args[]) {
