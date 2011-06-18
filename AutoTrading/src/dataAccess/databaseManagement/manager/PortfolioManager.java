@@ -9,251 +9,275 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import dataAccess.databaseManagement.ConnectionFactory;
-import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 
 public class PortfolioManager {
-	private Connection connection = null;
-	private PreparedStatement ptmt = null;
-	private ResultSet resultSet = null;
 
-	public PortfolioManager() {
+    private Connection connection = null;
+    private PreparedStatement ptmt = null;
+    private ResultSet resultSet = null;
 
-	}
+    public PortfolioManager() {
+    }
 
-	private Connection getConnection() throws SQLException {
-		Connection conn;
-		conn = ConnectionFactory.getInstance().getConnection();
-		return conn;
-	}
+    private Connection getConnection() throws SQLException {
+        Connection conn;
+        conn = ConnectionFactory.getInstance().getConnection();
+        return conn;
+    }
 
-	public void add(PortfolioEntity portfolioEntity) {
-		String queryString = "INSERT INTO portfolio(portfolio_id, user_id, asset_id, price, volume, date) VALUES(?,?,?,?,?,?)";
-		try {
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
-			ptmt.setNull(1, java.sql.Types.INTEGER);
-			ptmt.setLong(2, portfolioEntity.getUserID());
-			ptmt.setLong(3, portfolioEntity.getAssetID());
-			ptmt.setDouble(4, portfolioEntity.getPrice());
-			ptmt.setDouble(5, portfolioEntity.getVolume());
-			ptmt.setDate(6, portfolioEntity.getDate());
-			ptmt.executeUpdate();
-			
-			ResultSet rs = ptmt.getGeneratedKeys();
-			long autoIncValue = -1;
-			
-			if (rs.next()) {
-				autoIncValue = rs.getLong(1);
-			}
-			
-			portfolioEntity.setPortfolioID(autoIncValue);
-			
-			System.out.println("Data Added Successfully");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ptmt != null) {
-					ptmt.close();
-				}
+    public void add(PortfolioEntity portfolioEntity) {
+        String queryString = "INSERT INTO portfolio(portfolio_id, user_id, asset_id, price, volume, date) VALUES(?,?,?,?,?,?)";
+        try {
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+            ptmt.setNull(1, java.sql.Types.INTEGER);
+            ptmt.setLong(2, portfolioEntity.getUserID());
+            ptmt.setLong(3, portfolioEntity.getAssetID());
+            ptmt.setDouble(4, portfolioEntity.getPrice());
+            ptmt.setDouble(5, portfolioEntity.getVolume());
+            ptmt.setDate(6, portfolioEntity.getDate());
+            ptmt.executeUpdate();
 
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            ResultSet rs = ptmt.getGeneratedKeys();
+            long autoIncValue = -1;
 
-	public void update(PortfolioEntity portfolioEntity) {
-		try {
-			String queryString = "UPDATE portfolio SET user_id=?, asset_id=?, price=?, volume=?, date=? WHERE portfolio_id=?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setLong(1, portfolioEntity.getUserID());
-			ptmt.setLong(2, portfolioEntity.getAssetID());
-			ptmt.setDouble(3, portfolioEntity.getPrice());
-			ptmt.setDouble(4, portfolioEntity.getVolume());
-			ptmt.setDate(5, portfolioEntity.getDate());
-			ptmt.setLong(6, portfolioEntity.getPortfolioID());
-			ptmt.executeUpdate();
-			System.out.println("Table Updated Successfully");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			}
+            if (rs.next()) {
+                autoIncValue = rs.getLong(1);
+            }
 
-			catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
+            portfolioEntity.setPortfolioID(autoIncValue);
 
-			}
-		}
-	}
+            System.out.println("Data Added Successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ptmt != null) {
+                    ptmt.close();
+                }
 
-	public void delete(long portfolioID) {
-		try {
-			String queryString = "DELETE FROM portfolio WHERE portfolio_id=?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setLong(1, portfolioID);
-			ptmt.executeUpdate();
-			System.out.println("Data deleted Successfully");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			}
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-			catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
+    public void update(PortfolioEntity portfolioEntity) {
+        try {
+            String queryString = "UPDATE portfolio SET user_id=?, asset_id=?, price=?, volume=?, date=? WHERE portfolio_id=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, portfolioEntity.getUserID());
+            ptmt.setLong(2, portfolioEntity.getAssetID());
+            ptmt.setDouble(3, portfolioEntity.getPrice());
+            ptmt.setDouble(4, portfolioEntity.getVolume());
+            ptmt.setDate(5, portfolioEntity.getDate());
+            ptmt.setLong(6, portfolioEntity.getPortfolioID());
+            ptmt.executeUpdate();
+            System.out.println("Table Updated Successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
 
-			}
-		}
-	}
+            }
+        }
+    }
 
-	public PortfolioEntity getPortfolioByID(long portfolioID) {
-		try {
-			PortfolioEntity portfolioEntity = null;
+    public void delete(long portfolioID) {
+        try {
+            String queryString = "DELETE FROM portfolio WHERE portfolio_id=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, portfolioID);
+            ptmt.executeUpdate();
+            System.out.println("Data deleted Successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
 
-			String queryString = "SELECT * FROM portfolio WHERE portfolio_id=?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setLong(1, portfolioID);
-			resultSet = ptmt.executeQuery();
+            }
+        }
+    }
 
-			if (resultSet.next()) {
-				portfolioEntity = new PortfolioEntity();
-				portfolioEntity.setPortfolioID(portfolioID);
-				portfolioEntity.setUserID(resultSet.getLong("user_id"));
-				portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
-				portfolioEntity.setPrice(resultSet.getDouble("price"));
-				portfolioEntity.setVolume(resultSet.getDouble("volume"));
-				portfolioEntity.setDate(resultSet.getDate("date"));
-			}
+    public PortfolioEntity getPortfolioByID(long portfolioID) {
+        try {
+            PortfolioEntity portfolioEntity = null;
 
-			return portfolioEntity;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+            String queryString = "SELECT * FROM portfolio WHERE portfolio_id=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, portfolioID);
+            resultSet = ptmt.executeQuery();
 
-		}
-		return null;
-	}
-	
-	public ArrayList<PortfolioEntity> getPortfolioByDate(Date date) {
-		try {
-			ArrayList<PortfolioEntity> listPortfolios = new ArrayList<PortfolioEntity>();
-			
-			String queryString = "SELECT * FROM portfolio WHERE date=?";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			ptmt.setDate(1, date);
-			resultSet = ptmt.executeQuery();
-			
-			while (resultSet.next()) {
-				PortfolioEntity portfolioEntity = new PortfolioEntity();
+            if (resultSet.next()) {
+                portfolioEntity = new PortfolioEntity();
+                portfolioEntity.setPortfolioID(portfolioID);
+                portfolioEntity.setUserID(resultSet.getLong("user_id"));
+                portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
+                portfolioEntity.setPrice(resultSet.getDouble("price"));
+                portfolioEntity.setVolume(resultSet.getDouble("volume"));
+                portfolioEntity.setDate(resultSet.getDate("date"));
+            }
 
-				portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
-				portfolioEntity.setUserID(resultSet.getLong("user_id"));
-				portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
-				portfolioEntity.setPrice(resultSet.getDouble("price"));
-				portfolioEntity.setVolume(resultSet.getDouble("volume"));
-				portfolioEntity.setDate(resultSet.getDate("date"));
+            return portfolioEntity;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-				listPortfolios.add(portfolioEntity);
-			}
-			
-			return listPortfolios;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+        }
+        return null;
+    }
 
-		}
+    public ArrayList<PortfolioEntity> getPortfolioByDate(Date date) {
+        try {
+            ArrayList<PortfolioEntity> listPortfolios = new ArrayList<PortfolioEntity>();
 
-		return null;
-	}
+            String queryString = "SELECT * FROM portfolio WHERE date=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setDate(1, date);
+            resultSet = ptmt.executeQuery();
 
+            while (resultSet.next()) {
+                PortfolioEntity portfolioEntity = new PortfolioEntity();
 
-	public ArrayList<PortfolioEntity> getAllPortfolios() {
-		try {
-			ArrayList<PortfolioEntity> listAllPortfolios = new ArrayList<PortfolioEntity>();
+                portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
+                portfolioEntity.setUserID(resultSet.getLong("user_id"));
+                portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
+                portfolioEntity.setPrice(resultSet.getDouble("price"));
+                portfolioEntity.setVolume(resultSet.getDouble("volume"));
+                portfolioEntity.setDate(resultSet.getDate("date"));
 
-			String queryString = "SELECT * FROM portfolio";
-			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString);
-			resultSet = ptmt.executeQuery();
+                listPortfolios.add(portfolioEntity);
+            }
 
-			while (resultSet.next()) {
-				PortfolioEntity portfolioEntity = new PortfolioEntity();
+            return listPortfolios;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-				portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
-				portfolioEntity.setUserID(resultSet.getLong("user_id"));
-				portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
-				portfolioEntity.setPrice(resultSet.getDouble("price"));
-				portfolioEntity.setVolume(resultSet.getDouble("volume"));
-				portfolioEntity.setDate(resultSet.getDate("date"));
+        }
 
-				listAllPortfolios.add(portfolioEntity);
-			}
+        return null;
+    }
 
-			return listAllPortfolios;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (ptmt != null)
-					ptmt.close();
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+    public ArrayList<PortfolioEntity> getAllPortfolios() {
+        try {
+            ArrayList<PortfolioEntity> listAllPortfolios = new ArrayList<PortfolioEntity>();
 
-		}
+            String queryString = "SELECT * FROM portfolio";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            resultSet = ptmt.executeQuery();
 
-		return null;
-	}
+            while (resultSet.next()) {
+                PortfolioEntity portfolioEntity = new PortfolioEntity();
+
+                portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
+                portfolioEntity.setUserID(resultSet.getLong("user_id"));
+                portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
+                portfolioEntity.setPrice(resultSet.getDouble("price"));
+                portfolioEntity.setVolume(resultSet.getDouble("volume"));
+                portfolioEntity.setDate(resultSet.getDate("date"));
+
+                listAllPortfolios.add(portfolioEntity);
+            }
+
+            return listAllPortfolios;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
+    }
+
+    public Date getLatestDate() {
+        Date latestDate = null;
+
+        try {
+            connection = getConnection();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT max(date) FROM portfolio");
+            resultSet.next();
+            latestDate = resultSet.getDate(1);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return latestDate;
+    }
 }
