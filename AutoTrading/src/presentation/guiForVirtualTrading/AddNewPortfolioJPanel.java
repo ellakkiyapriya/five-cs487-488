@@ -4,9 +4,9 @@
  */
 
 /*
- * AddNewOrderJPanel.java
+ * AddNewPortfolioJPanel.java
  *
- * Created on Jun 8, 2011, 12:39:52 PM
+ * Created on Jun 17, 2011, 11:12:48 AM
  */
 
 package presentation.guiForVirtualTrading;
@@ -20,12 +20,11 @@ import presentation.ComboKeyHandler;
  *
  * @author Dinh
  */
-public class AddNewOrderJPanel extends javax.swing.JPanel {
-
-    private JDialog parent;
-
-    /** Creates new form AddNewOrderJPanel */
-    public AddNewOrderJPanel(JDialog jDialog) {
+public class AddNewPortfolioJPanel extends javax.swing.JPanel {
+    private JDialog parent = null;
+    
+    /** Creates new form AddNewPortfolioJPanel */
+    public AddNewPortfolioJPanel(JDialog jDialog) {
         this.parent = jDialog;
         initComponents();
     }
@@ -39,22 +38,15 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buySellJLabel = new javax.swing.JLabel();
-        buySellJComboBox = new javax.swing.JComboBox();
         symbolJLabel = new javax.swing.JLabel();
         symbolJComboBox = new javax.swing.JComboBox();
-        priceJLabel = new javax.swing.JLabel();
-        priceJSpinner = new javax.swing.JSpinner();
-        vndJLabel = new javax.swing.JLabel();
+        buyPriceJLabel = new javax.swing.JLabel();
+        buyPriceJSpinner = new javax.swing.JSpinner();
         volumeJLabel = new javax.swing.JLabel();
         volumeJSpinner = new javax.swing.JSpinner();
         cancelJButton = new javax.swing.JButton();
         okJButton = new javax.swing.JButton();
-
-        buySellJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        buySellJLabel.setText("Buy/Sell:");
-
-        buySellJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Buy", "Sell" }));
+        vndJLabel = new javax.swing.JLabel();
 
         symbolJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         symbolJLabel.setText("Symbol:");
@@ -65,17 +57,15 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         fieldSymbol.setText("");
         fieldSymbol.addKeyListener(new ComboKeyHandler(symbolJComboBox));
 
-        priceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        priceJLabel.setText("Price:");
+        buyPriceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        buyPriceJLabel.setText("Buy Price:");
 
-        priceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
-
-        vndJLabel.setText("VND");
+        buyPriceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1000)));
 
         volumeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         volumeJLabel.setText("Volume:");
 
-        volumeJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(10L)));
+        volumeJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(10)));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -91,35 +81,33 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
             }
         });
 
+        vndJLabel.setText("VND");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(buySellJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buySellJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(symbolJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(priceJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(priceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(vndJLabel)
-                .addGap(18, 18, 18)
-                .addComponent(volumeJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(494, Short.MAX_VALUE)
-                .addComponent(okJButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelJButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(symbolJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buyPriceJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buyPriceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vndJLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(volumeJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(okJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelJButton)))
                 .addContainerGap())
         );
 
@@ -130,12 +118,10 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buySellJLabel)
-                    .addComponent(buySellJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(symbolJLabel)
                     .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(priceJLabel)
-                    .addComponent(priceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buyPriceJLabel)
+                    .addComponent(buyPriceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vndJLabel)
                     .addComponent(volumeJLabel)
                     .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -147,24 +133,20 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
-        //Add new order
-
-        this.parent.dispose();
-    }//GEN-LAST:event_okJButtonActionPerformed
-
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
+    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+        this.parent.dispose();
+    }//GEN-LAST:event_okJButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox buySellJComboBox;
-    private javax.swing.JLabel buySellJLabel;
+    private javax.swing.JLabel buyPriceJLabel;
+    private javax.swing.JSpinner buyPriceJSpinner;
     private javax.swing.JButton cancelJButton;
     private javax.swing.JButton okJButton;
-    private javax.swing.JLabel priceJLabel;
-    private javax.swing.JSpinner priceJSpinner;
     private javax.swing.JComboBox symbolJComboBox;
     private javax.swing.JLabel symbolJLabel;
     private javax.swing.JLabel vndJLabel;
