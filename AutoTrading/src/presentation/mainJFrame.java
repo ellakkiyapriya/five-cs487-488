@@ -75,6 +75,7 @@ public class mainJFrame extends javax.swing.JFrame {
 
         DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
         mainJTabbedPane.addTab("Data Visualization", dataVisualizationJPanel);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

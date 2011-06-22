@@ -18,7 +18,6 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.CandlestickRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -71,7 +70,7 @@ public class CandleStickChart implements VisulizationChart {
     public void initalChart() {
         candleStickChart = ChartFactory.createCandlestickChart(
                 "",
-                "Time",
+                "Date",
                 "Price",
                 null,
                 true);
