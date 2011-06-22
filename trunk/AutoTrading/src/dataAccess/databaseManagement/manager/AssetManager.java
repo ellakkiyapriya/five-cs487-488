@@ -309,4 +309,54 @@ public class AssetManager {
 
         return null;
     }
+
+        public ArrayList<AssetEntity> getAssetsByExchange(long exchangeID) {
+        try {
+
+            String queryString = "SELECT * FROM asset WHERE exchange_id=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, exchangeID);
+            resultSet = ptmt.executeQuery();
+
+            ArrayList<AssetEntity> listAssets = new ArrayList<AssetEntity>();
+
+            while (resultSet.next()) {
+                AssetEntity assetEntity = new AssetEntity();
+
+                assetEntity.setAssetID(resultSet.getLong("asset_id"));
+                assetEntity.setName(resultSet.getString("name"));
+                assetEntity.setSymbol(resultSet.getString("symbol"));
+                assetEntity.setExchangeID(resultSet.getLong("exchange_id"));
+                assetEntity.setAssetInfo(resultSet.getString("asset_info"));
+                assetEntity.setFluctuationRange(resultSet.getDouble("fluctuation_range"));
+
+                listAssets.add(assetEntity);
+            }
+
+            return listAssets;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
+    }
 }
