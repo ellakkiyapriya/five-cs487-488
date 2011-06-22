@@ -8,13 +8,24 @@
  *
  * Created on Jun 15, 2011, 11:32:36 AM
  */
-
 package presentation.guiForDataVisualization;
 
+import business.dataVisualization.ChartStyle;
+import business.dataVisualization.DataVisualizationProcessor;
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.ExchangeManager;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TreeMap;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.data.time.TimeSeriesCollection;
 import presentation.ComboKeyHandler;
 
 /**
@@ -26,6 +37,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     /** Creates new form DataVisualizationJPanel */
     public DataVisualizationJPanel() {
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -49,16 +61,18 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         preAlgParametersJLabel = new javax.swing.JLabel();
         decAlgParametersjLabel = new javax.swing.JLabel();
-        visualizationChartJPanel = new javax.swing.JPanel();
+        visualizationChartJPanel = new ChartPanel(ChartFactory.createTimeSeriesChart("", "", "", new TimeSeriesCollection(), true, true, true));
         symbolOptionJPanel = new javax.swing.JPanel();
-        symbolJLabel = new javax.swing.JLabel();
-        symbolJComboBox = new javax.swing.JComboBox();
+        assetJLabel = new javax.swing.JLabel();
+        assetJComboBox = new javax.swing.JComboBox();
         fromJLabel = new javax.swing.JLabel();
         fromDateJSpinner = new javax.swing.JSpinner();
         toDateJLabel = new javax.swing.JLabel();
         toDateJSpinner = new javax.swing.JSpinner();
         exchangeJLabel = new javax.swing.JLabel();
         exchangeJComboBox = new javax.swing.JComboBox();
+        chartStyleJLabel = new javax.swing.JLabel();
+        charStyleJComboBox = new javax.swing.JComboBox();
 
         algorithmJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         algorithmJLabel.setText("ALGORITHM");
@@ -186,35 +200,57 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
             .addGap(0, 527, Short.MAX_VALUE)
         );
 
-        symbolJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        symbolJLabel.setText("Symbol:");
+        assetJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        assetJLabel.setText("Asset:");
 
-        symbolJComboBox.setEditable(true);
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel((new AssetManager()).getAllAssets().toArray()));
-        JTextField fieldSymbol = (JTextField)symbolJComboBox.getEditor().getEditorComponent();
-        fieldSymbol.setText("");
-        fieldSymbol.addKeyListener(new ComboKeyHandler(symbolJComboBox));
+        assetJComboBox.setEditable(true);
+        assetJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assetJComboBoxActionPerformed(evt);
+            }
+        });
 
         fromJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         fromJLabel.setText("From:");
 
         fromDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         fromDateJSpinner.setEditor(new JSpinner.DateEditor(fromDateJSpinner, "MM/dd/yyyy"));
+        fromDateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                fromDateJSpinnerStateChanged(evt);
+            }
+        });
 
         toDateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         toDateJLabel.setText("To:");
 
         toDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         toDateJSpinner.setEditor(new JSpinner.DateEditor(toDateJSpinner, "MM/dd/yyyy"));
+        toDateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                toDateJSpinnerStateChanged(evt);
+            }
+        });
 
-        exchangeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        exchangeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         exchangeJLabel.setText("Exchange:");
 
         exchangeJComboBox.setEditable(true);
-        exchangeJComboBox.setModel(new javax.swing.DefaultComboBoxModel((new ExchangeManager()).getAllExchanges().toArray()));
-        JTextField fieldExchange = (JTextField)exchangeJComboBox.getEditor().getEditorComponent();
-        fieldExchange.setText("");
-        fieldExchange.addKeyListener(new ComboKeyHandler(exchangeJComboBox));
+        exchangeJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exchangeJComboBoxActionPerformed(evt);
+            }
+        });
+
+        chartStyleJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        chartStyleJLabel.setText("Chart Style:");
+
+        charStyleJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        charStyleJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                charStyleJComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout symbolOptionJPanelLayout = new javax.swing.GroupLayout(symbolOptionJPanel);
         symbolOptionJPanel.setLayout(symbolOptionJPanelLayout);
@@ -226,9 +262,9 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(symbolJLabel)
+                .addComponent(assetJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(fromJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -237,7 +273,11 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addComponent(toDateJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(toDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(chartStyleJLabel)
+                .addGap(18, 18, 18)
+                .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         symbolOptionJPanelLayout.setVerticalGroup(
             symbolOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,12 +286,14 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addGroup(symbolOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exchangeJLabel)
                     .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(symbolJLabel)
-                    .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(assetJLabel)
+                    .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fromJLabel)
                     .addComponent(fromDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(toDateJLabel)
-                    .addComponent(toDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(toDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chartStyleJLabel)
+                    .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -276,10 +318,54 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void exchangeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeJComboBoxActionPerformed
+        if (exchangeJComboBox.getSelectedIndex() != -1) {
+            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mappingExchangeID_Assets.get(((ExchangeEntity) exchangeJComboBox.getSelectedItem()).getExchangeID())));
+            assetComboKeyHandler.updateListObjects();
+            assetJComboBox.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_exchangeJComboBoxActionPerformed
+
+    private void assetJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assetJComboBoxActionPerformed
+        if (assetJComboBox.getSelectedIndex() != -1) {
+            dataVisualizationProcessor.setAsset((AssetEntity) assetJComboBox.getSelectedItem());
+            dataVisualizationProcessor.updateChart();
+            ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+        }
+    }//GEN-LAST:event_assetJComboBoxActionPerformed
+
+    private void fromDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fromDateJSpinnerStateChanged
+        if (fromDateJSpinner.getValue() == null || dataVisualizationProcessor == null) {
+            return;
+        }
+
+        dataVisualizationProcessor.setFromDate((Date) fromDateJSpinner.getValue());
+        dataVisualizationProcessor.updateChart();
+        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+    }//GEN-LAST:event_fromDateJSpinnerStateChanged
+
+    private void toDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_toDateJSpinnerStateChanged
+        if (toDateJSpinner.getValue() == null || dataVisualizationProcessor == null) {
+            return;
+        }
+        
+        dataVisualizationProcessor.setToDate((Date) toDateJSpinner.getValue());
+        dataVisualizationProcessor.updateChart();
+        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+    }//GEN-LAST:event_toDateJSpinnerStateChanged
+
+    private void charStyleJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_charStyleJComboBoxActionPerformed
+        dataVisualizationProcessor.changeChartType((ChartStyle) charStyleJComboBox.getSelectedItem());
+        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+    }//GEN-LAST:event_charStyleJComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel algorithmJLabel;
     private javax.swing.JPanel algorithmOptionJPanel;
+    private javax.swing.JComboBox assetJComboBox;
+    private javax.swing.JLabel assetJLabel;
+    private javax.swing.JComboBox charStyleJComboBox;
+    private javax.swing.JLabel chartStyleJLabel;
     private javax.swing.JComboBox decAlgJComboBox;
     private javax.swing.JLabel decAlgJLabel;
     private javax.swing.JLabel decAlgParametersjLabel;
@@ -294,12 +380,43 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel preAlgParametersJLabel;
     private javax.swing.JSpinner startPredictionDateJSpinner;
     private javax.swing.JLabel startPredictionJLabel;
-    private javax.swing.JComboBox symbolJComboBox;
-    private javax.swing.JLabel symbolJLabel;
     private javax.swing.JPanel symbolOptionJPanel;
     private javax.swing.JLabel toDateJLabel;
     private javax.swing.JSpinner toDateJSpinner;
     private javax.swing.JPanel visualizationChartJPanel;
     // End of variables declaration//GEN-END:variables
+    private DataVisualizationProcessor dataVisualizationProcessor;
+    private ComboKeyHandler exchangeComboKeyHandler;
+    private ComboKeyHandler assetComboKeyHandler;
+    private TreeMap<Long, Object[]> mappingExchangeID_Assets;
 
+    private void initOtherComponents() {
+        Calendar now = Calendar.getInstance();
+        startPredictionDateJSpinner.setValue(now.getTime());
+        toDateJSpinner.setValue(now.getTime());
+        now.add(Calendar.MONTH, -6);
+        fromDateJSpinner.setValue(now.getTime());
+
+        mappingExchangeID_Assets = new TreeMap<Long, Object[]>();
+        ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
+        for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
+            ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
+            mappingExchangeID_Assets.put(exchangeEntity.getExchangeID(), listAssets.toArray());
+        }
+
+        charStyleJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationProcessor.listAllChartStyles));
+
+        exchangeJComboBox.setModel(new DefaultComboBoxModel(listAllExchangeEntitys.toArray()));
+        exchangeComboKeyHandler = new ComboKeyHandler(exchangeJComboBox);
+        JTextField fieldExchange = (JTextField) exchangeJComboBox.getEditor().getEditorComponent();
+        fieldExchange.addKeyListener(exchangeComboKeyHandler);
+
+        assetJComboBox.setModel(new DefaultComboBoxModel(mappingExchangeID_Assets.get(((ExchangeEntity) exchangeJComboBox.getSelectedItem()).getExchangeID())));
+        assetComboKeyHandler = new ComboKeyHandler(assetJComboBox);
+        JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
+        fieldSymbol.addKeyListener(assetComboKeyHandler);
+
+        dataVisualizationProcessor = new DataVisualizationProcessor((AssetEntity) assetJComboBox.getSelectedItem(), (Date) fromDateJSpinner.getValue(), (Date) toDateJSpinner.getValue(), (ChartStyle) charStyleJComboBox.getSelectedItem());
+        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+    }
 }

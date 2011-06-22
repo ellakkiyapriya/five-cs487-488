@@ -189,7 +189,7 @@ public class PriceManager {
         try {
             ArrayList<PriceEntity> listPrices = new ArrayList<PriceEntity>();
 
-            String queryString = "SELECT * FROM price WHERE asset_id=? AND date >= ? AND date <= ?";
+            String queryString = "SELECT * FROM price WHERE asset_id=? AND date>=? AND date<=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setLong(1, asset_id);
