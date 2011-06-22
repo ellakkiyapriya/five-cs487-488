@@ -84,7 +84,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		}
 		
 		Matrix matrixC = matrixX.transpose().times(matrixX).inverse();
-		double variance = Utility.calculateVariance(priceList);
+		double variance = Utility.calculateVariance(MA);
 		double s_b0 = Math.sqrt(variance * matrixC.get(0, 0));
 		double t = 1; // need to revise here
 		double lambda = t * s_b0;
