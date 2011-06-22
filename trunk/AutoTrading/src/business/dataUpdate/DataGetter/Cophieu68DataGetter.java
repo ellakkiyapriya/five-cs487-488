@@ -25,7 +25,7 @@ public class Cophieu68DataGetter extends AbstractDataGetter {
 		try 
 		{
 			br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-			ParamList paramList = new ParamForCophieu68DataProcessor(br, (Date)parameter.getParamList().get(0));
+			ParamList paramList = new ParamForCophieu68DataProcessor(br, (Date)((ParamForCophieu68DataGetter)parameter).getDate());
 			return paramList;
 		} 
 		catch (Exception e) 
