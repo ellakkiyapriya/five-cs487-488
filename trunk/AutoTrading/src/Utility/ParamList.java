@@ -1,7 +1,5 @@
 package Utility;
 
-import java.util.ArrayList;
-
 public abstract class ParamList {
 	protected int numOfParam;
 	

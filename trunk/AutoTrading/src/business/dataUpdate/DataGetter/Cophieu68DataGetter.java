@@ -1,18 +1,13 @@
 package business.dataUpdate.DataGetter;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import business.dataUpdate.DataProcessor.AbstractDataProcessor;
-import business.dataUpdate.DataProcessor.Cophieu68DataProcessor;
 import business.dataUpdate.DataProcessor.ParamForCophieu68DataProcessor;
-
 import Utility.ParamList;
 
 public class Cophieu68DataGetter extends AbstractDataGetter {
