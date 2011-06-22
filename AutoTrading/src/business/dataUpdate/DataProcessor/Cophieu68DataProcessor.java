@@ -41,8 +41,9 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 		double volume;
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		String strLine, symbol;
-		String date = dateFormat.format(parameter.getParamList().get(1));
-		BufferedReader br = (BufferedReader)parameter.getParamList().get(0);
+		//String date = dateFormat.format(parameter.getParamList().get(1));
+		String date = dateFormat.format(((ParamForCophieu68DataProcessor)parameter).getDate());
+		BufferedReader br = ((ParamForCophieu68DataProcessor)parameter).getBr();
 		String[] splitString;
 		try {
 			// Open an output stream

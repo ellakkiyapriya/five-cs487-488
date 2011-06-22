@@ -3,6 +3,8 @@ package business.algorithm.predictAlgorithm;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import business.algorithm.decisionAlgorithm.ParamForMovingAverage;
+
 import Jama.Matrix;
 import Utility.ParamList;
 import Utility.Utility;
@@ -13,12 +15,11 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	public ParamList runAlgorithm(ParamList parameters) 
 	{
 		// TODO Auto-generated method stub
-		ArrayList<Double> priceList = (ArrayList<Double>)((ParamForAutoRegression)parameters).getParamList().get(0);
-		int future_interval = (Integer)((ParamForAutoRegression)parameters).getParamList().get(1);
-		double confidence_level = (Double)((ParamForAutoRegression)parameters).getParamList().get(2);
-		int MA_period = (Integer)((ParamForAutoRegression)parameters).getParamList().get(3);
-		int AR_period = (Integer)((ParamForAutoRegression)parameters).getParamList().get(4);
-		double training_ratio = (Double)((ParamForAutoRegression)parameters).getParamList().get(5);
+		ArrayList<Double> priceList = ((ParamForAutoRegression)parameters).getPriceList();
+		int future_interval = ((ParamForAutoRegression)parameters).getFuture_interval();
+		double confidence_level = ((ParamForAutoRegression)parameters).getConfidence_level();
+		int MA_period = (Integer)((ParamForAutoRegression)parameters).getMA_period();
+		int AR_period = (Integer)((ParamForAutoRegression)parameters).getAR_period();
 		
 		/*
 		 * Moving Average Step
@@ -88,7 +89,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		double t = 1; // need to revise here
 		double lambda = t * s_b0;
 		
-		return new ParamForOutputOfAutoRegression(predictionPriceList, lambda);
+		return new OutputOfPredictAlgorithm(predictionPriceList, lambda);
 	}
 	
 	public static void main(String args[])
@@ -112,9 +113,9 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		ParamForAutoRegression input = new ParamForAutoRegression(priceList, future_interval, confidence_level, MA_period, AR_period, training_ratio);
 		AutoRegression ar = new AutoRegression();
 		ParamList output = ar.runAlgorithm(input);
-		for (int i = 0; i < future_interval; ++i)
-		{
-			System.out.println(output.getParamList().get(i));
+		for (int i = 0; i < future_interval; ++i) {
+			OutputOfPredictAlgorithm temp = (OutputOfPredictAlgorithm) output;
+			System.out.println(temp.getPredictionPrice().get(i));
 		}
 	}
 }
