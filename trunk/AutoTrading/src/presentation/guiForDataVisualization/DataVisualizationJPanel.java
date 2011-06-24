@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeMap;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import org.jfree.chart.ChartFactory;
@@ -93,27 +94,9 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        javax.swing.GroupLayout preAlgParametersJPanelLayout = new javax.swing.GroupLayout(preAlgParametersJPanel);
-        preAlgParametersJPanel.setLayout(preAlgParametersJPanelLayout);
-        preAlgParametersJPanelLayout.setHorizontalGroup(
-            preAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
-        );
-        preAlgParametersJPanelLayout.setVerticalGroup(
-            preAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
-        );
+        preAlgParametersJPanel.setLayout(new java.awt.GridLayout());
 
-        javax.swing.GroupLayout decAlgParametersJPanelLayout = new javax.swing.GroupLayout(decAlgParametersJPanel);
-        decAlgParametersJPanel.setLayout(decAlgParametersJPanelLayout);
-        decAlgParametersJPanelLayout.setHorizontalGroup(
-            decAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
-        );
-        decAlgParametersJPanelLayout.setVerticalGroup(
-            decAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
-        );
+        decAlgParametersJPanel.setLayout(new java.awt.GridLayout());
 
         preAlgParametersJLabel.setText("Parameter:");
 
@@ -129,15 +112,11 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                     .addComponent(algorithmJLabel)
                     .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(decAlgJLabel)
+                        .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(decAlgParametersjLabel)
-                                    .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(decAlgJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                                 .addComponent(preAlgJLabel)
                                 .addGap(18, 18, 18)
@@ -146,18 +125,21 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                                 .addGap(10, 10, 10)
                                 .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(preAlgParametersJLabel)))))
+                                    .addComponent(preAlgParametersJLabel)))
+                            .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(decAlgParametersjLabel)))))
                     .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(startPredictionJLabel)
                         .addGap(44, 44, 44)
                         .addComponent(startPredictionDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {decAlgJComboBox, preAlgJComboBox});
-
-        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {decAlgParametersJPanel, preAlgParametersJPanel});
 
         algorithmOptionJPanelLayout.setVerticalGroup(
             algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,10 +166,8 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addComponent(decAlgParametersjLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(309, Short.MAX_VALUE))
         );
-
-        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {decAlgParametersJPanel, preAlgParametersJPanel});
 
         javax.swing.GroupLayout visualizationChartJPanelLayout = new javax.swing.GroupLayout(visualizationChartJPanel);
         visualizationChartJPanel.setLayout(visualizationChartJPanelLayout);
@@ -426,5 +406,13 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         dataVisualizationProcessor = new DataVisualizationProcessor((AssetEntity) assetJComboBox.getSelectedItem(), (Date) fromDateJSpinner.getValue(), (Date) toDateJSpinner.getValue(), (ChartStyle) charStyleJComboBox.getSelectedItem());
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
 
+        TreeMap<String, Class> map = new TreeMap<String, Class>();
+        map.put("String", String.class);
+        map.put("Date", Date.class);
+        map.put("Long", Long.class);
+        map.put("Double", Double.class);
+        preAlgParametersJPanel.add(new ParameterJPanel(map));
+        decAlgParametersJPanel.add(new ParameterJPanel(map));
+        
     }
 }

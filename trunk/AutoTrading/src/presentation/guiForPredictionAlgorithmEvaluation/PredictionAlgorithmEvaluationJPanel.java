@@ -15,6 +15,8 @@ import business.dataVisualization.ChartStyle;
 import business.dataVisualization.DataVisualizationProcessor;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
+import dataAccess.databaseManagement.entity.OrderEntity;
+import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.ExchangeManager;
 import java.util.ArrayList;
@@ -24,13 +26,17 @@ import java.util.TreeMap;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import layout.TableLayout;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.time.TimeSeriesCollection;
 import presentation.ComboKeyHandler;
 import presentation.guiForDataVisualization.DataVisualizationJPanel;
+import presentation.guiForDecisionAlgorithmEvaluation.CriteriaOutputJPanel;
+import presentation.guiForDecisionAlgorithmEvaluation.RowHeaderJPanel;
 import presentation.mainJFrame;
 
 /**
@@ -73,6 +79,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         comparisonTableJPanel = new javax.swing.JPanel();
         comparisonTableJLabel = new javax.swing.JLabel();
         tableJPanel = new javax.swing.JPanel();
+        refreshJButton = new javax.swing.JButton();
         visualizationJPanel = new javax.swing.JPanel();
         symbolOptionJPanel = new javax.swing.JPanel();
         assetJLabel = new javax.swing.JLabel();
@@ -245,12 +252,19 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         tableJPanel.setLayout(tableJPanelLayout);
         tableJPanelLayout.setHorizontalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1084, Short.MAX_VALUE)
+            .addGap(0, 785, Short.MAX_VALUE)
         );
         tableJPanelLayout.setVerticalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 84, Short.MAX_VALUE)
+            .addGap(0, 75, Short.MAX_VALUE)
         );
+
+        refreshJButton.setText("Refresh");
+        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout comparisonTableJPanelLayout = new javax.swing.GroupLayout(comparisonTableJPanel);
         comparisonTableJPanel.setLayout(comparisonTableJPanelLayout);
@@ -262,14 +276,19 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                     .addGroup(comparisonTableJPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(tableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(comparisonTableJLabel))
+                    .addGroup(comparisonTableJPanelLayout.createSequentialGroup()
+                        .addComponent(comparisonTableJLabel)
+                        .addGap(85, 85, 85)
+                        .addComponent(refreshJButton)))
                 .addContainerGap())
         );
         comparisonTableJPanelLayout.setVerticalGroup(
             comparisonTableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(comparisonTableJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(comparisonTableJLabel)
+                .addGroup(comparisonTableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comparisonTableJLabel)
+                    .addComponent(refreshJButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -415,10 +434,11 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                         .addComponent(dateJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(evaluationCriteriaJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(visualizationJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(comparisonTableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(comparisonTableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))
+                    .addComponent(visualizationJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -512,6 +532,10 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
 }//GEN-LAST:event_charStyleJComboBoxActionPerformed
 
+    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
+        updateComparisonTable();
+    }//GEN-LAST:event_refreshJButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPreAlgjButton;
@@ -536,6 +560,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     private javax.swing.JList preAlgsJList;
     private javax.swing.JList preEvaCrisJList;
     private javax.swing.JLabel preEvaluationCriteriaJLabel;
+    private javax.swing.JButton refreshJButton;
     private javax.swing.JButton removePreAlgjButton;
     private javax.swing.JButton removePreEvaCriteriajButton;
     private javax.swing.JLabel startPredictDateJLabel;
@@ -605,6 +630,54 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         dataVisualizationProcessor = new DataVisualizationProcessor((AssetEntity) assetJComboBox.getSelectedItem(), (Date) fromDateJSpinner.getValue(), (Date) toDateJSpinner.getValue(), (ChartStyle) charStyleJComboBox.getSelectedItem());
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
 
+    }
+
+    private void updateComparisonTable() {
+
+        //create table layout
+        double size[][] = new double[2][];
+        size[0] = new double[preEvaCrisJList.getModel().getSize() + 1];
+        for (int i = 0; i < size[0].length; ++i) {
+            size[0][i] = TableLayout.PREFERRED;
+        }
+
+        size[1] = new double[preAlgsJList.getModel().getSize() + 1];
+        for (int i = 0; i < size[1].length; ++i) {
+            size[1][i] = TableLayout.PREFERRED;
+        }
+
+        tableJPanel.removeAll();
+        tableJPanel.setLayout(new TableLayout(size));
+
+        //add components
+        for (int i = 1; i < size[0].length; ++i) {
+            JLabel jLabel = new JLabel(preEvaCrisJList.getModel().getElementAt(i-1).toString());
+            jLabel.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+            tableJPanel.add(jLabel, i +", 0");
+        }
+
+        for (int i = 1; i < size[1].length; ++i) {
+            JLabel jLabel = new JLabel(preAlgsJList.getModel().getElementAt(i-1).toString());
+            jLabel.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+            tableJPanel.add(jLabel, "0, " + i);
+        }
+
+        for (int criteriaIndex = 0; criteriaIndex < size[0].length - 1; ++criteriaIndex) {
+            for (int algIndex = 0; algIndex < size[1].length - 1; ++algIndex) {
+                TreeMap<String, Object> output = new TreeMap<String, Object>();
+                output.put("Lenght", new Long(123));
+                output.put("Name", "Dinh");
+                CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(output);
+                criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                tableJPanel.add(criteriaOutputJPanel, (criteriaIndex + 1) + ", " + (algIndex + 1));
+            }
+        }
+
+        tableJPanel.updateUI();
     }
 
 }
