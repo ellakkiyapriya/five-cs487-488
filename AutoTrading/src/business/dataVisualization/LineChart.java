@@ -40,8 +40,7 @@ public class LineChart implements VisulizationChart{
     private XYDataset priceDataset, 
             volumeDataset,
             predictionDataset,
-            buyPointDataset,
-            sellPointDataset;
+            markPointsDataset;
 
     @Override
     public JFreeChart getChart() {
@@ -72,8 +71,7 @@ public class LineChart implements VisulizationChart{
         plot.setDataset(0, priceDataset);
         plot.setDataset(1, volumeDataset);
         plot.setDataset(2, predictionDataset);
-        plot.setDataset(3, buyPointDataset);
-        plot.setDataset(4, sellPointDataset);
+        plot.setDataset(3, markPointsDataset);
     }
 
     @Override
@@ -137,18 +135,19 @@ public class LineChart implements VisulizationChart{
     @Override
     public void setOrders(ArrayList<OrderEntity> orders) {
         TimeSeries buySeries = new TimeSeries("Buy Signals");
-        TimeSeries sellSeries = new TimeSeries("Buy Signals");
+        TimeSeries sellSeries = new TimeSeries("Sell Signals");
 
-        for (OrderEntity price : orders) {
-            priceSeries.add(new Day(price.getDate()), price.getClose());
-            volumeSeries.add(new Day(price.getDate()), price.getVolume());
+        for (OrderEntity order : orders) {
+            if (order.getOrderType())
+                buySeries.add(new Day(order.getDate()), order.getPrice());
+            else
+                sellSeries.add(new Day(order.getDate()), order.getPrice());
         }
 
-        TimeSeriesCollection dataset = new TimeSeriesCollection(priceSeries);
-        priceDataset = dataset;
-
-        dataset = new TimeSeriesCollection(volumeSeries);
-        volumeDataset = new XYBarDataset(dataset, 100);
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        dataset.addSeries(buySeries);
+        dataset.addSeries(sellSeries);
+        markPointsDataset = dataset;
     }
 
     @Override
