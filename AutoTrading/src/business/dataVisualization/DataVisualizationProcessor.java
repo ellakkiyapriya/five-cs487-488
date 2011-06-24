@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package business.dataVisualization;
 
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.Date;
@@ -19,17 +19,15 @@ import org.jfree.chart.JFreeChart;
  * @author Dinh
  */
 public class DataVisualizationProcessor {
+
     public static final ChartStyle[] CHART_STYLES = {new ChartStyle(LineChart.class), new ChartStyle(CandleStickChart.class)};
     private static PriceManager priceManager = new PriceManager();
-    
     private AssetEntity asset;
     private Date fromDate;
     private Date toDate;
-
     private Date startPreDate;
     private AbstractPredictAlgorithm preAlg;
     private AbstractDecisionAlgorithm decAlg;
-
     private VisulizationChart visulizationChart;
     private ArrayList<PriceEntity> prices;
 
@@ -40,11 +38,16 @@ public class DataVisualizationProcessor {
             this.toDate = toDate;
 
             this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
-            
+
             visulizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
             visulizationChart.initalChart();
             visulizationChart.setPrices(prices);
             visulizationChart.setPredictionPrices(prices);
+            ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
+            for (PriceEntity price : prices) {
+                orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
+            }
+            visulizationChart.setOrders(orders);
             visulizationChart.updateChart();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
@@ -52,10 +55,16 @@ public class DataVisualizationProcessor {
             ex.printStackTrace();
         }
     }
-    
+
     public void updateChart() {
         this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
         visulizationChart.setPrices(prices);
+        visulizationChart.setPredictionPrices(prices);
+        ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
+        for (PriceEntity price : prices) {
+            orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
+        }
+        visulizationChart.setOrders(orders);
         visulizationChart.updateChart();
 
     }
@@ -123,5 +132,4 @@ public class DataVisualizationProcessor {
     public JFreeChart getChart() {
         return visulizationChart.getChart();
     }
-    
 }
