@@ -53,7 +53,7 @@ public class LineChart implements VisulizationChart{
         priceDataset = dataset;
 
         dataset = new TimeSeriesCollection(volumeSeries);
-        volumeDataset = new XYBarDataset(dataset, 100000000);
+        volumeDataset = new XYBarDataset(dataset, 100);
 
     }
 
@@ -77,6 +77,9 @@ public class LineChart implements VisulizationChart{
         //chart.getXYPlot().getRangeAxis().setLowerBound(0);
         lineChart.setBackgroundPaint(Color.white);
         XYPlot plot = lineChart.getXYPlot();
+        plot.setBackgroundPaint(Color.white);
+        plot.setRangeGridlinePaint(Color.blue);
+        plot.setDomainGridlinePaint(Color.blue);
 
         DateAxis dateAxis = (DateAxis) plot.getDomainAxis();
         dateAxis.setPositiveArrowVisible(true);

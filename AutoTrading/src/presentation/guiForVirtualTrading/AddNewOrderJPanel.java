@@ -8,13 +8,19 @@
  *
  * Created on Jun 8, 2011, 12:39:52 PM
  */
-
 package presentation.guiForVirtualTrading;
 
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
+import dataAccess.databaseManagement.manager.ExchangeManager;
+import java.util.ArrayList;
+import java.util.TreeMap;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
 import presentation.ComboKeyHandler;
+import presentation.guiForDataVisualization.DataVisualizationJPanel;
 
 /**
  *
@@ -28,6 +34,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
     public AddNewOrderJPanel(JDialog jDialog) {
         this.parent = jDialog;
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -41,8 +48,6 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
         buySellJLabel = new javax.swing.JLabel();
         buySellJComboBox = new javax.swing.JComboBox();
-        symbolJLabel = new javax.swing.JLabel();
-        symbolJComboBox = new javax.swing.JComboBox();
         priceJLabel = new javax.swing.JLabel();
         priceJSpinner = new javax.swing.JSpinner();
         vndJLabel = new javax.swing.JLabel();
@@ -50,20 +55,15 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         volumeJSpinner = new javax.swing.JSpinner();
         cancelJButton = new javax.swing.JButton();
         okJButton = new javax.swing.JButton();
+        exchangeJLabel = new javax.swing.JLabel();
+        exchangeJComboBox = new javax.swing.JComboBox();
+        assetJLabel = new javax.swing.JLabel();
+        assetJComboBox = new javax.swing.JComboBox();
 
         buySellJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         buySellJLabel.setText("Buy/Sell:");
 
         buySellJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Buy", "Sell" }));
-
-        symbolJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        symbolJLabel.setText("Symbol:");
-
-        symbolJComboBox.setEditable(true);
-        symbolJComboBox.setModel(new javax.swing.DefaultComboBoxModel((new AssetManager()).getAllAssets().toArray()));
-        JTextField fieldSymbol = (JTextField)symbolJComboBox.getEditor().getEditorComponent();
-        fieldSymbol.setText("");
-        fieldSymbol.addKeyListener(new ComboKeyHandler(symbolJComboBox));
 
         priceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         priceJLabel.setText("Price:");
@@ -91,6 +91,26 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
             }
         });
 
+        exchangeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        exchangeJLabel.setText("Exchange:");
+
+        exchangeJComboBox.setEditable(true);
+        exchangeJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exchangeJComboBoxActionPerformed(evt);
+            }
+        });
+
+        assetJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        assetJLabel.setText("Asset:");
+
+        assetJComboBox.setEditable(true);
+        assetJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assetJComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,9 +121,13 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buySellJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(symbolJLabel)
+                .addComponent(exchangeJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(assetJLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(priceJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -114,9 +138,9 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
                 .addComponent(volumeJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(494, Short.MAX_VALUE)
+                .addContainerGap(580, Short.MAX_VALUE)
                 .addComponent(okJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelJButton)
@@ -132,8 +156,10 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buySellJLabel)
                     .addComponent(buySellJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(symbolJLabel)
-                    .addComponent(symbolJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exchangeJLabel)
+                    .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(assetJLabel)
+                    .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(priceJLabel)
                     .addComponent(priceJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vndJLabel)
@@ -157,19 +183,55 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
+    private void exchangeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeJComboBoxActionPerformed
+        if (exchangeJComboBox.getSelectedIndex() != -1) {
+            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(DataVisualizationJPanel.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+            assetComboKeyHandler.updateListObjects();
+            assetJComboBox.setSelectedIndex(0);
+        }
+}//GEN-LAST:event_exchangeJComboBoxActionPerformed
 
+    private void assetJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assetJComboBoxActionPerformed
+        if (assetJComboBox.getSelectedIndex() != -1) {
+        }
+}//GEN-LAST:event_assetJComboBoxActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox assetJComboBox;
+    private javax.swing.JLabel assetJLabel;
     private javax.swing.JComboBox buySellJComboBox;
     private javax.swing.JLabel buySellJLabel;
     private javax.swing.JButton cancelJButton;
+    private javax.swing.JComboBox exchangeJComboBox;
+    private javax.swing.JLabel exchangeJLabel;
     private javax.swing.JButton okJButton;
     private javax.swing.JLabel priceJLabel;
     private javax.swing.JSpinner priceJSpinner;
-    private javax.swing.JComboBox symbolJComboBox;
-    private javax.swing.JLabel symbolJLabel;
     private javax.swing.JLabel vndJLabel;
     private javax.swing.JLabel volumeJLabel;
     private javax.swing.JSpinner volumeJSpinner;
     // End of variables declaration//GEN-END:variables
+    private ComboKeyHandler exchangeComboKeyHandler;
+    private ComboKeyHandler assetComboKeyHandler;
 
+    private void initOtherComponents() {
+
+        if (DataVisualizationJPanel.mappingExchangeID_Assets == null) {
+            DataVisualizationJPanel.mappingExchangeID_Assets = new TreeMap<ExchangeEntity, Object[]>();
+            ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
+            for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
+                ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
+                DataVisualizationJPanel.mappingExchangeID_Assets.put(exchangeEntity, listAssets.toArray());
+            }
+        }
+
+        exchangeJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationJPanel.mappingExchangeID_Assets.keySet().toArray()));
+        exchangeComboKeyHandler = new ComboKeyHandler(exchangeJComboBox);
+        JTextField fieldExchange = (JTextField) exchangeJComboBox.getEditor().getEditorComponent();
+        fieldExchange.addKeyListener(exchangeComboKeyHandler);
+
+        assetJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationJPanel.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+        assetComboKeyHandler = new ComboKeyHandler(assetJComboBox);
+        JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
+        fieldSymbol.addKeyListener(assetComboKeyHandler);
+    }
 }

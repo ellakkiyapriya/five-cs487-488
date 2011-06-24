@@ -11,8 +11,13 @@
 
 package presentation;
 
+import java.awt.Frame;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import presentation.guiForDataUpdate.DataUpdateJPanel;
 import presentation.guiForDataVisualization.DataVisualizationJPanel;
+import presentation.guiForDecisionAlgorithmEvaluation.DecisionAlgorithmEvaluationJPanel;
+import presentation.guiForPredictionAlgorithmEvaluation.PredictionAlgorithmEvaluationJPanel;
 import presentation.guiForVirtualTrading.VirtualTradingJPanel;
 
 /**
@@ -21,10 +26,13 @@ import presentation.guiForVirtualTrading.VirtualTradingJPanel;
  */
 public class mainJFrame extends javax.swing.JFrame {
 
+    public static JFrame mainFrame;
+
     /** Creates new form mainJFrame */
     public mainJFrame() {
         initComponents();
         initOtherComponents();
+        mainFrame = this;
     }
 
     /** This method is called from within the constructor to
@@ -68,14 +76,26 @@ public class mainJFrame extends javax.swing.JFrame {
 
     private void initOtherComponents() {
         DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
-        mainJTabbedPane.addTab("Data Update", dataUpdateJPanel);
+        JScrollPane jScrollPane = new JScrollPane(dataUpdateJPanel);
+        mainJTabbedPane.addTab("Data Update", jScrollPane);
 
         VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
-        mainJTabbedPane.addTab("Virtual Trading", virtualTradingJPanel);
+        jScrollPane = new JScrollPane(virtualTradingJPanel);
+        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
 
         DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
-        mainJTabbedPane.addTab("Data Visualization", dataVisualizationJPanel);
+        jScrollPane = new JScrollPane(dataVisualizationJPanel);
+        mainJTabbedPane.addTab("Data Visualization", jScrollPane);
 
+        DecisionAlgorithmEvaluationJPanel decisionAlgorithmEvaluationJPanel = new DecisionAlgorithmEvaluationJPanel();
+        jScrollPane = new JScrollPane(decisionAlgorithmEvaluationJPanel);
+        mainJTabbedPane.addTab("Decision Algorithm Evaluation", jScrollPane);
+
+        PredictionAlgorithmEvaluationJPanel predictionAlgorithmEvaluationJPanel = new PredictionAlgorithmEvaluationJPanel();
+        jScrollPane = new JScrollPane(predictionAlgorithmEvaluationJPanel);
+        mainJTabbedPane.addTab("Prediction Algorithm Evaluation", jScrollPane);
+
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
