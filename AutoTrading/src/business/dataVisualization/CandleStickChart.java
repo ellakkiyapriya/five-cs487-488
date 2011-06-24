@@ -110,7 +110,6 @@ public class CandleStickChart implements VisulizationChart {
         NumberAxis volumeRangeAxis = new NumberAxis("Volume");
         volumeRangeAxis.setUpperMargin(0.5); // to leave room for price line
         plot.setRangeAxis(1, volumeRangeAxis);
-        plot.setDataset(1, volumeDataset);
         plot.mapDatasetToRangeAxis(1, 1);
         XYBarRenderer volumeRenderer = new XYBarRenderer(0.20);
         volumeRenderer.setBarPainter(new StandardXYBarPainter());
@@ -123,7 +122,6 @@ public class CandleStickChart implements VisulizationChart {
         plot.setRenderer(1, volumeRenderer);
 
         //add prediction price series
-        plot.setDataset(2, predictionDataset);
         plot.mapDatasetToRangeAxis(2, 0);
         DeviationRenderer deviationRenderer = new DeviationRenderer(true, false);
         deviationRenderer.setSeriesStroke(0, new BasicStroke(3F, 1, 1));
@@ -132,7 +130,6 @@ public class CandleStickChart implements VisulizationChart {
         plot.setRenderer(2, deviationRenderer);
 
         //add mark points
-        plot.setDataset(3, markPointsDataset);
         plot.mapDatasetToRangeAxis(3, 0);
         XYLineAndShapeRenderer xyLineAndShapeRenderer = new XYLineAndShapeRenderer();
         xyLineAndShapeRenderer.setSeriesLinesVisible(0, false);
@@ -141,7 +138,7 @@ public class CandleStickChart implements VisulizationChart {
     }
 
     @Override
-    public void setOrders(ArrayList<OrderEntity> orders) {
+    public void setOrders(Object object, ArrayList<OrderEntity> orders) {
         TimeSeries buySeries = new TimeSeries("Buy Signals");
         TimeSeries sellSeries = new TimeSeries("Sell Signals");
 
@@ -159,7 +156,7 @@ public class CandleStickChart implements VisulizationChart {
     }
 
     @Override
-    public void setPredictionPrices(ArrayList<PriceEntity> prices) {
+    public void setPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
         YIntervalSeries yintervalseries = new YIntervalSeries("Predict");
         for (PriceEntity price : prices) {
             yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
@@ -168,5 +165,19 @@ public class CandleStickChart implements VisulizationChart {
         YIntervalSeriesCollection yintervalseriescollection = new YIntervalSeriesCollection();
         yintervalseriescollection.addSeries(yintervalseries);
         predictionDataset = yintervalseriescollection;
+    }
+
+    @Override
+    public void addPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
+        if (predictionDataset == null) {
+            predictionDataset = new YIntervalSeriesCollection();
+        }
+
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + object.toString());
+        for (PriceEntity price : prices) {
+            yintervalseries.add(price.getDate().getTime(), price.getOpen()+1, price.getOpen() + 0.5, price.getOpen() + 1.5);
+        }
+
+        ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
     }
 }
