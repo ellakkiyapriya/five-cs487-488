@@ -11,7 +11,10 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import java.util.Date;
+import java.util.TreeMap;
 import javax.swing.JDialog;
+import presentation.guiForDataVisualization.ParameterJPanel;
 
 /**
  *
@@ -25,6 +28,7 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
     public AddNewDecAlgJPanel(JDialog jDialog) {
         this.parent = jDialog;
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -50,16 +54,7 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
 
         decAlgParametersjLabel.setText("Parameter:");
 
-        javax.swing.GroupLayout decAlgParametersJPanelLayout = new javax.swing.GroupLayout(decAlgParametersJPanel);
-        decAlgParametersJPanel.setLayout(decAlgParametersJPanelLayout);
-        decAlgParametersJPanelLayout.setHorizontalGroup(
-            decAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
-        );
-        decAlgParametersJPanelLayout.setVerticalGroup(
-            decAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
-        );
+        decAlgParametersJPanel.setLayout(new java.awt.GridLayout());
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -82,15 +77,18 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(decAlgJLabel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(decAlgJLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(decAlgParametersjLabel)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(decAlgParametersjLabel))))
+                .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(96, Short.MAX_VALUE)
                 .addComponent(okJButton)
@@ -112,11 +110,11 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
                 .addComponent(decAlgParametersjLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelJButton)
                     .addComponent(okJButton))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cancelJButton, okJButton});
@@ -142,5 +140,15 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel decAlgParametersjLabel;
     private javax.swing.JButton okJButton;
     // End of variables declaration//GEN-END:variables
+
+    private void initOtherComponents() {
+        TreeMap<String, Class> map = new TreeMap<String, Class>();
+        map.put("String", String.class);
+        map.put("Date", Date.class);
+        map.put("Long", Long.class);
+        map.put("Double", Double.class);
+        decAlgParametersJPanel.add(new ParameterJPanel(map));
+
+    }
 
 }

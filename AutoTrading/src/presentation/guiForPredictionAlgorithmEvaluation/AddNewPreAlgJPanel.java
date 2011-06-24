@@ -11,7 +11,10 @@
 
 package presentation.guiForPredictionAlgorithmEvaluation;
 
+import java.util.Date;
+import java.util.TreeMap;
 import javax.swing.JDialog;
+import presentation.guiForDataVisualization.ParameterJPanel;
 
 /**
  *
@@ -25,6 +28,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
     public AddNewPreAlgJPanel(JDialog jDialog) {
         this.parent = jDialog;
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -50,16 +54,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
 
         preAlgParametersjLabel.setText("Parameter:");
 
-        javax.swing.GroupLayout preAlgParametersJPanelLayout = new javax.swing.GroupLayout(preAlgParametersJPanel);
-        preAlgParametersJPanel.setLayout(preAlgParametersJPanelLayout);
-        preAlgParametersJPanelLayout.setHorizontalGroup(
-            preAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
-        );
-        preAlgParametersJPanelLayout.setVerticalGroup(
-            preAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
-        );
+        preAlgParametersJPanel.setLayout(new java.awt.GridLayout());
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -79,24 +74,26 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(preAlgJLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(preAlgParametersjLabel)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(96, Short.MAX_VALUE)
                 .addComponent(okJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cancelJButton)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(preAlgJLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(preAlgParametersjLabel))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelJButton, okJButton});
@@ -112,11 +109,11 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
                 .addComponent(preAlgParametersjLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelJButton)
                     .addComponent(okJButton))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cancelJButton, okJButton});
@@ -142,5 +139,14 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel preAlgParametersJPanel;
     private javax.swing.JLabel preAlgParametersjLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void initOtherComponents() {
+        TreeMap<String, Class> map = new TreeMap<String, Class>();
+        map.put("String", String.class);
+        map.put("Date", Date.class);
+        map.put("Long", Long.class);
+        map.put("Double", Double.class);
+        preAlgParametersJPanel.add(new ParameterJPanel(map));
+    }
 
 }

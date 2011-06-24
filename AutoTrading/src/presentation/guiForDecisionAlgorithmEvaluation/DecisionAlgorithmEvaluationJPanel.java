@@ -11,10 +11,16 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import dataAccess.databaseManagement.entity.OrderEntity;
+import dataAccess.databaseManagement.entity.PortfolioEntity;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import layout.TableLayout;
 import presentation.guiForVirtualTrading.PortfolioTableModel;
 import presentation.mainJFrame;
 
@@ -63,6 +69,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         comparisonTableJPanel = new javax.swing.JPanel();
         comparisonTableJLabel = new javax.swing.JLabel();
         tableJPanel = new javax.swing.JPanel();
+        refreshJButton = new javax.swing.JButton();
         evaluationCriteriaJPanel = new javax.swing.JPanel();
         decEvaluationCriteriaJLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -103,7 +110,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                         .addGroup(dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(toDatejSpinner)
                             .addComponent(fromDatejSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         dateJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {fromDatejSpinner, toDatejSpinner});
@@ -126,7 +133,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
         dateJPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {fromDatejSpinner, toDatejSpinner});
 
-        decAlgjLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        decAlgjLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         decAlgjLabel.setText("DECISION ALGORITHM");
 
         decAlgsJList.setModel(new DefaultListModel());
@@ -161,7 +168,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                             .addComponent(removeDecAlgjButton)
                             .addComponent(addDecAlgjButton)))
                     .addComponent(decAlgjLabel))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         algorithmjPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addDecAlgjButton, removeDecAlgjButton});
@@ -224,9 +231,9 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                                 .addComponent(cashRemainjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(vndjLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                                 .addComponent(importJButton))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         initalPortfolioJPanelLayout.setVerticalGroup(
@@ -254,12 +261,19 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         tableJPanel.setLayout(tableJPanelLayout);
         tableJPanelLayout.setHorizontalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
+            .addGap(0, 443, Short.MAX_VALUE)
         );
         tableJPanelLayout.setVerticalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 256, Short.MAX_VALUE)
+            .addGap(0, 247, Short.MAX_VALUE)
         );
+
+        refreshJButton.setText("Refresh");
+        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout comparisonTableJPanelLayout = new javax.swing.GroupLayout(comparisonTableJPanel);
         comparisonTableJPanel.setLayout(comparisonTableJPanelLayout);
@@ -271,14 +285,19 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                     .addGroup(comparisonTableJPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(tableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(comparisonTableJLabel))
+                    .addGroup(comparisonTableJPanelLayout.createSequentialGroup()
+                        .addComponent(comparisonTableJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 270, Short.MAX_VALUE)
+                        .addComponent(refreshJButton)))
                 .addContainerGap())
         );
         comparisonTableJPanelLayout.setVerticalGroup(
             comparisonTableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(comparisonTableJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(comparisonTableJLabel)
+                .addGroup(comparisonTableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comparisonTableJLabel)
+                    .addComponent(refreshJButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -349,7 +368,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dateJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(algorithmjPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(evaluationCriteriaJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
+                    .addComponent(evaluationCriteriaJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(initalPortfolioJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -411,6 +430,10 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         decEvaCrisJList.updateUI();
     }//GEN-LAST:event_removeDecEvaCriteriajButtonActionPerformed
 
+    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
+        updateComparisonTable();
+    }//GEN-LAST:event_refreshJButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addDecAlgjButton;
     private javax.swing.JButton addDecEvaCriteriajButton;
@@ -436,6 +459,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable portfolioJTable;
     private javax.swing.JLabel portfoliojLabel;
+    private javax.swing.JButton refreshJButton;
     private javax.swing.JButton removeDecAlgjButton;
     private javax.swing.JButton removeDecEvaCriteriajButton;
     private javax.swing.JPanel tableJPanel;
@@ -479,4 +503,49 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         fromDatejSpinner.setValue(now.getTime());
     }
 
+    private void updateComparisonTable() {
+
+        //create table layout
+        double size[][] = new double[2][];
+        size[0] = new double[decEvaCrisJList.getModel().getSize() + 1];
+        for (int i = 0; i < size[0].length; ++i) {
+            size[0][i] = TableLayout.PREFERRED;
+        }
+
+        size[1] = new double[decAlgsJList.getModel().getSize() + 1];
+        for (int i = 0; i < size[1].length; ++i) {
+            size[1][i] = TableLayout.PREFERRED;
+        }
+
+        tableJPanel.removeAll();
+        tableJPanel.setLayout(new TableLayout(size));
+
+        //add components
+        for (int i = 1; i < size[0].length; ++i) {
+            JLabel jLabel = new JLabel(decEvaCrisJList.getModel().getElementAt(i-1).toString());
+            jLabel.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+            tableJPanel.add(jLabel, i +", 0");
+        }
+
+        for (int i = 1; i < size[1].length; ++i) {
+            RowHeaderJPanel rowHeaderJPanel = new RowHeaderJPanel(decAlgsJList.getModel().getElementAt(i-1), new ArrayList<OrderEntity>(), new ArrayList<PortfolioEntity>());
+            rowHeaderJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+            tableJPanel.add(rowHeaderJPanel, "0, " + i);
+        }
+
+        for (int criteriaIndex = 0; criteriaIndex < size[0].length - 1; ++criteriaIndex) {
+            for (int algIndex = 0; algIndex < size[1].length - 1; ++algIndex) {
+                TreeMap<String, Object> output = new TreeMap<String, Object>();
+                output.put("Lenght", new Long(123));
+                output.put("Name", "Dinh");
+                CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(output);
+                criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                tableJPanel.add(criteriaOutputJPanel, (criteriaIndex + 1) + ", " + (algIndex + 1));
+            }
+        }
+
+        tableJPanel.updateUI();
+    }
 }
