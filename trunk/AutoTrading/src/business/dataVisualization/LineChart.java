@@ -18,7 +18,6 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.category.ScatterRenderer;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
@@ -141,9 +140,9 @@ public class LineChart implements VisulizationChart{
     }
 
     @Override
-    public void setOrders(ArrayList<OrderEntity> orders) {
-        TimeSeries buySeries = new TimeSeries("Buy Signals");
-        TimeSeries sellSeries = new TimeSeries("Sell Signals");
+    public void setOrders(Object object, ArrayList<OrderEntity> orders) {
+        TimeSeries buySeries = new TimeSeries("Buy Signals - " + object.toString());
+        TimeSeries sellSeries = new TimeSeries("Sell Signals - " + object.toString());
 
         for (OrderEntity order : orders) {
             if (order.getOrderType())
@@ -159,8 +158,8 @@ public class LineChart implements VisulizationChart{
     }
 
     @Override
-    public void setPredictionPrices(ArrayList<PriceEntity> prices) {
-        YIntervalSeries yintervalseries = new YIntervalSeries("Predict");
+    public void setPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + object.toString());
         for (PriceEntity price : prices) {
             yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
         }
@@ -168,6 +167,20 @@ public class LineChart implements VisulizationChart{
         YIntervalSeriesCollection yintervalseriescollection = new YIntervalSeriesCollection();
         yintervalseriescollection.addSeries(yintervalseries);
         predictionDataset = yintervalseriescollection;
+    }
+
+    @Override
+    public void addPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
+        if (predictionDataset == null) {
+            predictionDataset = new YIntervalSeriesCollection();
+        }
+        
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + object.toString());
+        for (PriceEntity price : prices) {
+            yintervalseries.add(price.getDate().getTime(), price.getOpen()+1, price.getOpen() + 0.5, price.getOpen() + 1.5);
+        }
+
+        ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
     }
 
     

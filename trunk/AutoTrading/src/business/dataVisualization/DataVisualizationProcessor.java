@@ -42,12 +42,13 @@ public class DataVisualizationProcessor {
             visulizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
             visulizationChart.initalChart();
             visulizationChart.setPrices(prices);
-            visulizationChart.setPredictionPrices(prices);
+            visulizationChart.setPredictionPrices("dasfwe", prices);
+            visulizationChart.addPredictionPrices("gaef", prices);
             ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
             for (PriceEntity price : prices) {
                 orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
             }
-            visulizationChart.setOrders(orders);
+            visulizationChart.setOrders("asfawe", orders);
             visulizationChart.updateChart();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
@@ -59,12 +60,13 @@ public class DataVisualizationProcessor {
     public void updateChart() {
         this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
         visulizationChart.setPrices(prices);
-        visulizationChart.setPredictionPrices(prices);
+        visulizationChart.setPredictionPrices("dsafafwe", prices);
+        visulizationChart.addPredictionPrices("asfhhjy", prices);
         ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
         for (PriceEntity price : prices) {
             orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
         }
-        visulizationChart.setOrders(orders);
+        visulizationChart.setOrders("dsafafwe", orders);
         visulizationChart.updateChart();
 
     }
