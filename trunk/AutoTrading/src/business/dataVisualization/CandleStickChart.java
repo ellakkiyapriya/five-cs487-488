@@ -48,14 +48,18 @@ public class CandleStickChart implements VisulizationChart {
         TimeSeries volumeSeries = new TimeSeries("Volume Series");
 
         for (int i = 0; i < prices.size(); ++i) {
-            oHLCDataItems[i] = new OHLCDataItem(prices.get(i).getDate(), prices.get(i).getOpen(), prices.get(i).getHigh(), prices.get(i).getLow(), prices.get(i).getClose(), prices.get(i).getVolume());
+            double open = prices.get(i).getOpen();
+            if (open == 0) {
+                open = prices.get(i).getClose();
+            }
+            oHLCDataItems[i] = new OHLCDataItem(prices.get(i).getDate(), open, prices.get(i).getHigh(), prices.get(i).getLow(), prices.get(i).getClose(), prices.get(i).getVolume());
             volumeSeries.add(new Day(prices.get(i).getDate()), prices.get(i).getVolume());
         }
 
         candleDataset = new DefaultOHLCDataset("Price Series", oHLCDataItems);
 
         TimeSeriesCollection dataset = new TimeSeriesCollection(volumeSeries);
-        volumeDataset = new XYBarDataset(dataset, 100000000);
+        volumeDataset = new XYBarDataset(dataset, 100);
 
     }
 
@@ -77,19 +81,23 @@ public class CandleStickChart implements VisulizationChart {
         candleStickChart.setBackgroundPaint(Color.white);
         CandlestickRenderer candlestickRenderer = (CandlestickRenderer) candleStickChart.getXYPlot().getRenderer();
         candlestickRenderer.setDrawVolume(false);
-        candlestickRenderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_AVERAGE);
+        candlestickRenderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_SMALLEST);
+        
 
         XYPlot plot = candleStickChart.getXYPlot();
+        plot.setBackgroundPaint(Color.white);
+        plot.setRangeGridlinePaint(Color.blue);
+        plot.setDomainGridlinePaint(Color.blue);
 
         DateAxis dateAxis = (DateAxis) plot.getDomainAxis();
         dateAxis.setPositiveArrowVisible(true);
 
         NumberAxis priceRangeAxis = (NumberAxis) plot.getRangeAxis();
-        priceRangeAxis.setLowerMargin(1.00); // to leave room for volume bars
+        priceRangeAxis.setLowerMargin(0.5); // to leave room for volume bars
         priceRangeAxis.setAutoRangeIncludesZero(false);
 
         NumberAxis volumeRangeAxis = new NumberAxis("Volume");
-        volumeRangeAxis.setUpperMargin(1.00); // to leave room for price line
+        volumeRangeAxis.setUpperMargin(0.5); // to leave room for price line
         plot.setRangeAxis(1, volumeRangeAxis);
         plot.mapDatasetToRangeAxis(1, 1);
         XYBarRenderer volumeRenderer = new XYBarRenderer(0.20);

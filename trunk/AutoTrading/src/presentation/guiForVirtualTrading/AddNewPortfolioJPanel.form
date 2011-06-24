@@ -20,9 +20,13 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="symbolJLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="exchangeJLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="symbolJComboBox" min="-2" max="-2" attributes="0"/>
+                      <Component id="exchangeJComboBox" min="-2" pref="88" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="assetJLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="assetJComboBox" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buyPriceJLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -49,8 +53,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="symbolJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="symbolJComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="exchangeJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="exchangeJComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="assetJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="assetJComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buyPriceJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buyPriceJSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="vndJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -68,25 +74,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="symbolJLabel">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="11" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Symbol:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="symbolJComboBox">
-      <Properties>
-        <Property name="editable" type="boolean" value="true"/>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel((new AssetManager()).getAllAssets().toArray())" type="code"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="JTextField fieldSymbol = (JTextField)symbolJComboBox.getEditor().getEditorComponent();&#xa;fieldSymbol.setText(&quot;&quot;);&#xa;fieldSymbol.addKeyListener(new ComboKeyHandler(symbolJComboBox));"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JLabel" name="buyPriceJLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -137,6 +124,38 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="VND"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="exchangeJLabel">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Exchange:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="exchangeJComboBox">
+      <Properties>
+        <Property name="editable" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exchangeJComboBoxActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="assetJLabel">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Asset:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="assetJComboBox">
+      <Properties>
+        <Property name="editable" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="assetJComboBoxActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

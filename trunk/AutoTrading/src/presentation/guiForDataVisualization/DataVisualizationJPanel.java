@@ -57,8 +57,8 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         startPredictionDateJSpinner = new javax.swing.JSpinner();
         preAlgJComboBox = new javax.swing.JComboBox();
         decAlgJComboBox = new javax.swing.JComboBox();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        preAlgParametersJPanel = new javax.swing.JPanel();
+        decAlgParametersJPanel = new javax.swing.JPanel();
         preAlgParametersJLabel = new javax.swing.JLabel();
         decAlgParametersjLabel = new javax.swing.JLabel();
         visualizationChartJPanel = new ChartPanel(ChartFactory.createTimeSeriesChart("", "", "", new TimeSeriesCollection(), true, true, true));
@@ -93,25 +93,25 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout preAlgParametersJPanelLayout = new javax.swing.GroupLayout(preAlgParametersJPanel);
+        preAlgParametersJPanel.setLayout(preAlgParametersJPanelLayout);
+        preAlgParametersJPanelLayout.setHorizontalGroup(
+            preAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 216, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        preAlgParametersJPanelLayout.setVerticalGroup(
+            preAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 121, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout decAlgParametersJPanelLayout = new javax.swing.GroupLayout(decAlgParametersJPanel);
+        decAlgParametersJPanel.setLayout(decAlgParametersJPanelLayout);
+        decAlgParametersJPanelLayout.setHorizontalGroup(
+            decAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 216, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        decAlgParametersJPanelLayout.setVerticalGroup(
+            decAlgParametersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 121, Short.MAX_VALUE)
         );
 
@@ -137,7 +137,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                                     .addComponent(decAlgParametersjLabel)
                                     .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                                 .addComponent(preAlgJLabel)
                                 .addGap(18, 18, 18)
@@ -145,7 +145,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                             .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(preAlgParametersJLabel)))))
                     .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -157,7 +157,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {decAlgJComboBox, preAlgJComboBox});
 
-        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jPanel1, jPanel2});
+        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {decAlgParametersJPanel, preAlgParametersJPanel});
 
         algorithmOptionJPanelLayout.setVerticalGroup(
             algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,7 +175,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addGap(9, 9, 9)
                 .addComponent(preAlgParametersJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(decAlgJLabel)
@@ -183,17 +183,17 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(decAlgParametersjLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(67, Short.MAX_VALUE))
         );
 
-        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel1, jPanel2});
+        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {decAlgParametersJPanel, preAlgParametersJPanel});
 
         javax.swing.GroupLayout visualizationChartJPanelLayout = new javax.swing.GroupLayout(visualizationChartJPanel);
         visualizationChartJPanel.setLayout(visualizationChartJPanelLayout);
         visualizationChartJPanelLayout.setHorizontalGroup(
             visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 932, Short.MAX_VALUE)
+            .addGap(0, 868, Short.MAX_VALUE)
         );
         visualizationChartJPanelLayout.setVerticalGroup(
             visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,7 +277,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addComponent(chartStyleJLabel)
                 .addGap(18, 18, 18)
                 .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         symbolOptionJPanelLayout.setVerticalGroup(
             symbolOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,7 +326,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
     private void exchangeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeJComboBoxActionPerformed
         if (exchangeJComboBox.getSelectedIndex() != -1) {
-            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mappingExchangeID_Assets.get(((ExchangeEntity) exchangeJComboBox.getSelectedItem()).getExchangeID())));
+            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
             assetComboKeyHandler.updateListObjects();
             assetJComboBox.setSelectedIndex(0);
         }
@@ -354,7 +354,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         if (toDateJSpinner.getValue() == null || dataVisualizationProcessor == null) {
             return;
         }
-        
+
         dataVisualizationProcessor.setToDate((Date) toDateJSpinner.getValue());
         dataVisualizationProcessor.updateChart();
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
@@ -364,7 +364,6 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         dataVisualizationProcessor.changeChartType((ChartStyle) charStyleJComboBox.getSelectedItem());
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
     }//GEN-LAST:event_charStyleJComboBoxActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel algorithmJLabel;
     private javax.swing.JPanel algorithmOptionJPanel;
@@ -374,16 +373,16 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel chartStyleJLabel;
     private javax.swing.JComboBox decAlgJComboBox;
     private javax.swing.JLabel decAlgJLabel;
+    private javax.swing.JPanel decAlgParametersJPanel;
     private javax.swing.JLabel decAlgParametersjLabel;
     private javax.swing.JComboBox exchangeJComboBox;
     private javax.swing.JLabel exchangeJLabel;
     private javax.swing.JSpinner fromDateJSpinner;
     private javax.swing.JLabel fromJLabel;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JComboBox preAlgJComboBox;
     private javax.swing.JLabel preAlgJLabel;
     private javax.swing.JLabel preAlgParametersJLabel;
+    private javax.swing.JPanel preAlgParametersJPanel;
     private javax.swing.JSpinner startPredictionDateJSpinner;
     private javax.swing.JLabel startPredictionJLabel;
     private javax.swing.JPanel symbolOptionJPanel;
@@ -394,7 +393,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private DataVisualizationProcessor dataVisualizationProcessor;
     private ComboKeyHandler exchangeComboKeyHandler;
     private ComboKeyHandler assetComboKeyHandler;
-    private TreeMap<Long, Object[]> mappingExchangeID_Assets;
+    public static TreeMap<ExchangeEntity, Object[]> mappingExchangeID_Assets;
 
     private void initOtherComponents() {
         Calendar now = Calendar.getInstance();
@@ -403,27 +402,29 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         now.add(Calendar.MONTH, -6);
         fromDateJSpinner.setValue(now.getTime());
 
-        mappingExchangeID_Assets = new TreeMap<Long, Object[]>();
-        ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
-        for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
-            ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
-            mappingExchangeID_Assets.put(exchangeEntity.getExchangeID(), listAssets.toArray());
+        if (mappingExchangeID_Assets == null) {
+            mappingExchangeID_Assets = new TreeMap<ExchangeEntity, Object[]>();
+            ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
+            for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
+                ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
+                mappingExchangeID_Assets.put(exchangeEntity, listAssets.toArray());
+            }
         }
 
-        charStyleJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationProcessor.listAllChartStyles));
+        charStyleJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationProcessor.CHART_STYLES));
 
-        exchangeJComboBox.setModel(new DefaultComboBoxModel(listAllExchangeEntitys.toArray()));
+        exchangeJComboBox.setModel(new DefaultComboBoxModel(mappingExchangeID_Assets.keySet().toArray()));
         exchangeComboKeyHandler = new ComboKeyHandler(exchangeJComboBox);
         JTextField fieldExchange = (JTextField) exchangeJComboBox.getEditor().getEditorComponent();
         fieldExchange.addKeyListener(exchangeComboKeyHandler);
 
-        assetJComboBox.setModel(new DefaultComboBoxModel(mappingExchangeID_Assets.get(((ExchangeEntity) exchangeJComboBox.getSelectedItem()).getExchangeID())));
+        assetJComboBox.setModel(new DefaultComboBoxModel(mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
         assetComboKeyHandler = new ComboKeyHandler(assetJComboBox);
         JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
         fieldSymbol.addKeyListener(assetComboKeyHandler);
 
         dataVisualizationProcessor = new DataVisualizationProcessor((AssetEntity) assetJComboBox.getSelectedItem(), (Date) fromDateJSpinner.getValue(), (Date) toDateJSpinner.getValue(), (ChartStyle) charStyleJComboBox.getSelectedItem());
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
-        
+
     }
 }

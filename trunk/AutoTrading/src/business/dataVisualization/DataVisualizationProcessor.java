@@ -12,8 +12,6 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jfree.chart.JFreeChart;
 
 /**
@@ -21,7 +19,7 @@ import org.jfree.chart.JFreeChart;
  * @author Dinh
  */
 public class DataVisualizationProcessor {
-    public static final ChartStyle[] listAllChartStyles = {new ChartStyle(LineChart.class), new ChartStyle(CandleStickChart.class)};
+    public static final ChartStyle[] CHART_STYLES = {new ChartStyle(LineChart.class), new ChartStyle(CandleStickChart.class)};
     private static PriceManager priceManager = new PriceManager();
     
     private AssetEntity asset;

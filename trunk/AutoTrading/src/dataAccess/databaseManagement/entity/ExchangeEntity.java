@@ -2,7 +2,7 @@ package dataAccess.databaseManagement.entity;
 
 import java.io.Serializable;
 
-public class ExchangeEntity implements Serializable {
+public class ExchangeEntity implements Serializable, Comparable<ExchangeEntity> {
 
     /**
      *
@@ -47,5 +47,10 @@ public class ExchangeEntity implements Serializable {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(ExchangeEntity o) {
+        return new Long(this.exchangeID).compareTo(o.exchangeID);
     }
 }

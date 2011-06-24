@@ -69,8 +69,10 @@ public class OrderTableModel extends AbstractTableModel{
     }
 
     public void deleteRows(int[] rowIndices) {
+        int count = 0;
         for (int rowIndex : rowIndices) {
-            data.remove(rowIndex);
+            data.remove(rowIndex - count);
+            ++count;
         }
     }
 

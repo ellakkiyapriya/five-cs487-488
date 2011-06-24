@@ -13,6 +13,7 @@ package presentation.guiForVirtualTrading;
 
 import javax.swing.JDialog;
 import javax.swing.JSpinner;
+import presentation.mainJFrame;
 
 /**
  *
@@ -270,7 +271,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     }
 
     public JDialog newAddNewUserJDialog() {
-        JDialog jDialog = new JDialog();
+        JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
         AddNewUserJPanel panel = new AddNewUserJPanel(jDialog);
         jDialog.add(panel);
         jDialog.pack();
@@ -278,7 +279,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     }
 
     public JDialog newAddNewOrderJDialog() {
-        JDialog jDialog = new JDialog();
+        JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
         AddNewOrderJPanel panel = new AddNewOrderJPanel(jDialog);
         jDialog.add(panel);
         jDialog.pack();
