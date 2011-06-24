@@ -84,7 +84,12 @@ package business.virtualTrading;
  */
 
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
@@ -100,6 +105,14 @@ import dataAccess.databaseManagement.manager.OrderManager;
 
 /*
  * TODO : Assume that names of all symbols are unique
+ * 
+ * public long getAssetIDbySymbol(String assetSymbol) { long assetID = -1; try {
+ * connection = getConnection(); Statement statement =
+ * connection.createStatement(); resultSet =
+ * statement.executeQuery("SELECT asset_id FROM asset WHERE symbol=? ");
+ * resultSet.next(); assetID = resultSet.getSymbol(1);
+ * 
+ * } catch (SQLException ex) { ex.printStackTrace(); } return assetID; }
  */
 
 public class Order {
@@ -108,6 +121,7 @@ public class Order {
 	private boolean orderType;
 	private double price;
 	private double volume;
+	private double value;
 
 	public Order() {
 
@@ -119,13 +133,27 @@ public class Order {
 		this.setOrderType(orderType);
 		this.setPrice(price);
 		this.setVolume(volume);
+		this.setValue(price * volume);
 	}
 
 	/**
 	 * Add order to database. <li>Note: this method update database
 	 */
-	public void add() {
+	
+/*	// add order to database by getAssetIDbySymbol()
+ *  public void add(long userID) {
+ *  AssetManager assetManager = new AssetManager();
+ *  long assetID = assetManager.getAssetIDbySymbol();
+*/ 
+ 	
+ 	public void add(long userID, long assetID) {
+ 		Calendar cal = Calendar.getInstance();
+ 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+ 		Date date = Date.valueOf(dateFormat.format(cal.getTime()));
+ 		
 		OrderManager orderManager = new OrderManager();
+		OrderEntity orderEntity = new OrderEntity(orderType, userID,date , assetID, price, volume, true);
+		orderManager.add(orderEntity);
 	}
 
 	/**
@@ -142,7 +170,7 @@ public class Order {
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		OrderEntity currentOrder;
 		String currentAssetSymbol;
-		
+
 		for (int i = 0; i < orderEntityList.size(); i++) {
 			currentOrder = orderEntityList.get(i);
 			currentAssetSymbol = assetmanager.getAssetByID(
@@ -152,7 +180,7 @@ public class Order {
 					.getVolume());
 			orderList.add(order);
 		}
-		
+
 		return orderList;
 	}
 
@@ -200,6 +228,14 @@ public class Order {
 
 	public double getVolume() {
 		return volume;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+
+	public double getValue() {
+		return value;
 	}
 
 }
