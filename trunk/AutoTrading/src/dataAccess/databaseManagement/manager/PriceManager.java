@@ -185,6 +185,55 @@ public class PriceManager {
         return null;
     }
 
+    public PriceEntity getPriceByAssetIDAndDate(long assetID, Date date) {
+        try {
+            PriceEntity priceEntity = null;
+
+            String queryString = "SELECT * FROM price WHERE asset_id=? AND date=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, assetID);
+            ptmt.setDate(2, date);
+            resultSet = ptmt.executeQuery();
+
+            if (resultSet.next()) {
+                priceEntity = new PriceEntity();
+                priceEntity.setPriceID(resultSet.getLong("price_id"));
+                priceEntity.setAssetID(resultSet.getLong("asset_id"));
+                priceEntity.setDate(resultSet.getDate("date"));
+                priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
+                priceEntity.setVolume(resultSet.getDouble("volume"));
+                priceEntity.setOpen(resultSet.getDouble("open"));
+                priceEntity.setClose(resultSet.getDouble("close"));
+                priceEntity.setHigh(resultSet.getDouble("high"));
+                priceEntity.setLow(resultSet.getDouble("low"));
+            }
+
+            return priceEntity;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
+
+
     public ArrayList<PriceEntity> getPriceInInterval(long asset_id, Date fromDate, Date toDate) {
         try {
             ArrayList<PriceEntity> listPrices = new ArrayList<PriceEntity>();
