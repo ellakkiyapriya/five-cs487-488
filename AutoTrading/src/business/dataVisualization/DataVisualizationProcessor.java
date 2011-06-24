@@ -44,6 +44,7 @@ public class DataVisualizationProcessor {
             visulizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
             visulizationChart.initalChart();
             visulizationChart.setPrices(prices);
+            visulizationChart.setPredictionPrices(prices);
             visulizationChart.updateChart();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
