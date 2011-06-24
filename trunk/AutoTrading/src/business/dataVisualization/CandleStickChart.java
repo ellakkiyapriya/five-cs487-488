@@ -6,7 +6,9 @@ package business.dataVisualization;
 
 import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Shape;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,8 +19,10 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.CandlestickRenderer;
+import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -27,6 +31,8 @@ import org.jfree.data.xy.OHLCDataItem;
 import org.jfree.data.xy.OHLCDataset;
 import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.YIntervalSeries;
+import org.jfree.data.xy.YIntervalSeriesCollection;
 
 /**
  *
@@ -36,7 +42,9 @@ public class CandleStickChart implements VisulizationChart {
 
     private JFreeChart candleStickChart;
     private OHLCDataset candleDataset;
-    private XYDataset volumeDataset;
+    private XYDataset volumeDataset,
+            predictionDataset,
+            markPointsDataset;
 
     @Override
     public JFreeChart getChart() {
@@ -69,6 +77,8 @@ public class CandleStickChart implements VisulizationChart {
         XYPlot plot = candleStickChart.getXYPlot();
         plot.setDataset(0,candleDataset);
         plot.setDataset(1, volumeDataset);
+        plot.setDataset(2,predictionDataset);
+        plot.setDataset(3, markPointsDataset);
     }
 
     @Override
@@ -100,6 +110,7 @@ public class CandleStickChart implements VisulizationChart {
         NumberAxis volumeRangeAxis = new NumberAxis("Volume");
         volumeRangeAxis.setUpperMargin(0.5); // to leave room for price line
         plot.setRangeAxis(1, volumeRangeAxis);
+        plot.setDataset(1, volumeDataset);
         plot.mapDatasetToRangeAxis(1, 1);
         XYBarRenderer volumeRenderer = new XYBarRenderer(0.20);
         volumeRenderer.setBarPainter(new StandardXYBarPainter());
@@ -110,15 +121,52 @@ public class CandleStickChart implements VisulizationChart {
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
         volumeRenderer.setSeriesPaint(0, Color.GRAY);
         plot.setRenderer(1, volumeRenderer);
+
+        //add prediction price series
+        plot.setDataset(2, predictionDataset);
+        plot.mapDatasetToRangeAxis(2, 0);
+        DeviationRenderer deviationRenderer = new DeviationRenderer(true, false);
+        deviationRenderer.setSeriesStroke(0, new BasicStroke(3F, 1, 1));
+        deviationRenderer.setSeriesPaint(0, Color.BLUE);
+        deviationRenderer.setSeriesFillPaint(0, new Color(255, 200, 200));
+        plot.setRenderer(2, deviationRenderer);
+
+        //add mark points
+        plot.setDataset(3, markPointsDataset);
+        plot.mapDatasetToRangeAxis(3, 0);
+        XYLineAndShapeRenderer xyLineAndShapeRenderer = new XYLineAndShapeRenderer();
+        xyLineAndShapeRenderer.setSeriesLinesVisible(0, false);
+        xyLineAndShapeRenderer.setSeriesLinesVisible(1, false);
+        plot.setRenderer(3, xyLineAndShapeRenderer);
     }
 
     @Override
     public void setOrders(ArrayList<OrderEntity> orders) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TimeSeries buySeries = new TimeSeries("Buy Signals");
+        TimeSeries sellSeries = new TimeSeries("Sell Signals");
+
+        for (OrderEntity order : orders) {
+            if (order.getOrderType())
+                buySeries.add(new Day(order.getDate()), order.getPrice());
+            else
+                sellSeries.add(new Day(order.getDate()), order.getPrice());
+        }
+
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        dataset.addSeries(buySeries);
+        dataset.addSeries(sellSeries);
+        markPointsDataset = dataset;
     }
 
     @Override
     public void setPredictionPrices(ArrayList<PriceEntity> prices) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict");
+        for (PriceEntity price : prices) {
+            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
+        }
+
+        YIntervalSeriesCollection yintervalseriescollection = new YIntervalSeriesCollection();
+        yintervalseriescollection.addSeries(yintervalseries);
+        predictionDataset = yintervalseriescollection;
     }
 }

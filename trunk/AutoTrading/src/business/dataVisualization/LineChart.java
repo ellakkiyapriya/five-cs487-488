@@ -18,10 +18,12 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.ScatterRenderer;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -130,6 +132,12 @@ public class LineChart implements VisulizationChart{
         plot.setRenderer(2, deviationRenderer);
 
         //add mark points
+        plot.mapDatasetToRangeAxis(3, 0);
+        XYLineAndShapeRenderer xyLineAndShapeRenderer = new XYLineAndShapeRenderer();
+        xyLineAndShapeRenderer.setSeriesLinesVisible(0, false);
+        xyLineAndShapeRenderer.setSeriesLinesVisible(1, false);
+        plot.setRenderer(3, xyLineAndShapeRenderer);
+
     }
 
     @Override
