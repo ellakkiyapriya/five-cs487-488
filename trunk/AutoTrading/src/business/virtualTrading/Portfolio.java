@@ -15,10 +15,24 @@ import dataAccess.databaseManagement.manager.PortfolioManager;
  * @author Xuan Ngoc
  */
 public class Portfolio {
-	PortfolioEntity portfolioEntity;
+	private String assetSymbol;
+	private double buyPrice;
+	private double currentPrice;
+	private double volume;
+	private double profit;
 	
-	public Portfolio(long userID, long assetID, double price, double volume, Date date) {
-		portfolioEntity = new PortfolioEntity(userID, assetID, price, volume, date);
+	
+	public Portfolio() {
+		
+	}
+	
+	public Portfolio(String assetSymbol, long buyPrice, double volume) {
+		this.assetSymbol = assetSymbol;
+		this.buyPrice = buyPrice;
+		this.volume = volume;
+		this.profit = 0;
+		
+//		this.getLatestPrice(		
 	}
 	
 	
@@ -26,10 +40,9 @@ public class Portfolio {
 	 * Add portfolio to database
 	 * <li> Note: this method update database
 	 */
-	public long add() {
+	public void add() {
 		PortfolioManager portfolioManager = new PortfolioManager();
-		portfolioManager.add(portfolioEntity);
-		return portfolioEntity.getPortfolioID();
+		
 	}
 	
 	/**
@@ -49,16 +62,22 @@ public class Portfolio {
 		return portfolioManager.getPortfolioByDate(date);
 	}
 	
+	
+	public static double portfolioProfit() {
+		return 0;
+	}
+	
+	
 	public static void main(String args[]) {
 		Date date = Date.valueOf("2001-01-02");
 		
-		Portfolio portfolioSample = new Portfolio(1, 2, 1.22, 11, date);
+//		Portfolio portfolioSample = new Portfolio(1, 2, 1.22, 11, date);
 		PortfolioManager portfolioManager = new PortfolioManager();
 		Date ta = portfolioManager.getLatestDate();
 		System.out.println(ta.toString());
 //		portfolioSample.add();
 		
-		ArrayList<PortfolioEntity> t = portfolioSample.getPortfolioByDate(date);
+//		ArrayList<PortfolioEntity> t = portfolioSample.getPortfolioByDate(date);
 		
 	}
 
