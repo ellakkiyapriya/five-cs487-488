@@ -5,7 +5,9 @@
 
 package business.dataVisualization;
 
+import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,7 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -24,6 +27,8 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.YIntervalSeries;
+import org.jfree.data.xy.YIntervalSeriesCollection;
 
 /**
  *
@@ -32,7 +37,11 @@ import org.jfree.data.xy.XYDataset;
 public class LineChart implements VisulizationChart{
 
     private JFreeChart lineChart;
-    private XYDataset priceDataset, volumeDataset;
+    private XYDataset priceDataset, 
+            volumeDataset,
+            predictionDataset,
+            buyPointDataset,
+            sellPointDataset;
 
     @Override
     public JFreeChart getChart() {
@@ -62,6 +71,9 @@ public class LineChart implements VisulizationChart{
         XYPlot plot = lineChart.getXYPlot();
         plot.setDataset(0, priceDataset);
         plot.setDataset(1, volumeDataset);
+        plot.setDataset(2, predictionDataset);
+        plot.setDataset(3, buyPointDataset);
+        plot.setDataset(4, sellPointDataset);
     }
 
     @Override
@@ -96,6 +108,7 @@ public class LineChart implements VisulizationChart{
                 StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 
+        //add volume series
         NumberAxis volumeRangeAxis = new NumberAxis("Volume");
         volumeRangeAxis.setUpperMargin(1.00); // to leave room for price line
         plot.setRangeAxis(1, volumeRangeAxis);
@@ -109,6 +122,45 @@ public class LineChart implements VisulizationChart{
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
         volumeRenderer.setSeriesPaint(0, Color.GRAY);
         plot.setRenderer(1, volumeRenderer);
+
+        //add prediction price series
+        plot.mapDatasetToRangeAxis(2, 0);
+        DeviationRenderer deviationRenderer = new DeviationRenderer(true, false);
+        deviationRenderer.setSeriesStroke(0, new BasicStroke(3F, 1, 1));
+        deviationRenderer.setSeriesPaint(0, Color.BLUE);
+        deviationRenderer.setSeriesFillPaint(0, new Color(255, 200, 200));
+        plot.setRenderer(2, deviationRenderer);
+
+        //add mark points
+    }
+
+    @Override
+    public void setOrders(ArrayList<OrderEntity> orders) {
+        TimeSeries buySeries = new TimeSeries("Buy Signals");
+        TimeSeries sellSeries = new TimeSeries("Buy Signals");
+
+        for (OrderEntity price : orders) {
+            priceSeries.add(new Day(price.getDate()), price.getClose());
+            volumeSeries.add(new Day(price.getDate()), price.getVolume());
+        }
+
+        TimeSeriesCollection dataset = new TimeSeriesCollection(priceSeries);
+        priceDataset = dataset;
+
+        dataset = new TimeSeriesCollection(volumeSeries);
+        volumeDataset = new XYBarDataset(dataset, 100);
+    }
+
+    @Override
+    public void setPredictionPrices(ArrayList<PriceEntity> prices) {
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict");
+        for (PriceEntity price : prices) {
+            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
+        }
+
+        YIntervalSeriesCollection yintervalseriescollection = new YIntervalSeriesCollection();
+        yintervalseriescollection.addSeries(yintervalseries);
+        predictionDataset = yintervalseriescollection;
     }
 
     

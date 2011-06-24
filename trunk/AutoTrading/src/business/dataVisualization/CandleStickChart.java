@@ -4,6 +4,7 @@
  */
 package business.dataVisualization;
 
+import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import java.awt.Color;
 import java.text.DecimalFormat;
@@ -109,5 +110,15 @@ public class CandleStickChart implements VisulizationChart {
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
         volumeRenderer.setSeriesPaint(0, Color.GRAY);
         plot.setRenderer(1, volumeRenderer);
+    }
+
+    @Override
+    public void setOrders(ArrayList<OrderEntity> orders) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setPredictionPrices(ArrayList<PriceEntity> prices) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

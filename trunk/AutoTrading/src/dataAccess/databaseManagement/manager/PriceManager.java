@@ -288,4 +288,21 @@ public class PriceManager {
 
         return null;
     }
+
+        public Date getLatestDate() {
+        Date latestDate = null;
+
+        try {
+            connection = getConnection();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT max(date) FROM price");
+            resultSet.next();
+            latestDate = resultSet.getDate(1);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return latestDate;
+    }
 }
