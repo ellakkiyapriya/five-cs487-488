@@ -1,10 +1,34 @@
 package business.virtualTrading;
 
+/* TODO add to PriceManager.java
+ * 
+ public Date getLatestDate() {
+        Date latestDate = null;
+
+        try {
+            connection = getConnection();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT max(date) FROM price");
+            resultSet.next();
+            latestDate = resultSet.getDate(1);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return latestDate;
+    }
+ */
+
+
+
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.util.ArrayList;
 
+import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.manager.PortfolioManager;
 
@@ -15,7 +39,8 @@ import dataAccess.databaseManagement.manager.PortfolioManager;
  * @author Xuan Ngoc
  */
 public class Portfolio {
-	private String assetSymbol;
+	
+	private Asset asset;
 	private double buyPrice;
 	private double currentPrice;
 	private double volume;
@@ -26,8 +51,17 @@ public class Portfolio {
 		
 	}
 	
-	public Portfolio(String assetSymbol, long buyPrice, double volume) {
-		this.assetSymbol = assetSymbol;
+	public Portfolio(Asset asset, long buyPrice, double volume) {
+		this.asset = new Asset(asset);
+		this.buyPrice = buyPrice;
+		this.volume = volume;
+		this.profit = 0;
+		
+//		this.getLatestPrice(		
+	}
+	
+	public Portfolio(AssetEntity asset, long buyPrice, double volume) {
+		this.asset = new Asset(asset);
 		this.buyPrice = buyPrice;
 		this.volume = volume;
 		this.profit = 0;
