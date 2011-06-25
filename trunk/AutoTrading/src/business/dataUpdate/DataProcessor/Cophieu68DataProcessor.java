@@ -208,21 +208,4 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 		}
 		return true;
 	}
-	
-	
-	public static void main(String args[])
-	{
-		//addExchangeMarketsAndAssetsToDatabase("company.csv");
-		//updateHistoricalDataFromFile("HOSE.csv", "HOSE");
-		//updateHistoricalDataFromFile("HASTC.csv", "HASTC");
-		/*
-		AbstractDataGetter dataGetter = new Cophieu68DataGetter();
-		AbstractDataProcessor dataProcessor = new Cophieu68DataProcessor();
-		dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(new Date(2011, 6, 12))));
-		*/
-		
-		
-		
-		
-	}
 }
