@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import Utility.ParamList;
 import java.util.TreeMap;
 
+import business.algorithm.predictAlgorithm.ParamForAutoRegression;
+
 public class MovingAverage extends AbstractDecisionAlgorithm {
 
 	@Override
@@ -52,11 +54,18 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 		return orderList;
 	}
 
-        @Override
-        public TreeMap<String, Class> getParametersList(){
-            TreeMap<String, Class> map = new TreeMap<String, Class>();
-            //map.put("Price list", ArrayList.class);
-            map.put("MA period", Integer.class);
-            return map;
-        }
+	@Override
+	public TreeMap<String, Class> getParametersList() {
+		TreeMap<String, Class> map = new TreeMap<String, Class>();
+		// map.put("Price list", ArrayList.class);
+		map.put("MA period", Integer.class);
+		return map;
+	}
+
+	@Override
+	public ParamList setParametersValue(TreeMap<String, Object> map) {
+		ArrayList<Double> priceList = (ArrayList) map.get("Price List");
+		Integer MA_period = (Integer) map.get("MA period");
+		return new ParamForMovingAverage(priceList, MA_period);
+	}
 }
