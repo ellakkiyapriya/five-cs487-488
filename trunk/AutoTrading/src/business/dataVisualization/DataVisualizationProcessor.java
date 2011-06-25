@@ -7,7 +7,6 @@ package business.dataVisualization;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import dataAccess.databaseManagement.entity.AssetEntity;
-import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.Date;
@@ -26,8 +25,8 @@ public class DataVisualizationProcessor {
     private Date fromDate;
     private Date toDate;
     private Date startPreDate;
-    private AbstractPredictAlgorithm preAlg;
-    private AbstractDecisionAlgorithm decAlg;
+    private ArrayList<AbstractPredictAlgorithm> preAlgList;
+    private ArrayList<AbstractDecisionAlgorithm> decAlgList;
     private VisulizationChart visulizationChart;
     private ArrayList<PriceEntity> prices;
 
@@ -42,13 +41,13 @@ public class DataVisualizationProcessor {
             visulizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
             visulizationChart.initalChart();
             visulizationChart.setPrices(prices);
-            visulizationChart.setPredictionPrices("dasfwe", prices);
-            visulizationChart.addPredictionPrices("gaef", prices);
-            ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
-            for (PriceEntity price : prices) {
-                orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
-            }
-            visulizationChart.setOrders("asfawe", orders);
+//            visulizationChart.addPredictionPrices("Alg2", prices);
+//            visulizationChart.addPredictionPrices("Alg1", prices);
+//            ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
+//            for (PriceEntity price : prices) {
+//                orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
+//            }
+//            visulizationChart.addOrders("Alg1", orders);
             visulizationChart.updateChart();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
@@ -60,13 +59,18 @@ public class DataVisualizationProcessor {
     public void updateChart() {
         this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
         visulizationChart.setPrices(prices);
-        visulizationChart.setPredictionPrices("dsafafwe", prices);
-        visulizationChart.addPredictionPrices("asfhhjy", prices);
-        ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
-        for (PriceEntity price : prices) {
-            orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
-        }
-        visulizationChart.setOrders("dsafafwe", orders);
+        visulizationChart.removeAllOrders();
+        visulizationChart.removeAllPredictionPrice();
+        
+        //add new results of Algorithms
+        
+//        visulizationChart.addPredictionPrices("dsafafwe", prices);
+//        visulizationChart.addPredictionPrices("asfhhjy", prices);
+//        ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
+//        for (PriceEntity price : prices) {
+//            orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
+//        }
+//        visulizationChart.addOrders("dsafafwe", orders);
         visulizationChart.updateChart();
 
     }
@@ -83,20 +87,40 @@ public class DataVisualizationProcessor {
         }
     }
 
-    public AbstractDecisionAlgorithm getDecAlg() {
-        return decAlg;
+    public void addDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
+        decAlgList.add(abstractDecisionAlgorithm);
+        //....
     }
 
-    public void setDecAlg(AbstractDecisionAlgorithm decAlg) {
-        this.decAlg = decAlg;
+    public void removeDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
+       decAlgList.remove(abstractDecisionAlgorithm);
+       //....
     }
 
-    public AbstractPredictAlgorithm getPreAlg() {
-        return preAlg;
+    public void addPreAlg(AbstractPredictAlgorithm abstractPredictAlgorithm) {
+        preAlgList.add(abstractPredictAlgorithm);
+        //...
     }
 
-    public void setPreAlg(AbstractPredictAlgorithm preAlg) {
-        this.preAlg = preAlg;
+    public void removePreAlg(AbstractPredictAlgorithm abstractPredictAlgorithm) {
+        preAlgList.remove(abstractPredictAlgorithm);
+        //....
+    }
+
+    public ArrayList<AbstractDecisionAlgorithm> getDecAlgList() {
+        return decAlgList;
+    }
+
+    public void setDecAlgList(ArrayList<AbstractDecisionAlgorithm> decAlg) {
+        this.decAlgList = decAlg;
+    }
+
+    public ArrayList<AbstractPredictAlgorithm> getPreAlgList() {
+        return preAlgList;
+    }
+
+    public void setPreAlgList(ArrayList<AbstractPredictAlgorithm> preAlg) {
+        this.preAlgList = preAlg;
     }
 
     public AssetEntity getAsset() {

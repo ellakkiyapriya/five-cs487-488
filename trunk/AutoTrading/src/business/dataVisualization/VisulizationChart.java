@@ -16,8 +16,11 @@ import org.jfree.chart.JFreeChart;
  */
 public interface VisulizationChart {
     public void setPrices(ArrayList<PriceEntity> prices);
-    public void setOrders(Object object, ArrayList<OrderEntity> orders);
-    public void setPredictionPrices(Object object, ArrayList<PriceEntity> prices);
+    public void removeOrder(Object object);
+    public void removeAllOrders();
+    public void addOrders(Object object, ArrayList<OrderEntity> orders);
+    public void removePredictionPrice(Object object);
+    public void removeAllPredictionPrice();
     public void addPredictionPrices(Object object, ArrayList<PriceEntity> prices);
     public void initalChart();
     public void updateChart();

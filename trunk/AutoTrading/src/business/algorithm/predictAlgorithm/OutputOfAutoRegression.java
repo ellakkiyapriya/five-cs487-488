@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import Utility.ParamList;
 
-public class OutputOfPredictAlgorithm extends ParamList {
+public class OutputOfAutoRegression extends ParamList {
 	private ArrayList<Double> predictionPrice;
 	private double lambda;
-	public OutputOfPredictAlgorithm(ArrayList<Double> predictionPrice, Double lambda) { 
+	public OutputOfAutoRegression(ArrayList<Double> predictionPrice, Double lambda) {
 		// TODO Auto-generated constructor stub
 		this.predictionPrice = predictionPrice;
 		this.lambda = lambda;
