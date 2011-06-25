@@ -34,6 +34,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
 
+import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
+import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
+
 /**
  *
  * @author Dinh
@@ -174,18 +177,22 @@ public class LineChart implements VisulizationChart{
     }
 
     @Override
-    public void addPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
+    public void addPredictionPrices(AbstractPredictAlgorithm algo, PredictionAlgorithmEntity entity) {
 
         if (predictionDataset == null) {
             predictionDataset = new YIntervalSeriesCollection();
         }
         
-        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + object.toString());
-        for (PriceEntity price : prices) {
-            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
-        }
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + algo.toString());
+        for (PredictionAlgorithmEntity.Entry entry : entity.list) {
+        	yintervalseries.add(entry.date.getTime(),  entry.midValue, entry.lowValue, entry.highValue);
+		}
+        
+//        for (PriceEntity price : prices) {
+//            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
+//        }
 
-        mappingPredictionPriceSeries.put(object, yintervalseries);
+        mappingPredictionPriceSeries.put(algo, yintervalseries);
         ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
 
         Random random = new Random(Calendar.getInstance().getTimeInMillis());

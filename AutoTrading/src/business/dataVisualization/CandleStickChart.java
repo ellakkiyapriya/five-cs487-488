@@ -36,6 +36,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
 
+import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
+import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
+
 /**
  *
  * @author Dinh
@@ -176,6 +179,10 @@ public class CandleStickChart implements VisulizationChart {
     }
 
     @Override
+    public void addPredictionPrices(AbstractPredictAlgorithm abstractPredictAlgorithm, PredictionAlgorithmEntity entity) {
+    	
+    }
+    
     public void addPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
         if (predictionDataset == null) {
             predictionDataset = new YIntervalSeriesCollection();

@@ -6,6 +6,8 @@ package business.dataVisualization;
 
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
+import business.algorithm.predictAlgorithm.OutputOfAutoRegression;
+import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
@@ -63,6 +65,11 @@ public class DataVisualizationProcessor {
         visulizationChart.removeAllPredictionPrice();
         
         //add new results of Algorithms
+        for (AbstractPredictAlgorithm algo : preAlgList) {
+        	OutputOfAutoRegression outputOfAutoRegression = (OutputOfAutoRegression) algo.runAlgorithm(null);
+        	PredictionAlgorithmEntity result = outputOfAutoRegression.convertThis(startPreDate);
+        	visulizationChart.addPredictionPrices(algo, result);
+		}
         
 //        visulizationChart.addPredictionPrices("dsafafwe", prices);
 //        visulizationChart.addPredictionPrices("asfhhjy", prices);

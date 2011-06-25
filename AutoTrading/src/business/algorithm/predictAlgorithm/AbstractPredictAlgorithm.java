@@ -1,10 +1,12 @@
 package business.algorithm.predictAlgorithm;
-
 import Utility.ParamList;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 public abstract class AbstractPredictAlgorithm {
-	public abstract ParamList runAlgorithm(ParamList parameters);
+	ParamList parameters;
+	public abstract ParamList runAlgorithm();
 	public abstract TreeMap<String, Class> getParametersList();
-	public abstract ParamList setParametersValue(TreeMap<String, Object> map);
+	public abstract void setParametersValue(TreeMap<String, Object> map);
+	public abstract void setPriceList(ArrayList<Double> prices);
 }

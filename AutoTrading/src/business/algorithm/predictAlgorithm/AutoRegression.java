@@ -12,7 +12,7 @@ import java.util.TreeMap;
 public class AutoRegression extends AbstractPredictAlgorithm {
 
 	@Override
-	public ParamList runAlgorithm(ParamList parameters) {
+	public ParamList runAlgorithm() {
 		// TODO Auto-generated method stub
 		ArrayList<Double> priceList = ((ParamForAutoRegression) parameters)
 				.getPriceList();
@@ -94,7 +94,8 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 
 		double lambda = t * s_b0;
 
-		return new OutputOfAutoRegression(predictionPriceList, lambda);
+		OutputOfAutoRegression output = new OutputOfAutoRegression(predictionPriceList, lambda);
+		return output;
 	}
 
 	@Override
@@ -110,15 +111,18 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	}
 
 	@Override
-	public ParamList setParametersValue(TreeMap<String, Object> map) {
-		ArrayList<Double> priceList = (ArrayList) map.get("Price List");
+	public void setParametersValue(TreeMap<String, Object> map) {
+		//ArrayList<Double> priceList = (ArrayList) map.get("Price List");
+		ArrayList<Double> priceList = null;
 		Integer future_interval = (Integer) map.get("Future Interval");
 		Double confidence_level = (Double) map.get("Confidence level");
 		Integer MA_period = (Integer) map.get("MA period");
 		Integer AR_period = (Integer) map.get("AR period");
-
-		return new ParamForAutoRegression(priceList, future_interval,
-				confidence_level, MA_period, AR_period);
+		parameters = new ParamForAutoRegression(priceList, future_interval, confidence_level, MA_period, AR_period);
+	}
+	
+	public void setPriceList(ArrayList<Double> prices) {
+		((ParamForAutoRegression) parameters).priceList = prices;
 	}
 
 	public static void main(String args[]) {
