@@ -3,11 +3,15 @@ package business.algorithm.predictAlgorithm;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import org.jfree.ui.tabbedui.TabbedDialog;
+
 import business.algorithm.decisionAlgorithm.ParamForMovingAverage;
 
 import Jama.Matrix;
 import Utility.ParamList;
 import Utility.Utility;
+
+import JSci.maths.statistics.*;
 
 public class AutoRegression extends AbstractPredictAlgorithm {
 
@@ -87,6 +91,9 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		double variance = Utility.calculateVariance(MA);
 		double s_b0 = Math.sqrt(variance * matrixC.get(0, 0));
 		double t = 1; // need to revise here
+		TDistribution tDistribution = new TDistribution(AR_period - 1);
+		t = tDistribution.cumulative(1 - confidence_level);
+		
 		double lambda = t * s_b0;
 		
 		return new OutputOfPredictAlgorithm(predictionPriceList, lambda);
