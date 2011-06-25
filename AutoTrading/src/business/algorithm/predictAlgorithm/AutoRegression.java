@@ -1,106 +1,93 @@
 package business.algorithm.predictAlgorithm;
-
 import java.util.ArrayList;
-import java.util.Vector;
-
-import org.jfree.ui.tabbedui.TabbedDialog;
-
-import business.algorithm.decisionAlgorithm.ParamForMovingAverage;
-
 import Jama.Matrix;
 import Utility.ParamList;
 import Utility.Utility;
-
 import JSci.maths.statistics.*;
 
 public class AutoRegression extends AbstractPredictAlgorithm {
 
 	@Override
-	public ParamList runAlgorithm(ParamList parameters) 
-	{
+	public ParamList runAlgorithm(ParamList parameters) {
 		// TODO Auto-generated method stub
-		ArrayList<Double> priceList = ((ParamForAutoRegression)parameters).getPriceList();
-		int future_interval = ((ParamForAutoRegression)parameters).getFuture_interval();
-		double confidence_level = ((ParamForAutoRegression)parameters).getConfidence_level();
-		int MA_period = (Integer)((ParamForAutoRegression)parameters).getMA_period();
-		int AR_period = (Integer)((ParamForAutoRegression)parameters).getAR_period();
-		
+		ArrayList<Double> priceList = ((ParamForAutoRegression) parameters)
+				.getPriceList();
+		int future_interval = ((ParamForAutoRegression) parameters)
+				.getFuture_interval();
+		double confidence_level = ((ParamForAutoRegression) parameters)
+				.getConfidence_level();
+		int movingAveragePeriod = (Integer) ((ParamForAutoRegression) parameters)
+				.getMA_period();
+		int autoRegerssivePeriod = (Integer) ((ParamForAutoRegression) parameters)
+				.getAR_period();
+
 		/*
 		 * Moving Average Step
-		 * */
-		int n_sample = priceList.size();
-		ArrayList<Double> MA = new ArrayList<Double>();
-		Double temp;
-		for (int i = 0; i <= n_sample - MA_period; ++i)
-		{
+		 */
+		int nSample = priceList.size();
+		ArrayList<Double> movingAverage = new ArrayList<Double>();
+		double temp;
+		for (int i = 0; i <= nSample - movingAveragePeriod; ++i) {
 			temp = 0.0;
-			for (int j = 0; j < MA_period; ++j)
-			{
-				temp += priceList.get(i+j); 
+			for (int j = 0; j < movingAveragePeriod; ++j) {
+				temp += priceList.get(i + j);
 			}
-			MA.add(temp / MA_period);
+			movingAverage.add(temp / movingAveragePeriod);
 		}
 		/*
 		 * Auto Regression step
-		 * */
-		int n_MA = MA.size();
-		double[][] x = new double[n_MA - AR_period][AR_period + 1];
-		double[] y = new double [n_MA - AR_period];
-		for (int i = 0; i < (n_MA - AR_period); ++i)
-		{
-			for (int j = 0; j <= AR_period; ++j)
-			{
-				if (j != AR_period)
-					x[i][j] = MA.get(i + j);
+		 */
+		int nMovingAverage = movingAverage.size();
+		double[][] x = new double[nMovingAverage - autoRegerssivePeriod][autoRegerssivePeriod + 1];
+		double[] y = new double[nMovingAverage - autoRegerssivePeriod];
+		for (int i = 0; i < (nMovingAverage - autoRegerssivePeriod); ++i) {
+			for (int j = 0; j <= autoRegerssivePeriod; ++j) {
+				if (j != autoRegerssivePeriod)
+					x[i][j] = movingAverage.get(i + j);
 				else
 					x[i][j] = 1;
 			}
-			y[i] = MA.get(i + AR_period);
+			y[i] = movingAverage.get(i + autoRegerssivePeriod);
 		}
 		Matrix matrixX = new Matrix(x);
-		Matrix matrixY = new Matrix(y, n_MA - AR_period);
+		Matrix matrixY = new Matrix(y, nMovingAverage - autoRegerssivePeriod);
 		Matrix matrixB = matrixX.transpose();
 		matrixB = matrixB.times(matrixX);
 		matrixB = matrixB.inverse();
 		matrixB = matrixB.times(matrixX.transpose());
 		matrixB = matrixB.times(matrixY);
-		
+
 		ArrayList<Double> predictionPriceList = new ArrayList<Double>();
-		for (int i = AR_period; i > 0; --i)
-		{
-			predictionPriceList.add(MA.get(MA.size() - i));
+		for (int i = autoRegerssivePeriod; i > 0; --i) {
+			predictionPriceList.add(movingAverage.get(movingAverage.size() - i));
 		}
-		for (int i = 0; i < future_interval; ++i)
-		{
+		for (int i = 0; i < future_interval; ++i) {
 			temp = 0.0;
-			for (int j = AR_period; j >= 0; --j)
-			{
+			for (int j = autoRegerssivePeriod; j >= 0; --j) {
 				if (j != 0)
-					temp += predictionPriceList.get(predictionPriceList.size() - j) * matrixB.get(AR_period - j, 0);
+					temp += predictionPriceList.get(predictionPriceList.size() - j) * matrixB.get(autoRegerssivePeriod - j, 0);
 				else
-					temp += matrixB.get(AR_period, 0);
+					temp += matrixB.get(autoRegerssivePeriod, 0);
 			}
-			predictionPriceList.add(temp);  
+			predictionPriceList.add(temp);
 		}
-		for (int i = AR_period; i > 0; --i)
-		{
+		for (int i = autoRegerssivePeriod; i > 0; --i) {
 			predictionPriceList.remove(0);
 		}
-		
+
 		Matrix matrixC = matrixX.transpose().times(matrixX).inverse();
-		double variance = Utility.calculateVariance(MA);
+		double variance = Utility.calculateVariance(movingAverage);
 		double s_b0 = Math.sqrt(variance * matrixC.get(0, 0));
 		double t = 1; // need to revise here
-		TDistribution tDistribution = new TDistribution(AR_period - 1);
+		TDistribution tDistribution = new TDistribution(autoRegerssivePeriod - 1);
 		t = tDistribution.cumulative(1 - confidence_level);
-		
+
 		double lambda = t * s_b0;
-		
+
 		return new OutputOfPredictAlgorithm(predictionPriceList, lambda);
 	}
-	
-	public static void main(String args[])
-	{
+
+	public static void main(String args[]) {
 		ArrayList<Double> priceList = new ArrayList<Double>();
 		priceList.add(23.0);
 		priceList.add(23.1);
@@ -117,7 +104,9 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		int MA_period = 3;
 		int AR_period = 3;
 		double training_ratio = 0.7;
-		ParamForAutoRegression input = new ParamForAutoRegression(priceList, future_interval, confidence_level, MA_period, AR_period, training_ratio);
+		ParamForAutoRegression input = new ParamForAutoRegression(priceList,
+				future_interval, confidence_level, MA_period, AR_period,
+				training_ratio);
 		AutoRegression ar = new AutoRegression();
 		ParamList output = ar.runAlgorithm(input);
 		for (int i = 0; i < future_interval; ++i) {

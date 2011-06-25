@@ -1,10 +1,10 @@
 package Utility;
 
+//This can be replaced by the class Object
 public abstract class ParamList {
 	protected int numOfParam;
 	
-	public ParamList()
-	{
+	public ParamList() {
 	}
 	
 	public int getNumOfParam() {
