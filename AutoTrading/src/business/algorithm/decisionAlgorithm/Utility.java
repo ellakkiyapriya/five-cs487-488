@@ -5,19 +5,19 @@
 
 package business.algorithm.decisionAlgorithm;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
- *
+ * 
  * @author Dinh
  */
 public class Utility {
-    public static final String[] decisionAlgorithmList = {"Moving Average"};
-    public static AbstractDecisionAlgorithm getDecisionAlgorithm(String str)
-	{
-		if (str.equals("Moving Average"))
-		{
+	public static final String[] decisionAlgorithmList = {"Moving Average"};
+	public static AbstractDecisionAlgorithm getDecisionAlgorithm(String str) {
+		if (str.equals("Moving Average")) {
 			return new MovingAverage();
 		}
 		return null;
 	}
 }
-
