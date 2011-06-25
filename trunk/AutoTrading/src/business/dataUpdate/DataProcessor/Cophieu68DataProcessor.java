@@ -208,21 +208,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 		}
 		return true;
 	}
-	public static boolean updateDataFromSpecificDate(Date date)
-	{	
-		Date currentDate = new Date();
-		if (date.after(currentDate))
-			return false;
-		
-		AbstractDataGetter dataGetter = new Cophieu68DataGetter();
-		AbstractDataProcessor dataProcessor = new Cophieu68DataProcessor();
-		while (date.before(currentDate))
-		{
-			dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(date)));
-			date = Utility.Utility.increaseDate(date);
-		}
-		return true;
-	}
+	
 	
 	public static void main(String args[])
 	{
