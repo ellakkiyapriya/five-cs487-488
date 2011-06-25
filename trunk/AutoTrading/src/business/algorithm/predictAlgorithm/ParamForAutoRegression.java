@@ -1,23 +1,20 @@
 package business.algorithm.predictAlgorithm;
 
-
-
-
 import java.util.ArrayList;
 
 import Utility.ParamList;
 
 public class ParamForAutoRegression extends ParamList {
-	
 	private ArrayList<Double> priceList;
 	private int future_interval;
-	private double confidence_level; 
+	private double confidence_level;
 	private int MA_period;
 	private int AR_period;
-	public ParamForAutoRegression(ArrayList<Double> priceList, int future_interval, double confidence_level,
-			int MA_period, int AR_period, double training_ratio)
-	{
+	public ParamForAutoRegression(ArrayList<Double> priceList,
+			int future_interval, double confidence_level, int MA_period,
+			int AR_period, double training_ratio) {
 		super();
+		//training_ratio is not used?
 		this.priceList = priceList;
 		this.future_interval = future_interval;
 		this.confidence_level = confidence_level;
