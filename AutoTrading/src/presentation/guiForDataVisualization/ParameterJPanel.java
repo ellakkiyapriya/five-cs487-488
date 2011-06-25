@@ -64,11 +64,12 @@ public class ParameterJPanel extends javax.swing.JPanel {
         //create table layout
         int borderColumn = 15;
         int borderRow = 5;
+        int inputPixel = 100;
         double size[][] = new double[2][];
         size[0] = new double[3];
         size[0][0] = borderColumn;
         size[0][1] = TableLayout.PREFERRED;
-        size[0][2] = TableLayout.PREFERRED;
+        size[0][2] = inputPixel;
 
         size[1] = new double[parameterList.size() + 1];
         size[1][0] = borderRow;
@@ -90,7 +91,14 @@ public class ParameterJPanel extends javax.swing.JPanel {
                 jSpinner.setEditor(new JSpinner.DateEditor(jSpinner, "MM/dd/yyyy"));
                 componentList.put(parameterName, jSpinner);
             } else if (parameterList.get(parameterName).getSuperclass() == Number.class) {
-                JSpinner jSpinner = new JSpinner(new SpinnerNumberModel(Double.valueOf(0), null, null,Double.valueOf(0.1)));
+                JSpinner jSpinner = null;
+                
+                if (parameterList.get(parameterName) == Integer.class) {
+                    jSpinner = new JSpinner(new SpinnerNumberModel(Integer.valueOf(0), null, null,Integer.valueOf(1)));
+                } else if (parameterList.get(parameterName) == Double.class) {
+                    jSpinner = new JSpinner(new SpinnerNumberModel(Double.valueOf(0), null, null,Double.valueOf(0.1)));
+                }
+                
                 componentList.put(parameterName, jSpinner);
             } else if (parameterList.get(parameterName) == String.class) {
                 JTextField jTextField = new JTextField();

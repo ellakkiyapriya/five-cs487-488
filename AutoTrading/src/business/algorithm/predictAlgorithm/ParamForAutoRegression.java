@@ -12,7 +12,7 @@ public class ParamForAutoRegression extends ParamList {
 	private int AR_period;
 	public ParamForAutoRegression(ArrayList<Double> priceList,
 			int future_interval, double confidence_level, int MA_period,
-			int AR_period, double training_ratio) {
+			int AR_period) {
 		super();
 		//training_ratio is not used?
 		this.priceList = priceList;
@@ -20,7 +20,7 @@ public class ParamForAutoRegression extends ParamList {
 		this.confidence_level = confidence_level;
 		this.MA_period = MA_period;
 		this.AR_period = AR_period;
-		numOfParam = 6;
+		numOfParam = 5;
 	}
 	public ArrayList<Double> getPriceList() {
 		return priceList;

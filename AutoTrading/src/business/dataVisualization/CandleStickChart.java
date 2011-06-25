@@ -8,10 +8,12 @@ import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Shape;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
+import java.util.TreeMap;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
@@ -46,6 +48,9 @@ public class CandleStickChart implements VisulizationChart {
             predictionDataset,
             markPointsDataset;
 
+    private TreeMap<Object, TimeSeries> mappingOrderSeries = new TreeMap<Object, TimeSeries>();
+    private TreeMap<Object, YIntervalSeries> mappingPredictionPriceSeries = new TreeMap<Object, YIntervalSeries>();
+
     @Override
     public JFreeChart getChart() {
         return candleStickChart;
@@ -58,10 +63,18 @@ public class CandleStickChart implements VisulizationChart {
 
         for (int i = 0; i < prices.size(); ++i) {
             double open = prices.get(i).getOpen();
+            double high = prices.get(i).getHigh();
+            double low = prices.get(i).getLow();
             if (open == 0) {
                 open = prices.get(i).getClose();
             }
-            oHLCDataItems[i] = new OHLCDataItem(prices.get(i).getDate(), open, prices.get(i).getHigh(), prices.get(i).getLow(), prices.get(i).getClose(), prices.get(i).getVolume());
+            if (high == 0) {
+                high = open;
+            }
+            if (low == 0) {
+                low = open;
+            }
+            oHLCDataItems[i] = new OHLCDataItem(prices.get(i).getDate(), open, high, low, prices.get(i).getClose(), prices.get(i).getVolume());
             volumeSeries.add(new Day(prices.get(i).getDate()), prices.get(i).getVolume());
         }
 
@@ -124,23 +137,21 @@ public class CandleStickChart implements VisulizationChart {
         //add prediction price series
         plot.mapDatasetToRangeAxis(2, 0);
         DeviationRenderer deviationRenderer = new DeviationRenderer(true, false);
-        deviationRenderer.setSeriesStroke(0, new BasicStroke(3F, 1, 1));
-        deviationRenderer.setSeriesPaint(0, Color.BLUE);
-        deviationRenderer.setSeriesFillPaint(0, new Color(255, 200, 200));
+//        deviationRenderer.setSeriesStroke(0, new BasicStroke(3F, 1, 1));
+//        deviationRenderer.setSeriesPaint(0, Color.BLUE);
+//        deviationRenderer.setSeriesFillPaint(0, new Color(255, 200, 200));
         plot.setRenderer(2, deviationRenderer);
 
         //add mark points
         plot.mapDatasetToRangeAxis(3, 0);
         XYLineAndShapeRenderer xyLineAndShapeRenderer = new XYLineAndShapeRenderer();
-        xyLineAndShapeRenderer.setSeriesLinesVisible(0, false);
-        xyLineAndShapeRenderer.setSeriesLinesVisible(1, false);
         plot.setRenderer(3, xyLineAndShapeRenderer);
     }
 
     @Override
-    public void setOrders(Object object, ArrayList<OrderEntity> orders) {
-        TimeSeries buySeries = new TimeSeries("Buy Signals");
-        TimeSeries sellSeries = new TimeSeries("Sell Signals");
+    public void addOrders(Object object, ArrayList<OrderEntity> orders) {
+        TimeSeries buySeries = new TimeSeries("Buy Signals - " + object.toString());
+        TimeSeries sellSeries = new TimeSeries("Sell Signals - " + object.toString());
 
         for (OrderEntity order : orders) {
             if (order.getOrderType())
@@ -149,22 +160,19 @@ public class CandleStickChart implements VisulizationChart {
                 sellSeries.add(new Day(order.getDate()), order.getPrice());
         }
 
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(buySeries);
-        dataset.addSeries(sellSeries);
-        markPointsDataset = dataset;
-    }
-
-    @Override
-    public void setPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
-        YIntervalSeries yintervalseries = new YIntervalSeries("Predict");
-        for (PriceEntity price : prices) {
-            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
+        if (markPointsDataset == null) {
+            markPointsDataset = new TimeSeriesCollection();
         }
 
-        YIntervalSeriesCollection yintervalseriescollection = new YIntervalSeriesCollection();
-        yintervalseriescollection.addSeries(yintervalseries);
-        predictionDataset = yintervalseriescollection;
+        ((TimeSeriesCollection)markPointsDataset).addSeries(buySeries);
+        ((TimeSeriesCollection)markPointsDataset).addSeries(sellSeries);
+
+        mappingOrderSeries.put(object, buySeries);
+
+        XYPlot plot = candleStickChart.getXYPlot();
+        XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot.getRenderer(3);
+        xYLineAndShapeRenderer.setSeriesLinesVisible(markPointsDataset.getSeriesCount() - 1, false);
+        xYLineAndShapeRenderer.setSeriesLinesVisible(markPointsDataset.getSeriesCount() - 2, false);
     }
 
     @Override
@@ -175,9 +183,37 @@ public class CandleStickChart implements VisulizationChart {
 
         YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + object.toString());
         for (PriceEntity price : prices) {
-            yintervalseries.add(price.getDate().getTime(), price.getOpen()+1, price.getOpen() + 0.5, price.getOpen() + 1.5);
+            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
         }
 
+        mappingPredictionPriceSeries.put(object, yintervalseries);
         ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
+
+        Random random = new Random(Calendar.getInstance().getTimeInMillis());
+        XYPlot plot = candleStickChart.getXYPlot();
+        DeviationRenderer deviationRenderer = (DeviationRenderer) plot.getRenderer(2);
+        deviationRenderer.setSeriesStroke(predictionDataset.getSeriesCount() - 1, new BasicStroke(3F, 1, 1));
+        deviationRenderer.setSeriesPaint(predictionDataset.getSeriesCount() - 1, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+        deviationRenderer.setSeriesFillPaint(predictionDataset.getSeriesCount() - 1, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+    }
+
+    @Override
+    public void removeOrder(Object object) {
+        ((TimeSeriesCollection)markPointsDataset).removeSeries(mappingOrderSeries.get(object));
+    }
+
+    @Override
+    public void removeAllOrders() {
+        ((TimeSeriesCollection)markPointsDataset).removeAllSeries();
+    }
+
+    @Override
+    public void removePredictionPrice(Object object) {
+        ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(object));
+    }
+
+    @Override
+    public void removeAllPredictionPrice() {
+        ((YIntervalSeriesCollection) predictionDataset).removeAllSeries();
     }
 }

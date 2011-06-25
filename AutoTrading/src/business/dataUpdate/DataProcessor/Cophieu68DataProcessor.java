@@ -232,7 +232,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		updateDataFromSpecificDate(date);
+		//updateDataFromSpecificDate(date);
 		
 	}
 

@@ -8,17 +8,21 @@
  *
  * Created on Jun 8, 2011, 10:22:49 AM
  */
-
 package presentation.guiForDataUpdate;
 
-import java.io.File;
-import javax.swing.JFileChooser;
+import business.dataUpdate.DataGetter.AbstractDataGetter;
+import business.dataUpdate.DataProcessor.AbstractDataProcessor;
+import business.dataUpdate.UpdateData;
+import business.dataUpdate.Utility;
+import dataAccess.databaseManagement.manager.PriceManager;
 
 /**
  *
  * @author Dinh
  */
 public class DataUpdateJPanel extends javax.swing.JPanel {
+
+    private static PriceManager priceManager = new PriceManager();
 
     /** Creates new form DataUpdateJPanel */
     public DataUpdateJPanel() {
@@ -35,47 +39,20 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pickFileJButton = new javax.swing.JButton();
-        refreshJButton = new javax.swing.JButton();
-        filePathJTextField = new javax.swing.JTextField();
-        importJButton = new javax.swing.JButton();
-        applyJButton = new javax.swing.JButton();
+        updateJButton = new javax.swing.JButton();
         sourceJLabel = new javax.swing.JLabel();
         sourceJComboBox = new javax.swing.JComboBox();
 
-        pickFileJButton.setText("Pick File");
-        pickFileJButton.addActionListener(new java.awt.event.ActionListener() {
+        updateJButton.setText("Update");
+        updateJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pickFileJButtonActionPerformed(evt);
-            }
-        });
-
-        refreshJButton.setText("Refresh");
-        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshJButtonActionPerformed(evt);
-            }
-        });
-
-        filePathJTextField.setEditable(false);
-
-        importJButton.setText("Import");
-        importJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importJButtonActionPerformed(evt);
-            }
-        });
-
-        applyJButton.setText("Apply");
-        applyJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                applyJButtonActionPerformed(evt);
+                updateJButtonActionPerformed(evt);
             }
         });
 
         sourceJLabel.setText("Source:");
 
-        sourceJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        sourceJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.dataUpdate.Utility.ONLINE_RESOURCES));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -83,87 +60,45 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sourceJLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pickFileJButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addComponent(sourceJLabel)
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(sourceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(filePathJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(refreshJButton)
-                    .addComponent(applyJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(importJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addComponent(sourceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(updateJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {applyJButton, importJButton, refreshJButton});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {filePathJTextField, sourceJComboBox});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(filePathJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pickFileJButton)))
-                    .addComponent(importJButton))
-                .addGap(11, 11, 11)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(applyJButton)
                     .addComponent(sourceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sourceJLabel))
-                .addGap(11, 11, 11)
-                .addComponent(refreshJButton)
-                .addGap(11, 11, 11))
+                    .addComponent(sourceJLabel)
+                    .addComponent(updateJButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {applyJButton, importJButton, refreshJButton});
-
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {filePathJTextField, sourceJComboBox});
-
     }// </editor-fold>//GEN-END:initComponents
 
-    private void pickFileJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickFileJButtonActionPerformed
-        int returnVal = fileChooser.showOpenDialog(this);
+    private void updateJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateJButtonActionPerformed
+        new Thread(new Runnable() {
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            selectedFile = fileChooser.getSelectedFile();
-            filePathJTextField.setText(selectedFile.getPath());
-        }
-    }//GEN-LAST:event_pickFileJButtonActionPerformed
+            @Override
+            public void run() {
+                AbstractDataGetter dataGetter = Utility.getDataGetter((String) sourceJComboBox.getSelectedItem());
+                AbstractDataProcessor dataProcessor = Utility.getDataProcessor((String) sourceJComboBox.getSelectedItem());
+                UpdateData.updateDataFromSpecificDate(priceManager.getLatestDate(), dataGetter, dataProcessor);
+            }
+        }).start();
 
-    private void importJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importJButtonActionPerformed
-        
-    }//GEN-LAST:event_importJButtonActionPerformed
-
-    private void applyJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyJButtonActionPerformed
-        
-    }//GEN-LAST:event_applyJButtonActionPerformed
-
-    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
-        
-    }//GEN-LAST:event_refreshJButtonActionPerformed
-
-
+    }//GEN-LAST:event_updateJButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton applyJButton;
-    private javax.swing.JTextField filePathJTextField;
-    private javax.swing.JButton importJButton;
-    private javax.swing.JButton pickFileJButton;
-    private javax.swing.JButton refreshJButton;
     private javax.swing.JComboBox sourceJComboBox;
     private javax.swing.JLabel sourceJLabel;
+    private javax.swing.JButton updateJButton;
     // End of variables declaration//GEN-END:variables
-    private final JFileChooser fileChooser = new JFileChooser();
-    private File selectedFile = null;
+//    private final JFileChooser fileChooser = new JFileChooser();
+//    private File selectedFile = null;
 
     private void initOtherComponents() {
-        
     }
 }

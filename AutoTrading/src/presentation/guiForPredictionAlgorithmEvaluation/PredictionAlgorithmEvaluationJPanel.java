@@ -98,7 +98,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         datejLabel.setText("DATE");
 
         startPredictDateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        startPredictDateJLabel.setText("Start Predict:");
+        startPredictDateJLabel.setText("Start Prediction:");
 
         startPredictJSpinner.setModel(new javax.swing.SpinnerDateModel());
         startPredictJSpinner.setEditor(new JSpinner.DateEditor(startPredictJSpinner, "MM/dd/yyyy"));
@@ -116,8 +116,8 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                         .addGap(41, 41, 41)
                         .addComponent(startPredictDateJLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(startPredictJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addComponent(startPredictJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         dateJPanelLayout.setVerticalGroup(
             dateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +166,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                             .addComponent(removePreAlgjButton)
                             .addComponent(addPreAlgjButton)))
                     .addComponent(preAlgjLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         algorithmjPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addPreAlgjButton, removePreAlgjButton});
@@ -252,7 +252,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         tableJPanel.setLayout(tableJPanelLayout);
         tableJPanelLayout.setHorizontalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 785, Short.MAX_VALUE)
+            .addGap(0, 768, Short.MAX_VALUE)
         );
         tableJPanelLayout.setVerticalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +371,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                 .addComponent(chartStyleJLabel)
                 .addGap(18, 18, 18)
                 .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         symbolOptionJPanelLayout.setVerticalGroup(
             symbolOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,7 +395,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         visualizationChartJPanel.setLayout(visualizationChartJPanelLayout);
         visualizationChartJPanelLayout.setHorizontalGroup(
             visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 805, Short.MAX_VALUE)
+            .addGap(0, 788, Short.MAX_VALUE)
         );
         visualizationChartJPanelLayout.setVerticalGroup(
             visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -3,6 +3,7 @@ package business.algorithm.decisionAlgorithm;
 import java.util.ArrayList;
 
 import Utility.ParamList;
+import java.util.TreeMap;
 
 public class MovingAverage extends AbstractDecisionAlgorithm {
 
@@ -50,4 +51,12 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 		}
 		return orderList;
 	}
+
+        @Override
+        public TreeMap<String, Class> getParametersList(){
+            TreeMap<String, Class> map = new TreeMap<String, Class>();
+            //map.put("Price list", ArrayList.class);
+            map.put("MA period", Integer.class);
+            return map;
+        }
 }
