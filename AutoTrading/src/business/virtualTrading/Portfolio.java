@@ -61,30 +61,7 @@ public class Portfolio {
 		portfolioManager.delete(portfolioID);
 	}
 
-	/**
-	 * Get portfolios by date from database
-	 */
-	public ArrayList<Portfolio> getPortfolioByDate(Date date) {
-		ArrayList<Portfolio> portfolioList = new ArrayList<Portfolio>();
-		PortfolioManager portfolioManager = new PortfolioManager();
-		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
-				.getPortfolioByDate(date);
-		PortfolioEntity currentPortfolio;
-
-		for (int i = 0; i < portfolioEntityList.size(); i++) {
-			currentPortfolio = portfolioEntityList.get(i);
-
-			/*
-			 * TODO : ArrayList<OrderEntity> getOrderByUserID(long userID) {}
-			 * 
-			 * execute all oders -->initial cash --> profit =
-			 */
-
-		}
-
-		return null;
-	}
-
+	
 	
 
 	public static void main(String args[]) {

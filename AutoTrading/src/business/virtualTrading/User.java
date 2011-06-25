@@ -6,12 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.entity.UserEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.OrderManager;
 import dataAccess.databaseManagement.manager.PortfolioManager;
+import dataAccess.databaseManagement.manager.PriceManager;
 import dataAccess.databaseManagement.manager.UserManager;
 
 /**
@@ -109,6 +111,42 @@ public class User {
 
 		return orderList;
 	}
+	
+	
+	/**
+	 * Get portfolios by date from database
+	 */
+	public ArrayList<Portfolio> getPortfolioByDate(Date date) {
+		ArrayList<Portfolio> portfolioList = new ArrayList<Portfolio>();
+		PortfolioManager portfolioManager = new PortfolioManager();
+		AssetManager assetManager = new AssetManager();
+		PriceManager priceManager = new PriceManager();
+		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
+				.getPortfolioByDate(date); // TODO getPortfolioByDateAndUserID
+		PortfolioEntity portfolioEntity;
+		Portfolio currentPortfolio;
+		AssetEntity assetEntity;
+		
+
+		for (int i = 0; i < portfolioEntityList.size(); i++) {
+			
+			portfolioEntity = portfolioEntityList.get(i);
+			assetEntity = assetManager.getAssetByID(portfolioEntity.getAssetID());
+			currentPortfolio = new Portfolio(new Asset(assetEntity), portfolioEntity.getPrice(), portfolioEntity.getVolume());
+			double initialPrice = priceManager.getPriceByAssetIDAndDate(user.getUserID(), date).getClose(); // TODO change date to getOldestDate()
+			currentPortfolio.setProfit( currentPortfolio.getCurrentPrice()/ initialPrice);
+
+			/*
+			 * TODO : ArrayList<OrderEntity> getOrderByUserID(long userID) {}
+			 * 
+			 * execute all oders -->initial cash --> profit =
+			 */
+
+		}
+
+		return null;
+	}
+
 
 	/**
 	 * Add orders to database and update portfolio in database <li>Note: this
@@ -221,11 +259,22 @@ public class User {
 						}
 						user.setCash(user.getCash() + currentOrder.getPrice()
 								* validVolume);
-
 					}
 				}
 			}
 		}
+	}
+	
+	public double portfolioValue(Date date) {
+		double totalCash = 0;
+		PortfolioManager portfolioManager = new PortfolioManager();
+		PortfolioEntity portfolioEntity;
+		ArrayList<PortfolioEntity> portfolioEntityList =  portfolioManager.getPortfolioByDate(date); // TODO getPortfolioByDateAndUserID()  
+		for(int i = 0; i < portfolioEntityList.size(); i++) {
+			portfolioEntity = portfolioEntityList.get(i);
+			totalCash += portfolioEntity.getPrice() * portfolioEntity.getVolume();  
+		}
+		return totalCash;
 	}
 
 	
@@ -244,14 +293,42 @@ public class User {
 		return spentCash;
 	}
 	
+	
+	public double spentCash(Date date) {
+		OrderManager orderManager = new OrderManager();
+//		ArrayList<OrderEntity> orderEntityList = orderManager.getOrderByDateAndUserID(user.getUserID(), Date date);
+		ArrayList<OrderEntity> orderEntityList = orderManager.getOrderByUserID(user.getUserID());
+		double spentCash = 0;
+		OrderEntity orderEntity;
+		for (int i = 0; i < orderEntityList.size(); i++) {
+			orderEntity = orderEntityList.get(i);
+			if (orderEntity.getOrderType()) // buy
+				spentCash -= orderEntity.getPrice() * orderEntity.getVolume();
+			else
+				spentCash += orderEntity.getPrice() * orderEntity.getVolume();
+		}
+		return spentCash;
+	}
+	
+	
+	public double getCashByDate(Date date) {
+		return user.getCash() - this.spentCash(date);
+	}
+	
 	public double initialCash() {
-		return this.spentCash() + user.getCash();
+		return user.getCash() - this.spentCash();
 	}
 	
 	
 	public double getCapitalByDate (Date date) {
-		return 0;
+		return getCashByDate(date) + portfolioValue(date);
 	}
+	
+	public double profit() {
+		double initialCash = initialCash();
+		return (user.getCash() - initialCash) / initialCash;
+	}
+	
 
 
 
