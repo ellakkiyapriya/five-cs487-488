@@ -6,5 +6,6 @@ import java.util.TreeMap;
 
 public abstract class AbstractDecisionAlgorithm {
 	public abstract ArrayList<Order> runAlgorithm(ParamList parameters);
-        public abstract TreeMap<String, Class> getParametersList();
+    public abstract TreeMap<String, Class> getParametersList();
+    public abstract ParamList setParametersValue(TreeMap<String, Object> map);
 }

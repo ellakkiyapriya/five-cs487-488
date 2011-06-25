@@ -15,7 +15,7 @@ public class Cophieu68DataGetter extends AbstractDataGetter {
 	@Override
 	public ParamList getData(ParamList parameter) {
 		// TODO Auto-generated method stub
-		HttpURLConnection uc = initConnection(); 
+		HttpURLConnection uc = initConnection(((ParamForCophieu68DataGetter)parameter).getDate()); 
 		BufferedReader br;
 		try 
 		{
@@ -31,15 +31,14 @@ public class Cophieu68DataGetter extends AbstractDataGetter {
 		}
 	}
 
-	public HttpURLConnection initConnection()
+	public HttpURLConnection initConnection(Date date)
 	{
 		try
 		{
-			Date date = new Date();
-			String fileLink = "http://www.cophieu68.com/export/dailymetastock.php?stcid=1&amp;date=";
+			String fileLink = "http://www.cophieu68.com/export/dailymetastock.php?stcid=1&date=";
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String fileName = dateFormat.format(date);
-			fileLink.concat(fileName);
+			fileLink = fileLink.concat(fileName);
 			URL url = new URL(fileLink);
 			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
 			uc.setRequestProperty("User-Agent", "");
