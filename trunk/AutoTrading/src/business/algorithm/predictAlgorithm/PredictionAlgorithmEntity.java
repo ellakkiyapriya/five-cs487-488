@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class PredictionAlgorithmEntity {
 	public static class Entry {
-		Date date;
-		double midValue, lowValue, highValue;
+		public Date date;
+		public double midValue, lowValue, highValue;
 	}
-	ArrayList<Entry> list;
+	public ArrayList<Entry> list;
 }
