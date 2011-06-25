@@ -19,10 +19,13 @@ import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.ExchangeManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeMap;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import org.jfree.chart.ChartFactory;
@@ -400,7 +403,8 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private void preAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preAlgJComboBoxActionPerformed
         preAlgParametersJPanel.removeAll();
         preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String)preAlgJComboBox.getSelectedItem());
-        preAlgParametersJPanel.add(new ParameterJPanel(preAlg.getParametersList()));
+        parameterJPanel = new ParameterJPanel(preAlg.getParametersList());
+		preAlgParametersJPanel.add(parameterJPanel);
     }//GEN-LAST:event_preAlgJComboBoxActionPerformed
 
     private void decAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decAlgJComboBoxActionPerformed
@@ -410,7 +414,16 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_decAlgJComboBoxActionPerformed
 
     private void runPreAlgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runPreAlgJButtonActionPerformed
-        preAlg.runAlgorithm(null);
+    	TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+    	//JOptionPane.showMessageDialog(new JFrame(), parameterJPanel == null);
+    	for (String name : preAlg.getParametersList().keySet()) {
+    		valueMap.put(name, parameterJPanel.getValue(name));
+    	}
+    	preAlg.setParametersValue(valueMap);
+    	dataVisualizationProcessor.setStartPreDate((Date) startPredictionDateJSpinner.getValue());
+        dataVisualizationProcessor.addPreAlg(preAlg);
+        dataVisualizationProcessor.updateChart();
+        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
     }//GEN-LAST:event_runPreAlgJButtonActionPerformed
 
     private void runDecAlgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runDecAlgJButtonActionPerformed
@@ -452,6 +465,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     public static TreeMap<ExchangeEntity, Object[]> mappingExchangeID_Assets;
     private AbstractPredictAlgorithm preAlg;
     private AbstractDecisionAlgorithm decAlg;
+	private ParameterJPanel parameterJPanel;
 
     private void initOtherComponents() {
         Calendar now = Calendar.getInstance();
@@ -483,13 +497,17 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         dataVisualizationProcessor = new DataVisualizationProcessor((AssetEntity) assetJComboBox.getSelectedItem(), (Date) fromDateJSpinner.getValue(), (Date) toDateJSpinner.getValue(), (ChartStyle) charStyleJComboBox.getSelectedItem());
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+        dataVisualizationProcessor.setStartPreDate((Date) startPredictionDateJSpinner.getValue());
 
         preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String)preAlgJComboBox.getSelectedItem());
         decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String)decAlgJComboBox.getSelectedItem());
 
-        preAlgParametersJPanel.add(new ParameterJPanel(preAlg.getParametersList()));
+        parameterJPanel = new ParameterJPanel(preAlg.getParametersList());
+		preAlgParametersJPanel.add(parameterJPanel);
         decAlgParametersJPanel.add(new ParameterJPanel(decAlg.getParametersList()));
-
     }
-
+    
+    public void debug(Object...os) {
+    	JOptionPane.showMessageDialog(new JFrame(), Arrays.deepToString(os));
+    }
 }

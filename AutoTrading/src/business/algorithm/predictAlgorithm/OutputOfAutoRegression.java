@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.DebugGraphics;
+
 import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity.Entry;
 import Utility.ParamList;
+import Utility.Utility;
 
 public class OutputOfAutoRegression extends ParamList {
-	private ArrayList<Double> predictionPrice;
-	private double lambda;
+	public ArrayList<Double> predictionPrice;
+	public double lambda;
 	public OutputOfAutoRegression(ArrayList<Double> predictionPrice, Double lambda) {
 		// TODO Auto-generated constructor stub
 		this.predictionPrice = predictionPrice;
@@ -29,6 +32,7 @@ public class OutputOfAutoRegression extends ParamList {
 		this.lambda = lambda;
 	}
 	public PredictionAlgorithmEntity convertThis(Date startPredictingDate) {
+		Utility.debug(startPredictingDate);
 		PredictionAlgorithmEntity entity = new PredictionAlgorithmEntity();
 		entity.list = new ArrayList<PredictionAlgorithmEntity.Entry>();
 		Date currentDate = startPredictingDate;
@@ -43,6 +47,7 @@ public class OutputOfAutoRegression extends ParamList {
 				entry.highValue = d + Math.abs(lambda);
 			}
 			entry.date = currentDate;
+			entity.list.add(entry);
 		}
 		return entity;
 	}
