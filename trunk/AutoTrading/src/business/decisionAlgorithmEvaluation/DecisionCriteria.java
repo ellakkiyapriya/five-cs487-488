@@ -1,16 +1,16 @@
 package business.decisionAlgorithmEvaluation;
 
-import java.util.ArrayList;
+import java.sql.Date;
 
-import business.algorithm.decisionAlgorithm.Order;
+import Utility.ParamList;
 
 public abstract class DecisionCriteria {
-	double cash;
-	ArrayList<Order> orderList;
-
-	public DecisionCriteria(ArrayList<Order> orderList, double cash) {
-		this.orderList = new ArrayList<Order>(orderList);
-		this.cash = cash;
+	ParamList paramList;
+	Date beginDate;
+	Date endDate;
+	
+	public DecisionCriteria(ParamList paramList, Date beginDate, Date endDate) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public abstract double evaluate();
