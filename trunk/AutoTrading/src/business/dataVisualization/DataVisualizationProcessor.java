@@ -67,6 +67,7 @@ public class DataVisualizationProcessor {
         visulizationChart.setPrices(prices);
         visulizationChart.removeAllOrders();
         visulizationChart.removeAllPredictionPrice();
+
         
         //add new results of Algorithms
         for (AbstractPredictAlgorithm algo : preAlgList) {

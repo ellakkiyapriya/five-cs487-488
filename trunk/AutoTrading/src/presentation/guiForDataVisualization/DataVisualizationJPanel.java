@@ -421,6 +421,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     	}
     	preAlg.setParametersValue(valueMap);
     	dataVisualizationProcessor.setStartPreDate((Date) startPredictionDateJSpinner.getValue());
+        dataVisualizationProcessor.getPreAlgList().clear();
         dataVisualizationProcessor.addPreAlg(preAlg);
         dataVisualizationProcessor.updateChart();
         ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
