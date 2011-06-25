@@ -8,9 +8,10 @@ public class ParamForMovingAverage extends ParamList {
 	private ArrayList<Double> price;
 	private int MA_period;
 
-	public ParamForMovingAverage(ArrayList<Double> price) {
+	public ParamForMovingAverage(ArrayList<Double> price, int MA_period) {
 		// TODO Auto-generated constructor stub
 		this.price = price;
+		this.MA_period = MA_period;
 		this.numOfParam = 1;
 	}
 
