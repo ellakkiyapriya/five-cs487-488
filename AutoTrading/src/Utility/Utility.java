@@ -5,14 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Utility {
-	public static Date increaseDate(Date currentDate)
-	{
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(currentDate);
-		cal.add(Calendar.DATE, 1);
-		return cal.getTime();
-	}
-	
 	public static double calculateVariance(ArrayList<Double> list)
 	{
 		double var = 0;
