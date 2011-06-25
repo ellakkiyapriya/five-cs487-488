@@ -235,4 +235,8 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 		updateDataFromSpecificDate(date);
 		
 	}
+
+	private static void updateDataFromSpecificDate(Date date) {
+		throw new RuntimeException("Chua code phan nay");
+	}
 }
