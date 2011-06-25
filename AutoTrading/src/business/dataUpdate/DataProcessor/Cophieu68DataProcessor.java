@@ -65,7 +65,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 					ArrayList<AssetEntity> listAssets = assetManager.getAssetsBySymbol(symbol);
 					PriceEntity priceEntity = null;
 					if (listAssets.size() > 0)
-						priceEntity = new PriceEntity(listAssets.get(0).getAssetID(), new java.sql.Date(new Date().getTime()), null, volume, close, open, high, low);
+						priceEntity = new PriceEntity(listAssets.get(0).getAssetID(), new java.sql.Date(((ParamForCophieu68DataProcessor)parameter).getDate().getTime()), null, volume, close, open, high, low);
 					else
 						System.out.println(symbol);
 					priceManager.add(priceEntity);
@@ -222,21 +222,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 		*/
 		
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		Date date = null;
-		try 
-		{
-			date = dateFormat.parse("20110607");
-		} 
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//updateDataFromSpecificDate(date);
 		
-	}
-
-	private static void updateDataFromSpecificDate(Date date) {
-		throw new RuntimeException("Chua code phan nay");
+		
 	}
 }
