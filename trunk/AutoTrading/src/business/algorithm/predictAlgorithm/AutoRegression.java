@@ -9,6 +9,10 @@ import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 public class AutoRegression extends AbstractPredictAlgorithm {
 
 	@Override
@@ -114,10 +118,12 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	public void setParametersValue(TreeMap<String, Object> map) {
 		//ArrayList<Double> priceList = (ArrayList) map.get("Price List");
 		ArrayList<Double> priceList = null;
-		Integer future_interval = (Integer) map.get("Future Interval");
+		Integer future_interval = (Integer) map.get("Future interval");
 		Double confidence_level = (Double) map.get("Confidence level");
 		Integer MA_period = (Integer) map.get("MA period");
 		Integer AR_period = (Integer) map.get("AR period");
+		
+		//JOptionPane.showMessageDialog(new JFrame(), "" + future_interval + confidence_level + MA_period + AR_period);
 		parameters = new ParamForAutoRegression(priceList, future_interval, confidence_level, MA_period, AR_period);
 	}
 	
@@ -125,30 +131,30 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		((ParamForAutoRegression) parameters).priceList = prices;
 	}
 
-	public static void main(String args[]) {
-		ArrayList<Double> priceList = new ArrayList<Double>();
-		priceList.add(23.0);
-		priceList.add(23.1);
-		priceList.add(24.0);
-		priceList.add(25.2);
-		priceList.add(24.8);
-		priceList.add(24.9);
-		priceList.add(24.7);
-		priceList.add(24.4);
-		priceList.add(24.4);
-		priceList.add(24.4);
-		int future_interval = 10;
-		double confidence_level = 0.9;
-		int MA_period = 3;
-		int AR_period = 3;
-		double training_ratio = 0.7;
-		ParamForAutoRegression input = new ParamForAutoRegression(priceList,
-				future_interval, confidence_level, MA_period, AR_period);
-		AutoRegression ar = new AutoRegression();
-		ParamList output = ar.runAlgorithm(input);
-		for (int i = 0; i < future_interval; ++i) {
-			OutputOfAutoRegression temp = (OutputOfAutoRegression) output;
-			System.out.println(temp.getPredictionPrice().get(i));
-		}
-	}
+//	public static void main(String args[]) {
+//		ArrayList<Double> priceList = new ArrayList<Double>();
+//		priceList.add(23.0);
+//		priceList.add(23.1);
+//		priceList.add(24.0);
+//		priceList.add(25.2);
+//		priceList.add(24.8);
+//		priceList.add(24.9);
+//		priceList.add(24.7);
+//		priceList.add(24.4);
+//		priceList.add(24.4);
+//		priceList.add(24.4);
+//		int future_interval = 10;
+//		double confidence_level = 0.9;
+//		int MA_period = 3;
+//		int AR_period = 3;
+//		double training_ratio = 0.7;
+//		ParamForAutoRegression input = new ParamForAutoRegression(priceList,
+//				future_interval, confidence_level, MA_period, AR_period);
+//		AutoRegression ar = new AutoRegression();
+//		ParamList output = ar.runAlgorithm(input);
+//		for (int i = 0; i < future_interval; ++i) {
+//			OutputOfAutoRegression temp = (OutputOfAutoRegression) output;
+//			System.out.println(temp.getPredictionPrice().get(i));
+//		}
+//	}
 }

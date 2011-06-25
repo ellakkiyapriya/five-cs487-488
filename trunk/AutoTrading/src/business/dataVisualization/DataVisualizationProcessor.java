@@ -13,7 +13,11 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.Date;
 import java.util.ArrayList;
+
+import javax.swing.DebugGraphics;
+
 import org.jfree.chart.JFreeChart;
+import Utility.Utility;
 
 /**
  *
@@ -27,8 +31,8 @@ public class DataVisualizationProcessor {
     private Date fromDate;
     private Date toDate;
     private Date startPreDate;
-    private ArrayList<AbstractPredictAlgorithm> preAlgList;
-    private ArrayList<AbstractDecisionAlgorithm> decAlgList;
+    private ArrayList<AbstractPredictAlgorithm> preAlgList = new ArrayList<AbstractPredictAlgorithm>();
+    private ArrayList<AbstractDecisionAlgorithm> decAlgList = new ArrayList<AbstractDecisionAlgorithm>();
     private VisulizationChart visulizationChart;
     private ArrayList<PriceEntity> prices;
 
@@ -66,8 +70,18 @@ public class DataVisualizationProcessor {
         
         //add new results of Algorithms
         for (AbstractPredictAlgorithm algo : preAlgList) {
-        	OutputOfAutoRegression outputOfAutoRegression = (OutputOfAutoRegression) algo.runAlgorithm(null);
+        	ArrayList<Double> list = new ArrayList<Double>();
+        	for (PriceEntity priceEntity : prices) {
+				if (priceEntity.getDate().before(startPreDate))
+					list.add(priceEntity.getClose());
+			}
+        	algo.setPriceList(list);
+        	OutputOfAutoRegression outputOfAutoRegression = (OutputOfAutoRegression) algo.runAlgorithm();
+        	Utility.debug(outputOfAutoRegression.predictionPrice);
         	PredictionAlgorithmEntity result = outputOfAutoRegression.convertThis(startPreDate);
+        	
+        	Utility.debug(result.list.size());
+        	
         	visulizationChart.addPredictionPrices(algo, result);
 		}
         
