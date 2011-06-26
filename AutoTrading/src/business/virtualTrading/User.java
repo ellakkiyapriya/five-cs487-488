@@ -226,9 +226,11 @@ public class User {
 				
 				// Portfolio does not have asset in the Order
 				if ((i >= curPortfolioList.size())
-						&& (curOrder.getOrderType())) // buyOrder Type
+						&& (curOrder.getOrderType())) { // buyOrder Type
 					curPortfolioList.add(new PortfolioEntry(curOrder
 							.getAsset(), curOrder.getPrice(), curOrder.getVolume()));
+					curOrder.setMatched(true);
+				}
 				
 				// Portfolio has the same asset in the Order
 				if (i < curPortfolioList.size()) {
@@ -241,6 +243,7 @@ public class User {
 						}
 						user.setCash(user.getCash() + curOrder.getValue());
 					}
+					curOrder.setMatched(true);
 				}
 			}
 		}
@@ -294,7 +297,7 @@ public class User {
 		OrderEntity orderEntity;
 		for (int i = 0; i < orderEntityList.size(); i++) {
 			orderEntity = orderEntityList.get(i);
-			if (orderEntity.getOrderType()) // buy
+			if (orderEntity.getOrderType()) // buyOrder Type
 				spentCash -= orderEntity.getPrice() * orderEntity.getVolume();
 			else
 				spentCash += orderEntity.getPrice() * orderEntity.getVolume();
