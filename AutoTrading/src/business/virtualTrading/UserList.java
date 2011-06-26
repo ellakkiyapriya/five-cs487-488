@@ -2,7 +2,9 @@ package business.virtualTrading;
 
 import java.util.ArrayList;
 
+import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.entity.UserEntity;
+import dataAccess.databaseManagement.manager.PortfolioManager;
 import dataAccess.databaseManagement.manager.UserManager;
 
 public class UserList {
@@ -10,10 +12,20 @@ public class UserList {
 	
 	public UserList() {
 		UserManager userManager = new UserManager();
+		PortfolioManager portfolioManager = new PortfolioManager();
 		userList = new ArrayList<User>();
+		UserEntity curUser;
+		
 		ArrayList<UserEntity> userEntityList = userManager.getAllUsers();
 		for (int i = 0; i < userEntityList.size(); i++) {
-			userList.add(new User(userEntityList.get(i)));
+			curUser = userEntityList.get(i);
+			ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
+					.getPortfolioByDateAndUserID(curUser.getUserID(),
+							portfolioManager
+									.getPortfolioLatestDateOfUserID(curUser
+											.getUserID()));
+
+			userList.add(new User(curUser, portfolioEntityList));
 		}
 	}
 	
