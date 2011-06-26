@@ -2,20 +2,7 @@ package business.virtualTrading;
 
 
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import dataAccess.databaseManagement.entity.AssetEntity;
-import dataAccess.databaseManagement.entity.OrderEntity;
-import dataAccess.databaseManagement.entity.UserEntity;
-import dataAccess.databaseManagement.manager.AssetManager;
-import dataAccess.databaseManagement.manager.OrderManager;
-import dataAccess.databaseManagement.manager.UserManager;
 
 /**
  * Class Name: Order
@@ -58,19 +45,6 @@ public class Order {
 		this.setVolume(volume);
 		this.setValue(price * volume);
 		this.setMatched(false);
-	}
-
-	
-	
-
-	public static void main(String args[]) {
-		// AssetEntity asset = new AssetEntity("so xo", "SXS", 1, null, 0.05);
-		// AssetManager assetManager = new AssetManager();
-		// assetManager.add(asset);
-
-		Date date = Date.valueOf("2001-01-05");
-		// order.execute();
-
 	}
 
 	public void setOrderType(boolean orderType) {
@@ -124,5 +98,5 @@ public class Order {
 	public boolean getMatched() {
 		return matched;
 	}
-
+	
 }

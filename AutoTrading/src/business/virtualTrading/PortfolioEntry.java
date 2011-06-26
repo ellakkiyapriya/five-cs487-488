@@ -1,21 +1,17 @@
 package business.virtualTrading;
 
-import java.sql.Date;
-import java.util.ArrayList;
-
 import dataAccess.databaseManagement.entity.AssetEntity;
-import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.manager.PortfolioManager;
 import dataAccess.databaseManagement.manager.PriceManager;
 
 /**
- * Class Name: Portfolio
+ * Class Name: PortfolioEntry
  * 
  * @version 1.5
  * @date June 1, 2011
  * @author Xuan Ngoc
  */
-public class Portfolio {
+public class PortfolioEntry {
 
 	private Asset asset;
 	private double buyPrice;
@@ -23,34 +19,43 @@ public class Portfolio {
 	private double volume;
 	private double profit;
 
-	public Portfolio() {
+	public PortfolioEntry() {
 
 	}
 
-	public Portfolio(Asset asset, double buyPrice, double volume) {
+	public PortfolioEntry(Asset asset, double buyPrice, double volume) {
 		PriceManager priceManager = new PriceManager();
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
-		this.setProfit(0);
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), priceManager.getLatestDate()).getClose());
-		
-		
+		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
 
-	public Portfolio(AssetEntity asset, double buyPrice, double volume) {
+	public PortfolioEntry(AssetEntity asset, double buyPrice, double volume) {
 		PriceManager priceManager = new PriceManager();
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
-		this.setProfit(0);
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), priceManager.getLatestDate()).getClose());
-
-		
+		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
-
+	
+	public double updatePortfolio(double volume, double price) {
+		double validVolume = this.volume + volume;
+		if (validVolume > 0) { // buy
+			this.volume = validVolume;
+			this.buyPrice = (price*volume +this.buyPrice * this.volume) /validVolume;
+			return -1;
+		}
+		return this.volume;
+	}
+	
+	public double getPortfolioValue() {
+		return buyPrice * volume;
+	}
 
 	/**
 	 * Delete portfolio by ID from database <li>Note: this method update
@@ -59,23 +64,6 @@ public class Portfolio {
 	public void delete(long portfolioID) {
 		PortfolioManager portfolioManager = new PortfolioManager();
 		portfolioManager.delete(portfolioID);
-	}
-
-	
-	
-
-	public static void main(String args[]) {
-		Date date = Date.valueOf("2001-01-02");
-
-		// Portfolio portfolioSample = new Portfolio(1, 2, 1.22, 11, date);
-		PortfolioManager portfolioManager = new PortfolioManager();
-		Date ta = portfolioManager.getLatestDate();
-		System.out.println(ta.toString());
-		// portfolioSample.add();
-
-		// ArrayList<PortfolioEntity> t =
-		// portfolioSample.getPortfolioByDate(date);
-
 	}
 
 	public void setAsset(Asset asset) {
@@ -117,5 +105,5 @@ public class Portfolio {
 	public double getCurrentPrice() {
 		return currentPrice;
 	}
-
+	
 }

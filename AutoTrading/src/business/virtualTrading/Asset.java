@@ -2,6 +2,13 @@ package business.virtualTrading;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 
+/**
+ * Class Name: Asset
+ * 
+ * @version 1.5
+ * @date June 1, 2011
+ * @author Xuan Ngoc
+ */
 public class Asset {
 	AssetEntity assetEntity;
 
