@@ -49,6 +49,19 @@ public class User {
 	}
 	
 	/**
+	 * Constructor for user get from database <li> userID is automatically created
+	 */
+	public User(UserEntity userEntity,  ArrayList<PortfolioEntity> portfolioEntityList) {
+		user = userEntity;
+		curOrderList = new ArrayList<Order>();
+		curPortfolioList = new ArrayList<PortfolioEntry>();
+		for (int i = 0; i < portfolioEntityList.size(); i++) {
+			curPortfolioList.add( new PortfolioEntry(portfolioEntityList.get(i)));
+		}
+		
+	}
+	
+	/**
 	 * Constructor <li>userID is automatically created
 	 */
 	public User(UserEntity userEntity) {

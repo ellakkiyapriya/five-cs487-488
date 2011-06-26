@@ -1,6 +1,8 @@
 package business.virtualTrading;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.PortfolioEntity;
+import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.PortfolioManager;
 import dataAccess.databaseManagement.manager.PriceManager;
 
@@ -38,6 +40,17 @@ public class PortfolioEntry {
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
+		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
+				asset.getAssetID(), priceManager.getLatestDate()).getClose());
+		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
+	}
+	
+	public PortfolioEntry(PortfolioEntity portfolioEntity ) {
+		PriceManager priceManager = new PriceManager();
+		AssetManager assetManager = new AssetManager();
+		this.asset = new Asset(assetManager.getAssetByID(portfolioEntity.getAssetID()));
+		this.buyPrice = portfolioEntity.getPrice();
+		this.volume = portfolioEntity.getVolume();
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), priceManager.getLatestDate()).getClose());
 		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
