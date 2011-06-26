@@ -1,14 +1,5 @@
 package business.virtualTrading;
 
-/*
- * TODO add following functions
- * 
- * ArrayList<OrderEntity>  getOrderUntilDateOfUserID(long userID,Date date)  orderManager.java    // SELET ... WHERE date < ?
- * ArrayList<porfolioEntity>  getPortfolioByDateAndUserID(long userID, Date date)  portfolioManager.java
- * Date getPortfolioStartDateOfUserID(long userID) portfolioManager.java  
- * Date getPortfolioLatestDateOfUserID(long userID, Date date) portfolioManager.java 
- * 
- */
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -125,7 +116,7 @@ public class User {
 		PortfolioManager portfolioManager = new PortfolioManager();
 		AssetManager assetManager = new AssetManager();
 		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
-				.getPortfolioByDate(date); // TODO getPortfolioByDateAndUserID(user.getUserID, date)
+				. getPortfolioByDateAndUserID(user.getUserID(), date);
 		PortfolioEntity portfolioEntity;
 		PortfolioEntry curPortfolioEntry;
 		AssetEntity assetEntity;
@@ -179,7 +170,7 @@ public class User {
 		 * Update portfolio
 		 */
 		PortfolioManager portfolioManager = new PortfolioManager();
-		Date latestDate = portfolioManager.getLatestDate(); // TODO portfolioManager.getPorfolioLatestDateOfUserID(user.getUserID()); 
+		Date latestDate = portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID()); 
 		PortfolioEntry curPortfolioEntry;
 
 		if (latestDate.equals(date)) { // remove today's porfolio in database  
@@ -276,8 +267,7 @@ public class User {
 		double totalCash = 0;
 		PortfolioManager portfolioManager = new PortfolioManager();
 		PortfolioEntity portfolioEntity;
-//TODO  ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager.getPortfolioByDateAndUserID(user.getUserID(), date)  
-		ArrayList<PortfolioEntity> portfolioEntityList =  portfolioManager.getPortfolioByDate(date); 
+		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager.getPortfolioByDateAndUserID(user.getUserID(), date); 
 		for(int i = 0; i < portfolioEntityList.size(); i++) {
 			portfolioEntity = portfolioEntityList.get(i);
 			totalCash += portfolioEntity.getPrice() * portfolioEntity.getVolume();  
@@ -313,8 +303,7 @@ public class User {
 	 */
 	public double spentCash(Date date) {
 		OrderManager orderManager = new OrderManager();
-//TODO	ArrayList<OrderEntity> orderEntityList = orderManager.getOrderUntilDateOfUserID(user.getUserID(), date);
-		ArrayList<OrderEntity> orderEntityList = orderManager.getOrderByUserID(user.getUserID());
+		ArrayList<OrderEntity> orderEntityList = orderManager.getOrderUntilDateOfUserID(user.getUserID(), date);
 		double spentCash = 0;
 		OrderEntity orderEntity;
 		for (int i = 0; i < orderEntityList.size(); i++) {
@@ -350,11 +339,10 @@ public class User {
 	 * @return
 	 */
 	public double profit() { 
-//		PortfolioManager portfolioManager = new PortfolioManager();
-//		double initialCapital = getCapitalByDate(portfolioManager.getPorfolioStartDateOfUserID(user.getUserID));
-//		double curCapital = getCapitalByDate(portfolioManager.getPorfolioLatestStartDateOfUserID(user.getUserID));
-//TODO	return (curCapital - initialCapital) / initialCapital;		
-		return 0;
+		PortfolioManager portfolioManager = new PortfolioManager();
+		double initialCapital = getCapitalByDate(portfolioManager.getPortfolioStartDateOfUserID(user.getUserID()));
+		double curCapital = getCapitalByDate(portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID()));
+		return (curCapital - initialCapital) / initialCapital;		
 	}
 	
 	
