@@ -21,7 +21,7 @@ import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
 public interface VisulizationChart {
     public void setPrices(ArrayList<PriceEntity> prices);
 
-    public void removeOrder(Object object);
+    public void removeOrder(AbstractDecisionAlgorithm abstractDecisionAlgorithm);
     public void removeAllOrders();
     public void addOrders(AbstractDecisionAlgorithm abstractDecisionAlgorithm, ArrayList<Order> orders);
 

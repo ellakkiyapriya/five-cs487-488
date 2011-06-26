@@ -4,7 +4,6 @@
  */
 package business.dataVisualization;
 
-import Utility.Utility;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.decisionAlgorithm.Order;
 import dataAccess.databaseManagement.entity.PriceEntity;
@@ -49,8 +48,8 @@ public class LineChart implements VisulizationChart {
             volumeDataset,
             predictionDataset = new YIntervalSeriesCollection(),
             markPointsDataset = new TimeSeriesCollection();
-    private HashMap<Object, TimeSeries> mappingOrderSeries = new HashMap<Object, TimeSeries>();
-    private HashMap<Object, YIntervalSeries> mappingPredictionPriceSeries = new HashMap<Object, YIntervalSeries>();
+    private HashMap<Object, Integer> mappingOrderSeries = new HashMap<Object, Integer>();
+    private HashMap<Object, Integer> mappingPredictionPriceSeries = new HashMap<Object, Integer>();
     private ArrayList<Color> preLineColors = new ArrayList<Color>();
 
     @Override
@@ -157,11 +156,10 @@ public class LineChart implements VisulizationChart {
                 sellSeries.add(new Day(order.getDate()), order.getPrice());
             }
         }
-
+        
+        mappingOrderSeries.put(decAlgo, markPointsDataset.getSeriesCount());
         ((TimeSeriesCollection) markPointsDataset).addSeries(buySeries);
         ((TimeSeriesCollection) markPointsDataset).addSeries(sellSeries);
-
-        mappingOrderSeries.put(decAlgo, buySeries);
 
         XYPlot plot = lineChart.getXYPlot();
         XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot.getRenderer(3);
@@ -182,7 +180,7 @@ public class LineChart implements VisulizationChart {
                     entry.lowValue, entry.highValue);
         }
 
-        mappingPredictionPriceSeries.put(algo, yintervalseries);
+        mappingPredictionPriceSeries.put(algo, predictionDataset.getSeriesCount());
         ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
 
         XYPlot plot = lineChart.getXYPlot();
@@ -202,17 +200,21 @@ public class LineChart implements VisulizationChart {
     }
 
     @Override
-    public void removeOrder(Object object) {
-        if (mappingOrderSeries.get(object) == null) {
+    public void removeOrder(AbstractDecisionAlgorithm decAlgo) {
+        if (mappingOrderSeries.get(decAlgo) == null) {
             return;
         }
 
-        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(object));
+        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
+        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
+
+        mappingOrderSeries.remove(decAlgo);
     }
 
     @Override
     public void removeAllOrders() {
         ((TimeSeriesCollection) markPointsDataset).removeAllSeries();
+        mappingOrderSeries.clear();
     }
 
     @Override
@@ -222,10 +224,13 @@ public class LineChart implements VisulizationChart {
         }
 
         ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(abstractPredictAlgorithm));
+
+        mappingPredictionPriceSeries.remove(abstractPredictAlgorithm);
     }
 
     @Override
     public void removeAllPredictionPrice() {
         ((YIntervalSeriesCollection) predictionDataset).removeAllSeries();
+        mappingPredictionPriceSeries.clear();
     }
 }

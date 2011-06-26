@@ -15,6 +15,8 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import org.jfree.chart.JFreeChart;
 
 /**
@@ -40,7 +42,7 @@ public class DataVisualizationProcessor {
             this.fromDate = fromDate;
             this.toDate = toDate;
 
-            this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
+            updatePricesList();
 
             visualizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
             visualizationChart.initalChart();
@@ -53,8 +55,19 @@ public class DataVisualizationProcessor {
         }
     }
 
+    private void updatePricesList() {
+        prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
+        Collections.sort(prices, new Comparator<PriceEntity>() {
+
+            @Override
+            public int compare(PriceEntity o1, PriceEntity o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+    }
+
     public void updateChartData() {
-        this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
+        updatePricesList();
         visualizationChart.setPrices(prices);
 
         //update prediction algorithms
@@ -66,14 +79,16 @@ public class DataVisualizationProcessor {
                 visualizationChart.addPredictionPrices(preAlgo, runPreAlg(preAlgo));
             }
 
-            for (AbstractDecisionAlgorithm decAlgo : decAlgList) {
-                visualizationChart.addOrders(decAlgo, runDecAlg(decAlgo));
-            }
         }
 
         //update decision algorithms
         {
             visualizationChart.removeAllOrders();
+
+            for (AbstractDecisionAlgorithm decAlgo : decAlgList) {
+                visualizationChart.addOrders(decAlgo, runDecAlg(decAlgo));
+            }
+
         }
 
         visualizationChart.updateChart();

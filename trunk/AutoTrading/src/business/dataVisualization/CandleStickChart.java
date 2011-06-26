@@ -52,8 +52,8 @@ public class CandleStickChart implements VisulizationChart {
     private XYDataset volumeDataset,
             predictionDataset = new YIntervalSeriesCollection(),
             markPointsDataset = new TimeSeriesCollection();
-    private HashMap<Object, TimeSeries> mappingOrderSeries = new HashMap<Object, TimeSeries>();
-    private HashMap<Object, YIntervalSeries> mappingPredictionPriceSeries = new HashMap<Object, YIntervalSeries>();
+    private HashMap<Object, Integer> mappingOrderSeries = new HashMap<Object, Integer>();
+    private HashMap<Object, Integer> mappingPredictionPriceSeries = new HashMap<Object, Integer>();
     private ArrayList<Color> preLineColors = new ArrayList<Color>();
 
     @Override
@@ -153,8 +153,6 @@ public class CandleStickChart implements VisulizationChart {
     @Override
     public void addOrders(AbstractDecisionAlgorithm decAlgo, ArrayList<Order> orders) {
 
-        //Utility.debug(orders.size());
-
         TimeSeries buySeries = new TimeSeries("Buy Signals - " + decAlgo.toString());
         TimeSeries sellSeries = new TimeSeries("Sell Signals - " + decAlgo.toString());
 
@@ -165,11 +163,10 @@ public class CandleStickChart implements VisulizationChart {
                 sellSeries.add(new Day(order.getDate()), order.getPrice());
             }
         }
-
+        
+        mappingOrderSeries.put(decAlgo, markPointsDataset.getSeriesCount());
         ((TimeSeriesCollection) markPointsDataset).addSeries(buySeries);
         ((TimeSeriesCollection) markPointsDataset).addSeries(sellSeries);
-
-        mappingOrderSeries.put(decAlgo, buySeries);
 
         XYPlot plot = candleStickChart.getXYPlot();
         XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot.getRenderer(3);
@@ -186,7 +183,7 @@ public class CandleStickChart implements VisulizationChart {
                     entry.lowValue, entry.highValue);
         }
 
-        mappingPredictionPriceSeries.put(preAlgo, yintervalseries);
+        mappingPredictionPriceSeries.put(preAlgo, predictionDataset.getSeriesCount());
         ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
 
         XYPlot plot = candleStickChart.getXYPlot();
@@ -206,17 +203,22 @@ public class CandleStickChart implements VisulizationChart {
     }
 
     @Override
-    public void removeOrder(Object object) {
-        if (mappingOrderSeries.get(object) == null) {
+    public void removeOrder(AbstractDecisionAlgorithm decAlgo) {
+        if (mappingOrderSeries.get(decAlgo) == null) {
             return;
         }
 
-        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(object));
+        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
+        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
+
+        mappingOrderSeries.remove(decAlgo);
     }
 
     @Override
     public void removeAllOrders() {
         ((TimeSeriesCollection) markPointsDataset).removeAllSeries();
+
+        mappingOrderSeries.clear();
     }
 
     @Override
@@ -226,10 +228,13 @@ public class CandleStickChart implements VisulizationChart {
         }
 
         ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(abstractPredictAlgorithm));
+
+        mappingPredictionPriceSeries.remove(abstractPredictAlgorithm);
     }
 
     @Override
     public void removeAllPredictionPrice() {
         ((YIntervalSeriesCollection) predictionDataset).removeAllSeries();
+        mappingPredictionPriceSeries.clear();
     }
 }
