@@ -47,6 +47,15 @@ public class User {
 		curOrderList = new ArrayList<Order>();
 		curPortfolioList = new ArrayList<PortfolioEntry>();
 	}
+	
+	/**
+	 * Constructor <li>userID is automatically created
+	 */
+	public User(UserEntity userEntity) {
+		user = userEntity;
+		curOrderList = new ArrayList<Order>();
+		curPortfolioList = new ArrayList<PortfolioEntry>();
+	}
 
 	/**
 	 * Constructor get user's information from database by userID
