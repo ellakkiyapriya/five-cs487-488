@@ -20,9 +20,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="sourceJLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="sourceJComboBox" min="-2" pref="270" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="updateJButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" alignment="0" attributes="1">
+                      <Component id="lastUpdateJLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="updateJButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="sourceJComboBox" alignment="0" min="-2" pref="270" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -34,6 +39,10 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="sourceJComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="sourceJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lastUpdateJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="updateJButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -60,6 +69,11 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new javax.swing.DefaultComboBoxModel(business.dataUpdate.Utility.ONLINE_RESOURCES)" type="code"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lastUpdateJLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Last Update:"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -4,14 +4,9 @@ import Jama.Matrix;
 import Utility.ParamList;
 import Utility.Utility;
 import JSci.maths.statistics.*;
-import java.lang.Double;
-import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class AutoRegression extends AbstractPredictAlgorithm {
 

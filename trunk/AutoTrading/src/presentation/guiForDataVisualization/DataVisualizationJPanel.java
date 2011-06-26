@@ -28,9 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.data.time.TimeSeriesCollection;
 import presentation.ComboKeyHandler;
 
 /**
@@ -55,20 +53,17 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         algorithmOptionJPanel = new javax.swing.JPanel();
-        algorithmJLabel = new javax.swing.JLabel();
-        startPredictionJLabel = new javax.swing.JLabel();
-        preAlgJLabel = new javax.swing.JLabel();
-        decAlgJLabel = new javax.swing.JLabel();
-        startPredictionDateJSpinner = new javax.swing.JSpinner();
-        preAlgJComboBox = new javax.swing.JComboBox();
+        decAlgJPanel = new javax.swing.JPanel();
         decAlgJComboBox = new javax.swing.JComboBox();
-        preAlgParametersJPanel = new javax.swing.JPanel();
-        decAlgParametersJPanel = new javax.swing.JPanel();
-        preAlgParametersJLabel = new javax.swing.JLabel();
-        decAlgParametersjLabel = new javax.swing.JLabel();
         runDecAlgJButton = new javax.swing.JButton();
+        decAlgParametersContainerJPanel = new javax.swing.JPanel();
+        preAlgJPanel = new javax.swing.JPanel();
+        preAlgJComboBox = new javax.swing.JComboBox();
         runPreAlgJButton = new javax.swing.JButton();
-        visualizationChartJPanel = new ChartPanel(ChartFactory.createTimeSeriesChart("", "", "", new TimeSeriesCollection(), true, true, true));
+        preAlgParametersContainerJPanel = new javax.swing.JPanel();
+        startPredictionJLabel = new javax.swing.JLabel();
+        startPredictionDateJSpinner = new javax.swing.JSpinner();
+        visualizationChartJPanel = new javax.swing.JPanel();
         symbolOptionJPanel = new javax.swing.JPanel();
         assetJLabel = new javax.swing.JLabel();
         assetJComboBox = new javax.swing.JComboBox();
@@ -80,29 +75,12 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         exchangeJComboBox = new javax.swing.JComboBox();
         chartStyleJLabel = new javax.swing.JLabel();
         charStyleJComboBox = new javax.swing.JComboBox();
-        refreshDataJButton = new javax.swing.JButton();
+        refreshJButton = new javax.swing.JButton();
+        chartContainerJPanel = new javax.swing.JPanel();
 
-        algorithmJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        algorithmJLabel.setText("ALGORITHM");
+        algorithmOptionJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ALGORITHM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        startPredictionJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        startPredictionJLabel.setText("Start Prediction:");
-
-        preAlgJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        preAlgJLabel.setText("Prediction Algorithm:");
-
-        decAlgJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        decAlgJLabel.setText("Decision Algorithm:");
-
-        startPredictionDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
-        startPredictionDateJSpinner.setEditor(new JSpinner.DateEditor(startPredictionDateJSpinner, "MM/dd/yyyy"));
-
-        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.Utility.predictionAlgorithmList));
-        preAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                preAlgJComboBoxActionPerformed(evt);
-            }
-        });
+        decAlgJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Decision Algorithm"));
 
         decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.Utility.decisionAlgorithmList));
         decAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -111,25 +89,95 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
             }
         });
 
-        preAlgParametersJPanel.setLayout(new java.awt.GridLayout(1, 0));
-
-        decAlgParametersJPanel.setLayout(new java.awt.GridLayout(1, 0));
-
-        preAlgParametersJLabel.setText("Parameter:");
-
-        decAlgParametersjLabel.setText("Parameter:");
-
-        runDecAlgJButton.setText("Run");
+        runDecAlgJButton.setText("Apply");
         runDecAlgJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 runDecAlgJButtonActionPerformed(evt);
             }
         });
 
-        runPreAlgJButton.setText("Run");
+        decAlgParametersContainerJPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        javax.swing.GroupLayout decAlgJPanelLayout = new javax.swing.GroupLayout(decAlgJPanel);
+        decAlgJPanel.setLayout(decAlgJPanelLayout);
+        decAlgJPanelLayout.setHorizontalGroup(
+            decAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(decAlgJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(decAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(decAlgJPanelLayout.createSequentialGroup()
+                        .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addComponent(runDecAlgJButton))
+                    .addGroup(decAlgJPanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(decAlgParametersContainerJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        decAlgJPanelLayout.setVerticalGroup(
+            decAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(decAlgJPanelLayout.createSequentialGroup()
+                .addGroup(decAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runDecAlgJButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(decAlgParametersContainerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        preAlgJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Prediction Algorithm"));
+
+        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.Utility.predictionAlgorithmList));
+        preAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preAlgJComboBoxActionPerformed(evt);
+            }
+        });
+
+        runPreAlgJButton.setText("Apply");
         runPreAlgJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 runPreAlgJButtonActionPerformed(evt);
+            }
+        });
+
+        preAlgParametersContainerJPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        javax.swing.GroupLayout preAlgJPanelLayout = new javax.swing.GroupLayout(preAlgJPanel);
+        preAlgJPanel.setLayout(preAlgJPanelLayout);
+        preAlgJPanelLayout.setHorizontalGroup(
+            preAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(preAlgJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(preAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(preAlgJPanelLayout.createSequentialGroup()
+                        .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addComponent(runPreAlgJButton))
+                    .addGroup(preAlgJPanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(preAlgParametersContainerJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        preAlgJPanelLayout.setVerticalGroup(
+            preAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(preAlgJPanelLayout.createSequentialGroup()
+                .addGroup(preAlgJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runPreAlgJButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(preAlgParametersContainerJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        startPredictionJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        startPredictionJLabel.setText("Start Prediction:");
+
+        startPredictionDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
+        startPredictionDateJSpinner.setEditor(new JSpinner.DateEditor(startPredictionDateJSpinner, "MM/dd/yyyy"));
+        startPredictionDateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                startPredictionDateJSpinnerStateChanged(evt);
             }
         });
 
@@ -137,89 +185,32 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         algorithmOptionJPanel.setLayout(algorithmOptionJPanelLayout);
         algorithmOptionJPanelLayout.setHorizontalGroup(
             algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(algorithmJLabel)
-                    .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                .addComponent(decAlgJLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                .addComponent(preAlgJLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                        .addComponent(preAlgParametersJLabel)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(runPreAlgJButton))))
-                            .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                                        .addComponent(decAlgParametersjLabel)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(runDecAlgJButton))))))
-                    .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, algorithmOptionJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, algorithmOptionJPanelLayout.createSequentialGroup()
                         .addComponent(startPredictionJLabel)
-                        .addGap(44, 44, 44)
-                        .addComponent(startPredictionDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(startPredictionDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(decAlgJPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(preAlgJPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
-
-        algorithmOptionJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {decAlgJComboBox, preAlgJComboBox});
-
         algorithmOptionJPanelLayout.setVerticalGroup(
             algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(algorithmOptionJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(algorithmJLabel)
-                .addGap(11, 11, 11)
+                .addComponent(decAlgJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(startPredictionJLabel)
                     .addComponent(startPredictionDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(preAlgJLabel)
-                    .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(preAlgParametersJLabel)
-                    .addComponent(runPreAlgJButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(decAlgJLabel)
-                    .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(algorithmOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(decAlgParametersjLabel)
-                    .addComponent(runDecAlgJButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(312, Short.MAX_VALUE))
+                .addComponent(preAlgJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout visualizationChartJPanelLayout = new javax.swing.GroupLayout(visualizationChartJPanel);
-        visualizationChartJPanel.setLayout(visualizationChartJPanelLayout);
-        visualizationChartJPanelLayout.setHorizontalGroup(
-            visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 853, Short.MAX_VALUE)
-        );
-        visualizationChartJPanelLayout.setVerticalGroup(
-            visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 422, Short.MAX_VALUE)
-        );
+        visualizationChartJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CHART", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         assetJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         assetJLabel.setText("Asset:");
@@ -273,13 +264,6 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
             }
         });
 
-        refreshDataJButton.setText("Refresh Data");
-        refreshDataJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshDataJButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout symbolOptionJPanelLayout = new javax.swing.GroupLayout(symbolOptionJPanel);
         symbolOptionJPanel.setLayout(symbolOptionJPanelLayout);
         symbolOptionJPanelLayout.setHorizontalGroup(
@@ -305,14 +289,12 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                 .addComponent(chartStyleJLabel)
                 .addGap(18, 18, 18)
                 .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(refreshDataJButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         symbolOptionJPanelLayout.setVerticalGroup(
             symbolOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, symbolOptionJPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(symbolOptionJPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(symbolOptionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exchangeJLabel)
                     .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -323,9 +305,41 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
                     .addComponent(toDateJLabel)
                     .addComponent(toDateJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chartStyleJLabel)
-                    .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshDataJButton))
+                    .addComponent(charStyleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        refreshJButton.setText("Refresh");
+        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButtonActionPerformed(evt);
+            }
+        });
+
+        chartContainerJPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        javax.swing.GroupLayout visualizationChartJPanelLayout = new javax.swing.GroupLayout(visualizationChartJPanel);
+        visualizationChartJPanel.setLayout(visualizationChartJPanelLayout);
+        visualizationChartJPanelLayout.setHorizontalGroup(
+            visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(visualizationChartJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chartContainerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
+                    .addComponent(refreshJButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(symbolOptionJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+        );
+        visualizationChartJPanelLayout.setVerticalGroup(
+            visualizationChartJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(visualizationChartJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chartContainerJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(symbolOptionJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -333,41 +347,39 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(algorithmOptionJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(symbolOptionJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addComponent(visualizationChartJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(visualizationChartJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(algorithmOptionJPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(visualizationChartJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(symbolOptionJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(algorithmOptionJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(visualizationChartJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void exchangeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeJComboBoxActionPerformed
-        if (exchangeJComboBox.getSelectedIndex() != -1) {
-            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
-            assetComboKeyHandler.updateListObjects();
-            assetJComboBox.setSelectedIndex(0);
+        if (exchangeJComboBox.getSelectedIndex() == -1) {
+            return;
         }
+        
+        assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+        assetComboKeyHandler.updateListObjects();
+        assetJComboBox.setSelectedIndex(0);
     }//GEN-LAST:event_exchangeJComboBoxActionPerformed
 
     private void assetJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assetJComboBoxActionPerformed
-        if (assetJComboBox.getSelectedIndex() != -1) {
-            dataVisualizationProcessor.setAsset((AssetEntity) assetJComboBox.getSelectedItem());
-            dataVisualizationProcessor.updateChart();
-            ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+        if (assetJComboBox.getSelectedIndex() == -1) {
+            return;
         }
+
+        dataVisualizationProcessor.setAsset((AssetEntity) assetJComboBox.getSelectedItem());
+        dataVisualizationProcessor.updateChartData();
     }//GEN-LAST:event_assetJComboBoxActionPerformed
 
     private void fromDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fromDateJSpinnerStateChanged
@@ -376,8 +388,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         }
 
         dataVisualizationProcessor.setFromDate((Date) fromDateJSpinner.getValue());
-        dataVisualizationProcessor.updateChart();
-        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+        dataVisualizationProcessor.updateChartData();
     }//GEN-LAST:event_fromDateJSpinnerStateChanged
 
     private void toDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_toDateJSpinnerStateChanged
@@ -386,71 +397,85 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         }
 
         dataVisualizationProcessor.setToDate((Date) toDateJSpinner.getValue());
-        dataVisualizationProcessor.updateChart();
-        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+        dataVisualizationProcessor.updateChartData();
     }//GEN-LAST:event_toDateJSpinnerStateChanged
 
     private void charStyleJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_charStyleJComboBoxActionPerformed
         dataVisualizationProcessor.changeChartType((ChartStyle) charStyleJComboBox.getSelectedItem());
-        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
+        jFreeChartPanel.setChart(dataVisualizationProcessor.getChart());
     }//GEN-LAST:event_charStyleJComboBoxActionPerformed
 
-    private void refreshDataJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshDataJButtonActionPerformed
-        dataVisualizationProcessor.updateChart();
-        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
-    }//GEN-LAST:event_refreshDataJButtonActionPerformed
-
     private void preAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preAlgJComboBoxActionPerformed
-        preAlgParametersJPanel.removeAll();
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String)preAlgJComboBox.getSelectedItem());
-        parameterJPanel = new ParameterJPanel(preAlg.getParametersList());
-		preAlgParametersJPanel.add(parameterJPanel);
+        preAlgParametersContainerJPanel.removeAll();
+        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
+        preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
+        preAlgParametersContainerJPanel.updateUI();
     }//GEN-LAST:event_preAlgJComboBoxActionPerformed
 
     private void decAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decAlgJComboBoxActionPerformed
-        decAlgParametersJPanel.removeAll();
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String)decAlgJComboBox.getSelectedItem());
-        decAlgParametersJPanel.add(new ParameterJPanel(decAlg.getParametersList()));
+        decAlgParametersContainerJPanel.removeAll();
+        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
+        decAlgParametersContainerJPanel.updateUI();
     }//GEN-LAST:event_decAlgJComboBoxActionPerformed
 
     private void runPreAlgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runPreAlgJButtonActionPerformed
-    	TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
-    	//JOptionPane.showMessageDialog(new JFrame(), parameterJPanel == null);
-    	for (String name : preAlg.getParametersList().keySet()) {
-    		valueMap.put(name, parameterJPanel.getValue(name));
-    	}
-    	preAlg.setParametersValue(valueMap);
-    	dataVisualizationProcessor.setStartPreDate((Date) startPredictionDateJSpinner.getValue());
-        dataVisualizationProcessor.getPreAlgList().clear();
+        dataVisualizationProcessor.removePreAlg(preAlg);
+
+        TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+        for (String name : preAlg.getParametersList().keySet()) {
+            valueMap.put(name, preAlgParameterJPanel.getValue(name));
+        }
+        preAlg.setParametersValue(valueMap);
+
         dataVisualizationProcessor.addPreAlg(preAlg);
-        dataVisualizationProcessor.updateChart();
-        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
     }//GEN-LAST:event_runPreAlgJButtonActionPerformed
 
     private void runDecAlgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runDecAlgJButtonActionPerformed
-        decAlg.runAlgorithm(null);
+        dataVisualizationProcessor.removeDecAlg(decAlg);
+
+        TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+        for (String name : decAlg.getParametersList().keySet()) {
+            valueMap.put(name, decAlgParameterJPanel.getValue(name));
+        }
+        decAlg.setParametersValue(valueMap);
+
+        dataVisualizationProcessor.addDecAlg(decAlg);
     }//GEN-LAST:event_runDecAlgJButtonActionPerformed
 
+    private void startPredictionDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startPredictionDateJSpinnerStateChanged
+        startPreDate = (Date) startPredictionDateJSpinner.getValue();
+        if (dataVisualizationProcessor == null) {
+            return;
+        }
+        dataVisualizationProcessor.setStartPreDate(startPreDate);
+        dataVisualizationProcessor.updateChartData();
+    }//GEN-LAST:event_startPredictionDateJSpinnerStateChanged
+
+    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
+        dataVisualizationProcessor.updateChartData();
+    }//GEN-LAST:event_refreshJButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel algorithmJLabel;
     private javax.swing.JPanel algorithmOptionJPanel;
     private javax.swing.JComboBox assetJComboBox;
     private javax.swing.JLabel assetJLabel;
     private javax.swing.JComboBox charStyleJComboBox;
+    private javax.swing.JPanel chartContainerJPanel;
     private javax.swing.JLabel chartStyleJLabel;
     private javax.swing.JComboBox decAlgJComboBox;
-    private javax.swing.JLabel decAlgJLabel;
-    private javax.swing.JPanel decAlgParametersJPanel;
-    private javax.swing.JLabel decAlgParametersjLabel;
+    private javax.swing.JPanel decAlgJPanel;
+    private javax.swing.JPanel decAlgParametersContainerJPanel;
     private javax.swing.JComboBox exchangeJComboBox;
     private javax.swing.JLabel exchangeJLabel;
     private javax.swing.JSpinner fromDateJSpinner;
     private javax.swing.JLabel fromJLabel;
     private javax.swing.JComboBox preAlgJComboBox;
-    private javax.swing.JLabel preAlgJLabel;
-    private javax.swing.JLabel preAlgParametersJLabel;
-    private javax.swing.JPanel preAlgParametersJPanel;
-    private javax.swing.JButton refreshDataJButton;
+    private javax.swing.JPanel preAlgJPanel;
+    private javax.swing.JPanel preAlgParametersContainerJPanel;
+    private javax.swing.JButton refreshJButton;
     private javax.swing.JButton runDecAlgJButton;
     private javax.swing.JButton runPreAlgJButton;
     private javax.swing.JSpinner startPredictionDateJSpinner;
@@ -460,13 +485,18 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private javax.swing.JSpinner toDateJSpinner;
     private javax.swing.JPanel visualizationChartJPanel;
     // End of variables declaration//GEN-END:variables
+    public static TreeMap<ExchangeEntity, Object[]> mappingExchangeID_Assets;
     private DataVisualizationProcessor dataVisualizationProcessor;
     private ComboKeyHandler exchangeComboKeyHandler;
     private ComboKeyHandler assetComboKeyHandler;
-    public static TreeMap<ExchangeEntity, Object[]> mappingExchangeID_Assets;
+
+    private Date startPreDate;
     private AbstractPredictAlgorithm preAlg;
     private AbstractDecisionAlgorithm decAlg;
-	private ParameterJPanel parameterJPanel;
+
+    private ChartPanel jFreeChartPanel;
+    private ParameterJPanel preAlgParameterJPanel;
+    private ParameterJPanel decAlgParameterJPanel;
 
     private void initOtherComponents() {
         Calendar now = Calendar.getInstance();
@@ -497,18 +527,23 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         fieldSymbol.addKeyListener(assetComboKeyHandler);
 
         dataVisualizationProcessor = new DataVisualizationProcessor((AssetEntity) assetJComboBox.getSelectedItem(), (Date) fromDateJSpinner.getValue(), (Date) toDateJSpinner.getValue(), (ChartStyle) charStyleJComboBox.getSelectedItem());
-        ((ChartPanel) visualizationChartJPanel).setChart(dataVisualizationProcessor.getChart());
-        dataVisualizationProcessor.setStartPreDate((Date) startPredictionDateJSpinner.getValue());
+        startPreDate = (Date) startPredictionDateJSpinner.getValue();
+        dataVisualizationProcessor.setStartPreDate(startPreDate);
 
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String)preAlgJComboBox.getSelectedItem());
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String)decAlgJComboBox.getSelectedItem());
+        jFreeChartPanel = new ChartPanel(dataVisualizationProcessor.getChart());
+        chartContainerJPanel.add(jFreeChartPanel);
 
-        parameterJPanel = new ParameterJPanel(preAlg.getParametersList());
-		preAlgParametersJPanel.add(parameterJPanel);
-        decAlgParametersJPanel.add(new ParameterJPanel(decAlg.getParametersList()));
+        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+
+        preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
+        preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
+
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
     }
-    
-    public void debug(Object...os) {
-    	JOptionPane.showMessageDialog(new JFrame(), Arrays.deepToString(os));
+
+    public void debug(Object... os) {
+        JOptionPane.showMessageDialog(new JFrame(), Arrays.deepToString(os));
     }
 }

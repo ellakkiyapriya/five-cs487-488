@@ -1,41 +1,52 @@
 package business.algorithm.decisionAlgorithm;
 
+import java.util.Date;
+
 public class Order {
-	public static final boolean ORDER_BUY = true;
-	public static final boolean ORDER_SELL = false;
-	private boolean orderType;
-	private double price;
-	private int nth_day_in_future;
 
-	public Order(boolean orderType, double price, int nth_day_in_future) {
-		super();
-		this.orderType = orderType;
-		this.price = price;
-		this.nth_day_in_future = nth_day_in_future;
-	}
+    public static final boolean ORDER_BUY = true;
+    public static final boolean ORDER_SELL = false;
+    private boolean orderType;
+    private double price;
+    private int nth_day_in_future;
+    private Date date;
 
-	public boolean isOrderType() {
-		return orderType;
-	}
+    public Order(boolean orderType, double price, int nth_day_in_future) {
+        super();
+        this.orderType = orderType;
+        this.price = price;
+        this.nth_day_in_future = nth_day_in_future;
+    }
 
-	public void setOrderType(boolean orderType) {
-		this.orderType = orderType;
-	}
+    public boolean isOrderType() {
+        return orderType;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public void setOrderType(boolean orderType) {
+        this.orderType = orderType;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public int getNth_day_in_future() {
-		return nth_day_in_future;
-	}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public void setNth_day_in_future(int nth_day_in_future) {
-		this.nth_day_in_future = nth_day_in_future;
-	}
+    public int getNth_day_in_future() {
+        return nth_day_in_future;
+    }
 
+    public void setNth_day_in_future(int nth_day_in_future) {
+        this.nth_day_in_future = nth_day_in_future;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
