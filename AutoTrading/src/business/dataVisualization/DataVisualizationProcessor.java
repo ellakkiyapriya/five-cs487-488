@@ -4,7 +4,9 @@
  */
 package business.dataVisualization;
 
+import Utility.Utility;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
+import business.algorithm.decisionAlgorithm.Order;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import business.algorithm.predictAlgorithm.OutputOfAutoRegression;
 import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
@@ -13,11 +15,7 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.Date;
 import java.util.ArrayList;
-
-import javax.swing.DebugGraphics;
-
 import org.jfree.chart.JFreeChart;
-import Utility.Utility;
 
 /**
  *
@@ -33,7 +31,7 @@ public class DataVisualizationProcessor {
     private Date startPreDate;
     private ArrayList<AbstractPredictAlgorithm> preAlgList = new ArrayList<AbstractPredictAlgorithm>();
     private ArrayList<AbstractDecisionAlgorithm> decAlgList = new ArrayList<AbstractDecisionAlgorithm>();
-    private VisulizationChart visulizationChart;
+    private VisulizationChart visualizationChart;
     private ArrayList<PriceEntity> prices;
 
     public DataVisualizationProcessor(AssetEntity asset, Date fromDate, Date toDate, ChartStyle chartStyle) {
@@ -44,17 +42,10 @@ public class DataVisualizationProcessor {
 
             this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
 
-            visulizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
-            visulizationChart.initalChart();
-            visulizationChart.setPrices(prices);
-//            visulizationChart.addPredictionPrices("Alg2", prices);
-//            visulizationChart.addPredictionPrices("Alg1", prices);
-//            ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
-//            for (PriceEntity price : prices) {
-//                orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
-//            }
-//            visulizationChart.addOrders("Alg1", orders);
-            visulizationChart.updateChart();
+            visualizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
+            visualizationChart.initalChart();
+            visualizationChart.setPrices(prices);
+            visualizationChart.updateChart();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
         } catch (IllegalAccessException ex) {
@@ -62,46 +53,67 @@ public class DataVisualizationProcessor {
         }
     }
 
-    public void updateChart() {
+    public void updateChartData() {
         this.prices = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
-        visulizationChart.setPrices(prices);
-        visulizationChart.removeAllOrders();
-        visulizationChart.removeAllPredictionPrice();
+        visualizationChart.setPrices(prices);
 
-        
-        //add new results of Algorithms
-        for (AbstractPredictAlgorithm algo : preAlgList) {
-        	ArrayList<Double> list = new ArrayList<Double>();
-        	for (PriceEntity priceEntity : prices) {
-				if (priceEntity.getDate().before(startPreDate))
-					list.add(priceEntity.getClose());
-			}
-        	algo.setPriceList(list);
-        	OutputOfAutoRegression outputOfAutoRegression = (OutputOfAutoRegression) algo.runAlgorithm();
-        	Utility.debug(outputOfAutoRegression.predictionPrice);
-        	PredictionAlgorithmEntity result = outputOfAutoRegression.convertThis(startPreDate);
-        	
-        	Utility.debug(result.list.size());
-        	
-        	visulizationChart.addPredictionPrices(algo, result);
-		}
-        
-//        visulizationChart.addPredictionPrices("dsafafwe", prices);
-//        visulizationChart.addPredictionPrices("asfhhjy", prices);
-//        ArrayList<OrderEntity> orders = new ArrayList<OrderEntity>();
-//        for (PriceEntity price : prices) {
-//            orders.add(new OrderEntity(false, 123, price.getDate(), 323, price.getClose(), 0, false));
-//        }
-//        visulizationChart.addOrders("dsafafwe", orders);
-        visulizationChart.updateChart();
+        //update prediction algorithms
+        {
+            visualizationChart.removeAllPredictionPrice();
 
+            //add new results of Algorithms
+            for (AbstractPredictAlgorithm preAlgo : preAlgList) {
+                visualizationChart.addPredictionPrices(preAlgo, runPreAlg(preAlgo));
+            }
+
+            for (AbstractDecisionAlgorithm decAlgo : decAlgList) {
+                visualizationChart.addOrders(decAlgo, runDecAlg(decAlgo));
+            }
+        }
+
+        //update decision algorithms
+        {
+            visualizationChart.removeAllOrders();
+        }
+
+        visualizationChart.updateChart();
+    }
+
+    private PredictionAlgorithmEntity runPreAlg(AbstractPredictAlgorithm preAlgo) {
+        ArrayList<Double> list = new ArrayList<Double>();
+        for (PriceEntity priceEntity : prices) {
+            if (priceEntity.getDate().before(startPreDate)) {
+                list.add(priceEntity.getClose());
+            }
+        }
+
+        preAlgo.setPriceList(list);
+        OutputOfAutoRegression outputOfAutoRegression = (OutputOfAutoRegression) preAlgo.runAlgorithm();
+
+        return outputOfAutoRegression.convertThis(startPreDate);
+    }
+
+    private ArrayList<Order> runDecAlg(AbstractDecisionAlgorithm decAlgo) {
+        ArrayList<Double> list = new ArrayList<Double>();
+        for (PriceEntity priceEntity : prices) {
+            list.add(priceEntity.getClose());
+        }
+
+        decAlgo.setPriceList(list);
+        ArrayList<Order> result = decAlgo.runAlgorithm();
+
+        for (Order order : result) {
+            order.setDate(prices.get(order.getNth_day_in_future()).getDate());
+        }
+
+        return result;
     }
 
     public void changeChartType(ChartStyle chartStyle) {
         try {
-            visulizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
-            visulizationChart.initalChart();
-            updateChart();
+            visualizationChart = (VisulizationChart) chartStyle.getChartClass().newInstance();
+            visualizationChart.initalChart();
+            this.updateChartData();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
         } catch (IllegalAccessException ex) {
@@ -111,22 +123,38 @@ public class DataVisualizationProcessor {
 
     public void addDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
         decAlgList.add(abstractDecisionAlgorithm);
-        //....
+        visualizationChart.addOrders(abstractDecisionAlgorithm, runDecAlg(abstractDecisionAlgorithm));
+        visualizationChart.updateChart();
     }
 
     public void removeDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
-       decAlgList.remove(abstractDecisionAlgorithm);
-       //....
+        decAlgList.remove(abstractDecisionAlgorithm);
+        visualizationChart.removeOrder(abstractDecisionAlgorithm);
+        visualizationChart.updateChart();
+    }
+
+    public void removeAllDecAlg() {
+        decAlgList.clear();
+        visualizationChart.removeAllOrders();
+        visualizationChart.updateChart();
     }
 
     public void addPreAlg(AbstractPredictAlgorithm abstractPredictAlgorithm) {
         preAlgList.add(abstractPredictAlgorithm);
-        //...
+        visualizationChart.addPredictionPrices(abstractPredictAlgorithm, runPreAlg(abstractPredictAlgorithm));
+        visualizationChart.updateChart();
     }
 
     public void removePreAlg(AbstractPredictAlgorithm abstractPredictAlgorithm) {
         preAlgList.remove(abstractPredictAlgorithm);
-        //....
+        visualizationChart.removePredictionPrice(abstractPredictAlgorithm);
+        visualizationChart.updateChart();
+    }
+
+    public void removeAllPreAlg() {
+        preAlgList.clear();
+        visualizationChart.removeAllPredictionPrice();
+        visualizationChart.updateChart();
     }
 
     public ArrayList<AbstractDecisionAlgorithm> getDecAlgList() {
@@ -178,6 +206,6 @@ public class DataVisualizationProcessor {
     }
 
     public JFreeChart getChart() {
-        return visulizationChart.getChart();
+        return visualizationChart.getChart();
     }
 }

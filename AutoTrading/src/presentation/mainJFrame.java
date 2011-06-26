@@ -8,12 +8,12 @@
  *
  * Created on Jun 8, 2011, 10:46:54 AM
  */
-
 package presentation;
 
 import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import presentation.guiForDataUpdate.DataUpdateJPanel;
 import presentation.guiForDataVisualization.DataVisualizationJPanel;
 import presentation.guiForDecisionAlgorithmEvaluation.DecisionAlgorithmEvaluationJPanel;
@@ -63,12 +63,18 @@ public class mainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             @Override
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 new mainJFrame().setVisible(true);
             }
         });
@@ -97,7 +103,6 @@ public class mainJFrame extends javax.swing.JFrame {
 
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane mainJTabbedPane;
     // End of variables declaration//GEN-END:variables

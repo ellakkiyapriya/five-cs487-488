@@ -5,7 +5,9 @@ import Utility.ParamList;
 import java.util.TreeMap;
 
 public abstract class AbstractDecisionAlgorithm {
-	public abstract ArrayList<Order> runAlgorithm(ParamList parameters);
+    ParamList parameters;
+    public abstract ArrayList<Order> runAlgorithm();
     public abstract TreeMap<String, Class> getParametersList();
-    public abstract ParamList setParametersValue(TreeMap<String, Object> map);
+    public abstract void setParametersValue(TreeMap<String, Object> map);
+    public abstract void setPriceList(ArrayList<Double> prices);
 }

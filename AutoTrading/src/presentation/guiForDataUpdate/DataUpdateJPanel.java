@@ -42,6 +42,7 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
         updateJButton = new javax.swing.JButton();
         sourceJLabel = new javax.swing.JLabel();
         sourceJComboBox = new javax.swing.JComboBox();
+        lastUpdateJLabel = new javax.swing.JLabel();
 
         updateJButton.setText("Update");
         updateJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -54,6 +55,8 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 
         sourceJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.dataUpdate.Utility.ONLINE_RESOURCES));
 
+        lastUpdateJLabel.setText("Last Update:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -62,9 +65,12 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(sourceJLabel)
                 .addGap(10, 10, 10)
-                .addComponent(sourceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(updateJButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lastUpdateJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(updateJButton))
+                    .addComponent(sourceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -73,7 +79,10 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sourceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sourceJLabel)
+                    .addComponent(sourceJLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lastUpdateJLabel)
                     .addComponent(updateJButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -84,14 +93,17 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 
             @Override
             public void run() {
+                lastUpdateJLabel.setText("Updating ....");
                 AbstractDataGetter dataGetter = Utility.getDataGetter((String) sourceJComboBox.getSelectedItem());
                 AbstractDataProcessor dataProcessor = Utility.getDataProcessor((String) sourceJComboBox.getSelectedItem());
                 UpdateData.updateDataFromSpecificDate(priceManager.getLatestDate(), dataGetter, dataProcessor);
+                lastUpdateJLabel.setText("Last Update: " + priceManager.getLatestDate().toString());
             }
         }).start();
 
     }//GEN-LAST:event_updateJButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel lastUpdateJLabel;
     private javax.swing.JComboBox sourceJComboBox;
     private javax.swing.JLabel sourceJLabel;
     private javax.swing.JButton updateJButton;
@@ -100,5 +112,6 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 //    private File selectedFile = null;
 
     private void initOtherComponents() {
+        lastUpdateJLabel.setText("Last Update: " + priceManager.getLatestDate().toString());
     }
 }

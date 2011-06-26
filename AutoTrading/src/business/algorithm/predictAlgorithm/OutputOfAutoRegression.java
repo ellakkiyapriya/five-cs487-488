@@ -32,7 +32,6 @@ public class OutputOfAutoRegression extends ParamList {
 		this.lambda = lambda;
 	}
 	public PredictionAlgorithmEntity convertThis(Date startPredictingDate) {
-		Utility.debug(startPredictingDate);
 		PredictionAlgorithmEntity entity = new PredictionAlgorithmEntity();
 		entity.list = new ArrayList<PredictionAlgorithmEntity.Entry>();
 		Date currentDate = startPredictingDate;

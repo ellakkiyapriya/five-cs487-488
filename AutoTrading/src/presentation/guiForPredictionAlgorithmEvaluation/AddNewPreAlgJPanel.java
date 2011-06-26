@@ -11,7 +11,7 @@
 
 package presentation.guiForPredictionAlgorithmEvaluation;
 
-import java.util.Date;
+import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import java.util.TreeMap;
 import javax.swing.JDialog;
 import presentation.guiForDataVisualization.ParameterJPanel;
@@ -40,21 +40,21 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        preAlgJLabel = new javax.swing.JLabel();
         preAlgJComboBox = new javax.swing.JComboBox();
-        preAlgParametersjLabel = new javax.swing.JLabel();
-        preAlgParametersJPanel = new javax.swing.JPanel();
+        preAlgParametersContainerJPanel = new javax.swing.JPanel();
         cancelJButton = new javax.swing.JButton();
-        okJButton = new javax.swing.JButton();
+        addJButton = new javax.swing.JButton();
 
-        preAlgJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        preAlgJLabel.setText("Prediction Algorithm:");
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Prediction Algorithm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.Utility.predictionAlgorithmList));
+        preAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preAlgJComboBoxActionPerformed(evt);
+            }
+        });
 
-        preAlgParametersjLabel.setText("Parameter:");
-
-        preAlgParametersJPanel.setLayout(new java.awt.GridLayout());
+        preAlgParametersContainerJPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -63,10 +63,10 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
             }
         });
 
-        okJButton.setText("OK");
-        okJButton.addActionListener(new java.awt.event.ActionListener() {
+        addJButton.setText("Add");
+        addJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okJButtonActionPerformed(evt);
+                addJButtonActionPerformed(evt);
             }
         });
 
@@ -74,79 +74,85 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(96, Short.MAX_VALUE)
-                .addComponent(okJButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelJButton)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(81, 81, 81)
+                .addComponent(addJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(cancelJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(preAlgJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(preAlgParametersjLabel))
-                .addContainerGap(172, Short.MAX_VALUE))
+                        .addComponent(preAlgParametersContainerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                    .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelJButton, okJButton});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(preAlgJLabel)
-                    .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(preAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(preAlgParametersjLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(preAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addComponent(preAlgParametersContainerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelJButton)
-                    .addComponent(okJButton))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(addJButton)
+                    .addComponent(cancelJButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cancelJButton, okJButton});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addJButton, cancelJButton});
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
-        //Add new decision algorithm
+    private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
+        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
         
+        //Add new prediction algorithm
+        TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+        for (String name : preAlg.getParametersList().keySet()) {
+            valueMap.put(name, preAlgParameterJPanel.getValue(name));
+        }
+        preAlg.setParametersValue(valueMap);
+
         this.parent.dispose();
-    }//GEN-LAST:event_okJButtonActionPerformed
+    }//GEN-LAST:event_addJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
+    private void preAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preAlgJComboBoxActionPerformed
+        preAlgParametersContainerJPanel.removeAll();
+        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
+        preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
+        preAlgParametersContainerJPanel.updateUI();
+    }//GEN-LAST:event_preAlgJComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addJButton;
     private javax.swing.JButton cancelJButton;
-    private javax.swing.JButton okJButton;
     private javax.swing.JComboBox preAlgJComboBox;
-    private javax.swing.JLabel preAlgJLabel;
-    private javax.swing.JPanel preAlgParametersJPanel;
-    private javax.swing.JLabel preAlgParametersjLabel;
+    private javax.swing.JPanel preAlgParametersContainerJPanel;
     // End of variables declaration//GEN-END:variables
 
+    private AbstractPredictAlgorithm preAlg;
+    private ParameterJPanel preAlgParameterJPanel;
+
+    public AbstractPredictAlgorithm getPreAlg() {
+        return preAlg;
+    }
+
+    public JDialog getParentDialog() {
+        return parent;
+    }
+
     private void initOtherComponents() {
-        TreeMap<String, Class> map = new TreeMap<String, Class>();
-        map.put("String", String.class);
-        map.put("Date", Date.class);
-        map.put("Long", Long.class);
-        map.put("Double", Double.class);
-        preAlgParametersJPanel.add(new ParameterJPanel(map));
+        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
+        preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
     }
 
 }

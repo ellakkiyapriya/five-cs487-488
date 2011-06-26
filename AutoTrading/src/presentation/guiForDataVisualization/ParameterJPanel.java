@@ -62,19 +62,26 @@ public class ParameterJPanel extends javax.swing.JPanel {
     private void initOtherComponents() {
 
         //create table layout
-        int borderColumn = 15;
-        int borderRow = 5;
-        int inputPixel = 100;
+        int borderLeft = 10;
+        int borderTop = 10;
+        int spaceBetweenColumns = 15;
+        int spaceBetweenRows = 10;
         double size[][] = new double[2][];
-        size[0] = new double[3];
-        size[0][0] = borderColumn;
-        size[0][1] = TableLayout.PREFERRED;
-        size[0][2] = inputPixel;
 
-        size[1] = new double[parameterList.size() + 1];
-        size[1][0] = borderRow;
-        for (int i = 1; i < size[1].length; ++i) {
+        //column
+        int columnInputSize = 80;
+        size[0] = new double[4];
+        size[0][0] = borderLeft;
+        size[0][1] = TableLayout.PREFERRED;
+        size[0][2] = spaceBetweenColumns;
+        size[0][3] = columnInputSize;
+
+        //row
+        size[1] = new double[parameterList.size()*2 + 1];
+        size[1][0] = borderTop;
+        for (int i = 1; i+1 < size[1].length; i+=2) {
             size[1][i] = TableLayout.PREFERRED;
+            size[1][i+1] = spaceBetweenRows;
         }
 
         this.setLayout(new TableLayout(size));
@@ -106,10 +113,10 @@ public class ParameterJPanel extends javax.swing.JPanel {
             }
 
             if (componentList.get(parameterName) != null) {
-                this.add(componentList.get(parameterName), "2, " + i);
+                this.add(componentList.get(parameterName), "3, " + i);
             }
 
-            i++;
+            i += 2;
         }
 
     }

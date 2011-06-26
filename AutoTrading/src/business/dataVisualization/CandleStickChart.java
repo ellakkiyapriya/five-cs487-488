@@ -4,7 +4,9 @@
  */
 package business.dataVisualization;
 
-import dataAccess.databaseManagement.entity.OrderEntity;
+import Utility.Utility;
+import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
+import business.algorithm.decisionAlgorithm.Order;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -13,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
-import java.util.TreeMap;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
@@ -38,6 +39,7 @@ import org.jfree.data.xy.YIntervalSeriesCollection;
 
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
+import java.util.HashMap;
 
 /**
  *
@@ -48,11 +50,11 @@ public class CandleStickChart implements VisulizationChart {
     private JFreeChart candleStickChart;
     private OHLCDataset candleDataset;
     private XYDataset volumeDataset,
-            predictionDataset,
-            markPointsDataset;
-
-    private TreeMap<Object, TimeSeries> mappingOrderSeries = new TreeMap<Object, TimeSeries>();
-    private TreeMap<Object, YIntervalSeries> mappingPredictionPriceSeries = new TreeMap<Object, YIntervalSeries>();
+            predictionDataset = new YIntervalSeriesCollection(),
+            markPointsDataset = new TimeSeriesCollection();
+    private HashMap<Object, TimeSeries> mappingOrderSeries = new HashMap<Object, TimeSeries>();
+    private HashMap<Object, YIntervalSeries> mappingPredictionPriceSeries = new HashMap<Object, YIntervalSeries>();
+    private ArrayList<Color> preLineColors = new ArrayList<Color>();
 
     @Override
     public JFreeChart getChart() {
@@ -91,9 +93,9 @@ public class CandleStickChart implements VisulizationChart {
     @Override
     public void updateChart() {
         XYPlot plot = candleStickChart.getXYPlot();
-        plot.setDataset(0,candleDataset);
+        plot.setDataset(0, candleDataset);
         plot.setDataset(1, volumeDataset);
-        plot.setDataset(2,predictionDataset);
+        plot.setDataset(2, predictionDataset);
         plot.setDataset(3, markPointsDataset);
     }
 
@@ -109,7 +111,7 @@ public class CandleStickChart implements VisulizationChart {
         CandlestickRenderer candlestickRenderer = (CandlestickRenderer) candleStickChart.getXYPlot().getRenderer();
         candlestickRenderer.setDrawVolume(false);
         candlestickRenderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_SMALLEST);
-        
+
 
         XYPlot plot = candleStickChart.getXYPlot();
         plot.setBackgroundPaint(Color.white);
@@ -140,9 +142,6 @@ public class CandleStickChart implements VisulizationChart {
         //add prediction price series
         plot.mapDatasetToRangeAxis(2, 0);
         DeviationRenderer deviationRenderer = new DeviationRenderer(true, false);
-//        deviationRenderer.setSeriesStroke(0, new BasicStroke(3F, 1, 1));
-//        deviationRenderer.setSeriesPaint(0, Color.BLUE);
-//        deviationRenderer.setSeriesFillPaint(0, new Color(255, 200, 200));
         plot.setRenderer(2, deviationRenderer);
 
         //add mark points
@@ -152,25 +151,25 @@ public class CandleStickChart implements VisulizationChart {
     }
 
     @Override
-    public void addOrders(Object object, ArrayList<OrderEntity> orders) {
-        TimeSeries buySeries = new TimeSeries("Buy Signals - " + object.toString());
-        TimeSeries sellSeries = new TimeSeries("Sell Signals - " + object.toString());
+    public void addOrders(AbstractDecisionAlgorithm decAlgo, ArrayList<Order> orders) {
 
-        for (OrderEntity order : orders) {
-            if (order.getOrderType())
+        //Utility.debug(orders.size());
+
+        TimeSeries buySeries = new TimeSeries("Buy Signals - " + decAlgo.toString());
+        TimeSeries sellSeries = new TimeSeries("Sell Signals - " + decAlgo.toString());
+
+        for (Order order : orders) {
+            if (order.isOrderType() == Order.ORDER_BUY) {
                 buySeries.add(new Day(order.getDate()), order.getPrice());
-            else
+            } else {
                 sellSeries.add(new Day(order.getDate()), order.getPrice());
+            }
         }
 
-        if (markPointsDataset == null) {
-            markPointsDataset = new TimeSeriesCollection();
-        }
+        ((TimeSeriesCollection) markPointsDataset).addSeries(buySeries);
+        ((TimeSeriesCollection) markPointsDataset).addSeries(sellSeries);
 
-        ((TimeSeriesCollection)markPointsDataset).addSeries(buySeries);
-        ((TimeSeriesCollection)markPointsDataset).addSeries(sellSeries);
-
-        mappingOrderSeries.put(object, buySeries);
+        mappingOrderSeries.put(decAlgo, buySeries);
 
         XYPlot plot = candleStickChart.getXYPlot();
         XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot.getRenderer(3);
@@ -179,44 +178,54 @@ public class CandleStickChart implements VisulizationChart {
     }
 
     @Override
-    public void addPredictionPrices(AbstractPredictAlgorithm abstractPredictAlgorithm, PredictionAlgorithmEntity entity) {
-    	
-    }
-    
-    public void addPredictionPrices(Object object, ArrayList<PriceEntity> prices) {
-        if (predictionDataset == null) {
-            predictionDataset = new YIntervalSeriesCollection();
+    public void addPredictionPrices(AbstractPredictAlgorithm preAlgo, PredictionAlgorithmEntity entity) {
+        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + preAlgo.toString());
+
+        for (PredictionAlgorithmEntity.Entry entry : entity.list) {
+            yintervalseries.add(entry.date.getTime(), entry.midValue,
+                    entry.lowValue, entry.highValue);
         }
 
-        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + object.toString());
-        for (PriceEntity price : prices) {
-            yintervalseries.add(price.getDate().getTime(), price.getClose()+1, price.getClose() + 0.5, price.getClose() + 1.5);
-        }
-
-        mappingPredictionPriceSeries.put(object, yintervalseries);
+        mappingPredictionPriceSeries.put(preAlgo, yintervalseries);
         ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
 
-        Random random = new Random(Calendar.getInstance().getTimeInMillis());
         XYPlot plot = candleStickChart.getXYPlot();
         DeviationRenderer deviationRenderer = (DeviationRenderer) plot.getRenderer(2);
         deviationRenderer.setSeriesStroke(predictionDataset.getSeriesCount() - 1, new BasicStroke(3F, 1, 1));
-        deviationRenderer.setSeriesPaint(predictionDataset.getSeriesCount() - 1, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
-        deviationRenderer.setSeriesFillPaint(predictionDataset.getSeriesCount() - 1, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+
+        Random random = new Random(Calendar.getInstance().getTimeInMillis());
+        while (preLineColors.size() < predictionDataset.getSeriesCount()) {
+            int r = random.nextInt(256);
+            int g = random.nextInt(256);
+            int b = random.nextInt(256);
+            preLineColors.add(new Color(r, g, b));
+        }
+        
+        deviationRenderer.setSeriesFillPaint(predictionDataset.getSeriesCount() - 1, preLineColors.get(predictionDataset.getSeriesCount() - 1));
+        deviationRenderer.setSeriesPaint(predictionDataset.getSeriesCount() - 1, preLineColors.get(predictionDataset.getSeriesCount() - 1));
     }
 
     @Override
     public void removeOrder(Object object) {
-        ((TimeSeriesCollection)markPointsDataset).removeSeries(mappingOrderSeries.get(object));
+        if (mappingOrderSeries.get(object) == null) {
+            return;
+        }
+
+        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(object));
     }
 
     @Override
     public void removeAllOrders() {
-        ((TimeSeriesCollection)markPointsDataset).removeAllSeries();
+        ((TimeSeriesCollection) markPointsDataset).removeAllSeries();
     }
 
     @Override
-    public void removePredictionPrice(Object object) {
-        ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(object));
+    public void removePredictionPrice(AbstractPredictAlgorithm abstractPredictAlgorithm) {
+        if (mappingPredictionPriceSeries.get(abstractPredictAlgorithm) == null) {
+            return;
+        }
+
+        ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(abstractPredictAlgorithm));
     }
 
     @Override
