@@ -225,6 +225,58 @@ public class OrderManager {
         return null;
     }
 
+    public ArrayList<OrderEntity>  getOrderUntilDateOfUserID(long userID,Date date) {
+        try {
+            ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();
+
+            String queryString = "SELECT * FROM order WHERE user_id=? AND date<?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, userID);
+            ptmt.setDate(2, date);
+            resultSet = ptmt.executeQuery();
+
+            while (resultSet.next()) {
+                OrderEntity orderEntity = new OrderEntity();
+
+                orderEntity.setOrderID(resultSet.getLong("order_id"));
+                orderEntity.setOrderType(resultSet.getBoolean("order_type"));
+                orderEntity.setUserID(resultSet.getLong("user_id"));
+                orderEntity.setDate(resultSet.getDate("date"));
+                orderEntity.setAssetID(resultSet.getLong("asset_id"));
+                orderEntity.setPrice(resultSet.getDouble("price"));
+                orderEntity.setVolume(resultSet.getDouble("volume"));
+                orderEntity.setMatched(resultSet.getBoolean("matched"));
+
+                listOrders.add(orderEntity);
+            }
+
+            return listOrders;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
+
+    }
+
     public ArrayList<OrderEntity> getOrderByUserID(long userID) {
         try {
             ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();

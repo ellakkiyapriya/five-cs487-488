@@ -169,6 +169,55 @@ public class PortfolioManager {
         return null;
     }
 
+    public ArrayList<PortfolioEntity>  getPortfolioByDateAndUserID(long userID, Date date) {
+        try {
+            ArrayList<PortfolioEntity> listPortfolios = new ArrayList<PortfolioEntity>();
+
+            String queryString = "SELECT * FROM portfolio WHERE user_id=? AND date=?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, userID);
+            ptmt.setDate(2, date);
+            resultSet = ptmt.executeQuery();
+
+            while (resultSet.next()) {
+                PortfolioEntity portfolioEntity = new PortfolioEntity();
+
+                portfolioEntity.setPortfolioID(resultSet.getLong("portfolio_id"));
+                portfolioEntity.setUserID(resultSet.getLong("user_id"));
+                portfolioEntity.setAssetID(resultSet.getLong("asset_id"));
+                portfolioEntity.setPrice(resultSet.getDouble("price"));
+                portfolioEntity.setVolume(resultSet.getDouble("volume"));
+                portfolioEntity.setDate(resultSet.getDate("date"));
+
+                listPortfolios.add(portfolioEntity);
+            }
+
+            return listPortfolios;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
+    }
+
     public ArrayList<PortfolioEntity> getPortfolioByDate(Date date) {
         try {
             ArrayList<PortfolioEntity> listPortfolios = new ArrayList<PortfolioEntity>();
@@ -215,6 +264,40 @@ public class PortfolioManager {
         }
 
         return null;
+    }
+
+    public Date getPortfolioStartDateOfUserID(long userID) {
+        Date startDate = null;
+
+        try {
+            connection = getConnection();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT min(date) FROM portfolio WHERE user_id=" + userID);
+            resultSet.next();
+            startDate = resultSet.getDate(1);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return startDate;
+    }
+
+    public Date getPortfolioLatestDateOfUserID(long userID) {
+        Date latestDate = null;
+
+        try {
+            connection = getConnection();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT max(date) FROM portfolio WHERE user_id=" + userID);
+            resultSet.next();
+            latestDate = resultSet.getDate(1);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return latestDate;
     }
 
     public ArrayList<PortfolioEntity> getAllPortfolios() {
