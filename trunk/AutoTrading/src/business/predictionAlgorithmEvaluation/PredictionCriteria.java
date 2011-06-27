@@ -2,7 +2,7 @@ package business.predictionAlgorithmEvaluation;
 
 
 public abstract class PredictionCriteria {
-	ParamForPredictCriteria priceList;
+	ParamForPredictCriteria paramForPredictList;
 	
 	public abstract double evaluate();
 
