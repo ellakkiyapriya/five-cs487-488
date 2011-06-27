@@ -153,20 +153,21 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="userJComboBox">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new DefaultComboBoxModel((new UserList()).getUserList().toArray())" type="code"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userJComboBoxActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="removeUserJButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Remove"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeUserJButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addUserJButton">
       <Properties>
@@ -180,6 +181,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Add Cash"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addCashJButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="todayOrderJLabel">
       <Properties>
@@ -316,13 +320,13 @@
     <Component class="javax.swing.JSpinner" name="addCashJSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0" numberType="java.lang.Long" stepSize="1000" type="number"/>
+          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="100.0" type="number"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="vndJLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="VND"/>
+        <Property name="text" type="java.lang.String" value="x1000 VND"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="portfolioDateJSpinner">

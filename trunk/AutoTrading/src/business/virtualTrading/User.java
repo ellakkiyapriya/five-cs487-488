@@ -376,20 +376,27 @@ public class User {
 	public void removePortfolio(PortfolioEntry portfolio) {
 		curPortfolioList.remove(portfolio);
 	}
+
+        public double getCash() {
+            return user.getCash();
+        }
 	
 	@Override
 	public String toString() {
 		return user.getName();
 	}
-	
-	
-	public static void main(String args[]) {
 
-		User uM = new User("u1.3", 1222);
-		uM.add();
+        public ArrayList<Order> getCurOrderList() {
+            return curOrderList;
+        }
 
-		System.out.println(uM.getUserID());
-	}
+//	public static void main(String args[]) {
+//
+//		User uM = new User("u1.3", 1222);
+//		uM.add();
+//
+//		System.out.println(uM.getUserID());
+//	}
 
 
 }

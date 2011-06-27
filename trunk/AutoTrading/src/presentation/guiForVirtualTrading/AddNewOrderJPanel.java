@@ -234,4 +234,8 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
         fieldSymbol.addKeyListener(assetComboKeyHandler);
     }
+
+    public JDialog getParentDialog() {
+        return this.parent;
+    }
 }

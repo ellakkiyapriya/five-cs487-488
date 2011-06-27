@@ -5,7 +5,7 @@
 
 package presentation.guiForVirtualTrading;
 
-import dataAccess.databaseManagement.entity.PortfolioEntity;
+import business.virtualTrading.PortfolioEntry;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -58,8 +58,23 @@ public class PortfolioTableModel extends AbstractTableModel{
         return canEdit[columnIndex];
     }
 
-    public void insertRow(int rowIndex, PortfolioEntity portfolioEntity) {
+    private Object[] convertPortfolioEntry(PortfolioEntry portfolioEntry) {
         Object[] newRow = new Object[columnNames.length];
+        newRow[0] = portfolioEntry.getAsset().getSymbol();
+        newRow[1] = portfolioEntry.getBuyPrice();
+        newRow[2] = portfolioEntry.getCurrentPrice();
+        newRow[3] = portfolioEntry.getVolume();
+        newRow[4] = portfolioEntry.getProfit();
+        return newRow;
+    }
+
+    public void addRow(PortfolioEntry portfolioEntry) {
+        Object[] newRow = convertPortfolioEntry(portfolioEntry);
+        data.add(newRow);
+    }
+
+    public void insertRow(int rowIndex, PortfolioEntry portfolioEntry) {
+        Object[] newRow = convertPortfolioEntry(portfolioEntry);
         data.add(rowIndex, newRow);
     }
 
@@ -72,6 +87,14 @@ public class PortfolioTableModel extends AbstractTableModel{
         for (int rowIndex : rowIndices) {
             data.remove(rowIndex - count);
             ++count;
+        }
+    }
+
+    public void setData(ArrayList<PortfolioEntry> portfolioEntryList) {
+        data.clear();
+
+        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
+            addRow(portfolioEntry);
         }
     }
 
