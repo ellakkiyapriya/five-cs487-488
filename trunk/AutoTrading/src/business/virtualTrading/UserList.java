@@ -33,7 +33,10 @@ public class UserList {
 		this.userList.remove(user);
 	}
 	
-	
+	public void removeUserFromDatabase(User user) {
+            user.removeFromDatabase();
+            userList.remove(user);
+        }
 	
 	public ArrayList<User> getUserList() {
 		return userList;

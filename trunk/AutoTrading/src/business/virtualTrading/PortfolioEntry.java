@@ -32,7 +32,7 @@ public class PortfolioEntry {
 		this.setVolume(volume);
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), priceManager.getLatestDate()).getClose()); // TODO getLatestPriceByAssetID(assetID)
-		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
+		profit = (this.currentPrice - this.buyPrice) / this.buyPrice*100;
 	}
 
 	public PortfolioEntry(AssetEntity asset, double buyPrice, double volume) {

@@ -27,7 +27,7 @@ public class OrderManager {
     }
 
     public void add(OrderEntity orderEntity) {
-        String queryString = "INSERT INTO order(order_id, order_type, user_id, date, asset_id, price, volume, matched) VALUES(?,?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `order`(`order_id`, `order_type`, `user_id`, `date`, `asset_id`, `price`, `volume`, `matched`) VALUES(?,?,?,?,?,?,?,?)";
         try {
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
@@ -70,7 +70,7 @@ public class OrderManager {
 
     public void update(OrderEntity orderEntity) {
         try {
-            String queryString = "UPDATE order SET order_type=?, user_id=?, date=?, asset_id=?, price=?, volume=?, matched=? WHERE order_id=?";
+            String queryString = "UPDATE `order` SET `order_type`=?, `user_id`=?, `date`=?, `asset_id`=?, `price`=?, `volume`=?, `matched`=? WHERE `order_id`=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setBoolean(1, orderEntity.getOrderType());
@@ -104,7 +104,7 @@ public class OrderManager {
 
     public void delete(long orderID) {
         try {
-            String queryString = "DELETE FROM order WHERE order_id=?";
+            String queryString = "DELETE FROM `order` WHERE `order_id`=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setLong(1, orderID);
@@ -133,7 +133,7 @@ public class OrderManager {
         try {
             OrderEntity orderEntity = null;
 
-            String queryString = "SELECT * FROM order WHERE order_id=?";
+            String queryString = "SELECT * FROM `order` WHERE `order_id`=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setLong(1, orderID);
@@ -276,12 +276,63 @@ public class OrderManager {
         return null;
 
     }
+    public ArrayList<OrderEntity>  getOrderByDateAndUserID(long userID,Date date) {
+        try {
+            ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();
+
+            String queryString = "SELECT * FROM `order` WHERE `user_id` = ? AND `date` = ?";
+            connection = getConnection();
+            ptmt = connection.prepareStatement(queryString);
+            ptmt.setLong(1, userID);
+            ptmt.setDate(2, date);
+            resultSet = ptmt.executeQuery();
+
+            while (resultSet.next()) {
+                OrderEntity orderEntity = new OrderEntity();
+
+                orderEntity.setOrderID(resultSet.getLong("order_id"));
+                orderEntity.setOrderType(resultSet.getBoolean("order_type"));
+                orderEntity.setUserID(resultSet.getLong("user_id"));
+                orderEntity.setDate(resultSet.getDate("date"));
+                orderEntity.setAssetID(resultSet.getLong("asset_id"));
+                orderEntity.setPrice(resultSet.getDouble("price"));
+                orderEntity.setVolume(resultSet.getDouble("volume"));
+                orderEntity.setMatched(resultSet.getBoolean("matched"));
+
+                listOrders.add(orderEntity);
+            }
+
+            return listOrders;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
+
+    }
 
     public ArrayList<OrderEntity> getOrderByUserID(long userID) {
         try {
             ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();
 
-            String queryString = "SELECT * FROM order WHERE user_id=?";
+            String queryString = "SELECT * FROM `order` WHERE `user_id`=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setLong(1, userID);
@@ -331,7 +382,7 @@ public class OrderManager {
         try {
             ArrayList<OrderEntity> listAllOrders = new ArrayList<OrderEntity>();
 
-            String queryString = "SELECT * FROM order";
+            String queryString = "SELECT * FROM `order`";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             resultSet = ptmt.executeQuery();
