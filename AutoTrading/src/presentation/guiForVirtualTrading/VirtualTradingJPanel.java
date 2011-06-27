@@ -13,7 +13,8 @@ package presentation.guiForVirtualTrading;
 
 import business.virtualTrading.User;
 import business.virtualTrading.UserList;
-import java.sql.Date;
+import java.util.Date;
+import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JSpinner;
@@ -144,6 +145,11 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
 
         portfolioDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         portfolioDateJSpinner.setEditor(new JSpinner.DateEditor(portfolioDateJSpinner, "MM/dd/yyyy"));
+        portfolioDateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                portfolioDateJSpinnerStateChanged(evt);
+            }
+        });
 
         portfolioDatejLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         portfolioDatejLabel.setText("Date:");
@@ -153,6 +159,11 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
 
         orderLogDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         orderLogDateJSpinner.setEditor(new JSpinner.DateEditor(orderLogDateJSpinner, "MM/dd/yyyy"));
+        orderLogDateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                orderLogDateJSpinnerStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -271,22 +282,54 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     private void addUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserJButtonActionPerformed
         addNewUserJPanel.getParentDialog().setVisible(true);
 
+        if (!addNewUserJPanel.isAdd()) {
+            return;
+        }
+        
         DefaultComboBoxModel model = (DefaultComboBoxModel) userJComboBox.getModel();
         model.addElement(addNewUserJPanel.getNewUser());
         userJComboBox.updateUI();
     }//GEN-LAST:event_addUserJButtonActionPerformed
 
     private void addOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderJButtonActionPerformed
+        if (selectedUser == null) {
+            return;
+        }
+
         addNewOrderJPanel.getParentDialog().setVisible(true);
+
+        if (!addNewOrderJPanel.isAdd()) {
+            return;
+        }
+
+        OrderTableModel orderTableModel = (OrderTableModel) this.todayOrderJTable.getModel();
+        orderTableModel.addRow(addNewOrderJPanel.getNewOrder());
+        todayOrderJTable.updateUI();
     }//GEN-LAST:event_addOrderJButtonActionPerformed
 
     private void removeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeOrderJButtonActionPerformed
-        OrderTableModel portfolioTableModel = (OrderTableModel) this.todayOrderJTable.getModel();
-        portfolioTableModel.deleteRows(todayOrderJTable.getSelectedRows());
+        if (selectedUser == null) {
+            return;
+        }
+
+        int[] selectedRows = todayOrderJTable.getSelectedRows();
+
+        int j = 0;
+        for (int i : todayOrderJTable.getSelectedRows()) {
+            selectedUser.removeOrder(selectedUser.getCurOrderList().get(i-j));
+            j++;
+        }
+
+        OrderTableModel orderTableModel = (OrderTableModel) this.todayOrderJTable.getModel();
+        orderTableModel.deleteRows(selectedRows);
         todayOrderJTable.updateUI();
+        
     }//GEN-LAST:event_removeOrderJButtonActionPerformed
 
     private void addCashJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCashJButtonActionPerformed
+        if (selectedUser == null) {
+            return;
+        }
         ((User)userJComboBox.getSelectedItem()).addCash((Double)addCashJSpinner.getValue());
         updateUserInformation();
     }//GEN-LAST:event_addCashJButtonActionPerformed
@@ -296,9 +339,25 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_userJComboBoxActionPerformed
 
     private void removeUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserJButtonActionPerformed
+        if (selectedUser == null) {
+            return;
+        }
+
         //remove 
         //((User)userJComboBox.getSelectedItem()).
     }//GEN-LAST:event_removeUserJButtonActionPerformed
+
+    private void portfolioDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_portfolioDateJSpinnerStateChanged
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) portfolioJTable.getModel();
+        portfolioTableModel.setData(selectedUser.getPortfolioByDate(new java.sql.Date(((Date) portfolioDateJSpinner.getValue()).getTime())));
+        portfolioJTable.updateUI();
+    }//GEN-LAST:event_portfolioDateJSpinnerStateChanged
+
+    private void orderLogDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_orderLogDateJSpinnerStateChanged
+        OrderTableModel orderTableModel = (OrderTableModel) orderLogJTable.getModel();
+        orderTableModel.setData(selectedUser.getOrderByDate(new java.sql.Date(((Date) orderLogDateJSpinner.getValue()).getTime())));
+        orderLogJTable.updateUI();
+    }//GEN-LAST:event_orderLogDateJSpinnerStateChanged
 
 //    public JDialog getAddNewUserJDialog() {
 //        return addNewUserJDialog;
@@ -361,20 +420,27 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     private void initOtherComponents() {
         newAddNewUserJDialog();
         newAddNewOrderJDialog();
+        updateUserInformation();
     }
 
     private void updateUserInformation() {
         selectedUser = (User) userJComboBox.getSelectedItem();
-        cashRemainJTextField.setText(selectedUser.getCash() + "");
-        gainLossJTextField.setText(selectedUser.profit() + "");
+        if (selectedUser == null) {
+            return;
+        }
+        cashRemainJTextField.setText((new DecimalFormat("###,###")).format(selectedUser.getCash()*1000) + " VND");
+        gainLossJTextField.setText(selectedUser.profit() + " %");
 
         PortfolioTableModel portfolioTableModel = (PortfolioTableModel) portfolioJTable.getModel();
-        portfolioTableModel.setData(selectedUser.getPortfolioByDate((Date) portfolioDateJSpinner.getValue()));
+        portfolioTableModel.setData(selectedUser.getPortfolioByDate(new java.sql.Date(((Date) portfolioDateJSpinner.getValue()).getTime())));
+        portfolioJTable.updateUI();
 
         OrderTableModel orderTableModel = (OrderTableModel) orderLogJTable.getModel();
-        orderTableModel.setData(selectedUser.getOrderByDate((Date) orderLogDateJSpinner.getValue()));
+        orderTableModel.setData(selectedUser.getOrderByDate(new java.sql.Date(((Date) orderLogDateJSpinner.getValue()).getTime())));
+        orderLogJTable.updateUI();
 
         orderTableModel = (OrderTableModel) todayOrderJTable.getModel();
         orderTableModel.setData(selectedUser.getCurOrderList());
+        todayOrderJTable.updateUI();
     }
 }

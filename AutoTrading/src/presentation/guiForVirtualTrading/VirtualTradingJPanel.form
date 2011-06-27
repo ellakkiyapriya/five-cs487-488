@@ -335,6 +335,9 @@
           <SpinnerModel initial="now" stepSize="5" type="date"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="portfolioDateJSpinnerStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="portfolioDateJSpinner.setEditor(new JSpinner.DateEditor(portfolioDateJSpinner, &quot;MM/dd/yyyy&quot;));"/>
       </AuxValues>
@@ -361,6 +364,9 @@
           <SpinnerModel initial="now" stepSize="5" type="date"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="orderLogDateJSpinnerStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="orderLogDateJSpinner.setEditor(new JSpinner.DateEditor(orderLogDateJSpinner, &quot;MM/dd/yyyy&quot;));"/>
       </AuxValues>

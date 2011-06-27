@@ -141,7 +141,7 @@ public class User {
 
 			portfolioManager.add(new PortfolioEntity(user.getUserID(),
 					curPortfolioEntry.getAsset().getAssetID(), curPortfolioEntry
-							.getCurrentPrice(), curPortfolioEntry.getVolume(),
+							.getBuyPrice(), curPortfolioEntry.getVolume(),
 					new java.sql.Date(new java.util.Date().getTime())));
 		}
 	}

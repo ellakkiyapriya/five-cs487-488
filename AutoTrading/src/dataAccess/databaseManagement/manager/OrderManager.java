@@ -179,7 +179,7 @@ public class OrderManager {
         try {
             ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();
 
-            String queryString = "SELECT * FROM order WHERE date=?";
+            String queryString = "SELECT * FROM `order` WHERE `date`=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setDate(1, date);
@@ -229,7 +229,7 @@ public class OrderManager {
         try {
             ArrayList<OrderEntity> listOrders = new ArrayList<OrderEntity>();
 
-            String queryString = "SELECT * FROM order WHERE user_id=? AND date<?";
+            String queryString = "SELECT * FROM `order` WHERE `user_id` = ? AND `date` < ?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setLong(1, userID);
