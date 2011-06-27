@@ -19,15 +19,15 @@ public class Asset {
 	}
 
 	public Asset(AssetEntity assetEntity) {
-		this.assetEntity = new AssetEntity(assetEntity.getName(), assetEntity
-				.getSymbol(), assetEntity.getExchangeID(), assetEntity
-				.getAssetInfo(), assetEntity.getFluctuationRange());
+		this.assetEntity = assetEntity;
 	}
 	
 	public Asset(Asset assetEntity) {
-		this.assetEntity = new AssetEntity(assetEntity.getName(), assetEntity
-				.getSymbol(), assetEntity.getExchangeID(), assetEntity
-				.getAssetInfo(), assetEntity.getFluctuationRange());
+		this.assetEntity = assetEntity.getAssetEntity();
+	}
+	
+	public AssetEntity getAssetEntity() {
+		return assetEntity;
 	}
 
 	public void setAssetID(long assetID) {
