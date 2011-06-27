@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public abstract class ParamForPredictCriteria {
 	ArrayList<Price> priceList;
 	
+	public ParamForPredictCriteria() {};
 	public ParamForPredictCriteria(ArrayList<Price> priceList) {
 		this.priceList = priceList;
 	}
