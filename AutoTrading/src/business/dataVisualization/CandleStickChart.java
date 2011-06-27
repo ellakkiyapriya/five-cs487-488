@@ -4,19 +4,12 @@
  */
 package business.dataVisualization;
 
-import Utility.Utility;
-import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
-import business.algorithm.decisionAlgorithm.Order;
 import dataAccess.databaseManagement.entity.PriceEntity;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Random;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
@@ -34,32 +27,16 @@ import org.jfree.data.xy.OHLCDataItem;
 import org.jfree.data.xy.OHLCDataset;
 import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.YIntervalSeries;
-import org.jfree.data.xy.YIntervalSeriesCollection;
 
-import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
-import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
-import java.util.HashMap;
 
 /**
  *
  * @author Dinh
  */
-public class CandleStickChart implements VisulizationChart {
+public class CandleStickChart extends VisulizationChart {
 
-    private JFreeChart candleStickChart;
     private OHLCDataset candleDataset;
-    private XYDataset volumeDataset,
-            predictionDataset = new YIntervalSeriesCollection(),
-            markPointsDataset = new TimeSeriesCollection();
-    private HashMap<Object, Integer> mappingOrderSeries = new HashMap<Object, Integer>();
-    private HashMap<Object, Integer> mappingPredictionPriceSeries = new HashMap<Object, Integer>();
-    private ArrayList<Color> preLineColors = new ArrayList<Color>();
-
-    @Override
-    public JFreeChart getChart() {
-        return candleStickChart;
-    }
+    private XYDataset volumeDataset;
 
     @Override
     public void setPrices(ArrayList<PriceEntity> prices) {
@@ -92,7 +69,7 @@ public class CandleStickChart implements VisulizationChart {
 
     @Override
     public void updateChart() {
-        XYPlot plot = candleStickChart.getXYPlot();
+        XYPlot plot = chart.getXYPlot();
         plot.setDataset(0, candleDataset);
         plot.setDataset(1, volumeDataset);
         plot.setDataset(2, predictionDataset);
@@ -101,19 +78,19 @@ public class CandleStickChart implements VisulizationChart {
 
     @Override
     public void initalChart() {
-        candleStickChart = ChartFactory.createCandlestickChart(
+        chart = ChartFactory.createCandlestickChart(
                 "",
                 "Date",
                 "Price",
                 null,
                 true);
-        candleStickChart.setBackgroundPaint(Color.white);
-        CandlestickRenderer candlestickRenderer = (CandlestickRenderer) candleStickChart.getXYPlot().getRenderer();
+        chart.setBackgroundPaint(Color.white);
+        CandlestickRenderer candlestickRenderer = (CandlestickRenderer) chart.getXYPlot().getRenderer();
         candlestickRenderer.setDrawVolume(false);
         candlestickRenderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_SMALLEST);
 
 
-        XYPlot plot = candleStickChart.getXYPlot();
+        XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setRangeGridlinePaint(Color.blue);
         plot.setDomainGridlinePaint(Color.blue);
@@ -148,93 +125,5 @@ public class CandleStickChart implements VisulizationChart {
         plot.mapDatasetToRangeAxis(3, 0);
         XYLineAndShapeRenderer xyLineAndShapeRenderer = new XYLineAndShapeRenderer();
         plot.setRenderer(3, xyLineAndShapeRenderer);
-    }
-
-    @Override
-    public void addOrders(AbstractDecisionAlgorithm decAlgo, ArrayList<Order> orders) {
-
-        TimeSeries buySeries = new TimeSeries("Buy Signals - " + decAlgo.toString());
-        TimeSeries sellSeries = new TimeSeries("Sell Signals - " + decAlgo.toString());
-
-        for (Order order : orders) {
-            if (order.isOrderType() == Order.ORDER_BUY) {
-                buySeries.add(new Day(order.getDate()), order.getPrice());
-            } else {
-                sellSeries.add(new Day(order.getDate()), order.getPrice());
-            }
-        }
-        
-        mappingOrderSeries.put(decAlgo, markPointsDataset.getSeriesCount());
-        ((TimeSeriesCollection) markPointsDataset).addSeries(buySeries);
-        ((TimeSeriesCollection) markPointsDataset).addSeries(sellSeries);
-
-        XYPlot plot = candleStickChart.getXYPlot();
-        XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot.getRenderer(3);
-        xYLineAndShapeRenderer.setSeriesLinesVisible(markPointsDataset.getSeriesCount() - 1, false);
-        xYLineAndShapeRenderer.setSeriesLinesVisible(markPointsDataset.getSeriesCount() - 2, false);
-    }
-
-    @Override
-    public void addPredictionPrices(AbstractPredictAlgorithm preAlgo, PredictionAlgorithmEntity entity) {
-        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + preAlgo.toString());
-
-        for (PredictionAlgorithmEntity.Entry entry : entity.list) {
-            yintervalseries.add(entry.date.getTime(), entry.midValue,
-                    entry.lowValue, entry.highValue);
-        }
-
-        mappingPredictionPriceSeries.put(preAlgo, predictionDataset.getSeriesCount());
-        ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
-
-        XYPlot plot = candleStickChart.getXYPlot();
-        DeviationRenderer deviationRenderer = (DeviationRenderer) plot.getRenderer(2);
-        deviationRenderer.setSeriesStroke(predictionDataset.getSeriesCount() - 1, new BasicStroke(3F, 1, 1));
-
-        Random random = new Random(Calendar.getInstance().getTimeInMillis());
-        while (preLineColors.size() < predictionDataset.getSeriesCount()) {
-            int r = random.nextInt(256);
-            int g = random.nextInt(256);
-            int b = random.nextInt(256);
-            preLineColors.add(new Color(r, g, b));
-        }
-        
-        deviationRenderer.setSeriesFillPaint(predictionDataset.getSeriesCount() - 1, preLineColors.get(predictionDataset.getSeriesCount() - 1));
-        deviationRenderer.setSeriesPaint(predictionDataset.getSeriesCount() - 1, preLineColors.get(predictionDataset.getSeriesCount() - 1));
-    }
-
-    @Override
-    public void removeOrder(AbstractDecisionAlgorithm decAlgo) {
-        if (mappingOrderSeries.get(decAlgo) == null) {
-            return;
-        }
-
-        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
-        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
-
-        mappingOrderSeries.remove(decAlgo);
-    }
-
-    @Override
-    public void removeAllOrders() {
-        ((TimeSeriesCollection) markPointsDataset).removeAllSeries();
-
-        mappingOrderSeries.clear();
-    }
-
-    @Override
-    public void removePredictionPrice(AbstractPredictAlgorithm abstractPredictAlgorithm) {
-        if (mappingPredictionPriceSeries.get(abstractPredictAlgorithm) == null) {
-            return;
-        }
-
-        ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(abstractPredictAlgorithm));
-
-        mappingPredictionPriceSeries.remove(abstractPredictAlgorithm);
-    }
-
-    @Override
-    public void removeAllPredictionPrice() {
-        ((YIntervalSeriesCollection) predictionDataset).removeAllSeries();
-        mappingPredictionPriceSeries.clear();
     }
 }
