@@ -10,6 +10,7 @@
  */
 package presentation.guiForVirtualTrading;
 
+import business.virtualTrading.Order;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
@@ -29,6 +30,16 @@ import presentation.guiForDataVisualization.DataVisualizationJPanel;
 public class AddNewOrderJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
+    private Order newOrder;
+    private boolean add = false;
+
+    public boolean isAdd() {
+        return add;
+    }
+
+    public Order getNewOrder() {
+        return newOrder;
+    }
 
     /** Creates new form AddNewOrderJPanel */
     public AddNewOrderJPanel(JDialog jDialog) {
@@ -68,14 +79,14 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
         priceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         priceJLabel.setText("Price:");
 
-        priceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
+        priceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(0.5d)));
 
-        vndJLabel.setText("VND");
+        vndJLabel.setText("x1000 VND");
 
         volumeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         volumeJLabel.setText("Volume:");
 
-        volumeJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(10L)));
+        volumeJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(10.0d)));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -140,7 +151,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
                 .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(580, Short.MAX_VALUE)
+                .addContainerGap(613, Short.MAX_VALUE)
                 .addComponent(okJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelJButton)
@@ -175,11 +186,15 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         //Add new order
+        add = true;
+
+        newOrder = new Order((AssetEntity)assetJComboBox.getSelectedItem(), (buySellJComboBox.getSelectedIndex() == 0), (Double) priceJSpinner.getValue(), (Double) volumeJSpinner.getValue());
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        add = false;
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 

@@ -21,6 +21,11 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     private JDialog parent = null;
     private User newUser;
+    private boolean add = false;
+
+    public boolean isAdd() {
+        return add;
+    }
 
     public User getNewUser() {
         return newUser;
@@ -177,20 +182,30 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+        add = true;
+
         //Add new user
         newUser.addCash((Double)cashRemainJSpinner.getValue());
         newUser.setName(userNameJTextField.getText());
+
+        //Add user to database
+        newUser.add();
+        newUser.addPortfolioToDatabase();
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        add = false;
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
     private void addPortfolioEntryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPortfolioEntryJButtonActionPerformed
         addNewPortfolioJPanel.getDialogParent().setVisible(true);
 
+        if (!addNewPortfolioJPanel.isAdd()) {
+            return;
+        }
         PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
         portfolioTableModel.addRow(addNewPortfolioJPanel.getPortfolioEntry());
         portfolioJTable.updateUI();

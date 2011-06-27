@@ -42,7 +42,7 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="580" max="32767" attributes="0"/>
+              <EmptySpace pref="613" max="32767" attributes="0"/>
               <Component id="okJButton" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cancelJButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -107,13 +107,13 @@
     <Component class="javax.swing.JSpinner" name="priceJSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0" numberType="java.lang.Long" stepSize="1000" type="number"/>
+          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="vndJLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="VND"/>
+        <Property name="text" type="java.lang.String" value="x1000 VND"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="volumeJLabel">
@@ -127,7 +127,7 @@
     <Component class="javax.swing.JSpinner" name="volumeJSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0" numberType="java.lang.Long" stepSize="10" type="number"/>
+          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="10.0" type="number"/>
         </Property>
       </Properties>
     </Component>
