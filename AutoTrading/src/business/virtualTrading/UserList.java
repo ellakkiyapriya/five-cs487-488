@@ -29,6 +29,12 @@ public class UserList {
 		}
 	}
 	
+	public void removeUser(User user) {
+		this.userList.remove(user);
+	}
+	
+	
+	
 	public ArrayList<User> getUserList() {
 		return userList;
 	}
