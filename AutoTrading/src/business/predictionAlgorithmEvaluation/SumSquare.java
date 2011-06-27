@@ -24,7 +24,7 @@ public class SumSquare extends PredictionCriteria{
 		}
 		
 		// TODO Auto-generated method stub
-		return sum;
+		return java.lang.Math.pow(sum, 0.5) / priceList.getPriceList().size();
 	}
 
 }
