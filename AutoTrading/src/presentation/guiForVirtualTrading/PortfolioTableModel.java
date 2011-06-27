@@ -90,6 +90,10 @@ public class PortfolioTableModel extends AbstractTableModel{
         }
     }
 
+    public void deleteAllData() {
+        data.clear();
+    }
+
     public void setData(ArrayList<PortfolioEntry> portfolioEntryList) {
         data.clear();
 

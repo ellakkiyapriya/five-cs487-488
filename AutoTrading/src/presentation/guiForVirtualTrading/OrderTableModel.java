@@ -81,6 +81,10 @@ public class OrderTableModel extends AbstractTableModel{
         }
     }
 
+    public void deleteAlLData() {
+        data.clear();
+    }
+
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         data.get(rowIndex)[columnIndex] = aValue;

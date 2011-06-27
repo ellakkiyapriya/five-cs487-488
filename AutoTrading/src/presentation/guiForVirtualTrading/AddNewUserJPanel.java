@@ -10,7 +10,9 @@
  */
 package presentation.guiForVirtualTrading;
 
+import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
+import java.util.ArrayList;
 import javax.swing.JDialog;
 
 /**
@@ -21,6 +23,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     private JDialog parent = null;
     private User newUser;
+    private ArrayList<PortfolioEntry> portfolioEntryList;
     private boolean add = false;
 
     public boolean isAdd() {
@@ -185,8 +188,14 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         add = true;
 
         //Add new user
-        newUser.addCash((Double)cashRemainJSpinner.getValue());
-        newUser.setName(userNameJTextField.getText());
+        newUser = new User(userNameJTextField.getText(),(Double)cashRemainJSpinner.getValue());
+        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
+            newUser.addPortfolio(portfolioEntry);
+        }
+
+        portfolioEntryList.clear();
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.deleteAllData();
 
         //Add user to database
         newUser.add();
@@ -210,7 +219,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         portfolioTableModel.addRow(addNewPortfolioJPanel.getPortfolioEntry());
         portfolioJTable.updateUI();
 
-        newUser.addPortfolio(addNewPortfolioJPanel.getPortfolioEntry());
+        portfolioEntryList.add(addNewPortfolioJPanel.getPortfolioEntry());
     }//GEN-LAST:event_addPortfolioEntryJButtonActionPerformed
 
     private void removePortfolioEntryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePortfolioEntryJButtonActionPerformed
@@ -246,8 +255,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     private void initOtherComponents() {
         newAddNewPortfolioJDialog();
-
-        newUser = new User("", 0);
+        portfolioEntryList = new ArrayList<PortfolioEntry>();
     }
 
     public JDialog getParentDialog() {

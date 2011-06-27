@@ -75,9 +75,9 @@ public class User {
 	 * Add cash to a user <li>Note: this method update database
 	 */
 	public void addCash(double cash) {
-		UserManager userManager = new UserManager();
+		
 		user.setCash(user.getCash() + cash);
-		userManager.update(user);
+		
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class User {
 		OrderManager orderManager = new OrderManager();
 		AssetManager assetmanager = new AssetManager();
 		ArrayList<OrderEntity> orderEntityList = orderManager
-				.getOrderByDate(date);
+				.getOrderByDateAndUserID(user.getUserID(), date);
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		OrderEntity currentOrder;
 		Asset currentAsset;
@@ -175,7 +175,7 @@ public class User {
 
 		if (latestDate.equals(date)) { // remove today's porfolio in database  
 			ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
-					.getPortfolioByDate(latestDate);
+					.getPortfolioByDateAndUserID(user.getUserID(), portfolioManager.getLatestDate());
 			for (int i = 0; i < portfolioEntityList.size(); i++) {
 				portfolioManager.delete(portfolioEntityList.get(i)
 						.getPortfolioID());
@@ -344,6 +344,10 @@ public class User {
 		double curCapital = getCapitalByDate(portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID()));
 		return (curCapital - initialCapital) / initialCapital;		
 	}
+
+        public void removeFromDatabase() {
+            (new UserManager()).delete(user.getUserID());
+        }
 	
 	public void setName(String name) {
 		this.user.setName(name);
