@@ -6,7 +6,13 @@ import java.util.Date;
 
 import javax.swing.DebugGraphics;
 
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.PriceEntity;
+import dataAccess.databaseManagement.manager.PriceManager;
+
 import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity.Entry;
+import business.predictionAlgorithmEvaluation.ParamForPredictCriteria;
+import business.predictionAlgorithmEvaluation.Price;
 import Utility.ParamList;
 import Utility.Utility;
 
@@ -50,6 +56,20 @@ public class OutputOfAutoRegression extends ParamList {
 		}
 		return entity;
 	}
+	
+	public ParamForPredictCriteria convertToCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
+		ArrayList<Price> priceList = new ArrayList<Price>() ;
+		PriceManager priceManager = new PriceManager();
+		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
+		int i =0;
+		for (double d : predictionPrice) {
+			priceList.add(new Price(d, priceEntityList.get(i).getDate()));
+			i++;
+		}	
+		return new ParamForPredictCriteria(priceList) {
+		};
+	}
+	
 	public static Date increaseDate(Date currentDate) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
