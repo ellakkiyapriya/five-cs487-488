@@ -10,6 +10,7 @@
  */
 package presentation.guiForVirtualTrading;
 
+import business.virtualTrading.User;
 import javax.swing.JDialog;
 
 /**
@@ -19,11 +20,17 @@ import javax.swing.JDialog;
 public class AddNewUserJPanel extends javax.swing.JPanel {
 
     private JDialog parent = null;
+    private User newUser;
+
+    public User getNewUser() {
+        return newUser;
+    }
 
     /** Creates new form AddNewUserJPanel */
     public AddNewUserJPanel(JDialog jDialog) {
         this.parent = jDialog;
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -54,9 +61,9 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         cashRemainJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         cashRemainJLabel.setText("Cash Remain:");
 
-        cashRemainJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
+        cashRemainJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(100.0d)));
 
-        vndJLabel.setText("VND");
+        vndJLabel.setText("x1000 VND");
 
         portfolioJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         portfolioJLabel.setText("User Portfolio:");
@@ -171,6 +178,8 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         //Add new user
+        newUser.addCash((Double)cashRemainJSpinner.getValue());
+        newUser.setName(userNameJTextField.getText());
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
@@ -180,7 +189,13 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
     private void addPortfolioEntryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPortfolioEntryJButtonActionPerformed
-        addNewPortfolioJDialog.setVisible(true);
+        addNewPortfolioJPanel.getDialogParent().setVisible(true);
+
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.addRow(addNewPortfolioJPanel.getPortfolioEntry());
+        portfolioJTable.updateUI();
+
+        newUser.addPortfolio(addNewPortfolioJPanel.getPortfolioEntry());
     }//GEN-LAST:event_addPortfolioEntryJButtonActionPerformed
 
     private void removePortfolioEntryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePortfolioEntryJButtonActionPerformed
@@ -191,8 +206,8 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
-        AddNewPortfolioJPanel panel = new AddNewPortfolioJPanel(jDialog);
-        jDialog.add(panel);
+        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog);
+        jDialog.add(addNewPortfolioJPanel);
         jDialog.pack();
         return jDialog;
     }
@@ -212,5 +227,15 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel vndJLabel;
     // End of variables declaration//GEN-END:variables
 
-    private JDialog addNewPortfolioJDialog = newAddNewPortfolioJDialog();
+    private AddNewPortfolioJPanel addNewPortfolioJPanel;
+
+    private void initOtherComponents() {
+        newAddNewPortfolioJDialog();
+
+        newUser = new User("", 0);
+    }
+
+    public JDialog getParentDialog() {
+        return this.parent;
+    }
 }

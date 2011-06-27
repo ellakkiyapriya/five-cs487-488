@@ -11,6 +11,7 @@
 
 package presentation.guiForVirtualTrading;
 
+import business.virtualTrading.PortfolioEntry;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
@@ -29,6 +30,16 @@ import presentation.guiForDataVisualization.DataVisualizationJPanel;
  */
 public class AddNewPortfolioJPanel extends javax.swing.JPanel {
     private JDialog parent = null;
+    private PortfolioEntry portfolioEntry;
+    private boolean add = false;
+
+    public boolean isAdd() {
+        return add;
+    }
+
+    public PortfolioEntry getPortfolioEntry() {
+        return portfolioEntry;
+    }
     
     /** Creates new form AddNewPortfolioJPanel */
     public AddNewPortfolioJPanel(JDialog jDialog) {
@@ -51,7 +62,7 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
         volumeJLabel = new javax.swing.JLabel();
         volumeJSpinner = new javax.swing.JSpinner();
         cancelJButton = new javax.swing.JButton();
-        okJButton = new javax.swing.JButton();
+        addJButton = new javax.swing.JButton();
         vndJLabel = new javax.swing.JLabel();
         exchangeJLabel = new javax.swing.JLabel();
         exchangeJComboBox = new javax.swing.JComboBox();
@@ -61,12 +72,12 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
         buyPriceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         buyPriceJLabel.setText("Buy Price:");
 
-        buyPriceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1000)));
+        buyPriceJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), Double.valueOf(0.0d), null, Double.valueOf(0.5d)));
 
         volumeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         volumeJLabel.setText("Volume:");
 
-        volumeJSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(10)));
+        volumeJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), Double.valueOf(0.0d), null, Double.valueOf(10.0d)));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -75,14 +86,14 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
             }
         });
 
-        okJButton.setText("OK");
-        okJButton.addActionListener(new java.awt.event.ActionListener() {
+        addJButton.setText("Add");
+        addJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okJButtonActionPerformed(evt);
+                addJButtonActionPerformed(evt);
             }
         });
 
-        vndJLabel.setText("VND");
+        vndJLabel.setText("x1000 VND");
 
         exchangeJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         exchangeJLabel.setText("Exchange:");
@@ -130,13 +141,13 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(okJButton)
+                        .addComponent(addJButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelJButton)))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelJButton, okJButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addJButton, cancelJButton});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,18 +166,23 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelJButton)
-                    .addComponent(okJButton))
+                    .addComponent(addJButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        add = false;
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
-    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+    private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
+        add = true;
+        
+        portfolioEntry = new PortfolioEntry((AssetEntity) assetJComboBox.getSelectedItem(), (Double)buyPriceJSpinner.getValue(), (Double)volumeJSpinner.getValue());
+
         this.parent.dispose();
-    }//GEN-LAST:event_okJButtonActionPerformed
+    }//GEN-LAST:event_addJButtonActionPerformed
 
     private void exchangeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeJComboBoxActionPerformed
         if (exchangeJComboBox.getSelectedIndex() != -1) {
@@ -183,6 +199,7 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addJButton;
     private javax.swing.JComboBox assetJComboBox;
     private javax.swing.JLabel assetJLabel;
     private javax.swing.JLabel buyPriceJLabel;
@@ -190,7 +207,6 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
     private javax.swing.JButton cancelJButton;
     private javax.swing.JComboBox exchangeJComboBox;
     private javax.swing.JLabel exchangeJLabel;
-    private javax.swing.JButton okJButton;
     private javax.swing.JLabel vndJLabel;
     private javax.swing.JLabel volumeJLabel;
     private javax.swing.JSpinner volumeJSpinner;
@@ -218,6 +234,10 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
         assetComboKeyHandler = new ComboKeyHandler(assetJComboBox);
         JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
         fieldSymbol.addKeyListener(assetComboKeyHandler);
+    }
+
+    public JDialog getDialogParent() {
+        return this.parent;
     }
 
 }

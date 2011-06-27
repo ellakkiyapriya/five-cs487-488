@@ -11,6 +11,10 @@
 
 package presentation.guiForVirtualTrading;
 
+import business.virtualTrading.User;
+import business.virtualTrading.UserList;
+import java.sql.Date;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JSpinner;
 import presentation.mainJFrame;
@@ -24,6 +28,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     /** Creates new form VirtualTradingJPanel */
     public VirtualTradingJPanel() {
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -65,9 +70,19 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         userJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         userJLabel.setText("User:");
 
-        userJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        userJComboBox.setModel(new DefaultComboBoxModel((new UserList()).getUserList().toArray()));
+        userJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userJComboBoxActionPerformed(evt);
+            }
+        });
 
         removeUserJButton.setText("Remove");
+        removeUserJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeUserJButtonActionPerformed(evt);
+            }
+        });
 
         addUserJButton.setText("Add");
         addUserJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +92,11 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         });
 
         addCashJButton.setText("Add Cash");
+        addCashJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCashJButtonActionPerformed(evt);
+            }
+        });
 
         todayOrderJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         todayOrderJLabel.setText("Today's Order");
@@ -118,9 +138,9 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
             }
         });
 
-        addCashJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
+        addCashJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(100.0d)));
 
-        vndJLabel.setText("VND");
+        vndJLabel.setText("x1000 VND");
 
         portfolioDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         portfolioDateJSpinner.setEditor(new JSpinner.DateEditor(portfolioDateJSpinner, "MM/dd/yyyy"));
@@ -249,11 +269,15 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserJButtonActionPerformed
-        addNewUserJDialog.setVisible(true);
+        addNewUserJPanel.getParentDialog().setVisible(true);
+
+        DefaultComboBoxModel model = (DefaultComboBoxModel) userJComboBox.getModel();
+        model.addElement(addNewUserJPanel.getNewUser());
+        userJComboBox.updateUI();
     }//GEN-LAST:event_addUserJButtonActionPerformed
 
     private void addOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderJButtonActionPerformed
-        addNewOrderJDialog.setVisible(true);
+        addNewOrderJPanel.getParentDialog().setVisible(true);
     }//GEN-LAST:event_addOrderJButtonActionPerformed
 
     private void removeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeOrderJButtonActionPerformed
@@ -262,26 +286,40 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         todayOrderJTable.updateUI();
     }//GEN-LAST:event_removeOrderJButtonActionPerformed
 
-    public JDialog getAddNewUserJDialog() {
-        return addNewUserJDialog;
-    }
+    private void addCashJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCashJButtonActionPerformed
+        ((User)userJComboBox.getSelectedItem()).addCash((Double)addCashJSpinner.getValue());
+        updateUserInformation();
+    }//GEN-LAST:event_addCashJButtonActionPerformed
 
-    public JDialog getAddNewOrderJDialog() {
-        return addNewOrderJDialog;
-    }
+    private void userJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userJComboBoxActionPerformed
+        updateUserInformation();
+    }//GEN-LAST:event_userJComboBoxActionPerformed
+
+    private void removeUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserJButtonActionPerformed
+        //remove 
+        //((User)userJComboBox.getSelectedItem()).
+    }//GEN-LAST:event_removeUserJButtonActionPerformed
+
+//    public JDialog getAddNewUserJDialog() {
+//        return addNewUserJDialog;
+//    }
+
+//    public JDialog getAddNewOrderJDialog() {
+//        return addNewOrderJDialog;
+//    }
 
     public JDialog newAddNewUserJDialog() {
         JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
-        AddNewUserJPanel panel = new AddNewUserJPanel(jDialog);
-        jDialog.add(panel);
+        addNewUserJPanel = new AddNewUserJPanel(jDialog);
+        jDialog.add(addNewUserJPanel);
         jDialog.pack();
         return jDialog;
     }
 
     public JDialog newAddNewOrderJDialog() {
         JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
-        AddNewOrderJPanel panel = new AddNewOrderJPanel(jDialog);
-        jDialog.add(panel);
+        addNewOrderJPanel = new AddNewOrderJPanel(jDialog);
+        jDialog.add(addNewOrderJPanel);
         jDialog.pack();
         return jDialog;
     }
@@ -316,6 +354,27 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel vndJLabel;
     // End of variables declaration//GEN-END:variables
 
-    private JDialog addNewUserJDialog = newAddNewUserJDialog();
-    private JDialog addNewOrderJDialog = newAddNewOrderJDialog();
+    private AddNewUserJPanel addNewUserJPanel;
+    private AddNewOrderJPanel addNewOrderJPanel;
+    private User selectedUser;
+
+    private void initOtherComponents() {
+        newAddNewUserJDialog();
+        newAddNewOrderJDialog();
+    }
+
+    private void updateUserInformation() {
+        selectedUser = (User) userJComboBox.getSelectedItem();
+        cashRemainJTextField.setText(selectedUser.getCash() + "");
+        gainLossJTextField.setText(selectedUser.profit() + "");
+
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) portfolioJTable.getModel();
+        portfolioTableModel.setData(selectedUser.getPortfolioByDate((Date) portfolioDateJSpinner.getValue()));
+
+        OrderTableModel orderTableModel = (OrderTableModel) orderLogJTable.getModel();
+        orderTableModel.setData(selectedUser.getOrderByDate((Date) orderLogDateJSpinner.getValue()));
+
+        orderTableModel = (OrderTableModel) todayOrderJTable.getModel();
+        orderTableModel.setData(selectedUser.getCurOrderList());
+    }
 }

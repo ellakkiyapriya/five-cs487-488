@@ -39,7 +39,7 @@
                       <Component id="volumeJSpinner" min="-2" pref="81" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="okJButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="addJButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelJButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -66,7 +66,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelJButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="okJButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="addJButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -85,7 +85,7 @@
     <Component class="javax.swing.JSpinner" name="buyPriceJSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1000" type="number"/>
+          <SpinnerModel initial="0.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
         </Property>
       </Properties>
     </Component>
@@ -100,7 +100,7 @@
     <Component class="javax.swing.JSpinner" name="volumeJSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="10" type="number"/>
+          <SpinnerModel initial="0.0" minimum="0.0" numberType="java.lang.Double" stepSize="10.0" type="number"/>
         </Property>
       </Properties>
     </Component>
@@ -112,17 +112,17 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelJButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="okJButton">
+    <Component class="javax.swing.JButton" name="addJButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="OK"/>
+        <Property name="text" type="java.lang.String" value="Add"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okJButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addJButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="vndJLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="VND"/>
+        <Property name="text" type="java.lang.String" value="x1000 VND"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="exchangeJLabel">

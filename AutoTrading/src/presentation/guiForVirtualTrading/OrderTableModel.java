@@ -5,7 +5,7 @@
 
 package presentation.guiForVirtualTrading;
 
-import dataAccess.databaseManagement.entity.OrderEntity;
+import business.virtualTrading.Order;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -59,8 +59,13 @@ public class OrderTableModel extends AbstractTableModel{
         return canEdit[columnIndex];
     }
 
-    public void insertRow(int rowIndex, OrderEntity orderEntity) {
-        Object[] newRow = new Object[columnNames.length];
+    public void addRow(Order order) {
+        Object[] newRow = convertOrder(order);
+        data.add(newRow);
+    }
+
+    public void insertRow(int rowIndex, Order order) {
+        Object[] newRow = convertOrder(order);
         data.add(rowIndex, newRow);
     }
 
@@ -79,6 +84,29 @@ public class OrderTableModel extends AbstractTableModel{
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         data.get(rowIndex)[columnIndex] = aValue;
+    }
+
+    public void setData(ArrayList<Order> orderByDate) {
+        data.clear();
+
+        for (Order order : orderByDate) {
+            addRow(order);
+        }
+
+    }
+
+    private Object[] convertOrder(Order order) {
+        Object[] newRow = new Object[columnNames.length];
+        if (order.getOrderType())
+            newRow[0] = "Buy";
+        else
+            newRow[0] = "Sell";
+        
+        newRow[1] = order.getAsset().getSymbol();
+        newRow[2] = order.getPrice();
+        newRow[3] = order.getVolume();
+        newRow[4] = order.getValue();
+        return newRow;
     }
 
 }
