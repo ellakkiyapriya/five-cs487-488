@@ -345,7 +345,9 @@ public class User {
 		return (curCapital - initialCapital) / initialCapital;		
 	}
 	
-	
+	public void setName(String name) {
+		this.user.setName(name);
+	}
 	public long getUserID() {
 		return user.getUserID();
 	}
