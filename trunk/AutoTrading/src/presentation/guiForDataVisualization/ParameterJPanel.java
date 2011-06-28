@@ -132,4 +132,19 @@ public class ParameterJPanel extends javax.swing.JPanel {
         }
         return null;
     }
+
+    public boolean setValue(String parameterName, Object value) {
+        if (parameterList.get(parameterName) == Date.class
+                || parameterList.get(parameterName).getSuperclass() == Number.class) {
+            JSpinner jSpinner = (JSpinner) componentList.get(parameterName);
+            jSpinner.setValue(value);
+            return true;
+        } else if (parameterList.get(parameterName) == String.class) {
+            JTextField jTextField = (JTextField) componentList.get(parameterName);
+            jTextField.setText((String) value);
+            return true;
+        }
+        
+        return false;
+    }
 }

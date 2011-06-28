@@ -23,6 +23,11 @@ import presentation.guiForDataVisualization.ParameterJPanel;
 public class AddNewPreAlgJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
+    private boolean ok = false;
+
+    public boolean isOk() {
+        return ok;
+    }
 
     /** Creates new form AddNewDecAlgJPanel */
     public AddNewPreAlgJPanel(JDialog jDialog) {
@@ -43,7 +48,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
         preAlgJComboBox = new javax.swing.JComboBox();
         preAlgParametersContainerJPanel = new javax.swing.JPanel();
         cancelJButton = new javax.swing.JButton();
-        addJButton = new javax.swing.JButton();
+        okJButton = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Prediction Algorithm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
@@ -63,10 +68,10 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
             }
         });
 
-        addJButton.setText("Add");
-        addJButton.addActionListener(new java.awt.event.ActionListener() {
+        okJButton.setText("OK");
+        okJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addJButtonActionPerformed(evt);
+                okJButtonActionPerformed(evt);
             }
         });
 
@@ -76,7 +81,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(81, 81, 81)
-                .addComponent(addJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(okJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(cancelJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
@@ -96,16 +101,18 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
                 .addComponent(preAlgParametersContainerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addJButton)
+                    .addComponent(okJButton)
                     .addComponent(cancelJButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addJButton, cancelJButton});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cancelJButton, okJButton});
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
+    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+        this.ok = true;
+
         preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
         
         //Add new prediction algorithm
@@ -116,9 +123,11 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
         preAlg.setParametersValue(valueMap);
 
         this.parent.dispose();
-    }//GEN-LAST:event_addJButtonActionPerformed
+    }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        this.ok = false;
+
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
@@ -132,8 +141,8 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addJButton;
     private javax.swing.JButton cancelJButton;
+    private javax.swing.JButton okJButton;
     private javax.swing.JComboBox preAlgJComboBox;
     private javax.swing.JPanel preAlgParametersContainerJPanel;
     // End of variables declaration//GEN-END:variables

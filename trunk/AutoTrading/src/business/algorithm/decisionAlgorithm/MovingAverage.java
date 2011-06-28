@@ -38,14 +38,14 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
             todayMA = MA.get(i + 1);
 
             if ((todayPrice > yesterdayPrice) && (todayMA > yesterdayMA)
-                    && (todayMA > todayPrice) && (yesterdayMA < yesterdayPrice)) {
+                    && (todayMA < todayPrice) && (yesterdayMA > yesterdayPrice)) {
                 // issue buy order
-                Order order = new Order(Order.ORDER_BUY, todayMA, i + 1);
+                Order order = new Order(Order.ORDER_BUY, todayPrice, i + 1);
                 orderList.add(order);
             } else if ((todayPrice < yesterdayPrice) && (todayMA < yesterdayMA)
-                    && (todayMA < todayPrice) && (yesterdayMA > yesterdayPrice)) {
+                    && (todayMA > todayPrice) && (yesterdayMA < yesterdayPrice)) {
                 // issue sell order
-                Order order = new Order(Order.ORDER_SELL, todayMA, i + 1);
+                Order order = new Order(Order.ORDER_SELL, todayPrice, i + 1);
                 orderList.add(order);
             }
         }

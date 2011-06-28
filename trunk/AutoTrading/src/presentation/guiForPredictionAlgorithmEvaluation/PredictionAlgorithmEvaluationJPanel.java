@@ -421,6 +421,10 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     private void addPreAlgjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPreAlgjButtonActionPerformed
         addNewPreAlgJPanel.getParentDialog().setVisible(true);
 
+        if (!addNewPreAlgJPanel.isOk()) {
+            return;
+        }
+
         AbstractPredictAlgorithm preAlgo = addNewPreAlgJPanel.getPreAlg();
         DefaultListModel model = (DefaultListModel) this.preAlgsJList.getModel();
         model.addElement(preAlgo);
@@ -432,17 +436,24 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         DefaultListModel model = (DefaultListModel) this.preAlgsJList.getModel();
         int[] selectedIndices = preAlgsJList.getSelectedIndices();
         int j = 0;
+
         for (int i : selectedIndices) {
             AbstractPredictAlgorithm preAlgo = (AbstractPredictAlgorithm) preAlgsJList.getModel().getElementAt(i);
             dataVisualizationProcessor.removePreAlg(preAlgo);
             model.remove(i-j);
             ++j;
         }
+        
         preAlgsJList.updateUI();
 }//GEN-LAST:event_removePreAlgjButtonActionPerformed
 
     private void addPreEvaCriteriajButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPreEvaCriteriajButtonActionPerformed
         addNewPreEvaCriteriaJPanel.getParentDialog().setVisible(true);
+
+        if (!addNewPreEvaCriteriaJPanel.isOk()) {
+            return;
+        }
+
         DefaultListModel model = (DefaultListModel) this.preEvaCrisJList.getModel();
         model.addElement("aaaa");
 }//GEN-LAST:event_addPreEvaCriteriajButtonActionPerformed

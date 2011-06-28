@@ -20,6 +20,11 @@ import javax.swing.JDialog;
 public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
+    private boolean ok;
+
+    public boolean isOk() {
+        return ok;
+    }
 
     /** Creates new form AddNewCriteriaJPanel */
     public AddNewPreEvaCriteriaJPanel(JDialog jDialog) {
@@ -39,7 +44,7 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
         preEvaCriJLabel = new javax.swing.JLabel();
         preEvaCriJComboBox = new javax.swing.JComboBox();
         cancelJButton = new javax.swing.JButton();
-        addJButton = new javax.swing.JButton();
+        okJButton = new javax.swing.JButton();
 
         preEvaCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         preEvaCriJLabel.setText("Prediction Evaluation Criteria:");
@@ -53,10 +58,10 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
             }
         });
 
-        addJButton.setText("Add");
-        addJButton.addActionListener(new java.awt.event.ActionListener() {
+        okJButton.setText("OK");
+        okJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addJButtonActionPerformed(evt);
+                okJButtonActionPerformed(evt);
             }
         });
 
@@ -72,13 +77,13 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(111, Short.MAX_VALUE)
-                .addComponent(addJButton)
+                .addComponent(okJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cancelJButton)
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addJButton, cancelJButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelJButton, okJButton});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,26 +95,30 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelJButton)
-                    .addComponent(addJButton))
+                    .addComponent(okJButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addJButton, cancelJButton});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cancelJButton, okJButton});
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
+    private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+        ok = true;
+
         this.parent.dispose();
-    }//GEN-LAST:event_addJButtonActionPerformed
+    }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        ok = false;
+
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addJButton;
     private javax.swing.JButton cancelJButton;
+    private javax.swing.JButton okJButton;
     private javax.swing.JComboBox preEvaCriJComboBox;
     private javax.swing.JLabel preEvaCriJLabel;
     // End of variables declaration//GEN-END:variables
