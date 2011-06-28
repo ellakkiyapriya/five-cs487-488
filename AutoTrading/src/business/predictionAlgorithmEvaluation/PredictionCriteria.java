@@ -12,7 +12,7 @@ import dataAccess.databaseManagement.entity.AssetEntity;
  *  
  *  for (AbstractPredictAlgorithm curAlgorithm :  algorithmList) 
  *  	for (PredictionCriteria curCriteria : criteriaList) {
- *  		curCriteria.setParamater(curAlgorithm.execute().toParamOfCriteria());
+ *  		curCriteria.setParamater(curAlgorithm.execute().toParamOfCriteria(assetEntity, startDate));
  * 			table[curAlgorithm][curCriteria] = curCriteria.evaluate();
  * 		}	     
  * 
