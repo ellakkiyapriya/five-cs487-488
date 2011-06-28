@@ -81,16 +81,16 @@ public class mainJFrame extends javax.swing.JFrame {
     }
 
     private void initOtherComponents() {
-        DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
-        JScrollPane jScrollPane = new JScrollPane(dataUpdateJPanel);
-        mainJTabbedPane.addTab("Data Update", jScrollPane);
-
-        VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
-        jScrollPane = new JScrollPane(virtualTradingJPanel);
-        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
+//        DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
+//        JScrollPane jScrollPane = new JScrollPane(dataUpdateJPanel);
+//        mainJTabbedPane.addTab("Data Update", jScrollPane);
+//
+//        VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
+//        jScrollPane = new JScrollPane(virtualTradingJPanel);
+//        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
 
         DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
-        jScrollPane = new JScrollPane(dataVisualizationJPanel);
+        JScrollPane jScrollPane = new JScrollPane(dataVisualizationJPanel);
         mainJTabbedPane.addTab("Data Visualization", jScrollPane);
 
         DecisionAlgorithmEvaluationJPanel decisionAlgorithmEvaluationJPanel = new DecisionAlgorithmEvaluationJPanel();
