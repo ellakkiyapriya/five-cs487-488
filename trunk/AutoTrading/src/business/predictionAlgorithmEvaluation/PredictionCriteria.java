@@ -20,15 +20,9 @@ import dataAccess.databaseManagement.entity.AssetEntity;
 
 
 public abstract class PredictionCriteria {
-	ParamForPredictCriteria paramForPredictList;
-	AssetEntity assetEntity;
-	
-	
+	TreeMap<String, Object> paramOfPreditionCriteria = new TreeMap<String, Object>(); 
+
 	public abstract TreeMap<String, Double> evaluate();
-	
-	public void setAssetEntity(AssetEntity assetEntity) {
-		this.assetEntity = assetEntity;
-	}
 	public abstract void setParametersValue(TreeMap<String, Object> map);
 	public abstract TreeMap<String, Class> getParametersList();
 	public abstract String toString();
