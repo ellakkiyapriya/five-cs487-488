@@ -15,12 +15,12 @@ public class Cophieu68DataGetter extends AbstractDataGetter {
 	@Override
 	public ParamList getData(ParamList parameter) {
 		// TODO Auto-generated method stub
-		HttpURLConnection uc = initConnection(((ParamForCophieu68DataGetter)parameter).getDate()); 
+		HttpURLConnection uc = initConnection(((ParamForCophieu68DataGetter)parameter).getDate(), ((ParamForCophieu68DataGetter)parameter).getExchangeName()); 
 		BufferedReader br;
 		try 
 		{
 			br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-			ParamList paramList = new ParamForCophieu68DataProcessor(br, (Date)((ParamForCophieu68DataGetter)parameter).getDate());
+			ParamList paramList = new ParamForCophieu68DataProcessor(br, (Date)((ParamForCophieu68DataGetter)parameter).getDate(), ((ParamForCophieu68DataGetter)parameter).getExchangeName());
 			return paramList;
 		} 
 		catch (Exception e) 
@@ -31,11 +31,15 @@ public class Cophieu68DataGetter extends AbstractDataGetter {
 		}
 	}
 
-	public HttpURLConnection initConnection(Date date)
+	public HttpURLConnection initConnection(Date date, String exchangeName)
 	{
 		try
 		{
-			String fileLink = "http://www.cophieu68.com/export/dailymetastock.php?stcid=1&date=";
+			String fileLink =  null;
+			if (exchangeName.equals("HASTC"))
+				fileLink = "http://www.cophieu68.com/export/dailymetastock.php?stcid=2&date=";
+			else
+				fileLink = "http://www.cophieu68.com/export/dailymetastock.php?stcid=1&date=";
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String fileName = dateFormat.format(date);
 			fileLink = fileLink.concat(fileName);
