@@ -1,5 +1,7 @@
 package business.virtualTrading;
 
+import java.util.Date;
+
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
@@ -52,15 +54,22 @@ public class PortfolioEntry {
 		this.buyPrice = portfolioEntity.getPrice();
 		this.volume = portfolioEntity.getVolume();
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), priceManager.getLatestDate()).getClose());
+				asset.getAssetID(), portfolioEntity.getDate()).getClose());
 		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
 	
-	public double updatePortfolio(double volume, double price) {
+	/**
+	 * 
+	 * @param volume < 0 if buyOrderType, volume > 0 if sellOrderType
+	 * @param price
+	 * @return
+	 *  > 0 if sell all  
+	 */
+	public double updatePortfolio(double volume, double price) { 
 		double validVolume = this.volume + volume;
-		if (validVolume > 0) { // buy
-			this.volume = validVolume;
+		if (validVolume > 0) { 
 			this.buyPrice = (price*volume +this.buyPrice * this.volume) /validVolume;
+			this.volume = validVolume;
 			return -1;
 		}
 		return this.volume;
@@ -113,6 +122,12 @@ public class PortfolioEntry {
 
 	public void setCurrentPrice(double currentPrice) {
 		this.currentPrice = currentPrice;
+	}
+	
+	public void updateCurrentPriceToDate(Date date) {
+		PriceManager priceManager = new PriceManager();
+		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
+				asset.getAssetID(), new java.sql.Date (date.getTime())).getClose());
 	}
 
 	public double getCurrentPrice() {

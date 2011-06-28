@@ -61,6 +61,7 @@ public class Order {
 
 	public void setPrice(double price) {
 		this.price = price;
+		this.value = price * volume;
 	}
 
 	public double getPrice() {
@@ -69,6 +70,7 @@ public class Order {
 
 	public void setVolume(double volume) {
 		this.volume = volume;
+		this.value = volume * price;
 	}
 
 	public double getVolume() {
