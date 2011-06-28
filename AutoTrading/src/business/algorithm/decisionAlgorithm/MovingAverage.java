@@ -25,18 +25,19 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 
         for (int i = 0; i < MA_period - 1; ++i) {
             price.remove(0);
-
-            
         }
         double todayPrice, yesterdayPrice, todayMA, yesterdayMA;
         ArrayList<Order> orderList = new ArrayList<Order>();
 
+        boolean previous_buy_order = false;
+        boolean previous_sell_order = false;
         for (int i = 0; i < price.size() - 1; ++i) {
             yesterdayPrice = price.get(i);
             todayPrice = price.get(i + 1);
             yesterdayMA = MA.get(i);
             todayMA = MA.get(i + 1);
 
+            /*
             if ((todayPrice > yesterdayPrice) && (todayMA > yesterdayMA)
                     && (todayMA < todayPrice) && (yesterdayMA > yesterdayPrice)) {
                 // issue buy order
@@ -47,6 +48,52 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
                 // issue sell order
                 Order order = new Order(Order.ORDER_SELL, todayPrice, i + 1);
                 orderList.add(order);
+            }*/
+            if (todayMA > yesterdayMA)
+            {
+            	if (todayPrice > todayMA)
+            	{
+            		if (previous_buy_order == false)
+            		{
+            			Order order = new Order(Order.ORDER_BUY, yesterdayPrice, i + 1);
+            			orderList.add(order);
+            			previous_buy_order = true;
+            			previous_sell_order = false;
+            		}
+            		else
+        			{
+            			previous_buy_order = false;
+            			previous_sell_order = false;
+        			}
+            	}
+            	else
+            	{
+            		previous_buy_order = false;
+        			previous_sell_order = false;
+            	}
+            }
+            else
+            {
+            	if (todayPrice < todayMA)
+            	{
+            		if (previous_sell_order = false)
+            		{
+            			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, i + 1);
+            			orderList.add(order);
+            			previous_buy_order = false;
+            			previous_sell_order = true;
+            		}
+            		else
+        			{
+            			previous_buy_order = false;
+            			previous_sell_order = false;
+        			}
+            	}
+            	else
+            	{
+            		previous_buy_order = false;
+        			previous_sell_order = false;
+            	}
             }
         }
         return orderList;

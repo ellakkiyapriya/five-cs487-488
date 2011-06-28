@@ -4,7 +4,13 @@
  */
 package business.dataVisualization;
 
-import Utility.Utility;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+
+import org.jfree.chart.JFreeChart;
+
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.decisionAlgorithm.Order;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
@@ -13,11 +19,6 @@ import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -103,9 +104,16 @@ public class DataVisualizationProcessor {
         }
 
         preAlgo.setPriceList(list);
-        OutputOfAutoRegression outputOfAutoRegression = (OutputOfAutoRegression) preAlgo.runAlgorithm();
-
-        return outputOfAutoRegression.convertThis(startPreDate);
+        OutputOfAutoRegression outputOfAutoRegression;
+		try {
+			outputOfAutoRegression = (OutputOfAutoRegression) preAlgo.runAlgorithm();
+			return outputOfAutoRegression.convertThis(startPreDate);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
     }
 
     private ArrayList<Order> runDecAlg(AbstractDecisionAlgorithm decAlgo) {
