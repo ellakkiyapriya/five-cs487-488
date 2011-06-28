@@ -3,6 +3,7 @@ package business.algorithm.predictAlgorithm;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TreeMap;
 
 import javax.swing.DebugGraphics;
 
@@ -57,17 +58,19 @@ public class OutputOfAutoRegression extends ParamList {
 		return entity;
 	}
 	
-	public ParamForPredictCriteria convertToCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
-		ArrayList<Price> priceList = new ArrayList<Price>() ;
+	public TreeMap<String,Object> ToParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
+		
 		PriceManager priceManager = new PriceManager();
 		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
+		TreeMap<Date,Double> priceList = new TreeMap<Date,Double>();
 		int i =0;
 		for (double d : predictionPrice) {
-			priceList.add(new Price(d, priceEntityList.get(i).getDate()));
-			i++;
-		}	
-		return new ParamForPredictCriteria(priceList) {
-		};
+			priceList.put(priceEntityList.get(i).getDate(), d);
+		}
+		TreeMap<String, Object> map = new TreeMap<String, Object>();
+		map.put("PriceList", priceList);
+		map.put("Asset",assetEntity);
+		return map;
 	}
 	
 	public static Date increaseDate(Date currentDate) {
