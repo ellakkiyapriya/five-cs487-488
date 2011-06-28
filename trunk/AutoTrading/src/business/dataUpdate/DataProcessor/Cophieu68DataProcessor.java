@@ -39,6 +39,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 		
 		double open, high, low, close;
 		double volume;
+		String exchangeName = ((ParamForCophieu68DataProcessor)parameter).getExchangeName();
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		String strLine, symbol;
 		//String date = dateFormat.format(parameter.getParamList().get(1));
@@ -62,12 +63,10 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 					low = Double.valueOf(splitString[4]);
 					close = Double.valueOf(splitString[5]);
 					volume = Integer.valueOf(splitString[6]);
-					ArrayList<AssetEntity> listAssets = assetManager.getAssetsBySymbol(symbol);
+					AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol, exchangeName);
 					PriceEntity priceEntity = null;
-					if (listAssets.size() > 0)
-						priceEntity = new PriceEntity(listAssets.get(0).getAssetID(), new java.sql.Date(((ParamForCophieu68DataProcessor)parameter).getDate().getTime()), null, volume, close, open, high, low);
-					else
-						System.out.println(symbol);
+					priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(((ParamForCophieu68DataProcessor)parameter).getDate().getTime()), null, volume, close, open, high, low);
+					System.out.println(symbol);
 					priceManager.add(priceEntity);
 					
 					for (int i = 0; i < splitString.length; i++)

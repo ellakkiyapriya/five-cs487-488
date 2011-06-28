@@ -19,7 +19,10 @@ public class UpdateData {
 		while (date.before(currentDate))
 		{
 			if (dataGetter instanceof Cophieu68DataGetter)
-				dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(date)));
+			{
+				dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(date, "HOSE")));
+				dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(date, "HASTC")));
+			}
 			date = Utility.increaseDate(date);
 		}
 		return true;

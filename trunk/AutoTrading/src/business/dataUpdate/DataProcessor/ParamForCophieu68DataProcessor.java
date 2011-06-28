@@ -7,12 +7,14 @@ import Utility.ParamList;
 
 public class ParamForCophieu68DataProcessor extends ParamList {
 	private BufferedReader br;
+	private String exchangeName;
 	private Date date;
-	public ParamForCophieu68DataProcessor(BufferedReader br, Date date) {
+	public ParamForCophieu68DataProcessor(BufferedReader br, Date date, String exchangeName) {
 		super();
 		this.br = br;
 		this.date = date;
-		numOfParam = 2;
+		this.exchangeName = exchangeName;
+		numOfParam = 3;
 		// TODO Auto-generated constructor stub
 	}
 	public BufferedReader getBr() {
@@ -27,4 +29,11 @@ public class ParamForCophieu68DataProcessor extends ParamList {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	public String getExchangeName() {
+		return exchangeName;
+	}
+	public void setExchangeName(String exchangeName) {
+		this.exchangeName = exchangeName;
+	}
+	
 }
