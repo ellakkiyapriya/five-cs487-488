@@ -55,22 +55,22 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
             	{
             		if (previous_buy_order == false)
             		{
-            			Order order = new Order(Order.ORDER_BUY, yesterdayPrice, MA_period + i + 1);
+            			Order order = new Order(Order.ORDER_BUY, yesterdayPrice, MA_period + i);
             			orderList.add(order);
             			previous_buy_order = true;
             			previous_sell_order = false;
             		}
-            		else
-                        {
-            			previous_buy_order = false;
-            			previous_sell_order = false;
-                        }
+//            		else
+//                        {
+//            			previous_buy_order = false;
+//            			previous_sell_order = false;
+//                        }
             	}
-            	else
-            	{
-            		previous_buy_order = false;
-        			previous_sell_order = false;
-            	}
+//            	else
+//            	{
+//            		previous_buy_order = false;
+//        			previous_sell_order = false;
+//            	}
             }
             else
             {
@@ -78,22 +78,22 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
             	{
             		if (previous_sell_order == false)
             		{
-            			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, MA_period + i + 1);
+            			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, MA_period + i);
             			orderList.add(order);
             			previous_buy_order = false;
             			previous_sell_order = true;
             		}
-            		else
-        			{
-            			previous_buy_order = false;
-            			previous_sell_order = false;
-        			}
+//            		else
+//        			{
+//            			previous_buy_order = false;
+//            			previous_sell_order = false;
+//        			}
             	}
-            	else
-            	{
-            		previous_buy_order = false;
-        			previous_sell_order = false;
-            	}
+//            	else
+//            	{
+//            		previous_buy_order = false;
+//        			previous_sell_order = false;
+//            	}
             }
         }
         return orderList;
