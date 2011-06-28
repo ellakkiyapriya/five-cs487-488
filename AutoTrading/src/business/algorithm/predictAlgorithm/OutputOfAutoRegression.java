@@ -12,8 +12,6 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 
 import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity.Entry;
-import business.predictionAlgorithmEvaluation.ParamForPredictCriteria;
-import business.predictionAlgorithmEvaluation.Price;
 import Utility.ParamList;
 import Utility.Utility;
 
