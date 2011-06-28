@@ -343,7 +343,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
 
         addNewOrderJPanel.getParentDialog().setVisible(true);
 
-        if (!addNewOrderJPanel.isAdd()) {
+        if (!addNewOrderJPanel.isOk()) {
             return;
         }
 

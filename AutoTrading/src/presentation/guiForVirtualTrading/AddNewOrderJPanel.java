@@ -31,10 +31,10 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
     private Order newOrder;
-    private boolean add = false;
+    private boolean ok = false;
 
-    public boolean isAdd() {
-        return add;
+    public boolean isOk() {
+        return ok;
     }
 
     public Order getNewOrder() {
@@ -186,7 +186,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         //Add new order
-        add = true;
+        ok = true;
 
         newOrder = new Order((AssetEntity)assetJComboBox.getSelectedItem(), (buySellJComboBox.getSelectedIndex() == 0), (Double) priceJSpinner.getValue(), (Double) volumeJSpinner.getValue());
 
@@ -194,7 +194,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
-        add = false;
+        ok = false;
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
