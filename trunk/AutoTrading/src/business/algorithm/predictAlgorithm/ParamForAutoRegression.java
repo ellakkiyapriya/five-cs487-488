@@ -14,7 +14,6 @@ public class ParamForAutoRegression extends ParamList {
 			int future_interval, double confidence_level, int MA_period,
 			int AR_period) {
 		super();
-		//training_ratio is not used?
 		this.priceList = priceList;
 		this.future_interval = future_interval;
 		this.confidence_level = confidence_level;

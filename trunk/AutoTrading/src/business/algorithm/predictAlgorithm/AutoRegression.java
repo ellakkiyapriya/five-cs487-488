@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public class AutoRegression extends AbstractPredictAlgorithm {
 
 	@Override
-	public ParamList runAlgorithm() {
+	public ParamList runAlgorithm() throws Exception{
 		// TODO Auto-generated method stub
 		ArrayList<Double> priceList = ((ParamForAutoRegression) parameters)
 				.getPriceList();
@@ -41,6 +41,10 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		 * Auto Regression step
 		 */
 		int nMovingAverage = movingAverage.size();
+		
+		if (nMovingAverage - autoRegerssivePeriod < 0)
+			throw new Exception("There are too few samples");
+		
 		double[][] x = new double[nMovingAverage - autoRegerssivePeriod][autoRegerssivePeriod + 1];
 		double[] y = new double[nMovingAverage - autoRegerssivePeriod];
 		for (int i = 0; i < (nMovingAverage - autoRegerssivePeriod); ++i) {
@@ -57,6 +61,10 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		Matrix matrixY = new Matrix(y, nMovingAverage - autoRegerssivePeriod);
 		Matrix matrixB = matrixX.transpose();
 		matrixB = matrixB.times(matrixX);
+		
+		if (matrixB.rank() != nMovingAverage - autoRegerssivePeriod)
+			throw new Exception("Matrix is singular");
+		
 		matrixB = matrixB.inverse();
 		matrixB = matrixB.times(matrixX.transpose());
 		matrixB = matrixB.times(matrixY);
@@ -86,7 +94,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		Matrix matrixC = matrixX.transpose().times(matrixX).inverse();
 		double variance = Utility.calculateVariance(movingAverage);
 		double s_b0 = Math.sqrt(variance * matrixC.get(0, 0));
-		double t = 1; // need to revise here
+		double t;
 		TDistribution tDistribution = new TDistribution(
 				autoRegerssivePeriod - 1);
 		t = tDistribution.cumulative(1 - confidence_level);
@@ -126,30 +134,39 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		((ParamForAutoRegression) parameters).priceList = prices;
 	}
 
-//	public static void main(String args[]) {
-//		ArrayList<Double> priceList = new ArrayList<Double>();
-//		priceList.add(23.0);
-//		priceList.add(23.1);
-//		priceList.add(24.0);
-//		priceList.add(25.2);
-//		priceList.add(24.8);
-//		priceList.add(24.9);
-//		priceList.add(24.7);
-//		priceList.add(24.4);
-//		priceList.add(24.4);
-//		priceList.add(24.4);
-//		int future_interval = 10;
-//		double confidence_level = 0.9;
-//		int MA_period = 3;
-//		int AR_period = 3;
-//		double training_ratio = 0.7;
-//		ParamForAutoRegression input = new ParamForAutoRegression(priceList,
-//				future_interval, confidence_level, MA_period, AR_period);
-//		AutoRegression ar = new AutoRegression();
-//		ParamList output = ar.runAlgorithm(input);
-//		for (int i = 0; i < future_interval; ++i) {
-//			OutputOfAutoRegression temp = (OutputOfAutoRegression) output;
-//			System.out.println(temp.getPredictionPrice().get(i));
-//		}
-//	}
+	public static void main(String args[]) {
+		ArrayList<Double> priceList = new ArrayList<Double>();
+		priceList.add(23.0);
+		priceList.add(23.1);
+		priceList.add(24.0);
+		priceList.add(25.2);
+		priceList.add(24.8);
+		priceList.add(24.9);
+		priceList.add(24.7);
+		priceList.add(24.4);
+		priceList.add(24.4);
+		priceList.add(24.4);
+		int future_interval = 10;
+		double confidence_level = 0.9;
+		int MA_period = 3;
+		int AR_period = 3;
+		TreeMap<String, Object> map = new TreeMap<String, Object>();
+		map.put("Future interval", future_interval);
+		map.put("Confidence level", confidence_level);
+		map.put("MA period", MA_period);
+		map.put("AR period", AR_period);
+		AutoRegression ar = new AutoRegression();
+		ar.setParametersValue(map);
+		ar.setPriceList(priceList);
+		try {
+			ParamList output = ar.runAlgorithm();
+			for (int i = 0; i < future_interval; ++i) {
+				OutputOfAutoRegression temp = (OutputOfAutoRegression) output;
+				System.out.println(temp.getPredictionPrice().get(i));
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 }
