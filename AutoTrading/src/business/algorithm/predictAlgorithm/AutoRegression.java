@@ -61,11 +61,14 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		Matrix matrixY = new Matrix(y, nMovingAverage - autoRegerssivePeriod);
 		Matrix matrixB = matrixX.transpose();
 		matrixB = matrixB.times(matrixX);
-		
-		if (matrixB.rank() != nMovingAverage - autoRegerssivePeriod)
-			throw new Exception("Matrix is singular");
-		
-		matrixB = matrixB.inverse();
+
+                try {
+                    matrixB = matrixB.inverse();
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException("Matrix is singular");
+                }
 		matrixB = matrixB.times(matrixX.transpose());
 		matrixB = matrixB.times(matrixY);
 

@@ -61,10 +61,10 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
             			previous_sell_order = false;
             		}
             		else
-        			{
+                        {
             			previous_buy_order = false;
             			previous_sell_order = false;
-        			}
+                        }
             	}
             	else
             	{
@@ -76,7 +76,7 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
             {
             	if (todayPrice < todayMA)
             	{
-            		if (previous_sell_order = false)
+            		if (previous_sell_order == false)
             		{
             			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, MA_period + i + 1);
             			orderList.add(order);
