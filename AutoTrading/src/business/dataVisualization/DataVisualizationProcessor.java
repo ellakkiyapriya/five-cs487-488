@@ -125,11 +125,19 @@ public class DataVisualizationProcessor {
         decAlgo.setPriceList(list);
         ArrayList<Order> result = decAlgo.runAlgorithm();
 
+        ArrayList<Order> temp = new ArrayList<Order>();
         for (Order order : result) {
-            order.setDate(prices.get(order.getNth_day_in_future()).getDate());
+            int k = order.getNth_day_in_future();
+            if (k < prices.size()) {
+                temp.add(order);
+            }
         }
 
-        return result;
+        for (Order order : temp) {
+            order.setDate(prices.get(order.getNth_day_in_future()-1).getDate());
+        }
+        
+        return temp;
     }
 
     public void changeChartType(ChartStyle chartStyle) {
