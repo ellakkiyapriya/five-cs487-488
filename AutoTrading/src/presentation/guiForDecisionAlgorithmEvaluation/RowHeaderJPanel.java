@@ -11,8 +11,9 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
+import business.virtualTrading.PortfolioEntry;
 import dataAccess.databaseManagement.entity.OrderEntity;
-import dataAccess.databaseManagement.entity.PortfolioEntity;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import presentation.guiForVirtualTrading.OrderTableModel;
@@ -29,10 +30,16 @@ public class RowHeaderJPanel extends javax.swing.JPanel {
     private PortfolioTableModel portfolioTableModel;
 
     /** Creates new form rowHeaderJPanel */
-    public RowHeaderJPanel(Object object, ArrayList<OrderEntity> orders, ArrayList<PortfolioEntity> portfolio) {
-        this.object = object;
+    public RowHeaderJPanel(AbstractDecisionAlgorithm decAlg, ArrayList<OrderEntity> orders, ArrayList<PortfolioEntry> portfolio) {
+        this.object = decAlg;
         this.orderTableModel = new OrderTableModel();
+
         this.portfolioTableModel = new PortfolioTableModel();
+
+        for (PortfolioEntry portfolioEntry : portfolio) {
+            portfolioTableModel.addRow(portfolioEntry);
+        }
+
         initComponents();
         initOtherComponents();
     }
