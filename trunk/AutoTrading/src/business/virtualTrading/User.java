@@ -417,6 +417,9 @@ public class User {
 	public ArrayList<Order> getCurOrderList() {
 		return curOrderList;
 	}
+	public void setCurOrderList(ArrayList<Order> orderList) {
+		this.curOrderList = orderList;
+	}
 	
 	public ArrayList<PortfolioEntry> getCurPortfolioList() {
 		return curPortfolioList;
