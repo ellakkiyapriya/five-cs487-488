@@ -14,6 +14,7 @@ package presentation.guiForPredictionAlgorithmEvaluation;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import business.dataVisualization.ChartStyle;
 import business.dataVisualization.DataVisualizationProcessor;
+import business.predictionAlgorithmEvaluation.PredictionCriteria;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -455,7 +458,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         }
 
         DefaultListModel model = (DefaultListModel) this.preEvaCrisJList.getModel();
-        model.addElement("aaaa");
+        model.addElement(addNewPreEvaCriteriaJPanel.getPredictionCriteria());
 }//GEN-LAST:event_addPreEvaCriteriajButtonActionPerformed
 
     private void removePreEvaCriteriajButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePreEvaCriteriajButtonActionPerformed
@@ -663,14 +666,23 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             tableJPanel.add(jLabel, "0, " + i);
         }
 
+        //evaluation alg
+        DefaultListModel algListModel = (DefaultListModel) preAlgsJList.getModel();
+        DefaultListModel criteriaListModel = (DefaultListModel) preEvaCrisJList.getModel();
         for (int criteriaIndex = 0; criteriaIndex < size[0].length - 1; ++criteriaIndex) {
             for (int algIndex = 0; algIndex < size[1].length - 1; ++algIndex) {
-                TreeMap<String, Object> output = new TreeMap<String, Object>();
-                output.put("Lenght", new Long(123));
-                output.put("Name", "Dinh");
-                CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(output);
-                criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-                tableJPanel.add(criteriaOutputJPanel, (criteriaIndex + 1) + ", " + (algIndex + 1));
+                try {
+                    TreeMap<String, Double> output = new TreeMap<String, Double>();
+                    PredictionCriteria curPreCriteria = (PredictionCriteria) criteriaListModel.getElementAt(criteriaIndex);
+                    AbstractPredictAlgorithm curPreAlg = (AbstractPredictAlgorithm) algListModel.getElementAt(algIndex);
+                    curPreCriteria.setParametersValue(curPreAlg.runAlgorithm().toParamOfPredictionCriteria((AssetEntity) assetJComboBox.getSelectedItem(), new java.sql.Date(startPreDate.getTime())));
+                    output = curPreCriteria.evaluate();
+                    CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(output);
+                    criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                    tableJPanel.add(criteriaOutputJPanel, (criteriaIndex + 1) + ", " + (algIndex + 1));
+                } catch (Exception ex) {
+                    Logger.getLogger(PredictionAlgorithmEvaluationJPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 

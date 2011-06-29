@@ -409,6 +409,9 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
     private void addDecAlgjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDecAlgjButtonActionPerformed
         addDecAlgDialog.setVisible(true);
+
+        //if ()
+
         DefaultListModel model = (DefaultListModel) this.decAlgsJList.getModel();
         model.addElement("aaaa");
     }//GEN-LAST:event_addDecAlgjButtonActionPerformed
