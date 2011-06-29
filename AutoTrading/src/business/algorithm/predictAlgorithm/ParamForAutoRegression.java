@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Utility.ParamList;
 
-public class ParamForAutoRegression extends ParamList {
+public class ParamForAutoRegression extends ParamForPredictAlgorithm {
 	public ArrayList<Double> priceList;
 	public int future_interval;
 	public double confidence_level;
@@ -19,7 +19,6 @@ public class ParamForAutoRegression extends ParamList {
 		this.confidence_level = confidence_level;
 		this.MA_period = MA_period;
 		this.AR_period = AR_period;
-		numOfParam = 5;
 	}
 	public ArrayList<Double> getPriceList() {
 		return priceList;

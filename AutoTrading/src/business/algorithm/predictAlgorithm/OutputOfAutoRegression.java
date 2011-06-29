@@ -15,14 +15,12 @@ import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity.Entry;
 import Utility.ParamList;
 import Utility.Utility;
 
-public class OutputOfAutoRegression extends ParamList {
-	public ArrayList<Double> predictionPrice;
+public class OutputOfAutoRegression extends OutputOfPredictionAlgorithm {
 	public double lambda;
 	public OutputOfAutoRegression(ArrayList<Double> predictionPrice, Double lambda) {
 		// TODO Auto-generated constructor stub
 		this.predictionPrice = predictionPrice;
 		this.lambda = lambda;
-		this.numOfParam = 2;
 	}
 	public ArrayList<Double> getPredictionPrice() {
 		return predictionPrice;
@@ -56,19 +54,11 @@ public class OutputOfAutoRegression extends ParamList {
 		return entity;
 	}
 	
-	public TreeMap<String,Object> toParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
-		
-		PriceManager priceManager = new PriceManager();
-		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
-		TreeMap<Date,Double> priceList = new TreeMap<Date,Double>();
-		int i =0;
-		for (double d : predictionPrice) {
-			priceList.put(priceEntityList.get(i).getDate(), d);
-		}
-		TreeMap<String, Object> map = new TreeMap<String, Object>();
-		map.put("PriceList", priceList);
-		map.put("Asset",assetEntity);
-		return map;
+	@Override
+	public TreeMap<String, Object> ToParamOfPredictionCriteria(
+			AssetEntity assetEntity, Date startPredictingDate) {
+		// TODO Auto-generated method stub
+		return super.ToParamOfPredictionCriteria(assetEntity, startPredictingDate);
 	}
 	
 	public static Date increaseDate(Date currentDate) {

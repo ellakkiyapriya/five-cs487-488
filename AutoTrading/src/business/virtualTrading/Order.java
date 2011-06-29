@@ -25,6 +25,8 @@ public class Order {
 	private double value;
 	private boolean matched;
 
+	public static final int USE_ALL_CASH = -1;
+	
 	public Order() {
 
 	}
