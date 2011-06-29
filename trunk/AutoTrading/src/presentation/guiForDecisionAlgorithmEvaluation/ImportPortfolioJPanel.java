@@ -11,6 +11,9 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import business.virtualTrading.PortfolioEntry;
+import business.virtualTrading.User;
+import java.util.ArrayList;
 import javax.swing.JDialog;
 import presentation.guiForVirtualTrading.AddNewPortfolioJPanel;
 import presentation.guiForVirtualTrading.PortfolioTableModel;
@@ -22,11 +25,15 @@ import presentation.guiForVirtualTrading.PortfolioTableModel;
 public class ImportPortfolioJPanel extends javax.swing.JPanel {
 
     private JDialog parent = null;
+    private User newUser;
+    private ArrayList<PortfolioEntry> portfolioEntryList = new ArrayList<PortfolioEntry>();
+    private boolean ok = false;
     
     /** Creates new form ImportPortfolioJPanel */
     public ImportPortfolioJPanel(JDialog jDialog) {
          this.parent = jDialog;
         initComponents();
+        initOtherComponents();
     }
 
     /** This method is called from within the constructor to
@@ -49,14 +56,14 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
         cancelJButton = new javax.swing.JButton();
         okJButton = new javax.swing.JButton();
 
-        cashRemainJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cashRemainJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         cashRemainJLabel.setText("Cash Remain:");
 
-        cashRemainJSpinner.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), null, null, Long.valueOf(1000L)));
+        cashRemainJSpinner.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(100.0d)));
 
-        vndJLabel.setText("VND");
+        vndJLabel.setText("x1000 VND");
 
-        portfolioJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        portfolioJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         portfolioJLabel.setText("Portfolio:");
 
         portfolioJTable.setModel(new PortfolioTableModel());
@@ -70,6 +77,11 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
         });
 
         removeJButton.setText("Remove");
+        removeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeJButtonActionPerformed(evt);
+            }
+        });
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -152,26 +164,66 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
-        addNewPortfolioJDialog.setVisible(true);
+        addNewPortfolioJPanel.getDialogParent().setVisible(true);
+
+        if (!addNewPortfolioJPanel.isAdd()) {
+            return;
+        }
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.addRow(addNewPortfolioJPanel.getPortfolioEntry());
+        portfolioJTable.updateUI();
+
+        portfolioEntryList.add(addNewPortfolioJPanel.getPortfolioEntry());
     }//GEN-LAST:event_addJButtonActionPerformed
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
-        //Import portfolio
+        ok = true;
+        //Add new user
+        newUser = new User("",(Double)cashRemainJSpinner.getValue());
+        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
+            newUser.addPortfolio(portfolioEntry);
+        }
+
+        portfolioEntryList.clear();
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.deleteAllData();
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        ok = false;
+
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
+    private void removeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeJButtonActionPerformed
+        PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
+        portfolioTableModel.deleteRows(portfolioJTable.getSelectedRows());
+        portfolioJTable.updateUI();
+    }//GEN-LAST:event_removeJButtonActionPerformed
+
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
-        AddNewPortfolioJPanel panel = new AddNewPortfolioJPanel(jDialog);
-        jDialog.add(panel);
+        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog);
+        jDialog.add(addNewPortfolioJPanel);
         jDialog.pack();
         return jDialog;
     }
+
+    public User getNewUser() {
+        return newUser;
+    }
+
+    public boolean isOk() {
+        return ok;
+    }
+
+    public JDialog getParentDialog() {
+        return parent;
+    }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addJButton;
@@ -186,5 +238,9 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel vndJLabel;
     // End of variables declaration//GEN-END:variables
 
-    private JDialog addNewPortfolioJDialog = newAddNewPortfolioJDialog();
+    private AddNewPortfolioJPanel addNewPortfolioJPanel;
+
+    private void initOtherComponents() {
+        newAddNewPortfolioJDialog();
+    }
 }

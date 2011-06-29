@@ -18,6 +18,7 @@ import presentation.guiForDataUpdate.DataUpdateJPanel;
 import presentation.guiForDataVisualization.DataVisualizationJPanel;
 import presentation.guiForDecisionAlgorithmEvaluation.DecisionAlgorithmEvaluationJPanel;
 import presentation.guiForPredictionAlgorithmEvaluation.PredictionAlgorithmEvaluationJPanel;
+import presentation.guiForVirtualTrading.VirtualTradingJPanel;
 
 /**
  *
@@ -82,13 +83,13 @@ public class mainJFrame extends javax.swing.JFrame {
     private void initOtherComponents() {
         JScrollPane jScrollPane;
 
-//        DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
-//        jScrollPane = new JScrollPane(dataUpdateJPanel);
-//        mainJTabbedPane.addTab("Data Update", jScrollPane);
-//
-//        VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
-//        jScrollPane = new JScrollPane(virtualTradingJPanel);
-//        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
+        DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
+        jScrollPane = new JScrollPane(dataUpdateJPanel);
+        mainJTabbedPane.addTab("Data Update", jScrollPane);
+
+        VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
+        jScrollPane = new JScrollPane(virtualTradingJPanel);
+        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
 
         DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
         jScrollPane = new JScrollPane(dataVisualizationJPanel);

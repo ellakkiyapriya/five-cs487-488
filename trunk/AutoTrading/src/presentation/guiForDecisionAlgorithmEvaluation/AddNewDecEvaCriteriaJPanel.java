@@ -47,7 +47,7 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
         decEvlCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         decEvlCriJLabel.setText("Decision Evaluation Criteria:");
 
-        decEvlCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        decEvlCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.decisionAlgorithmEvaluation.Utility.predictionCriteriaList));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -72,7 +72,7 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
                 .addComponent(decEvlCriJLabel)
                 .addGap(18, 18, 18)
                 .addComponent(decEvlCriJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(101, Short.MAX_VALUE)
                 .addComponent(okJButton)
@@ -103,6 +103,8 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         ok = true;
+        
+        decisionCriteria = business.decisionAlgorithmEvaluation.Utility.getPredictionAlgorithm((String)decEvlCriJComboBox.getSelectedItem());
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed

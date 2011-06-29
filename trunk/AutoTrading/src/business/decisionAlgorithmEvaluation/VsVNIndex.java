@@ -10,6 +10,9 @@ import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.PriceManager;
+import java.util.Arrays;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class VsVNIndex extends DecisionCriteria {
 
@@ -24,7 +27,7 @@ public class VsVNIndex extends DecisionCriteria {
 		
 		// TODO priceManager.getStartedPriceOfAssetID(assetID)
 		// TODO priceManager.getLatestPriceOfAssetID(assetID)
-		ArrayList<PriceEntity> price = priceManager.getPriceInInterval(vnIndexID, new java.sql.Date (allOrderList.firstKey().getTime()),  new java.sql.Date (allOrderList.lastKey().getTime())); 
+                ArrayList<PriceEntity> price = priceManager.getPriceInInterval(vnIndexID, new java.sql.Date (allOrderList.firstKey().getTime()),  new java.sql.Date (allOrderList.lastKey().getTime()));
 		return price.get(price.size()-1).getClose()/price.get(0).getClose();
 	}
 	
@@ -65,13 +68,15 @@ public class VsVNIndex extends DecisionCriteria {
 	@Override
 	public void setParametersValue(User user, ArrayList<Order> orderList,
 			AssetEntity assetEntity) {
+                debug("orderList.size():", orderList.size());
+                this.paramList = new TreeMap<String, Object>();
 		this.user = user;
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = new TreeMap<Date, ArrayList<business.virtualTrading.Order>>();
 		
 		// get DateList
 		ArrayList<Date> dateList = new ArrayList<Date>();
 		for (Order curOrder : orderList) {
-			if (dateList.contains(curOrder.getDate()))
+			if (!dateList.contains(curOrder.getDate()))
 				dateList.add((Date) curOrder.getDate());
 		}
 		
@@ -89,6 +94,9 @@ public class VsVNIndex extends DecisionCriteria {
 	}
 
 	
-	
+        public static void debug(Object... os) {
+		JOptionPane.showMessageDialog(new JFrame(), Arrays.deepToString(os));
+	}
+
 
 }
