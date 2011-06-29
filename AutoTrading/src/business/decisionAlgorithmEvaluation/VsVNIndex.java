@@ -34,8 +34,10 @@ public class VsVNIndex extends DecisionCriteria {
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = (TreeMap<Date, ArrayList<business.virtualTrading.Order>>) paramList
 				.get("Order List");
 		
-		user.setCurOrderList(allOrderList.get(allOrderList.firstKey()));
-		user.executeAlgorithmOrder();
+		for(Date date : allOrderList.keySet()) {
+			user.setCurOrderList(allOrderList.get(date));
+			user.executeAlgorithmOrder();
+		}
 		
 		TreeMap<String,Double> map = new TreeMap<String, Double>();
 		map.put("Ratio", user.profit()/ vnIndexGrowth());
