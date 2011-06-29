@@ -1,6 +1,9 @@
 package business.algorithm.decisionAlgorithm;
 
 import java.util.Date;
+import java.util.TreeMap;
+
+import dataAccess.databaseManagement.entity.AssetEntity;
 
 public class Order {
 
@@ -49,4 +52,12 @@ public class Order {
     public void setDate(Date date) {
         this.date = date;
     }
+    
+	public TreeMap<Date, business.virtualTrading.Order> toOrder(
+			AssetEntity assetEntity) {
+		TreeMap<Date, business.virtualTrading.Order> order = new TreeMap<Date, business.virtualTrading.Order>();
+		order.put(date, new business.virtualTrading.Order(assetEntity,
+				orderType, price, -1));
+		return order;
+	}
 }
