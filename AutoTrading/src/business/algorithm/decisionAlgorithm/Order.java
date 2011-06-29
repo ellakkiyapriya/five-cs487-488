@@ -53,11 +53,11 @@ public class Order {
         this.date = date;
     }
     
-	public TreeMap<Date, business.virtualTrading.Order> toOrder(
+	public  business.virtualTrading.Order toOrder(
 			AssetEntity assetEntity) {
-		TreeMap<Date, business.virtualTrading.Order> order = new TreeMap<Date, business.virtualTrading.Order>();
-		order.put(date, new business.virtualTrading.Order(assetEntity,
-				orderType, price, -1));
-		return order;
+//		TreeMap<Date, business.virtualTrading.Order> order = new TreeMap<Date, business.virtualTrading.Order>();
+//		order.put(date, new business.virtualTrading.Order(assetEntity,
+//				orderType, price, -1));
+		return new business.virtualTrading.Order(assetEntity, orderType, price, -1);
 	}
 }
