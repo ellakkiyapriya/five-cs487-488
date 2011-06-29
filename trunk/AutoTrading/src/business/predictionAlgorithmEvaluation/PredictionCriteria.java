@@ -2,7 +2,6 @@ package business.predictionAlgorithmEvaluation;
 
 import java.util.TreeMap;
 
-import dataAccess.databaseManagement.entity.AssetEntity;
 
 /*
  *  ArrayList <AbstractPredictAlgorithm> algorithmList;

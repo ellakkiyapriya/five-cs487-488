@@ -11,6 +11,7 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import java.util.Date;
 import java.util.TreeMap;
 import javax.swing.JDialog;
@@ -23,6 +24,7 @@ import presentation.guiForDataVisualization.ParameterJPanel;
 public class AddNewDecAlgJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
+    private boolean ok = false;
 
     /** Creates new form AddNewDecAlgJPanel */
     public AddNewDecAlgJPanel(JDialog jDialog) {
@@ -40,21 +42,22 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        decAlgJLabel = new javax.swing.JLabel();
         decAlgJComboBox = new javax.swing.JComboBox();
-        decAlgParametersjLabel = new javax.swing.JLabel();
-        decAlgParametersJPanel = new javax.swing.JPanel();
+        decAlgParametersContainerJPanel = new javax.swing.JPanel();
         cancelJButton = new javax.swing.JButton();
         okJButton = new javax.swing.JButton();
 
-        decAlgJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-        decAlgJLabel.setText("Decision Algorithm:");
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Decision Algorithm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.Utility.decisionAlgorithmList));
+        decAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                decAlgJComboBoxActionPerformed(evt);
+            }
+        });
 
-        decAlgParametersjLabel.setText("Parameter:");
-
-        decAlgParametersJPanel.setLayout(new java.awt.GridLayout());
+        decAlgParametersContainerJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Parameter"));
+        decAlgParametersContainerJPanel.setLayout(new java.awt.GridLayout());
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -74,27 +77,21 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(decAlgJLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(decAlgParametersjLabel))))
-                .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(96, Short.MAX_VALUE)
-                .addComponent(okJButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelJButton)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(okJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelJButton))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(decAlgParametersContainerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelJButton, okJButton});
@@ -102,19 +99,13 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(decAlgJLabel)
-                    .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(decAlgParametersjLabel)
+                .addComponent(decAlgParametersContainerJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(decAlgParametersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelJButton)
-                    .addComponent(okJButton))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(okJButton)
+                    .addComponent(cancelJButton)))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cancelJButton, okJButton});
@@ -123,32 +114,40 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         //Add new decision algorithm
-        
+        ok = true;
+
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        ok = false;
+        
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
+
+    private void decAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decAlgJComboBoxActionPerformed
+        decAlgParametersContainerJPanel.removeAll();
+        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
+        decAlgParametersContainerJPanel.updateUI();
+    }//GEN-LAST:event_decAlgJComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelJButton;
     private javax.swing.JComboBox decAlgJComboBox;
-    private javax.swing.JLabel decAlgJLabel;
-    private javax.swing.JPanel decAlgParametersJPanel;
-    private javax.swing.JLabel decAlgParametersjLabel;
+    private javax.swing.JPanel decAlgParametersContainerJPanel;
     private javax.swing.JButton okJButton;
     // End of variables declaration//GEN-END:variables
 
-    private void initOtherComponents() {
-        TreeMap<String, Class> map = new TreeMap<String, Class>();
-        map.put("String", String.class);
-        map.put("Date", Date.class);
-        map.put("Long", Long.class);
-        map.put("Double", Double.class);
-        decAlgParametersJPanel.add(new ParameterJPanel(map));
+    private AbstractDecisionAlgorithm decAlg;
+    private ParameterJPanel decAlgParameterJPanel;
 
+    private void initOtherComponents() {
+        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
     }
 
 }

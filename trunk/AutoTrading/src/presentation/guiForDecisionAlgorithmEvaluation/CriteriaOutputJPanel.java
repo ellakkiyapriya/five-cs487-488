@@ -21,10 +21,10 @@ import layout.TableLayout;
  */
 public class CriteriaOutputJPanel extends javax.swing.JPanel {
 
-    private TreeMap<String, Object> outputValue;
+    private TreeMap<String, Double> outputValue;
 
     /** Creates new form CriteriaOutputJPanel */
-    public CriteriaOutputJPanel(TreeMap<String, Object> outputValue) {
+    public CriteriaOutputJPanel(TreeMap<String, Double> outputValue) {
         this.outputValue = outputValue;
         initComponents();
         initOtherComponents();

@@ -19,7 +19,7 @@ public abstract class ParamList {
 		this.numOfParam = numOfParam;
 	}
 	
-	public TreeMap<String,Object> ToParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
+	public TreeMap<String,Object> toParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
 		return null;
 	}
 }

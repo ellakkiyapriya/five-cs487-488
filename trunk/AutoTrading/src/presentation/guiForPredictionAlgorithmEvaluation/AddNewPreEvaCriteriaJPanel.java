@@ -11,6 +11,8 @@
 
 package presentation.guiForPredictionAlgorithmEvaluation;
 
+import business.predictionAlgorithmEvaluation.PredictionCriteria;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 
 /**
@@ -21,9 +23,14 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
     private boolean ok;
+    private PredictionCriteria predictionCriteria;
 
     public boolean isOk() {
         return ok;
+    }
+
+    public PredictionCriteria getPredictionCriteria() {
+        return predictionCriteria;
     }
 
     /** Creates new form AddNewCriteriaJPanel */
@@ -49,7 +56,7 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
         preEvaCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         preEvaCriJLabel.setText("Prediction Evaluation Criteria:");
 
-        preEvaCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        preEvaCriJComboBox.setModel(new DefaultComboBoxModel(business.predictionAlgorithmEvaluation.Utility.predictionCriteriaList));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -74,7 +81,7 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
                 .addComponent(preEvaCriJLabel)
                 .addGap(18, 18, 18)
                 .addComponent(preEvaCriJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(111, Short.MAX_VALUE)
                 .addComponent(okJButton)
@@ -105,6 +112,8 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         ok = true;
+
+        predictionCriteria = business.predictionAlgorithmEvaluation.Utility.getPredictionAlgorithm((String)preEvaCriJComboBox.getSelectedItem());
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
