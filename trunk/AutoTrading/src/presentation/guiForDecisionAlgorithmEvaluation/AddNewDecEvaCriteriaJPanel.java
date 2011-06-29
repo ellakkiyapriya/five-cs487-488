@@ -11,6 +11,7 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import business.decisionAlgorithmEvaluation.DecisionCriteria;
 import javax.swing.JDialog;
 
 /**
@@ -20,6 +21,8 @@ import javax.swing.JDialog;
 public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
+    private boolean ok;
+    private DecisionCriteria decisionCriteria;
 
     /** Creates new form AddNewCriteriaJPanel */
     public AddNewDecEvaCriteriaJPanel(JDialog jDialog) {
@@ -99,10 +102,14 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
+        ok = true;
+
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
+        ok = false;
+
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
@@ -113,5 +120,17 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel decEvlCriJLabel;
     private javax.swing.JButton okJButton;
     // End of variables declaration//GEN-END:variables
+
+    public JDialog getParentDialog() {
+        return parent;
+    }
+
+    public boolean isOk() {
+        return ok;
+    }
+
+    public DecisionCriteria getDecisionCriteria() {
+        return decisionCriteria;
+    }
 
 }

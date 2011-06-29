@@ -11,6 +11,7 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 import java.util.ArrayList;
@@ -408,19 +409,28 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_removeDecAlgjButtonActionPerformed
 
     private void addDecAlgjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDecAlgjButtonActionPerformed
-        addDecAlgDialog.setVisible(true);
+        addNewDecAlgJPanel.getParentDialog().setVisible(true);
 
-        //if ()
+        if (!addNewDecAlgJPanel.isOk()) {
+            return;
+        }
 
+        AbstractDecisionAlgorithm decAlgo = addNewDecAlgJPanel.getDecAlg();
         DefaultListModel model = (DefaultListModel) this.decAlgsJList.getModel();
-        model.addElement("aaaa");
+        model.addElement(decAlgo);
+
+        //add new algorithm
     }//GEN-LAST:event_addDecAlgjButtonActionPerformed
 
     private void addDecEvaCriteriajButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDecEvaCriteriajButtonActionPerformed
-        addCriteriaDialog.setVisible(true);
+        addNewDecEvaCriteriaJPanel.getParentDialog().setVisible(true);
+
+        if (!addNewDecEvaCriteriaJPanel.isOk()) {
+            return;
+        }
+
         DefaultListModel model = (DefaultListModel) this.decEvaCrisJList.getModel();
-        model.addElement("aaaa");
-    }//GEN-LAST:event_addDecEvaCriteriajButtonActionPerformed
+        model.addElement(addNewDecEvaCriteriaJPanel.getDecisionCriteria());    }//GEN-LAST:event_addDecEvaCriteriajButtonActionPerformed
 
     private void removeDecEvaCriteriajButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeDecEvaCriteriajButtonActionPerformed
         DefaultListModel model = (DefaultListModel) this.decEvaCrisJList.getModel();
@@ -472,13 +482,13 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private JDialog importPortfolioDialog = newImportPortfolioJDialog();
-    private JDialog addDecAlgDialog = newAddDecAlgJDialog();
-    private JDialog addCriteriaDialog = newAddCriteriaJDialog();
+    private AddNewDecAlgJPanel addNewDecAlgJPanel;
+    private AddNewDecEvaCriteriaJPanel addNewDecEvaCriteriaJPanel;
 
     private JDialog newAddDecAlgJDialog() {
         JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
-        AddNewDecAlgJPanel panel = new AddNewDecAlgJPanel(jDialog);
-        jDialog.add(panel);
+        addNewDecAlgJPanel = new AddNewDecAlgJPanel(jDialog);
+        jDialog.add(addNewDecAlgJPanel);
         jDialog.pack();
         return jDialog;
     }
@@ -493,8 +503,8 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
     private JDialog newAddCriteriaJDialog() {
         JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
-        AddNewDecEvaCriteriaJPanel panel = new AddNewDecEvaCriteriaJPanel(jDialog);
-        jDialog.add(panel);
+        addNewDecEvaCriteriaJPanel = new AddNewDecEvaCriteriaJPanel(jDialog);
+        jDialog.add(addNewDecEvaCriteriaJPanel);
         jDialog.pack();
         return jDialog;
     }
@@ -504,6 +514,9 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         toDatejSpinner.setValue(now.getTime());
         now.add(Calendar.MONTH, -6);
         fromDatejSpinner.setValue(now.getTime());
+
+        newAddDecAlgJDialog();
+        newAddCriteriaJDialog();
     }
 
     private void updateComparisonTable() {
@@ -540,9 +553,9 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
         for (int criteriaIndex = 0; criteriaIndex < size[0].length - 1; ++criteriaIndex) {
             for (int algIndex = 0; algIndex < size[1].length - 1; ++algIndex) {
-                TreeMap<String, Object> output = new TreeMap<String, Object>();
-                output.put("Lenght", new Long(123));
-                output.put("Name", "Dinh");
+                TreeMap<String, Double> output = new TreeMap<String, Double>();
+                output.put("Lenght", new Double(123));
+                output.put("Name", new Double(30));
                 CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(output);
                 criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
                 tableJPanel.add(criteriaOutputJPanel, (criteriaIndex + 1) + ", " + (algIndex + 1));

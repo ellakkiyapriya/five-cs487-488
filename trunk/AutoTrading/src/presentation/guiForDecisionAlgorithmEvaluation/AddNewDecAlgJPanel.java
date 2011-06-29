@@ -12,7 +12,7 @@
 package presentation.guiForDecisionAlgorithmEvaluation;
 
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
-import java.util.Date;
+import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import java.util.TreeMap;
 import javax.swing.JDialog;
 import presentation.guiForDataVisualization.ParameterJPanel;
@@ -25,6 +25,14 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
 
     private JDialog parent;
     private boolean ok = false;
+
+    public JDialog getParentDialog() {
+        return parent;
+    }
+
+    public boolean isOk() {
+        return ok;
+    }
 
     /** Creates new form AddNewDecAlgJPanel */
     public AddNewDecAlgJPanel(JDialog jDialog) {
@@ -116,12 +124,20 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
         //Add new decision algorithm
         ok = true;
 
+        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+
+        //Add new prediction algorithm
+        TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+        for (String name : decAlg.getParametersList().keySet()) {
+            valueMap.put(name, decAlgParameterJPanel.getValue(name));
+        }
+        decAlg.setParametersValue(valueMap);
+
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
 
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
         ok = false;
-        
         this.parent.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
@@ -148,6 +164,10 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
         decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
         decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
         decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
+    }
+
+    public AbstractDecisionAlgorithm getDecAlg() {
+        return decAlg;
     }
 
 }
