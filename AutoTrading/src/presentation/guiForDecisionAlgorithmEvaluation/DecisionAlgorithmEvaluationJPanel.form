@@ -20,7 +20,7 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="dateJPanel" max="32767" attributes="1"/>
                   <Component id="algorithmjPanel" alignment="0" max="32767" attributes="1"/>
-                  <Component id="evaluationCriteriaJPanel" alignment="0" pref="301" max="32767" attributes="1"/>
+                  <Component id="evaluationCriteriaJPanel" alignment="0" pref="304" max="32767" attributes="1"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -167,7 +167,7 @@
                       </Group>
                       <Component id="decAlgjLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="22" max="32767" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
