@@ -5,8 +5,10 @@
 
 package business.algorithm.decisionAlgorithm;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+
+import dataAccess.databaseManagement.entity.OrderEntity;
+import dataAccess.databaseManagement.entity.UserEntity;
 
 /**
  * 
@@ -14,10 +16,16 @@ import java.util.Date;
  */
 public class Utility {
 	public static final String[] decisionAlgorithmList = {"Moving Average"};
+	
 	public static AbstractDecisionAlgorithm getDecisionAlgorithm(String str) {
 		if (str.equals("Moving Average")) {
 			return new MovingAverage();
 		}
+		return null;
+	}
+	
+	public static ArrayList<OrderEntity> convertOrderList(ArrayList<Order> orderList, UserEntity user)
+	{
 		return null;
 	}
 }

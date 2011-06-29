@@ -6,13 +6,13 @@ import java.util.TreeMap;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 
-public class OutputOfDecisionAlgorithm {
+public class OutputForDecisionAlgorithm {
 	ArrayList<Order> orderList;
 	
-	public OutputOfDecisionAlgorithm () {
+	public OutputForDecisionAlgorithm () {
 		
 	}
-	public OutputOfDecisionAlgorithm (ArrayList<Order> orderList) {
+	public OutputForDecisionAlgorithm (ArrayList<Order> orderList) {
 		this.orderList = orderList;
 	}
 	

@@ -18,6 +18,7 @@ public abstract class OutputOfPredictionAlgorithm {
 		int i =0;
 		for (double d : predictionPrice) {
 			priceList.put(priceEntityList.get(i).getDate(), d);
+			i++;
 		}
 		TreeMap<String, Object> map = new TreeMap<String, Object>();
 		map.put("PriceList", priceList);

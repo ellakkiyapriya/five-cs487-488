@@ -136,6 +136,12 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	public void setPriceList(ArrayList<Double> prices) {
 		((ParamForAutoRegression) parameters).priceList = prices;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Auto Regression";
+	}
 
 	public static void main(String args[]) {
 		ArrayList<Double> priceList = new ArrayList<Double>();

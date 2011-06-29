@@ -1,102 +1,90 @@
 package business.algorithm.decisionAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
 
 import java.util.TreeMap;
 
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.PriceEntity;
+
 public class MovingAverage extends AbstractDecisionAlgorithm {
 
+	public static final int MIN_VOLUME = 10;
+	
     @Override
-    public ArrayList<Order> runAlgorithm() {
+    public OutputForDecisionAlgorithm runAlgorithm(ParamForDecisionAlgorithm param) {
         // TODO Auto-generated method stub
-
-        ArrayList<Double> price = ((ParamForMovingAverage) parameters).getPrice();
-        int MA_period = ((ParamForMovingAverage) parameters).getMA_period();
-
-        ArrayList<Double> MA = new ArrayList<Double>();
-        Double temp;
-        for (int i = 0; i <= price.size() - MA_period; ++i) {
-            temp = 0.0;
-            for (int j = 0; j < MA_period; ++j) {
-                temp += price.get(i + j);
-            }
-            MA.add(temp / MA_period);
-        }
-
-        for (int i = 0; i < MA_period - 1; ++i) {
-            price.remove(0);
-        }
-        double todayPrice, yesterdayPrice, todayMA, yesterdayMA;
         ArrayList<Order> orderList = new ArrayList<Order>();
-
-        boolean previous_buy_order = false;
-        boolean previous_sell_order = false;
-        for (int i = 0; i < price.size() - 1; ++i) {
-            yesterdayPrice = price.get(i);
-            todayPrice = price.get(i + 1);
-            yesterdayMA = MA.get(i);
-            todayMA = MA.get(i + 1);
-
-            /*
-            if ((todayPrice > yesterdayPrice) && (todayMA > yesterdayMA)
-                    && (todayMA < todayPrice) && (yesterdayMA > yesterdayPrice)) {
-                // issue buy order
-                Order order = new Order(Order.ORDER_BUY, todayPrice, i + 1);
-                orderList.add(order);
-            } else if ((todayPrice < yesterdayPrice) && (todayMA < yesterdayMA)
-                    && (todayMA > todayPrice) && (yesterdayMA < yesterdayPrice)) {
-                // issue sell order
-                Order order = new Order(Order.ORDER_SELL, todayPrice, i + 1);
-                orderList.add(order);
-            }*/
-            if (todayMA > yesterdayMA)
-            {
-            	if (todayPrice > todayMA)
-            	{
-            		if (previous_buy_order == false)
-            		{
-            			Order order = new Order(Order.ORDER_BUY, yesterdayPrice, MA_period + i);
-            			orderList.add(order);
-            			previous_buy_order = true;
-            			previous_sell_order = false;
-            		}
-//            		else
-//                        {
-//            			previous_buy_order = false;
-//            			previous_sell_order = false;
-//                        }
-            	}
-//            	else
-//            	{
-//            		previous_buy_order = false;
-//        			previous_sell_order = false;
-//            	}
+    	
+    	TreeMap<AssetEntity, ArrayList<PriceEntity>> map = ((ParamForMovingAverage)param).getPriceList();
+    	int MA_period = ((ParamForMovingAverage)param).getMA_period();
+    	Double cash = ((ParamForMovingAverage)param).getCash();
+    	Date startDate = ((ParamForMovingAverage)param).getStartDate();
+    	
+    	Set<AssetEntity> assetSet = map.keySet();
+    	
+    	for (AssetEntity asset : assetSet)
+    	{
+    		ArrayList<PriceEntity> priceList = map.get(asset);
+    		ArrayList<Double> MA = new ArrayList<Double>();
+    		
+            Double temp;
+            for (int i = 0; i <= priceList.size() - MA_period; ++i) {
+                temp = 0.0;
+                for (int j = 0; j < MA_period; ++j) {
+                    temp += priceList.get(i + j).getClose();
+                }
+                MA.add(temp / MA_period);
             }
-            else
-            {
-            	if (todayPrice < todayMA)
-            	{
-            		if (previous_sell_order == false)
-            		{
-            			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, MA_period + i);
-            			orderList.add(order);
-            			previous_buy_order = false;
-            			previous_sell_order = true;
-            		}
-//            		else
-//        			{
-//            			previous_buy_order = false;
-//            			previous_sell_order = false;
-//        			}
-            	}
-//            	else
-//            	{
-//            		previous_buy_order = false;
-//        			previous_sell_order = false;
-//            	}
+
+            for (int i = 0; i < MA_period - 1; ++i) {
+                priceList.remove(0);
             }
-        }
-        return orderList;
+            double todayPrice, yesterdayPrice, todayMA, yesterdayMA;
+
+            boolean previous_buy_order = false;
+            boolean previous_sell_order = false;
+            for (int i = 0; i < priceList.size() - 1; ++i) {
+                yesterdayPrice = priceList.get(i).getClose();
+                todayPrice = priceList.get(i + 1).getClose();
+                yesterdayMA = MA.get(i);
+                todayMA = MA.get(i + 1);
+
+                if (todayMA > yesterdayMA)
+                {
+                	if (todayPrice > todayMA)
+                	{
+                		if (previous_buy_order == false)
+                		{
+                			int volume = (int) (cash / yesterdayPrice);
+                			if (volume > MIN_VOLUME) {
+                				Order order = new Order(Order.ORDER_BUY, yesterdayPrice, priceList.get(i+1).getDate(), volume);
+                				orderList.add(order);
+                				previous_buy_order = true;
+                				previous_sell_order = false;
+                			}
+                		}
+                	}
+                }
+                else
+                {
+                	if (todayPrice < todayMA)
+                	{
+                		if (previous_sell_order == false)
+                		{
+                			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, MA_period + i);
+                			orderList.add(order);
+                			previous_buy_order = false;
+                			previous_sell_order = true;
+                		}
+                	}
+                }
+            }
+
+    	}
+    	return null;
     }
 
     @Override

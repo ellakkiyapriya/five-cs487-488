@@ -11,14 +11,15 @@ public class Order {
     public static final boolean ORDER_SELL = false;
     private boolean orderType;
     private double price;
-    private int nth_day_in_future;
     private Date date;
+    private int volume;
 
-    public Order(boolean orderType, double price, int nth_day_in_future) {
+    public Order(boolean orderType, double price, Date date, int volume) {
         super();
         this.orderType = orderType;
         this.price = price;
-        this.nth_day_in_future = nth_day_in_future;
+        this.date = date;
+        this.volume = volume;
     }
 
     public boolean isOrderType() {
@@ -37,14 +38,6 @@ public class Order {
         this.price = price;
     }
 
-    public int getNth_day_in_future() {
-        return nth_day_in_future;
-    }
-
-    public void setNth_day_in_future(int nth_day_in_future) {
-        this.nth_day_in_future = nth_day_in_future;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -52,12 +45,21 @@ public class Order {
     public void setDate(Date date) {
         this.date = date;
     }
+
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
     
+    /*
 	public  business.virtualTrading.Order toOrder(
 			AssetEntity assetEntity) {
 //		TreeMap<Date, business.virtualTrading.Order> order = new TreeMap<Date, business.virtualTrading.Order>();
 //		order.put(date, new business.virtualTrading.Order(assetEntity,
 //				orderType, price, -1));
-		return new business.virtualTrading.Order(assetEntity, orderType, price, -1);
-	}
+		return new business.virtualTrading.Order(assetEntity, orderType, price, business.virtualTrading.Order.USE_ALL_CASH);
+	}*/
 }
