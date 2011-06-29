@@ -17,19 +17,33 @@ public class OutputOfDecisionAlgorithm {
 	}
 	
 	/**
-	 * set volume = -1 if the output of Decision does not include volume 
+	 * set volume = -1 if the output of Decision does not include volume
+	 * @override this method should be override if there are more than 2 asset  
 	 * @param assetEntity
 	 * @return
 	 */
 	public TreeMap<String, Object> toParamOfDecisionCriteria(AssetEntity assetEntity) {
+		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = new TreeMap<Date, ArrayList<business.virtualTrading.Order>>();
+		ArrayList<Date> dateList = getDateList();
+		for (Date date : dateList) {
+			ArrayList<business.virtualTrading.Order> curDateOrderList = new ArrayList<business.virtualTrading.Order>();
+			for (Order curOrder :orderList){
+				if (curOrder.getDate().equals(date))
+					curDateOrderList.add(curOrder.toOrder(assetEntity));
+			}
+			allOrderList.put(date, curDateOrderList);
+		}
 		
-		return null;
+		TreeMap<String, Object> map = new TreeMap<String, Object>();
+		map.put("Order List", allOrderList);
+		
+		return map;
 	}
 	
 	public ArrayList<Date> getDateList () {
 		ArrayList<Date> dateList = new ArrayList<Date>();
 		for (Order curOrder : orderList) {
-			if (dateList.contains(curOrder.getDate()))
+			if (!dateList.contains(curOrder.getDate()))
 				dateList.add(curOrder.getDate());
 		}
 		return dateList;
