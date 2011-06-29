@@ -11,7 +11,7 @@ import dataAccess.databaseManagement.manager.PriceManager;
 public abstract class OutputOfPredictionAlgorithm {
 	ArrayList<Double> predictionPrice;
 	
-	public TreeMap<String,Object> ToParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
+	public TreeMap<String,Object> toParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
 		PriceManager priceManager = new PriceManager();
 		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
 		TreeMap<Date,Double> priceList = new TreeMap<Date,Double>();
