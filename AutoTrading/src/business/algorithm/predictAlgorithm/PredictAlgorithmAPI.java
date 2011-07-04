@@ -1,19 +1,30 @@
 package business.algorithm.predictAlgorithm;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TreeMap;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 
-public abstract class OutputOfPredictionAlgorithm {
-	ArrayList<Double> predictionPrice;
+public class PredictAlgorithmAPI {
 	
-	public TreeMap<String,Object> toParamOfPredictionCriteria (AssetEntity assetEntity ,Date startPredictingDate) {
+	public static final String[] predictionAlgorithmList = {"Auto Regression"};
+
+    public static AbstractPredictAlgorithm getPredictionAlgorithm(String str)
+	{
+		if (str.equals("Auto Regression"))
+		{
+			return (new AutoRegression());
+		}
+		return null;
+	}
+
+    /*
+    public TreeMap<String,Object> toParamOfPredictionCriteria(AssetEntity assetEntity ,Date startPredictingDate, OutputForAutoRegression output) {
 		PriceManager priceManager = new PriceManager();
-		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
+		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), startPredictingDate, priceManager.getLatestDate());
 		TreeMap<Date,Double> priceList = new TreeMap<Date,Double>();
 		int i =0;
 		for (double d : predictionPrice) {
@@ -24,14 +35,5 @@ public abstract class OutputOfPredictionAlgorithm {
 		map.put("PriceList", priceList);
 		map.put("Asset",assetEntity);
 		return map;
-	}
-	
-	public void setPredictionPrice(ArrayList<Double> predictionPrice ){
-		this.predictionPrice = predictionPrice;
-	}
-	
-	public ArrayList<Double> getPricditionPrice() {
-		return predictionPrice;
-	}
-
+	}*/
 }

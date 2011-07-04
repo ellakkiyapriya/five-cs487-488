@@ -1,23 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package business.algorithm.predictAlgorithm;
 
-/**
- *
- * @author Dinh
- */
-public class Utility {
-    public static final String[] predictionAlgorithmList = {"Auto Regression"};
+import java.util.ArrayList;
 
-    public static AbstractPredictAlgorithm getPredictionAlgorithm(String str)
-	{
-		if (str.equals("Auto Regression"))
+import dataAccess.databaseManagement.entity.PriceEntity;
+
+public class Utility {
+	public static ArrayList<Double> convertPriceEntityListToPriceList(ArrayList<PriceEntity> priceEntityList){
+		ArrayList<Double> priceList = new ArrayList<Double>();
+		for (PriceEntity entity : priceEntityList)
 		{
-			return (new AutoRegression());
+			priceList.add(entity.getClose());
 		}
-		return null;
+		return priceList;
 	}
+	
+		
 }
