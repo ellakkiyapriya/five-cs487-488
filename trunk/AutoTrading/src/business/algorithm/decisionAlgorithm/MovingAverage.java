@@ -74,10 +74,14 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
                 	{
                 		if (previous_sell_order == false)
                 		{
-                			Order order = new Order(Order.ORDER_SELL, yesterdayPrice, MA_period + i);
-                			orderList.add(order);
-                			previous_buy_order = false;
-                			previous_sell_order = true;
+                			int volume = (int) (cash / yesterdayPrice);
+                			if (volume > MIN_VOLUME)
+                			{
+                				Order order = new Order(Order.ORDER_SELL, yesterdayPrice, priceList.get(i+1).getDate(), volume);
+                    			orderList.add(order);
+                    			previous_buy_order = false;
+                    			previous_sell_order = true;
+                			}
                 		}
                 	}
                 }

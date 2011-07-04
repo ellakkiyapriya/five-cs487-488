@@ -1,42 +1,32 @@
 package business.algorithm.predictAlgorithm;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
-import Utility.ParamList;
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.PriceEntity;
+
 
 public class ParamForAutoRegression extends ParamForPredictAlgorithm {
-	public ArrayList<Double> priceList;
-	public int future_interval;
-	public double confidence_level;
+	
+	public double confidenceLevel;
 	public int MA_period;
 	public int AR_period;
-	public ParamForAutoRegression(ArrayList<Double> priceList,
-			int future_interval, double confidence_level, int MA_period,
-			int AR_period) {
-		super();
-		this.priceList = priceList;
-		this.future_interval = future_interval;
-		this.confidence_level = confidence_level;
+	
+	public ParamForAutoRegression(TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
+			int futureInterval, double confidenceLevel, int MA_period,
+			int AR_period) {	
+		super(priceList, futureInterval);
+		this.confidenceLevel = confidenceLevel;
 		this.MA_period = MA_period;
 		this.AR_period = AR_period;
 	}
-	public ArrayList<Double> getPriceList() {
-		return priceList;
+	
+	public double getConfidenceLevel() {
+		return confidenceLevel;
 	}
-	public void setPriceList(ArrayList<Double> priceList) {
-		this.priceList = priceList;
-	}
-	public int getFuture_interval() {
-		return future_interval;
-	}
-	public void setFuture_interval(int future_interval) {
-		this.future_interval = future_interval;
-	}
-	public double getConfidence_level() {
-		return confidence_level;
-	}
-	public void setConfidence_level(double confidence_level) {
-		this.confidence_level = confidence_level;
+	public void setConfidenceLevel(double confidenceLevel) {
+		this.confidenceLevel = confidenceLevel;
 	}
 	public int getMA_period() {
 		return MA_period;
@@ -50,4 +40,25 @@ public class ParamForAutoRegression extends ParamForPredictAlgorithm {
 	public void setAR_period(int aR_period) {
 		AR_period = aR_period;
 	}
+
+	@Override
+	public TreeMap<String, Class> getParametersList() {
+		// TODO Auto-generated method stub
+		TreeMap<String, Class> map = super.getParametersList();
+		map.put("Confidence level", Double.class);
+		map.put("MA period", Integer.class);
+		map.put("AR period", Integer.class);
+		return map;
+	}
+
+	@Override
+	public void setParametersValue(TreeMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		super.setParametersValue(map);
+		this.confidenceLevel = (Double) map.get("Confidence level");
+		this.MA_period = (Integer) map.get("MA period");
+		this.AR_period = (Integer) map.get("AR period");
+	}
+	
+	
 }

@@ -14,7 +14,7 @@ import org.jfree.chart.JFreeChart;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.decisionAlgorithm.Order;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
-import business.algorithm.predictAlgorithm.OutputOfAutoRegression;
+import business.algorithm.predictAlgorithm.OutputForAutoRegression;
 import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
@@ -104,9 +104,9 @@ public class DataVisualizationProcessor {
         }
 
         preAlgo.setPriceList(list);
-        OutputOfAutoRegression outputOfAutoRegression;
+        OutputForAutoRegression outputOfAutoRegression;
 		try {
-			outputOfAutoRegression = (OutputOfAutoRegression) preAlgo.runAlgorithm();
+			outputOfAutoRegression = (OutputForAutoRegression) preAlgo.runAlgorithm();
 			return outputOfAutoRegression.convertThis(startPreDate);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
