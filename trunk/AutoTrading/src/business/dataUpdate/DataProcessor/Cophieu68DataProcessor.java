@@ -3,15 +3,9 @@ package business.dataUpdate.DataProcessor;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
-
-import business.dataUpdate.DataGetter.AbstractDataGetter;
-import business.dataUpdate.DataGetter.Cophieu68DataGetter;
-import business.dataUpdate.DataGetter.ParamForCophieu68DataGetter;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
@@ -20,31 +14,55 @@ import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.ExchangeManager;
 import dataAccess.databaseManagement.manager.PriceManager;
 
-import Utility.ParamList;
-
 public class Cophieu68DataProcessor extends AbstractDataProcessor {
 
 	private PriceManager priceManager = null;
 	private AssetManager assetManager = null;
 	
-	public Cophieu68DataProcessor()
+	private BufferedReader br;
+	private String exchangeName;
+	private Date date;
+	
+	public BufferedReader getBr() {
+		return br;
+	}
+	public void setBr(BufferedReader br) {
+		this.br = br;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public String getExchangeName() {
+		return exchangeName;
+	}
+	public void setExchangeName(String exchangeName) {
+		this.exchangeName = exchangeName;
+	}
+	
+	public Cophieu68DataProcessor(BufferedReader br, Date date, String exchangeName)
 	{
 		priceManager = new PriceManager();
 		assetManager = new AssetManager();
+		
+		this.br = br;
+		this.date = date;
+		this.exchangeName = exchangeName;
 	}
 	
 	@Override
-	public boolean processData(ParamList parameter) {
+	public boolean processData() {
 		// TODO Auto-generated method stub
 		
 		double open, high, low, close;
 		double volume;
-		String exchangeName = ((ParamForCophieu68DataProcessor)parameter).getExchangeName();
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		String strLine, symbol;
-		//String date = dateFormat.format(parameter.getParamList().get(1));
-		String date = dateFormat.format(((ParamForCophieu68DataProcessor)parameter).getDate());
-		BufferedReader br = ((ParamForCophieu68DataProcessor)parameter).getBr();
+
+		//String date = dateFormat.format(((ParamForCophieu68DataProcessor)parameter).getDate());
+		String strDate = dateFormat.format(date);
 		String[] splitString;
 		try {
 			// Open an output stream
@@ -55,7 +73,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 
 				// Print a line of text
 				splitString = strLine.split(",");
-				if (splitString[1].contentEquals(date))
+				if (splitString[1].contentEquals(strDate))
 				{
 					symbol = splitString[0];
 					open = Double.valueOf(splitString[2]);
@@ -65,7 +83,7 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 					volume = Integer.valueOf(splitString[6]);
 					AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol, exchangeName);
 					PriceEntity priceEntity = null;
-					priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(((ParamForCophieu68DataProcessor)parameter).getDate().getTime()), null, volume, close, open, high, low);
+					priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low);
 					System.out.println(symbol);
 					priceManager.add(priceEntity);
 					
