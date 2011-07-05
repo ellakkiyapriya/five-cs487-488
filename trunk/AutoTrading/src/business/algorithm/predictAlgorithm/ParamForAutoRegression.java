@@ -6,37 +6,42 @@ import java.util.TreeMap;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
-
 public class ParamForAutoRegression extends ParamForPredictAlgorithm {
-	
+
 	public double confidenceLevel;
 	public int MA_period;
 	public int AR_period;
-	
-	public ParamForAutoRegression(TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
+
+	public ParamForAutoRegression(
+			TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
 			int futureInterval, double confidenceLevel, int MA_period,
-			int AR_period) {	
+			int AR_period) {
 		super(priceList, futureInterval);
 		this.confidenceLevel = confidenceLevel;
 		this.MA_period = MA_period;
 		this.AR_period = AR_period;
 	}
-	
+
 	public double getConfidenceLevel() {
 		return confidenceLevel;
 	}
+
 	public void setConfidenceLevel(double confidenceLevel) {
 		this.confidenceLevel = confidenceLevel;
 	}
+
 	public int getMA_period() {
 		return MA_period;
 	}
+
 	public void setMA_period(int mA_period) {
 		MA_period = mA_period;
 	}
+
 	public int getAR_period() {
 		return AR_period;
 	}
+
 	public void setAR_period(int aR_period) {
 		AR_period = aR_period;
 	}
@@ -59,6 +64,5 @@ public class ParamForAutoRegression extends ParamForPredictAlgorithm {
 		this.MA_period = (Integer) map.get("MA period");
 		this.AR_period = (Integer) map.get("AR period");
 	}
-	
-	
+
 }

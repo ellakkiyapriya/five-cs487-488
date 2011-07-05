@@ -9,18 +9,22 @@ import Jama.Matrix;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
-
 public class AutoRegression extends AbstractPredictAlgorithm {
 
 	@Override
-	public OutputForPredictionAlgorithm runAlgorithm(ParamForPredictAlgorithm parameters) throws Exception{
+	public OutputForPredictionAlgorithm runAlgorithm(
+			ParamForPredictAlgorithm parameters) throws Exception {
 		// TODO Auto-generated method stub
-		TreeMap<AssetEntity, ArrayList<PriceEntity>> map = ((ParamForAutoRegression) parameters).getPriceList();
+		TreeMap<AssetEntity, ArrayList<PriceEntity>> map = ((ParamForAutoRegression) parameters)
+				.getPriceList();
 		AssetEntity asset = map.firstKey();
 		ArrayList<PriceEntity> priceEntityList = map.get(map.firstKey());
-		ArrayList<Double> priceList = Utility.convertPriceEntityListToPriceList(priceEntityList);
-		int futureInterval = ((ParamForAutoRegression) parameters).getFutureInterval();
-		double confidenceLevel = ((ParamForAutoRegression) parameters).getConfidenceLevel();
+		ArrayList<Double> priceList = Utility
+				.convertPriceEntityListToPriceList(priceEntityList);
+		int futureInterval = ((ParamForAutoRegression) parameters)
+				.getFutureInterval();
+		double confidenceLevel = ((ParamForAutoRegression) parameters)
+				.getConfidenceLevel();
 		int movingAveragePeriod = (Integer) ((ParamForAutoRegression) parameters)
 				.getMA_period();
 		int autoRegerssivePeriod = (Integer) ((ParamForAutoRegression) parameters)
@@ -43,10 +47,10 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		 * Auto Regression step
 		 */
 		int nMovingAverage = movingAverage.size();
-		
+
 		if (nMovingAverage - autoRegerssivePeriod < 0)
 			throw new Exception("There are too few samples");
-		
+
 		double[][] x = new double[nMovingAverage - autoRegerssivePeriod][autoRegerssivePeriod + 1];
 		double[] y = new double[nMovingAverage - autoRegerssivePeriod];
 		for (int i = 0; i < (nMovingAverage - autoRegerssivePeriod); ++i) {
@@ -64,13 +68,11 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		Matrix matrixB = matrixX.transpose();
 		matrixB = matrixB.times(matrixX);
 
-                try {
-                    matrixB = matrixB.inverse();
-                }
-                catch (Exception e)
-                {
-                    throw new RuntimeException("Matrix is singular");
-                }
+		try {
+			matrixB = matrixB.inverse();
+		} catch (Exception e) {
+			throw new RuntimeException("Matrix is singular");
+		}
 		matrixB = matrixB.times(matrixX.transpose());
 		matrixB = matrixB.times(matrixY);
 
@@ -106,18 +108,24 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 
 		double lambda = t * s_b0;
 
-		/*TreeMap<AssetEntity, ArrayList<Double>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<Double>>();
-		predictionPriceMap.put(asset, predictionPriceList);
-		return new OutputForAutoRegression(predictionPriceMap, startPredictionDate, lambda);*/
-		
-		Date lastDate = priceEntityList.get(priceEntityList.size() - 1).getDate();
+		/*
+		 * TreeMap<AssetEntity, ArrayList<Double>> predictionPriceMap = new
+		 * TreeMap<AssetEntity, ArrayList<Double>>();
+		 * predictionPriceMap.put(asset, predictionPriceList); return new
+		 * OutputForAutoRegression(predictionPriceMap, startPredictionDate,
+		 * lambda);
+		 */
+
+		Date lastDate = priceEntityList.get(priceEntityList.size() - 1)
+				.getDate();
 		Date startPredictionDate = (Date) utility.Utility.increaseDate(lastDate);
-		ArrayList<PriceEntry> priceEntryList = Utility.constructPriceList(asset, predictionPriceList, startPredictionDate);
+		ArrayList<PriceEntry> priceEntryList = Utility.constructPriceList(
+				asset, predictionPriceList, startPredictionDate);
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
 		predictionPriceMap.put(asset, priceEntryList);
 		return new OutputForAutoRegression(predictionPriceMap, lambda);
 	}
-	
+
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
@@ -125,11 +133,10 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	}
 
 	// need to revise here
-	public Date setStartPredictionDate(Date lastDate)
-	{		
+	public Date setStartPredictionDate(Date lastDate) {
 		return null;
 	}
-	
+
 	public static void main(String args[]) {
 		ArrayList<Double> priceList = new ArrayList<Double>();
 		priceList.add(23.0);
@@ -151,17 +158,19 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		map.put("Confidence level", confidence_level);
 		map.put("MA period", MA_period);
 		map.put("AR period", AR_period);
-		//AutoRegression ar = new AutoRegression();
-		/*ar.setParametersValue(map);
-		ar.setPriceList(priceList);*/
+		// AutoRegression ar = new AutoRegression();
+		/*
+		 * ar.setParametersValue(map); ar.setPriceList(priceList);
+		 */
 		try {
-			
-			/*ParamList output = ar.runAlgorithm();
-			for (int i = 0; i < futureInterval; ++i) {
-				OutputForAutoRegression temp = (OutputForAutoRegression) output;
-				System.out.println(temp.getPredictionPrice().get(i));
-			}*/
-			
+
+			/*
+			 * ParamList output = ar.runAlgorithm(); for (int i = 0; i <
+			 * futureInterval; ++i) { OutputForAutoRegression temp =
+			 * (OutputForAutoRegression) output;
+			 * System.out.println(temp.getPredictionPrice().get(i)); }
+			 */
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
