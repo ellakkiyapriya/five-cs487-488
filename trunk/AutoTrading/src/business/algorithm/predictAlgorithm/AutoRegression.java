@@ -172,7 +172,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 
 		Date lastDate = priceEntityList.get(priceEntityList.size() - 1)
 				.getDate();
-		Date startPredictionDate = (Date) utility.Utility.increaseDate(lastDate);
+		Date startPredictionDate = new Date(utility.Utility.increaseDate(lastDate).getTime());
 		ArrayList<PriceEntry> priceEntryList = Utility.constructPriceList(
 				asset, predictionPriceList, startPredictionDate);
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
