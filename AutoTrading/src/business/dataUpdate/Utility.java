@@ -1,8 +1,5 @@
 package business.dataUpdate;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import business.dataUpdate.DataGetter.AbstractDataGetter;
 import business.dataUpdate.DataGetter.Cophieu68DataGetter;
 import business.dataUpdate.DataProcessor.AbstractDataProcessor;

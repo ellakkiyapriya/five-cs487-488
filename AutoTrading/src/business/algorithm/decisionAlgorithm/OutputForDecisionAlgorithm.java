@@ -1,15 +1,19 @@
 package business.algorithm.decisionAlgorithm;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.TreeMap;
-
-import dataAccess.databaseManagement.entity.AssetEntity;
 
 public class OutputForDecisionAlgorithm {
-	ArrayList<Order> orderList;
+	private ArrayList<Order> orderList;
 	
 	public OutputForDecisionAlgorithm (ArrayList<Order> orderList) {
+		this.setOrderList(orderList);
+	}
+
+	public ArrayList<Order> getOrderList() {
+		return orderList;
+	}
+
+	public void setOrderList(ArrayList<Order> orderList) {
 		this.orderList = orderList;
 	}
 	
