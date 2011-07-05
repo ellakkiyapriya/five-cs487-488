@@ -1,6 +1,5 @@
 package business.algorithm.predictAlgorithm;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -16,10 +15,16 @@ public class OutputForAutoRegression extends OutputForPredictionAlgorithm {
 		this.lambda = lambda;
 	}
 	public OutputForAutoRegression(
-			TreeMap<AssetEntity, ArrayList<Double>> predictionPriceList,
-			Date startPredictionDate, double lambda) {
-		super(predictionPriceList, startPredictionDate);
+			TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceList, double lambda) {
+		super(predictionPriceList);
 		this.lambda = lambda;
+	}
+	@Override
+	public TreeMap<String, Class> getOutputParameter() {
+		// TODO Auto-generated method stub
+		TreeMap<String, Class> map = super.getOutputParameter();
+		map.put("lambda", Double.class);
+		return map;
 	}
 	
 	

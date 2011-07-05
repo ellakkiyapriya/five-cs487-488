@@ -21,19 +21,5 @@ public class PredictAlgorithmAPI {
 		return null;
 	}
 
-    /*
-    public TreeMap<String,Object> toParamOfPredictionCriteria(AssetEntity assetEntity ,Date startPredictingDate, OutputForAutoRegression output) {
-		PriceManager priceManager = new PriceManager();
-		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), startPredictingDate, priceManager.getLatestDate());
-		TreeMap<Date,Double> priceList = new TreeMap<Date,Double>();
-		int i =0;
-		for (double d : predictionPrice) {
-			priceList.put(priceEntityList.get(i).getDate(), d);
-			i++;
-		}
-		TreeMap<String, Object> map = new TreeMap<String, Object>();
-		map.put("PriceList", priceList);
-		map.put("Asset",assetEntity);
-		return map;
-	}*/
+    
 }
