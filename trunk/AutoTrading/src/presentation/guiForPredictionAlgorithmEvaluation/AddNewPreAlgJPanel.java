@@ -52,7 +52,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Prediction Algorithm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.Utility.predictionAlgorithmList));
+        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.PredictAlgorithmAPI.predictionAlgorithmList));
         preAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preAlgJComboBoxActionPerformed(evt);
@@ -113,7 +113,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         this.ok = true;
 
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlg = business.algorithm.predictAlgorithm.PredictAlgorithmAPI.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
         
         //Add new prediction algorithm
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
@@ -133,7 +133,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
 
     private void preAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preAlgJComboBoxActionPerformed
         preAlgParametersContainerJPanel.removeAll();
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlg = business.algorithm.predictAlgorithm.PredictAlgorithmAPI.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
         preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
         preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
         preAlgParametersContainerJPanel.updateUI();
@@ -159,7 +159,7 @@ public class AddNewPreAlgJPanel extends javax.swing.JPanel {
     }
 
     private void initOtherComponents() {
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlg = business.algorithm.predictAlgorithm.PredictAlgorithmAPI.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
         preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
         preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
     }

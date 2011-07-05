@@ -642,16 +642,13 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         System.out.println(toDate);
         System.out.println(fromDate);
         ArrayList<PriceEntity> prices = (new PriceManager()).getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
-        ArrayList<Double> list = new ArrayList<Double>();
-        for (PriceEntity priceEntity : prices) {
-            list.add(priceEntity.getClose());
-        }
+        TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+        map.put(asset, prices);
 
         for (int algIndex = 0; algIndex < size[1].length - 1; ++algIndex) {
             //set price list for algorithm
             AbstractDecisionAlgorithm alg = (AbstractDecisionAlgorithm) algListModel.getElementAt(algIndex);
-            alg.setPriceList(list);
-            System.out.println(list.size());
+            alg.setPriceList(map);
 
             User user = new User(alg.toString(), currentUser.getCash());
             for (PortfolioEntry portfolioEntry : currentUser.getCurPortfolioList()) {
@@ -663,7 +660,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             for (int criteriaIndex = 0; criteriaIndex < size[0].length - 1; ++criteriaIndex) {
                 DecisionCriteria curCriteria = (DecisionCriteria) criteriaListModel.getElementAt(criteriaIndex);
 
-                curCriteria.setParametersValue(user, fillDateForOrderList(alg.runAlgorithm(), prices), (AssetEntity) assetJComboBox.getSelectedItem());
+                curCriteria.setParametersValue(user, alg.runAlgorithm().getOrderList(), (AssetEntity) assetJComboBox.getSelectedItem());
 
                 CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(curCriteria.evaluate());
                 criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -679,23 +676,6 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         }
 
         tableJPanel.updateUI();
-    }
-
-    private ArrayList<Order> fillDateForOrderList(ArrayList<Order> result, ArrayList<PriceEntity> prices) {
-
-        ArrayList<Order> temp = new ArrayList<Order>();
-        for (Order order : result) {
-            int k = order.getNth_day_in_future();
-            if (k < prices.size()) {
-                temp.add(order);
-            }
-        }
-
-        for (Order order : temp) {
-            order.setDate(prices.get(order.getNth_day_in_future() - 1).getDate());
-        }
-
-        return temp;
     }
 
     private void updateUserInfo() {
