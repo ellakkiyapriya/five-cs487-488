@@ -2,7 +2,7 @@ package dataAccess.databaseManagement.entity;
 
 import java.io.Serializable;
 
-public class AssetEntity implements Serializable {
+public class AssetEntity implements Serializable, Comparable<AssetEntity> {
 
     /**
      *
@@ -77,5 +77,10 @@ public class AssetEntity implements Serializable {
     @Override
     public String toString() {
         return symbol;
+    }
+
+    @Override
+    public int compareTo(AssetEntity o) {
+        return new Long(assetID).compareTo(o.assetID);
     }
 }
