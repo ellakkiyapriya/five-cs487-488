@@ -1,6 +1,5 @@
 package business.algorithm.predictAlgorithm;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
