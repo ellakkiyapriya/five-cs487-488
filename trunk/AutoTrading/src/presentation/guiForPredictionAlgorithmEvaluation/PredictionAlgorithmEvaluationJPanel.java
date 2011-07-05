@@ -675,7 +675,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                     TreeMap<String, Double> output = new TreeMap<String, Double>();
                     PredictionCriteria curPreCriteria = (PredictionCriteria) criteriaListModel.getElementAt(criteriaIndex);
                     AbstractPredictAlgorithm curPreAlg = (AbstractPredictAlgorithm) algListModel.getElementAt(algIndex);
-                    curPreCriteria.setParametersValue(curPreAlg.runAlgorithm().toParamOfPredictionCriteria((AssetEntity) assetJComboBox.getSelectedItem(), new java.sql.Date(startPreDate.getTime())));
+                    curPreCriteria.setParametersValue(PredictionCriteria.toParamOfPredictionCriteria((AssetEntity) assetJComboBox.getSelectedItem(), new java.sql.Date(startPreDate.getTime()), curPreAlg.runAlgorithm()));
                     output = curPreCriteria.evaluate();
                     CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(output);
                     criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
