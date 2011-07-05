@@ -23,11 +23,10 @@ public abstract class OutputForPredictionAlgorithm {
 		this.predictionPriceList = predictionPriceList;
 	}
 
-	public TreeMap<String, Class> getOutputParameter()
-	{
-		TreeMap<String, Class> map = new TreeMap<String, Class>();
-		map.put("Prediction price list", TreeMap.class);
+	public TreeMap<String, Object> getOutputValue() {
+		TreeMap<String, Object> map = new TreeMap<String, Object>();
+		map.put("Prediction price list", predictionPriceList);
 		return map;
 	}
-	
+
 }
