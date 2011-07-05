@@ -1,13 +1,12 @@
 package business.dataUpdate;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import business.dataUpdate.DataGetter.AbstractDataGetter;
 import business.dataUpdate.DataGetter.Cophieu68DataGetter;
-import business.dataUpdate.DataGetter.ParamForCophieu68DataGetter;
 import business.dataUpdate.DataProcessor.AbstractDataProcessor;
 import business.dataUpdate.DataProcessor.Cophieu68DataProcessor;
+
 
 public class UpdateData {
 	public static boolean updateDataFromSpecificDate(Date date, AbstractDataGetter dataGetter, AbstractDataProcessor dataProcessor)
@@ -18,12 +17,21 @@ public class UpdateData {
 		
 		while (date.before(currentDate))
 		{
-			if (dataGetter instanceof Cophieu68DataGetter)
-			{
-				dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(date, "HOSE")));
-				dataProcessor.processData(dataGetter.getData(new ParamForCophieu68DataGetter(date, "HASTC")));
-			}
-			date = Utility.increaseDate(date);
+			dataGetter.setDate(date);
+			dataProcessor.setDate(date);
+			dataGetter.setExchangeName("HOSE");
+			dataProcessor.setExchangeName("HOSE");
+			
+			dataProcessor.setBr(dataGetter.getData());
+			dataProcessor.processData();
+			
+			dataGetter.setExchangeName("HASTC");
+			dataProcessor.setExchangeName("HASTC");
+			
+			dataProcessor.setBr(dataGetter.getData());
+			dataProcessor.processData();
+			
+			date = utility.Utility.increaseDate(date);
 		}
 		return true;
 	}
@@ -32,6 +40,6 @@ public class UpdateData {
 	{
 		AbstractDataGetter dataGetter = new Cophieu68DataGetter();
 		AbstractDataProcessor dataProcessor = new Cophieu68DataProcessor();
-		updateDataFromSpecificDate(java.sql.Date.valueOf("2011-06-20"), dataGetter, dataProcessor);
+		updateDataFromSpecificDate(java.sql.Date.valueOf("2011-06-04"), dataGetter, dataProcessor);
 	}
 }
