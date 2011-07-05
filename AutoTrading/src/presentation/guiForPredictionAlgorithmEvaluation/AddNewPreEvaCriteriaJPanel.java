@@ -11,9 +11,10 @@
 
 package presentation.guiForPredictionAlgorithmEvaluation;
 
-import business.predictionAlgorithmEvaluation.PredictionCriteria;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
+
+import business.predictionAlgorithmEvaluation.PredictionCriteria;
 
 /**
  *

@@ -12,12 +12,14 @@ package presentation.guiForDataVisualization;
 
 import java.util.Date;
 import java.util.TreeMap;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
+
 import layout.TableLayout;
 
 /**

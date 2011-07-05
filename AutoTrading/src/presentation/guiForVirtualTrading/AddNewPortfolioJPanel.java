@@ -11,18 +11,20 @@
 
 package presentation.guiForVirtualTrading;
 
+import java.util.ArrayList;
+import java.util.TreeMap;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JTextField;
+
+import presentation.ComboKeyHandler;
+import presentation.guiForDataVisualization.DataVisualizationJPanel;
 import business.virtualTrading.PortfolioEntry;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.ExchangeManager;
-import java.util.ArrayList;
-import java.util.TreeMap;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
-import javax.swing.JTextField;
-import presentation.ComboKeyHandler;
-import presentation.guiForDataVisualization.DataVisualizationJPanel;
 
 /**
  *

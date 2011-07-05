@@ -5,9 +5,11 @@
 
 package presentation.guiForVirtualTrading;
 
-import business.virtualTrading.PortfolioEntry;
 import java.util.ArrayList;
+
 import javax.swing.table.AbstractTableModel;
+
+import business.virtualTrading.PortfolioEntry;
 
 /**
  *
