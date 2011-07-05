@@ -6,32 +6,29 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import business.dataUpdate.DataProcessor.ParamForCophieu68DataProcessor;
-import Utility.ParamList;
 
 public class Cophieu68DataGetter extends AbstractDataGetter {
-
+	public Cophieu68DataGetter() {
+		super(null, null);
+	}
+	
 	@Override
-	public ParamList getData(ParamList parameter) {
+	public BufferedReader getData() {
 		// TODO Auto-generated method stub
-		HttpURLConnection uc = initConnection(((ParamForCophieu68DataGetter)parameter).getDate(), ((ParamForCophieu68DataGetter)parameter).getExchangeName()); 
-		BufferedReader br;
+		HttpURLConnection uc = initConnection(); 
 		try 
 		{
-			br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-			ParamList paramList = new ParamForCophieu68DataProcessor(br, (Date)((ParamForCophieu68DataGetter)parameter).getDate(), ((ParamForCophieu68DataGetter)parameter).getExchangeName());
-			return paramList;
+			return new BufferedReader(new InputStreamReader(uc.getInputStream()));
 		} 
 		catch (Exception e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 
-	public HttpURLConnection initConnection(Date date, String exchangeName)
+	public HttpURLConnection initConnection()
 	{
 		try
 		{

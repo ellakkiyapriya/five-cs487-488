@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import business.virtualTrading.Asset;
+
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
@@ -15,53 +17,28 @@ import dataAccess.databaseManagement.manager.ExchangeManager;
 import dataAccess.databaseManagement.manager.PriceManager;
 
 public class Cophieu68DataProcessor extends AbstractDataProcessor {
-
-	private PriceManager priceManager = null;
-	private AssetManager assetManager = null;
-	
-	private BufferedReader br;
-	private String exchangeName;
-	private Date date;
-	
-	public BufferedReader getBr() {
-		return br;
-	}
-	public void setBr(BufferedReader br) {
-		this.br = br;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public String getExchangeName() {
-		return exchangeName;
-	}
-	public void setExchangeName(String exchangeName) {
-		this.exchangeName = exchangeName;
-	}
-	
 	public Cophieu68DataProcessor(BufferedReader br, Date date, String exchangeName)
 	{
-		priceManager = new PriceManager();
-		assetManager = new AssetManager();
-		
-		this.br = br;
-		this.date = date;
-		this.exchangeName = exchangeName;
+		super(br, date, exchangeName);
+	}
+	
+	public Cophieu68DataProcessor() {
+		super(null, null, null);
 	}
 	
 	@Override
 	public boolean processData() {
 		// TODO Auto-generated method stub
+		if (br == null)
+			return false;
 		
 		double open, high, low, close;
 		double volume;
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		String strLine, symbol;
 
-		//String date = dateFormat.format(((ParamForCophieu68DataProcessor)parameter).getDate());
+		ExchangeManager exchangeManager = new ExchangeManager();
+		
 		String strDate = dateFormat.format(date);
 		String[] splitString;
 		try {
@@ -82,8 +59,15 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 					close = Double.valueOf(splitString[5]);
 					volume = Integer.valueOf(splitString[6]);
 					AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol, exchangeName);
-					PriceEntity priceEntity = null;
-					priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low);
+					if (assetEntity == null)
+					{
+						ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(exchangeName);
+						if (exchangeName.equals("HOSE"))
+							assetEntity = new AssetEntity("", symbol, exchangeEntity.getExchangeID(), "", 0.05);
+						else
+							assetEntity = new AssetEntity("", symbol, exchangeEntity.getExchangeID(), "", 0.07);
+					}
+					PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low); 
 					System.out.println(symbol);
 					priceManager.add(priceEntity);
 					
