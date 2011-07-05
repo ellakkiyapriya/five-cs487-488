@@ -106,13 +106,16 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 
 		double lambda = t * s_b0;
 
-		TreeMap<AssetEntity, ArrayList<Double>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<Double>>();
+		/*TreeMap<AssetEntity, ArrayList<Double>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<Double>>();
 		predictionPriceMap.put(asset, predictionPriceList);
+		return new OutputForAutoRegression(predictionPriceMap, startPredictionDate, lambda);*/
 		
 		Date lastDate = priceEntityList.get(priceEntityList.size() - 1).getDate();
-		Date startPredictionDate = setStartPredictionDate(lastDate);
-		
-		return new OutputForAutoRegression(predictionPriceMap, startPredictionDate, lambda);
+		Date startPredictionDate = (Date) utility.Utility.increaseDate(lastDate);
+		ArrayList<PriceEntry> priceEntryList = Utility.constructPriceList(asset, predictionPriceList, startPredictionDate);
+		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
+		predictionPriceMap.put(asset, priceEntryList);
+		return new OutputForAutoRegression(predictionPriceMap, lambda);
 	}
 	
 	@Override
