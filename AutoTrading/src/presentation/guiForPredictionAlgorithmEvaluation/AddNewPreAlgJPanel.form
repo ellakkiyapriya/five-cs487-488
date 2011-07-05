@@ -64,7 +64,7 @@
     <Component class="javax.swing.JComboBox" name="preAlgJComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.Utility.predictionAlgorithmList)" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.PredictAlgorithmAPI.predictionAlgorithmList)" type="code"/>
         </Property>
       </Properties>
       <Events>

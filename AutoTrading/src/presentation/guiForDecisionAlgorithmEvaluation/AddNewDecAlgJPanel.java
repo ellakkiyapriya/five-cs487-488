@@ -58,7 +58,7 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Decision Algorithm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.Utility.decisionAlgorithmList));
+        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.decisionAlgorithmList));
         decAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decAlgJComboBoxActionPerformed(evt);
@@ -66,7 +66,7 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
         });
 
         decAlgParametersContainerJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Parameter"));
-        decAlgParametersContainerJPanel.setLayout(new java.awt.GridLayout());
+        decAlgParametersContainerJPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -91,11 +91,10 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(decAlgJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(okJButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(okJButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelJButton))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -125,14 +124,14 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
         //Add new decision algorithm
         ok = true;
 
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlg = business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
 
         //Add new prediction algorithm
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
-        for (String name : decAlg.getParametersList().keySet()) {
+        for (String name : decAlg.getParameterList().keySet()) {
             valueMap.put(name, decAlgParameterJPanel.getValue(name));
         }
-        decAlg.setParametersValue(valueMap);
+        decAlg.setParameterValue(valueMap);
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
@@ -144,8 +143,8 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
 
     private void decAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decAlgJComboBoxActionPerformed
         decAlgParametersContainerJPanel.removeAll();
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
-        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlg = business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParameterList());
         decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
         decAlgParametersContainerJPanel.updateUI();
     }//GEN-LAST:event_decAlgJComboBoxActionPerformed
@@ -162,8 +161,8 @@ public class AddNewDecAlgJPanel extends javax.swing.JPanel {
     private ParameterJPanel decAlgParameterJPanel;
 
     private void initOtherComponents() {
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
-        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlg = business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParameterList());
         decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
     }
 

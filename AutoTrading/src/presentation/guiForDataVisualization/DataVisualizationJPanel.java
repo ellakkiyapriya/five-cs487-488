@@ -82,7 +82,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         decAlgJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Decision Algorithm"));
 
-        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.Utility.decisionAlgorithmList));
+        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.decisionAlgorithmList));
         decAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decAlgJComboBoxActionPerformed(evt);
@@ -127,7 +127,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         preAlgJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Prediction Algorithm"));
 
-        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.Utility.predictionAlgorithmList));
+        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.PredictAlgorithmAPI.predictionAlgorithmList));
         preAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preAlgJComboBoxActionPerformed(evt);
@@ -407,7 +407,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
     private void preAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preAlgJComboBoxActionPerformed
         preAlgParametersContainerJPanel.removeAll();
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        preAlg = business.algorithm.predictAlgorithm.PredictAlgorithmAPI.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
         preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
         preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
         preAlgParametersContainerJPanel.updateUI();
@@ -415,8 +415,8 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
     private void decAlgJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decAlgJComboBoxActionPerformed
         decAlgParametersContainerJPanel.removeAll();
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
-        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlg = business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParameterList());
         decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
         decAlgParametersContainerJPanel.updateUI();
     }//GEN-LAST:event_decAlgJComboBoxActionPerformed
@@ -437,10 +437,10 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         dataVisualizationProcessor.removeDecAlg(decAlg);
 
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
-        for (String name : decAlg.getParametersList().keySet()) {
+        for (String name : decAlg.getParameterList().keySet()) {
             valueMap.put(name, decAlgParameterJPanel.getValue(name));
         }
-        decAlg.setParametersValue(valueMap);
+        decAlg.setParameterValue(valueMap);
 
         dataVisualizationProcessor.addDecAlg(decAlg);
     }//GEN-LAST:event_runDecAlgJButtonActionPerformed
@@ -533,13 +533,13 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         jFreeChartPanel = new ChartPanel(dataVisualizationProcessor.getChart());
         chartContainerJPanel.add(jFreeChartPanel);
 
-        preAlg = business.algorithm.predictAlgorithm.Utility.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
-        decAlg = business.algorithm.decisionAlgorithm.Utility.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        preAlg = business.algorithm.predictAlgorithm.PredictAlgorithmAPI.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+        decAlg = business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
 
         preAlgParameterJPanel = new ParameterJPanel(preAlg.getParametersList());
         preAlgParametersContainerJPanel.add(preAlgParameterJPanel);
 
-        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParametersList());
+        decAlgParameterJPanel = new ParameterJPanel(decAlg.getParameterList());
         decAlgParametersContainerJPanel.add(decAlgParameterJPanel);
     }
 
