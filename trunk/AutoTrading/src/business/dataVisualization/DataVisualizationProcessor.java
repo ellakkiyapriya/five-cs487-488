@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.TreeMap;
 
 import org.jfree.chart.JFreeChart;
 
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
-import business.algorithm.decisionAlgorithm.Order;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
-import business.algorithm.predictAlgorithm.OutputForAutoRegression;
-import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
@@ -71,13 +69,22 @@ public class DataVisualizationProcessor {
         updatePricesList();
         visualizationChart.setPrices(prices);
 
+        TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+    	map.put(asset, prices);
+
         //update prediction algorithms
         {
+        	
             visualizationChart.removeAllPredictionPrice();
 
             //add new results of Algorithms
             for (AbstractPredictAlgorithm preAlgo : preAlgList) {
-                visualizationChart.addPredictionPrices(preAlgo, runPreAlg(preAlgo));
+            	preAlgo.setPriceEntityList(map);
+                try {
+					visualizationChart.addPredictionPrices(preAlgo, preAlgo.runAlgorithm().getPredictionPriceList().get(asset));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
             }
 
         }
@@ -87,57 +94,13 @@ public class DataVisualizationProcessor {
             visualizationChart.removeAllOrders();
 
             for (AbstractDecisionAlgorithm decAlgo : decAlgList) {
-                visualizationChart.addOrders(decAlgo, runDecAlg(decAlgo));
+            	decAlgo.setPriceList(map);
+                visualizationChart.addOrders(decAlgo, decAlgo.runAlgorithm().getOrderList());
             }
 
         }
 
         visualizationChart.updateChart();
-    }
-
-    private PredictionAlgorithmEntity runPreAlg(AbstractPredictAlgorithm preAlgo) {
-        ArrayList<Double> list = new ArrayList<Double>();
-        for (PriceEntity priceEntity : prices) {
-            if (priceEntity.getDate().before(startPreDate)) {
-                list.add(priceEntity.getClose());
-            }
-        }
-
-        preAlgo.setPriceList(list);
-        OutputForAutoRegression outputOfAutoRegression;
-		try {
-			outputOfAutoRegression = (OutputForAutoRegression) preAlgo.runAlgorithm();
-			return outputOfAutoRegression.convertThis(startPreDate);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
-    }
-
-    private ArrayList<Order> runDecAlg(AbstractDecisionAlgorithm decAlgo) {
-        ArrayList<Double> list = new ArrayList<Double>();
-        for (PriceEntity priceEntity : prices) {
-            list.add(priceEntity.getClose());
-        }
-
-        decAlgo.setPriceList(list);
-        ArrayList<Order> result = decAlgo.runAlgorithm();
-
-        ArrayList<Order> temp = new ArrayList<Order>();
-        for (Order order : result) {
-            int k = order.getNth_day_in_future();
-            if (k < prices.size()) {
-                temp.add(order);
-            }
-        }
-
-        for (Order order : temp) {
-            order.setDate(prices.get(order.getNth_day_in_future()-1).getDate());
-        }
-        
-        return temp;
     }
 
     public void changeChartType(ChartStyle chartStyle) {
@@ -154,7 +117,10 @@ public class DataVisualizationProcessor {
 
     public void addDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
         decAlgList.add(abstractDecisionAlgorithm);
-        visualizationChart.addOrders(abstractDecisionAlgorithm, runDecAlg(abstractDecisionAlgorithm));
+        TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+    	map.put(asset, prices);
+    	abstractDecisionAlgorithm.setPriceList(map);
+        visualizationChart.addOrders(abstractDecisionAlgorithm, abstractDecisionAlgorithm.runAlgorithm().getOrderList());
         visualizationChart.updateChart();
     }
 
@@ -172,7 +138,14 @@ public class DataVisualizationProcessor {
 
     public void addPreAlg(AbstractPredictAlgorithm abstractPredictAlgorithm) {
         preAlgList.add(abstractPredictAlgorithm);
-        visualizationChart.addPredictionPrices(abstractPredictAlgorithm, runPreAlg(abstractPredictAlgorithm));
+        TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+    	map.put(asset, prices);
+    	abstractPredictAlgorithm.setPriceEntityList(map);
+        try {
+			visualizationChart.addPredictionPrices(abstractPredictAlgorithm, abstractPredictAlgorithm.runAlgorithm().getPredictionPriceList().get(asset));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         visualizationChart.updateChart();
     }
 

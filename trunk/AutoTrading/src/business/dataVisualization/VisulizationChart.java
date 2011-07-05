@@ -5,19 +5,14 @@
 
 package business.dataVisualization;
 
-import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
-import business.algorithm.decisionAlgorithm.Order;
-import dataAccess.databaseManagement.entity.PriceEntity;
-import java.util.ArrayList;
-import org.jfree.chart.JFreeChart;
-
-import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
-import business.algorithm.predictAlgorithm.PredictionAlgorithmEntity;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
+
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -27,6 +22,12 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
+
+import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
+import business.algorithm.decisionAlgorithm.Order;
+import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
+import business.algorithm.predictAlgorithm.PriceEntry;
+import dataAccess.databaseManagement.entity.PriceEntity;
 
 /**
  *
@@ -70,13 +71,13 @@ public abstract class VisulizationChart {
     }
 
     public void addPredictionPrices(AbstractPredictAlgorithm algo,
-            PredictionAlgorithmEntity entity) {
+            ArrayList<PriceEntry> output) {
 
         YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + algo.toString());
 
-        for (PredictionAlgorithmEntity.Entry entry : entity.list) {
-            yintervalseries.add(entry.date.getTime(), entry.midValue,
-                    entry.lowValue, entry.highValue);
+        for (PriceEntry entry : output) {
+            yintervalseries.add(entry.getDate().getTime(), entry.getPrice(),
+            		entry.getPrice(), entry.getPrice());
         }
 
         mappingPredictionPriceSeries.put(algo, predictionDataset.getSeriesCount());

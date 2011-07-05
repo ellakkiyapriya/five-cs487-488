@@ -1,8 +1,12 @@
 package business.decisionAlgorithmEvaluation;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.TreeMap;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import business.algorithm.decisionAlgorithm.Order;
 import business.virtualTrading.User;
@@ -10,9 +14,6 @@ import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.PriceManager;
-import java.util.Arrays;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class VsVNIndex extends DecisionCriteria {
 
@@ -85,7 +86,8 @@ public class VsVNIndex extends DecisionCriteria {
 			ArrayList<business.virtualTrading.Order> curDateOrderList = new ArrayList<business.virtualTrading.Order>();
 			for (Order curOrder :orderList){
 				if (curOrder.getDate().equals(date))
-					curDateOrderList.add(curOrder.toOrder(assetEntity));
+//					curDateOrderList.add(curOrder.toOrder(assetEntity));
+					curDateOrderList.add(new business.virtualTrading.Order(assetEntity, curOrder.isOrderType(), curOrder.getPrice(), business.virtualTrading.Order.USE_ALL_CASH));
 			}
 			allOrderList.put(date, curDateOrderList);
 		}
