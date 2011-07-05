@@ -11,11 +11,12 @@
 
 package presentation.guiForDecisionAlgorithmEvaluation;
 
-import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
-import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import java.util.TreeMap;
+
 import javax.swing.JDialog;
+
 import presentation.guiForDataVisualization.ParameterJPanel;
+import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 
 /**
  *

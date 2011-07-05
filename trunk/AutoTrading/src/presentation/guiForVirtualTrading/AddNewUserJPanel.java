@@ -10,10 +10,12 @@
  */
 package presentation.guiForVirtualTrading;
 
+import java.util.ArrayList;
+
+import javax.swing.JDialog;
+
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
-import java.util.ArrayList;
-import javax.swing.JDialog;
 
 /**
  *

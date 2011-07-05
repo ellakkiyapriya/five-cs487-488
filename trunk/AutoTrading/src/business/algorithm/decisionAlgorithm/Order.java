@@ -1,9 +1,6 @@
 package business.algorithm.decisionAlgorithm;
 
 import java.util.Date;
-import java.util.TreeMap;
-
-import dataAccess.databaseManagement.entity.AssetEntity;
 
 public class Order {
 
