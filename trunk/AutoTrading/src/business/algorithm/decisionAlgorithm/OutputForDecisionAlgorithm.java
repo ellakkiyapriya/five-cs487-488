@@ -9,9 +9,6 @@ import dataAccess.databaseManagement.entity.AssetEntity;
 public class OutputForDecisionAlgorithm {
 	ArrayList<Order> orderList;
 	
-	public OutputForDecisionAlgorithm () {
-		
-	}
 	public OutputForDecisionAlgorithm (ArrayList<Order> orderList) {
 		this.orderList = orderList;
 	}
@@ -22,6 +19,7 @@ public class OutputForDecisionAlgorithm {
 	 * @param assetEntity
 	 * @return
 	 */
+	/*
 	public TreeMap<String, Object> toParamOfDecisionCriteria(AssetEntity assetEntity) {
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = new TreeMap<Date, ArrayList<business.virtualTrading.Order>>();
 		ArrayList<Date> dateList = getDateList();
@@ -58,5 +56,5 @@ public class OutputForDecisionAlgorithm {
 	public ArrayList<Order> getOrderList() {
 		return orderList;
 	}
-
+	*/
 }

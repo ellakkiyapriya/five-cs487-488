@@ -12,17 +12,10 @@ import dataAccess.databaseManagement.entity.UserEntity;
 
 /**
  * 
- * @author Dinh
+ * @author Duc
  */
 public class Utility {
-	public static final String[] decisionAlgorithmList = {"Moving Average"};
 	
-	public static AbstractDecisionAlgorithm getDecisionAlgorithm(String str) {
-		if (str.equals("Moving Average")) {
-			return new MovingAverage();
-		}
-		return null;
-	}
 	
 	public static ArrayList<OrderEntity> convertOrderList(ArrayList<Order> orderList, UserEntity user)
 	{

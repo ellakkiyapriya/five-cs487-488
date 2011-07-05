@@ -9,14 +9,12 @@ public class Order {
     private boolean orderType;
     private double price;
     private Date date;
-    private int volume;
 
-    public Order(boolean orderType, double price, Date date, int volume) {
+    public Order(boolean orderType, double price, Date date) {
         super();
         this.orderType = orderType;
         this.price = price;
         this.date = date;
-        this.volume = volume;
     }
 
     public boolean isOrderType() {
@@ -42,14 +40,6 @@ public class Order {
     public void setDate(Date date) {
         this.date = date;
     }
-
-	public int getVolume() {
-		return volume;
-	}
-
-	public void setVolume(int volume) {
-		this.volume = volume;
-	}
     
     /*
 	public  business.virtualTrading.Order toOrder(

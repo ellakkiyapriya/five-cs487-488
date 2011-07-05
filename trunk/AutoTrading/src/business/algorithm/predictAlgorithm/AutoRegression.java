@@ -11,60 +11,114 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 
 public class AutoRegression extends AbstractPredictAlgorithm {
 
+	public Double confidenceLevel;
+	public Integer MA_period;
+	public Integer AR_period;
+
+	public Double getConfidenceLevel() {
+		return confidenceLevel;
+	}
+
+	public void setConfidenceLevel(Double confidenceLevel) {
+		this.confidenceLevel = confidenceLevel;
+	}
+
+	public Integer getMA_period() {
+		return MA_period;
+	}
+
+	public void setMA_period(Integer mA_period) {
+		MA_period = mA_period;
+	}
+
+	public int getAR_period() {
+		return AR_period;
+	}
+
+	public void setAR_period(Integer aR_period) {
+		AR_period = aR_period;
+	}
+
 	@Override
-	public OutputForPredictionAlgorithm runAlgorithm(
-			ParamForPredictAlgorithm parameters) throws Exception {
+	public TreeMap<String, Class> getParametersList() {
 		// TODO Auto-generated method stub
-		TreeMap<AssetEntity, ArrayList<PriceEntity>> map = ((ParamForAutoRegression) parameters)
-				.getPriceList();
-		AssetEntity asset = map.firstKey();
-		ArrayList<PriceEntity> priceEntityList = map.get(map.firstKey());
-		ArrayList<Double> priceList = Utility
+		TreeMap<String, Class> map = super.getParametersList();
+		map.put("Confidence level", Double.class);
+		map.put("MA period", Integer.class);
+		map.put("AR period", Integer.class);
+		return map;
+	}
+
+	@Override
+	public void setParametersValue(TreeMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		super.setParametersValue(map);
+		this.confidenceLevel = (Double) map.get("Confidence level");
+		this.MA_period = (Integer) map.get("MA period");
+		this.AR_period = (Integer) map.get("AR period");
+	}
+	
+	
+	
+	public AutoRegression(
+			TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
+			Integer futureInterval, Double confidenceLevel, Integer MA_period,
+			Integer AR_period) {
+		super(priceList, futureInterval);
+		this.confidenceLevel = confidenceLevel;
+		this.MA_period = MA_period;
+		this.AR_period = AR_period;
+	}
+
+	public AutoRegression() {
+		super(null, null);
+		this.confidenceLevel = null;
+		this.MA_period = null;
+		this.AR_period = null;
+	}
+	@Override
+	public OutputForPredictionAlgorithm runAlgorithm() throws Exception {
+		// TODO Auto-generated method stub
+		AssetEntity asset = priceList.firstKey();
+		ArrayList<PriceEntity> priceEntityList = priceList.get(priceList.firstKey());
+		ArrayList<Double> priceArrayList = Utility
 				.convertPriceEntityListToPriceList(priceEntityList);
-		int futureInterval = ((ParamForAutoRegression) parameters)
-				.getFutureInterval();
-		double confidenceLevel = ((ParamForAutoRegression) parameters)
-				.getConfidenceLevel();
-		int movingAveragePeriod = (Integer) ((ParamForAutoRegression) parameters)
-				.getMA_period();
-		int autoRegerssivePeriod = (Integer) ((ParamForAutoRegression) parameters)
-				.getAR_period();
 
 		/*
 		 * Moving Average Step
 		 */
-		int nSample = priceList.size();
+		int nSample = priceArrayList.size();
 		ArrayList<Double> movingAverage = new ArrayList<Double>();
-		double temp;
-		for (int i = 0; i <= nSample - movingAveragePeriod; ++i) {
+		Double temp;
+		for (int i = 0; i <= nSample - MA_period; ++i) {
 			temp = 0.0;
-			for (int j = 0; j < movingAveragePeriod; ++j) {
-				temp += priceList.get(i + j);
+			for (int j = 0; j < MA_period; ++j) {
+				temp += priceArrayList.get(i + j);
 			}
-			movingAverage.add(temp / movingAveragePeriod);
+			movingAverage.add(temp / MA_period);
 		}
 		/*
 		 * Auto Regression step
 		 */
 		int nMovingAverage = movingAverage.size();
 
-		if (nMovingAverage - autoRegerssivePeriod < 0)
+		if (nMovingAverage - AR_period < 0)
 			throw new Exception("There are too few samples");
 
-		double[][] x = new double[nMovingAverage - autoRegerssivePeriod][autoRegerssivePeriod + 1];
-		double[] y = new double[nMovingAverage - autoRegerssivePeriod];
-		for (int i = 0; i < (nMovingAverage - autoRegerssivePeriod); ++i) {
-			for (int j = 0; j <= autoRegerssivePeriod; ++j) {
-				if (j != autoRegerssivePeriod) {
+		double[][] x = new double[nMovingAverage - AR_period][AR_period + 1];
+		double[] y = new double[nMovingAverage - AR_period];
+		for (int i = 0; i < (nMovingAverage - AR_period); ++i) {
+			for (int j = 0; j <= AR_period; ++j) {
+				if (j != AR_period) {
 					x[i][j] = movingAverage.get(i + j);
 				} else {
 					x[i][j] = 1;
 				}
 			}
-			y[i] = movingAverage.get(i + autoRegerssivePeriod);
+			y[i] = movingAverage.get(i + AR_period);
 		}
 		Matrix matrixX = new Matrix(x);
-		Matrix matrixY = new Matrix(y, nMovingAverage - autoRegerssivePeriod);
+		Matrix matrixY = new Matrix(y, nMovingAverage - AR_period);
 		Matrix matrixB = matrixX.transpose();
 		matrixB = matrixB.times(matrixX);
 
@@ -77,36 +131,36 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		matrixB = matrixB.times(matrixY);
 
 		ArrayList<Double> predictionPriceList = new ArrayList<Double>();
-		for (int i = autoRegerssivePeriod; i > 0; --i) {
+		for (int i = AR_period; i > 0; --i) {
 			predictionPriceList
 					.add(movingAverage.get(movingAverage.size() - i));
 		}
 		for (int i = 0; i < futureInterval; ++i) {
 			temp = 0.0;
-			for (int j = autoRegerssivePeriod; j >= 0; --j) {
+			for (int j = AR_period; j >= 0; --j) {
 				if (j != 0) {
 					temp += predictionPriceList.get(predictionPriceList.size()
 							- j)
-							* matrixB.get(autoRegerssivePeriod - j, 0);
+							* matrixB.get(AR_period - j, 0);
 				} else {
-					temp += matrixB.get(autoRegerssivePeriod, 0);
+					temp += matrixB.get(AR_period, 0);
 				}
 			}
 			predictionPriceList.add(temp);
 		}
-		for (int i = autoRegerssivePeriod; i > 0; --i) {
+		for (int i = AR_period; i > 0; --i) {
 			predictionPriceList.remove(0);
 		}
 
 		Matrix matrixC = matrixX.transpose().times(matrixX).inverse();
-		double variance = utility.Utility.variance(movingAverage);
-		double s_b0 = Math.sqrt(variance * matrixC.get(0, 0));
-		double t;
+		Double variance = utility.Utility.variance(movingAverage);
+		Double s_b0 = Math.sqrt(variance * matrixC.get(0, 0));
+		Double t;
 		TDistribution tDistribution = new TDistribution(
-				autoRegerssivePeriod - 1);
+				AR_period - 1);
 		t = tDistribution.cumulative(1 - confidenceLevel);
 
-		double lambda = t * s_b0;
+		Double lambda = t * s_b0;
 
 		/*
 		 * TreeMap<AssetEntity, ArrayList<Double>> predictionPriceMap = new
@@ -150,7 +204,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		priceList.add(24.4);
 		priceList.add(24.4);
 		int futureInterval = 10;
-		double confidence_level = 0.9;
+		Double confidence_level = 0.9;
 		int MA_period = 3;
 		int AR_period = 3;
 		TreeMap<String, Object> map = new TreeMap<String, Object>();
