@@ -110,6 +110,6 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
             }
 
     	}
-    	return null;
+    	return new OutputForDecisionAlgorithm(orderList);
     }
 }

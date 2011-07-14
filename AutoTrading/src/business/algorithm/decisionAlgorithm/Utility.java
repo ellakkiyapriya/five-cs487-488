@@ -5,10 +5,6 @@
 
 package business.algorithm.decisionAlgorithm;
 
-import java.util.ArrayList;
-
-import dataAccess.databaseManagement.entity.OrderEntity;
-import dataAccess.databaseManagement.entity.UserEntity;
 
 /**
  * 
@@ -16,9 +12,4 @@ import dataAccess.databaseManagement.entity.UserEntity;
  */
 public class Utility {
 	
-	
-	public static ArrayList<OrderEntity> convertOrderList(ArrayList<Order> orderList, UserEntity user)
-	{
-		return null;
-	}
 }
