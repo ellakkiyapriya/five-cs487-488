@@ -338,6 +338,59 @@ public class PriceManager {
 
 	}
 
+	public ArrayList<PriceEntity> getPriceByAssetID(long asset_id) {
+		try {
+			ArrayList<PriceEntity> listPrices = new ArrayList<PriceEntity>();
+
+			String queryString = "SELECT * FROM price WHERE asset_id=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setLong(1, asset_id);
+			resultSet = ptmt.executeQuery();
+
+			while (resultSet.next()) {
+				PriceEntity priceEntity = new PriceEntity();
+
+				priceEntity.setPriceID(resultSet.getLong("price_id"));
+				priceEntity.setAssetID(resultSet.getLong("asset_id"));
+				priceEntity.setDate(resultSet.getDate("date"));
+				priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
+				priceEntity.setVolume(resultSet.getDouble("volume"));
+				priceEntity.setOpen(resultSet.getDouble("open"));
+				priceEntity.setClose(resultSet.getDouble("close"));
+				priceEntity.setHigh(resultSet.getDouble("high"));
+				priceEntity.setLow(resultSet.getDouble("low"));
+
+				listPrices.add(priceEntity);
+			}
+
+			return listPrices;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (ptmt != null) {
+					ptmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return null;
+
+	}
+	
+	
 	public ArrayList<PriceEntity> getAllPrices() {
 		try {
 			ArrayList<PriceEntity> listAllPrices = new ArrayList<PriceEntity>();
