@@ -69,22 +69,31 @@ public class DataVisualizationProcessor {
         updatePricesList();
         visualizationChart.setPrices(prices);
 
-        TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
-    	map.put(asset, prices);
-
         //update prediction algorithms
         {
-        	
+
             visualizationChart.removeAllPredictionPrice();
+            
+            ArrayList<PriceEntity> priceEntityList = new ArrayList<PriceEntity>();
+            for (PriceEntity priceEntity : prices) {
+                if (priceEntity.getDate().before(startPreDate)) {
+                    priceEntityList.add(priceEntity);
+                } else {
+                    break;
+                }
+            }
+
+            TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+            map.put(asset, priceEntityList);
 
             //add new results of Algorithms
             for (AbstractPredictAlgorithm preAlgo : preAlgList) {
-            	preAlgo.setPriceEntityList(map);
+                preAlgo.setPriceEntityList(map);
                 try {
-					visualizationChart.addPredictionPrices(preAlgo, preAlgo.runAlgorithm().getPredictionPriceList().get(asset));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+                    visualizationChart.addPredictionPrices(preAlgo, preAlgo.runAlgorithm().getPredictionPriceList().get(asset));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -93,8 +102,11 @@ public class DataVisualizationProcessor {
         {
             visualizationChart.removeAllOrders();
 
+            TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+            map.put(asset, prices);
+
             for (AbstractDecisionAlgorithm decAlgo : decAlgList) {
-            	decAlgo.setPriceList(map);
+                decAlgo.setPriceList(map);
                 visualizationChart.addOrders(decAlgo, decAlgo.runAlgorithm().getOrderList());
             }
 
@@ -118,8 +130,8 @@ public class DataVisualizationProcessor {
     public void addDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
         decAlgList.add(abstractDecisionAlgorithm);
         TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
-    	map.put(asset, prices);
-    	abstractDecisionAlgorithm.setPriceList(map);
+        map.put(asset, prices);
+        abstractDecisionAlgorithm.setPriceList(map);
         visualizationChart.addOrders(abstractDecisionAlgorithm, abstractDecisionAlgorithm.runAlgorithm().getOrderList());
         visualizationChart.updateChart();
     }
@@ -139,13 +151,23 @@ public class DataVisualizationProcessor {
     public void addPreAlg(AbstractPredictAlgorithm abstractPredictAlgorithm) {
         preAlgList.add(abstractPredictAlgorithm);
         TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
-    	map.put(asset, prices);
-    	abstractPredictAlgorithm.setPriceEntityList(map);
+
+        ArrayList<PriceEntity> priceEntityList = new ArrayList<PriceEntity>();
+        for (PriceEntity priceEntity : prices) {
+            if (priceEntity.getDate().before(startPreDate)) {
+                priceEntityList.add(priceEntity);
+            } else {
+                break;
+            }
+        }
+
+        map.put(asset, priceEntityList);
+        abstractPredictAlgorithm.setPriceEntityList(map);
         try {
-			visualizationChart.addPredictionPrices(abstractPredictAlgorithm, abstractPredictAlgorithm.runAlgorithm().getPredictionPriceList().get(asset));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            visualizationChart.addPredictionPrices(abstractPredictAlgorithm, abstractPredictAlgorithm.runAlgorithm().getPredictionPriceList().get(asset));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         visualizationChart.updateChart();
     }
 
