@@ -57,20 +57,15 @@ public class Cophieu68DataProcessor extends AbstractDataProcessor {
 					close = Double.valueOf(splitString[5]);
 					volume = Integer.valueOf(splitString[6]);
 					AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol, exchangeName);
-					if (assetEntity == null)
+					if (assetEntity != null)
 					{
-						ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(exchangeName);
-						if (exchangeName.equals("HOSE"))
-							assetEntity = new AssetEntity("", symbol, exchangeEntity.getExchangeID(), "", 0.05);
-						else
-							assetEntity = new AssetEntity("", symbol, exchangeEntity.getExchangeID(), "", 0.07);
-					}
-					PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low); 
-					System.out.println(symbol);
-					priceManager.add(priceEntity);
-					
-					for (int i = 0; i < splitString.length; i++)
-						System.out.println(splitString[i]);	
+						PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low); 
+						System.out.println(symbol);
+						priceManager.add(priceEntity);
+						
+						for (int i = 0; i < splitString.length; i++)
+							System.out.println(splitString[i]);
+					}	
 				}
 			}
 		}
