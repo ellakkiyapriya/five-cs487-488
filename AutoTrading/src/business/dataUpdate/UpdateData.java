@@ -7,7 +7,6 @@ import business.dataUpdate.DataGetter.Cophieu68DataGetter;
 import business.dataUpdate.DataProcessor.AbstractDataProcessor;
 import business.dataUpdate.DataProcessor.Cophieu68DataProcessor;
 
-
 public class UpdateData {
 	public static boolean updateDataFromSpecificDate(Date date, AbstractDataGetter dataGetter, AbstractDataProcessor dataProcessor)
 	{	

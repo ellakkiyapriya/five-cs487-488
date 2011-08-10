@@ -14,6 +14,11 @@ public class PerfectAlgorithm extends AbstractDecisionAlgorithm {
 		super(priceList);
 	}
 	
+	public PerfectAlgorithm()
+	{
+		super(null);
+	}
+	
 	@Override
 	public OutputForDecisionAlgorithm runAlgorithm() {
 		// TODO Auto-generated method stub
