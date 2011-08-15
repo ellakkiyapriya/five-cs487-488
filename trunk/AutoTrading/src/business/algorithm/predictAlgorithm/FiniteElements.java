@@ -7,8 +7,6 @@ import java.util.TreeMap;
 import Jama.Matrix;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
-import dataAccess.databaseManagement.manager.AssetManager;
-import dataAccess.databaseManagement.manager.PriceManager;
 
 public class FiniteElements extends AbstractPredictAlgorithm{
 
@@ -189,33 +187,33 @@ public class FiniteElements extends AbstractPredictAlgorithm{
 		return output;
 	}
 	
-	public static void main(String[] args) throws Exception {
-		AssetManager assetManager = new AssetManager();
-		PriceManager priceManager = new PriceManager();
-		
-		AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange("SSI", "HOSE");
-		
-		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceByAssetID(assetEntity.getAssetID());
-		ArrayList<PriceEntity> priceEntitySubList = new ArrayList<PriceEntity>();
-		for (PriceEntity priceEntity : priceEntityList.subList(priceEntityList.size()-200, priceEntityList.size()-1)) {
-			priceEntitySubList.add(priceEntity);
-		}
-		
-		System.out.println(priceEntitySubList.size());
-		
-		for (int i = priceEntitySubList.size()-10; i < priceEntitySubList.size(); ++i) {
-			System.out.println(priceEntitySubList.get(i).getDate() + " _ " + priceEntitySubList.get(i).getClose());
-		}
-		
-		TreeMap<AssetEntity, ArrayList<PriceEntity>> input = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
-		
-		input.put(assetEntity, priceEntitySubList);
-		
-		FiniteElements finiteElements = new FiniteElements(input, 2);
-		
-		OutputForFiniteElements output = (OutputForFiniteElements) finiteElements.runAlgorithm();
-		for (PriceEntry priceEntry : output.getPredictionPriceList().firstEntry().getValue()) {
-			System.out.println(priceEntry.getDate() + " _ " + priceEntry.getPrice());
-		}
-	}
+//	public static void main(String[] args) throws Exception {
+//		AssetManager assetManager = new AssetManager();
+//		PriceManager priceManager = new PriceManager();
+//		
+//		AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange("SSI", "HOSE");
+//		
+//		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceByAssetID(assetEntity.getAssetID());
+//		ArrayList<PriceEntity> priceEntitySubList = new ArrayList<PriceEntity>();
+//		for (PriceEntity priceEntity : priceEntityList.subList(priceEntityList.size()-200, priceEntityList.size()-1)) {
+//			priceEntitySubList.add(priceEntity);
+//		}
+//		
+//		System.out.println(priceEntitySubList.size());
+//		
+//		for (int i = priceEntitySubList.size()-10; i < priceEntitySubList.size(); ++i) {
+//			System.out.println(priceEntitySubList.get(i).getDate() + " _ " + priceEntitySubList.get(i).getClose());
+//		}
+//		
+//		TreeMap<AssetEntity, ArrayList<PriceEntity>> input = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
+//		
+//		input.put(assetEntity, priceEntitySubList);
+//		
+//		FiniteElements finiteElements = new FiniteElements(input, 2);
+//		
+//		OutputForFiniteElements output = (OutputForFiniteElements) finiteElements.runAlgorithm();
+//		for (PriceEntry priceEntry : output.getPredictionPriceList().firstEntry().getValue()) {
+//			System.out.println(priceEntry.getDate() + " _ " + priceEntry.getPrice());
+//		}
+//	}
 }
