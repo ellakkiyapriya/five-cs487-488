@@ -10,6 +10,9 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 
 public class FiniteElements extends AbstractPredictAlgorithm{
 
+	public static final int POINT_PER_INTERVAL = 10;
+	public static final long DATE_MILLISECONDS = 1000*60*60*24;
+	
 	ArrayList<double[]> cubicTrialFunctions = new ArrayList<double[]>();
 	Matrix coMatrix1; // coefficient matrix of linear system: phi(0)=?; phi'(0)=?;phi(1)=?; phi'(1)=?
 					  // where phi() is a cubic functions, this is the linear system used for finding phi()
@@ -102,11 +105,11 @@ public class FiniteElements extends AbstractPredictAlgorithm{
 		
 		//approximate r''(x) (center)
 		ArrayList<Double> secondDerivativeOfR = new ArrayList<Double>();
-		secondDerivativeOfR.add(firstDerivativeOfR.get(1)-firstDerivativeOfR.get(0));
+		secondDerivativeOfR.add(-firstDerivativeOfR.get(1)+firstDerivativeOfR.get(0));
 		for (int i = 1; i < firstDerivativeOfR.size()-1; ++i) {
-			secondDerivativeOfR.add((firstDerivativeOfR.get(i+1)-firstDerivativeOfR.get(i-1))/2);
+			secondDerivativeOfR.add((-firstDerivativeOfR.get(i+1)+firstDerivativeOfR.get(i-1))/2);
 		}
-		secondDerivativeOfR.add(firstDerivativeOfR.get(firstDerivativeOfR.size()-1)-firstDerivativeOfR.get(firstDerivativeOfR.size()-2));
+		secondDerivativeOfR.add(-firstDerivativeOfR.get(firstDerivativeOfR.size()-1)+firstDerivativeOfR.get(firstDerivativeOfR.size()-2));
 		
 		Matrix K = new Matrix(2*secondDerivativeOfR.size(), 2*secondDerivativeOfR.size(), 0);
 		Matrix F = new Matrix(2*secondDerivativeOfR.size(), 1, 0);
@@ -165,26 +168,58 @@ public class FiniteElements extends AbstractPredictAlgorithm{
 		
 		//solve KU=F
 		Matrix U = K.solve(F);
-		Date lastDate = priceEntityList.get(priceEntityList.size()-1).getDate();
 		
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceList = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
 		ArrayList<PriceEntry> priceEntries = new ArrayList<PriceEntry>();
+		
+		//training price
+		for (int i = 0; i < priceEntityList.size()-1; ++i) {
+			Date date = priceEntityList.get(i).getDate();
+			
+			for (int j = 0; j < POINT_PER_INTERVAL; ++j) {
+				double x = (1.0/POINT_PER_INTERVAL)*j;
+				double price = U.get(i*2 + 3, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
+				price += U.get(i*2 + 2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
+				price += U.get(i*2 + 1, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
+				price += U.get(i*2, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));			
+				
+				PriceEntry priceEntry = new PriceEntry(date, price);
+				priceEntries.add(priceEntry);				
+				date = new Date(date.getTime() + DATE_MILLISECONDS/POINT_PER_INTERVAL);
+			}
+		}
+		
+		//predicted price
+		Date lastDate = priceEntityList.get(priceEntityList.size()-1).getDate();
 		for (int i = 0; i < futureInterval; ++i) {
-			double price = U.get(U.getRowDimension()-1, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*(i+2) + cubicTrialFunctions.get(3)[2]*Math.pow((i+2),2) + cubicTrialFunctions.get(3)[3]*Math.pow((i+2),3));
-			price += U.get(U.getRowDimension()-2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*(i+2) + cubicTrialFunctions.get(2)[2]*Math.pow((i+2),2) + cubicTrialFunctions.get(2)[3]*Math.pow((i+2),3));
-			price += U.get(U.getRowDimension()-3, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*(i+2) + cubicTrialFunctions.get(1)[2]*Math.pow((i+2),2) + cubicTrialFunctions.get(1)[3]*Math.pow((i+2),3));
-			price += U.get(U.getRowDimension()-4, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*(i+2) + cubicTrialFunctions.get(0)[2]*Math.pow((i+2),2) + cubicTrialFunctions.get(0)[3]*Math.pow((i+2),3));
+			Date date = lastDate;
+			double x = i + 1;
+			
+			for (int j = 0; j < POINT_PER_INTERVAL; ++j) {
+				double price = U.get(U.getRowDimension()-1, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
+				price += U.get(U.getRowDimension()-2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
+				price += U.get(U.getRowDimension()-3, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
+				price += U.get(U.getRowDimension()-4, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));
+				
+				PriceEntry priceEntry = new PriceEntry(date, price);
+				priceEntries.add(priceEntry);	
+				date = new Date(date.getTime() + DATE_MILLISECONDS/POINT_PER_INTERVAL);
+				x += (1.0/POINT_PER_INTERVAL);
+			}	
 			
 			lastDate = utility.Utility.increaseDate(lastDate);
-			PriceEntry priceEntry = new PriceEntry(new java.sql.Date(lastDate.getTime()), price);
-			priceEntries.add(priceEntry);
-			
 		}
 		
 		predictionPriceList.put(asset, priceEntries);
 		
 		OutputForFiniteElements output = new OutputForFiniteElements(predictionPriceList);
 		return output;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Finite Elements";
 	}
 	
 //	public static void main(String[] args) throws Exception {
