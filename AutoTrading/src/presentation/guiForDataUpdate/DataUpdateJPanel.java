@@ -10,9 +10,7 @@
  */
 package presentation.guiForDataUpdate;
 
-import business.dataUpdate.DataGetter.AbstractDataGetter;
-import business.dataUpdate.DataProcessor.AbstractDataProcessor;
-import business.dataUpdate.UpdateData;
+import business.dataUpdate.AbstractDataUpdate;
 import business.dataUpdate.Utility;
 import dataAccess.databaseManagement.manager.PriceManager;
 
@@ -22,7 +20,11 @@ import dataAccess.databaseManagement.manager.PriceManager;
  */
 public class DataUpdateJPanel extends javax.swing.JPanel {
 
-    private static PriceManager priceManager = new PriceManager();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2907142624791836040L;
+	private static PriceManager priceManager = new PriceManager();
 
     /** Creates new form DataUpdateJPanel */
     public DataUpdateJPanel() {
@@ -94,9 +96,8 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
             @Override
             public void run() {
                 lastUpdateJLabel.setText("Updating ....");
-                AbstractDataGetter dataGetter = Utility.getDataGetter((String) sourceJComboBox.getSelectedItem());
-                AbstractDataProcessor dataProcessor = Utility.getDataProcessor((String) sourceJComboBox.getSelectedItem());
-                UpdateData.updateDataFromSpecificDate(priceManager.getLatestDate(), dataGetter, dataProcessor);
+                AbstractDataUpdate dataUpdate = Utility.getDataUpdate((String) sourceJComboBox.getSelectedItem());
+                dataUpdate.updateData();                
                 lastUpdateJLabel.setText("Last Update: " + priceManager.getLatestDate().toString());
             }
         }).start();
