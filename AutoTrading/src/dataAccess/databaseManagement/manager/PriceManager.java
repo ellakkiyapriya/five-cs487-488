@@ -457,4 +457,22 @@ public class PriceManager {
 
 		return latestDate;
 	}
+	
+	public Date getLatestDateOfExchange(long exchangeID) {
+		Date latestDate = null;
+
+		try {
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT max(date) FROM price as t1, asset as t2 WHERE t1.asset_id = t2.asset_id AND t2.exchange_id=" + exchangeID);
+			resultSet.next();
+			latestDate = resultSet.getDate(1);
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return latestDate;
+	}
+
 }
