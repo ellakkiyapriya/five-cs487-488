@@ -26,6 +26,9 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 	{
 		this.exchangeNameList = new ArrayList<String>();
 		this.exchangeNameList.add("NASDAQ");		
+		
+		this.fileNameList = null;
+		this.description = null;
 	}
 	
 	@Override
@@ -81,12 +84,13 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		// TODO Auto-generated method stub
 		AssetManager assetManager = new AssetManager();
 		PriceManager priceManager = new PriceManager();
+		ExchangeManager exchangeManager = new ExchangeManager();
 		
-		
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
 		if (fromDate.after(toDate))
 			return false;
 		
-		ArrayList<AssetEntity> assetEntityList = assetManager.getAllAssets();
+		ArrayList<AssetEntity> assetEntityList = assetManager.getAssetsByExchange(exchangeEntity.getExchangeID());
 		for (AssetEntity assetEntity : assetEntityList)
 		{
 			HttpURLConnection uc = initConnection(assetEntity, fromDate, toDate);
