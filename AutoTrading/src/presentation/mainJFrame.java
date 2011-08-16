@@ -15,9 +15,14 @@
 package presentation;
 
 import java.awt.Frame;
+import java.util.Arrays;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import presentation.guiForDataUpdate.DataUpdateJPanel;
 import presentation.guiForDataVisualization.DataVisualizationJPanel;
 import presentation.guiForDecisionAlgorithmEvaluation.DecisionAlgorithmEvaluationJPanel;
@@ -70,15 +75,24 @@ public class mainJFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    	java.awt.EventQueue.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+        		try {
+        		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        		        if ("Nimbus".equals(info.getName())) {
+        		            UIManager.setLookAndFeel(info.getClassName());
+        		            break;
+        		        }
+        		    }
+        		} catch (Exception e) {
+                	try {
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+        		}
                 new mainJFrame().setVisible(true);
             }
         });
@@ -112,4 +126,9 @@ public class mainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane mainJTabbedPane;
     // End of variables declaration//GEN-END:variables
+
+	public static void debug(Object... os) {
+		JOptionPane.showMessageDialog(null, Arrays.deepToString(os));
+	}
+
 }
