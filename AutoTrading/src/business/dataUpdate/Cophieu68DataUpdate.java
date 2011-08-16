@@ -1,11 +1,13 @@
 package business.dataUpdate;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,21 +23,36 @@ import dataAccess.databaseManagement.manager.PriceManager;
 public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
 	public Cophieu68DataUpdate() {
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		
 		this.description = "cophieu68.com";
 		this.exchangeNameList = new ArrayList<String>();
 		this.exchangeNameList.add("HOSE");
 		this.exchangeNameList.add("HASTC");
 
 		// get lastest date
-		this.lastestDate = null;
+		ExchangeManager exchangeManager = new ExchangeManager();
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
+		PriceManager priceManager = new PriceManager();
+		java.sql.Date date = priceManager.getLatestDateOfExchange(exchangeEntity.getExchangeID());
+		if (date != null)
+			this.lastestDate = new java.util.Date(date.getTime());
+		else
+		try {
+			this.lastestDate = dateFormat.parse("1-1-2000");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			this.lastestDate = null;
+		}
+		
 		// set filename list
 		this.fileNameList = new ArrayList<String>();
 		this.fileNameList.add("HOSE.csv");
 		this.fileNameList.add("HASTC.csv");
 	}
 
-	@Override
-	public boolean initExchangeMarketsAndAssets() {
+	public static boolean initExchangeMarketsAndAssets() {
 		// TODO Auto-generated method stub
 		String symbol, exchangemarket, companyname;
 
@@ -176,6 +193,7 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		Date currentDate = new Date();
 		if (this.lastestDate.after(currentDate))
 			return false;
+		this.lastestDate = utility.Utility.increaseDate(this.lastestDate);
 		while (this.lastestDate.before(currentDate))
 		{
 			for (String exchangeName : this.exchangeNameList) {
@@ -187,8 +205,6 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 					double volume;
 					DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 					String strLine, symbol;
-
-					
 					
 					String strDate = dateFormat.format(this.lastestDate);
 					String[] splitString;
