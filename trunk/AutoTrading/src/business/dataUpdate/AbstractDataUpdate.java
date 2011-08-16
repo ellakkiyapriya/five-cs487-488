@@ -49,5 +49,4 @@ public abstract class AbstractDataUpdate {
 	}
 	public abstract boolean updateHistoricalData();
 	public abstract boolean updateData();
-	public abstract boolean initExchangeMarketsAndAssets();
 }

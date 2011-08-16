@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -20,13 +22,30 @@ import dataAccess.databaseManagement.manager.PriceManager;
 
 public class YahooStockDataUpdate extends AbstractDataUpdate {
 
-	private Date oldestDate = new Date(1, 1, 1962);
+	private Date oldestDate;
 	
 	public YahooStockDataUpdate()
 	{
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		try 
+		{
+			this.oldestDate = dateFormat.parse("1-1-1990");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		this.exchangeNameList = new ArrayList<String>();
 		this.exchangeNameList.add("NASDAQ");		
 		
+		ExchangeManager exchangeManager = new ExchangeManager();
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
+		PriceManager priceManager = new PriceManager();
+		java.sql.Date date = priceManager.getLatestDateOfExchange(exchangeEntity.getExchangeID());
+		if (date != null)
+			this.lastestDate = new java.util.Date(date.getTime());
+		else
+			this.lastestDate = oldestDate;
 		this.fileNameList = null;
 		this.description = null;
 	}
@@ -42,8 +61,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		return updateDateFromDateToDate(utility.Utility.increaseDate(this.lastestDate), new Date());
 	}
 
-	@Override
-	public boolean initExchangeMarketsAndAssets() {
+	public static boolean initExchangeMarketsAndAssets() {
 		// TODO Auto-generated method stub
 		String symbol, companyname;
 
@@ -66,6 +84,8 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 				// break comma separated line using ","
 				st = new StringTokenizer(strLine, ",");
 				symbol = st.nextToken();
+				symbol = symbol.split(" ")[0];
+				symbol = symbol.split("\"")[1];
 				companyname = st.nextToken();
 				System.out.println(symbol + " " + companyname);
 				assetManager.add(new AssetEntity(companyname, symbol, nasdaq
@@ -99,17 +119,19 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 				
 				double open, high, low, close;
 				double volume;
-				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 				Date date;
 				String strLine, strDate;
 				String[] splitString;
-				
+				String[] str;
 				br.readLine();
 				
 				while ((strLine = br.readLine()) != null) {
 					splitString = strLine.split(",");
 					strDate = splitString[0];
-					date = new Date(Date.parse(strDate));
+					str = strDate.split("-");
+					strDate = str[2] + "-" + str[1] + "-" + str[0];
+					date = df.parse(strDate);
 					open = Double.valueOf(splitString[1]);
 					high = Double.valueOf(splitString[2]);
 					low = Double.valueOf(splitString[3]);
@@ -137,13 +159,22 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 	public HttpURLConnection initConnection(AssetEntity assetEntity, Date fromDate, Date toDate) {
 		try {
 			String link = "http://ichart.finance.yahoo.com/table.csv?s=";
+			Calendar cal = Calendar.getInstance();
+			
 			link = link.concat(assetEntity.getSymbol() + "&d=");
-			link = link.concat(String.valueOf(toDate.getMonth() - 1) + "&e=");
-			link = link.concat(String.valueOf(toDate.getDay()) + "&f=");
-			link = link.concat(String.valueOf(toDate.getYear()) + "&g=d&a=");
-			link = link.concat(String.valueOf(fromDate.getMonth() - 1) + "&b=");
-			link = link.concat(String.valueOf(fromDate.getDay()) + "&c=");
-			link = link.concat(String.valueOf(fromDate.getYear()) + "&ignore=.csv");
+			
+			cal.setTime(toDate);
+			
+			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1) + "&e=");
+			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&f=");
+			link = link.concat(String.valueOf(cal.get(Calendar.YEAR)) + "&g=d&a=");
+			
+			cal.setTime(fromDate);
+			
+			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1) + "&b=");
+			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&c=");
+			link = link.concat(String.valueOf(cal.get(Calendar.YEAR)) + "&ignore=.csv");
+			
 			URL url = new URL(link);
 			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
 			uc.setRequestProperty("User-Agent", "");
