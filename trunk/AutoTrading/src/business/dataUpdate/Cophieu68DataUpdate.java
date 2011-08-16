@@ -29,7 +29,9 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		// get lastest date
 		this.lastestDate = null;
 		// set filename list
-		this.fileNameList = null;
+		this.fileNameList = new ArrayList<String>();
+		this.fileNameList.add("HOSE.csv");
+		this.fileNameList.add("HASTC.csv");
 	}
 
 	@Override
