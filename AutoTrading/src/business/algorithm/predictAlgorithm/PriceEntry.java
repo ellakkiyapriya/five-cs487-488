@@ -1,6 +1,6 @@
 package business.algorithm.predictAlgorithm;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class PriceEntry {
 	private Date date;
