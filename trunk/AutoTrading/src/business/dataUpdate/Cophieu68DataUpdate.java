@@ -22,9 +22,11 @@ import dataAccess.databaseManagement.manager.PriceManager;
 
 public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
+	private Date latestDate;
+	
 	public Cophieu68DataUpdate() {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		
+
 		this.description = "cophieu68.com";
 		this.exchangeNameList = new ArrayList<String>();
 		this.exchangeNameList.add("HOSE");
@@ -32,20 +34,22 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
 		// get lastest date
 		ExchangeManager exchangeManager = new ExchangeManager();
-		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
+		ExchangeEntity exchangeEntity = exchangeManager
+				.getExchangeByName(this.exchangeNameList.get(0));
 		PriceManager priceManager = new PriceManager();
-		java.sql.Date date = priceManager.getLatestDateOfExchange(exchangeEntity.getExchangeID());
+		java.sql.Date date = priceManager
+				.getLatestDateOfExchange(exchangeEntity.getExchangeID());
 		if (date != null)
-			this.lastestDate = new java.util.Date(date.getTime());
+			this.latestDate = new java.util.Date(date.getTime());
 		else
-		try {
-			this.lastestDate = dateFormat.parse("1-1-2000");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			this.lastestDate = null;
-		}
-		
+			try {
+				this.latestDate = dateFormat.parse("1-1-2000");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				this.latestDate = null;
+			}
+
 		// set filename list
 		this.fileNameList = new ArrayList<String>();
 		this.fileNameList.add("HOSE.csv");
@@ -138,8 +142,12 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 			try {
 				// read comma separated file line by line
 				BufferedReader br = new BufferedReader(new FileReader(fileName));
+				int count = 0;
 				strLine = br.readLine();
 				while ((strLine = br.readLine()) != null) {
+					count++;
+					if (count > 1000)
+						break;
 					// break comma separated line using ","
 					st = new StringTokenizer(strLine, ",");
 					int numOfTokens = st.countTokens();
@@ -188,64 +196,111 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		ExchangeManager exchangeManager = new ExchangeManager();
 		AssetManager assetManager = new AssetManager();
 		PriceManager priceManager = new PriceManager();
-		
-		
+
 		Date currentDate = new Date();
-		if (this.lastestDate.after(currentDate))
+		if (this.latestDate.after(currentDate))
 			return false;
-		this.lastestDate = utility.Utility.increaseDate(this.lastestDate);
-		while (this.lastestDate.before(currentDate))
-		{
+		this.latestDate = utility.Utility.increaseDate(this.latestDate);
+		while (this.latestDate.before(currentDate)) {
 			for (String exchangeName : this.exchangeNameList) {
-				HttpURLConnection uc = initConnection(exchangeName, this.lastestDate);
+				HttpURLConnection uc = initConnection(exchangeName, this.latestDate);
 				try {
-					BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-				
+					BufferedReader br = new BufferedReader(
+							new InputStreamReader(uc.getInputStream()));
+
 					double open, high, low, close;
 					double volume;
 					DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 					String strLine, symbol;
-					
-					String strDate = dateFormat.format(this.lastestDate);
+
+					String strDate = dateFormat.format(this.latestDate);
 					String[] splitString;
 					// Open an output stream
 					br.readLine();
 					while ((strLine = br.readLine()) != null) {
-						// strLine is one line of text; readLine() strips the newline
+						// strLine is one line of text; readLine() strips the
+						// newline
 						// character(s)
 
 						// Print a line of text
 						splitString = strLine.split(",");
-						if (splitString[1].contentEquals(strDate))
-						{
+						if (splitString[1].contentEquals(strDate)) {
 							symbol = splitString[0];
 							open = Double.valueOf(splitString[2]);
 							high = Double.valueOf(splitString[3]);
 							low = Double.valueOf(splitString[4]);
 							close = Double.valueOf(splitString[5]);
 							volume = Integer.valueOf(splitString[6]);
-							AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol, exchangeName);
-							if (assetEntity != null)
-							{
-								PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(this.lastestDate.getTime()), null, volume, close, open, high, low); 
-								System.out.println(symbol);
-								priceManager.add(priceEntity);
+							AssetEntity assetEntity = assetManager
+									.getAssetBySymbolAndExchange(symbol,
+											exchangeName);
+							if (assetEntity != null) {
+								PriceEntity priceEntity = new PriceEntity(
+										assetEntity.getAssetID(),
+										new java.sql.Date(this.latestDate.getTime()),
+										null, volume, close, open, high, low);
 								
-								for (int i = 0; i < splitString.length; i++)
-									System.out.println(splitString[i]);
-							}	
+								priceManager.add(priceEntity);
+							}
 						}
 					}
-				} 
-				catch (Exception e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}			
-			this.lastestDate = utility.Utility.increaseDate(this.lastestDate);
+			}
+			this.latestDate = utility.Utility.increaseDate(this.latestDate);
 		}
-		
-				// TODO Auto-generated method stub
+
+		return updateIndexData();
+	}
+
+	public boolean updateIndexData() {
+		AssetManager assetManager = new AssetManager();
+		PriceManager priceManager = new PriceManager();
+		String assetName[] = { "VNINDEX", "HASTCINDEX" };
+		String exchangeName[] = { "HOSE", "HASTC" };
+		for (int i = 0; i < 2; ++i) {
+			AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(
+					assetName[i], exchangeName[i]);
+			Date lastDate = priceManager.getLatestDateOfAsset((int) assetEntity
+					.getAssetID());
+			Date currentDate = new Date();
+			Date tempDate;
+			Double open, high, close, low, volume;
+			DateFormat df = new SimpleDateFormat("yyyyMMdd");
+			String splitString[];
+
+			String fileLink = "http://www.cophieu68.com/export/metastock.php?id=^vnindex";
+			try {
+				URL url = new URL(fileLink);
+				HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+				uc.setRequestProperty("User-Agent", "");
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						uc.getInputStream()));
+
+				String strLine = br.readLine();
+				while ((strLine = br.readLine()) != null) {
+					splitString = strLine.split(",");
+					tempDate = df.parse(splitString[1]);
+					if ((tempDate.after(currentDate)) || (tempDate.before(lastDate)))
+						break;
+					open = Double.valueOf(splitString[2]);
+					high = Double.valueOf(splitString[3]);
+					low = Double.valueOf(splitString[4]);
+					close = Double.valueOf(splitString[5]);
+					volume = Double.valueOf(splitString[6]);
+					PriceEntity priceEntity = new PriceEntity(
+							(int) assetEntity.getAssetID(), new java.sql.Date(
+									tempDate.getTime()), null, volume, close,
+							open, high, low);
+					priceManager.add(priceEntity);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return true;
 	}
 

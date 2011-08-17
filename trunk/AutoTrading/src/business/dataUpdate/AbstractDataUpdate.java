@@ -5,7 +5,6 @@ import java.util.Date;
 
 public abstract class AbstractDataUpdate {
 	protected String description;
-	protected Date lastestDate;
 	protected ArrayList<String> exchangeNameList;
 	protected ArrayList<String> fileNameList;
 	
@@ -14,11 +13,10 @@ public abstract class AbstractDataUpdate {
 		
 	}
 	
-	public AbstractDataUpdate(String description, Date lastestDate,
+	public AbstractDataUpdate(String description,
 			ArrayList<String> exchangeNameList, ArrayList<String> fileNameList) {
 		super();
 		this.description = description;
-		this.lastestDate = lastestDate;
 		this.exchangeNameList = exchangeNameList;
 		this.fileNameList = fileNameList;
 	}
@@ -28,12 +26,6 @@ public abstract class AbstractDataUpdate {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public Date getLastestDate() {
-		return lastestDate;
-	}
-	public void setLastestDate(Date lastestDate) {
-		this.lastestDate = lastestDate;
 	}
 	public ArrayList<String> getExchangeNameList() {
 		return exchangeNameList;
