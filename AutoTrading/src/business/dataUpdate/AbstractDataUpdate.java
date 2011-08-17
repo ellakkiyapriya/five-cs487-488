@@ -1,7 +1,6 @@
 package business.dataUpdate;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public abstract class AbstractDataUpdate {
 	protected String description;

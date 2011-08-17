@@ -1,11 +1,5 @@
 package business.dataUpdate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import dataAccess.databaseManagement.manager.PriceManager;
-
 public class Utility {
 	public static final String[] ONLINE_RESOURCES = {"Cophieu68", "YahooStockDataUpdate"};
 	
