@@ -22,7 +22,7 @@ import dataAccess.databaseManagement.manager.PriceManager;
 
 public class YahooStockDataUpdate extends AbstractDataUpdate {
 
-	private Date oldestDate;
+	private Date oldestDate = null;
 	
 	public YahooStockDataUpdate()
 	{
@@ -38,27 +38,40 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		this.exchangeNameList = new ArrayList<String>();
 		this.exchangeNameList.add("NASDAQ");		
 		
-		ExchangeManager exchangeManager = new ExchangeManager();
-		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
-		PriceManager priceManager = new PriceManager();
-		java.sql.Date date = priceManager.getLatestDateOfExchange(exchangeEntity.getExchangeID());
-		if (date != null)
-			this.lastestDate = new java.util.Date(date.getTime());
-		else
-			this.lastestDate = oldestDate;
 		this.fileNameList = null;
 		this.description = null;
 	}
 	
 	@Override
 	public boolean updateHistoricalData() {
-		return updateDateFromDateToDate(oldestDate, new Date());
+		AssetManager assetManager = new AssetManager();
+		ExchangeManager exchangeManager = new ExchangeManager();
+		
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
+		
+		ArrayList<AssetEntity> assetEntityList = assetManager.getAssetsByExchange(exchangeEntity.getExchangeID());
+		for (AssetEntity assetEntity : assetEntityList)
+			updateDateFromDateToDate(assetEntity, oldestDate, new Date());
+		return true;		
 	}
 
 	@Override
 	public boolean updateData() {
 		// TODO Auto-generated method stub
-		return updateDateFromDateToDate(utility.Utility.increaseDate(this.lastestDate), new Date());
+		AssetManager assetManager = new AssetManager();
+		PriceManager priceManager = new PriceManager();
+		ExchangeManager exchangeManager = new ExchangeManager();
+		
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
+		
+		ArrayList<AssetEntity> assetEntityList = assetManager.getAssetsByExchange(exchangeEntity.getExchangeID());
+		Date latestDate;
+		for (AssetEntity assetEntity : assetEntityList)
+		{
+			latestDate = priceManager.getLatestDateOfAsset((int)assetEntity.getAssetID());
+			updateDateFromDateToDate(assetEntity, utility.Utility.increaseDate(latestDate), new Date());
+		}
+		return true;
 	}
 
 	public static boolean initExchangeMarketsAndAssets() {
@@ -99,59 +112,49 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		return true;
 	}
 
-	private boolean updateDateFromDateToDate(Date fromDate, Date toDate)
+	private boolean updateDateFromDateToDate(AssetEntity assetEntity, Date fromDate, Date toDate)
 	{
-		// TODO Auto-generated method stub
-		AssetManager assetManager = new AssetManager();
+		// TODO Auto-generated method stub		
 		PriceManager priceManager = new PriceManager();
-		ExchangeManager exchangeManager = new ExchangeManager();
-		
-		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
-		if (fromDate.after(toDate))
-			return false;
-		
-		ArrayList<AssetEntity> assetEntityList = assetManager.getAssetsByExchange(exchangeEntity.getExchangeID());
-		for (AssetEntity assetEntity : assetEntityList)
-		{
-			HttpURLConnection uc = initConnection(assetEntity, fromDate, toDate);
-			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 				
-				double open, high, low, close;
-				double volume;
-				DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-				Date date;
-				String strLine, strDate;
-				String[] splitString;
-				String[] str;
-				br.readLine();
+		HttpURLConnection uc = initConnection(assetEntity, fromDate, toDate);
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+			
+			double open, high, low, close;
+			double volume;
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+			Date date;
+			String strLine, strDate;
+			String[] splitString;
+			String[] str;
+			br.readLine();
+			
+			while ((strLine = br.readLine()) != null) {
+				splitString = strLine.split(",");
+				strDate = splitString[0];
+				str = strDate.split("-");
+				strDate = str[2] + "-" + str[1] + "-" + str[0];
+				date = df.parse(strDate);
+				open = Double.valueOf(splitString[1]);
+				high = Double.valueOf(splitString[2]);
+				low = Double.valueOf(splitString[3]);
+				close = Double.valueOf(splitString[4]);
+				volume = Double.valueOf(splitString[5]);
 				
-				while ((strLine = br.readLine()) != null) {
-					splitString = strLine.split(",");
-					strDate = splitString[0];
-					str = strDate.split("-");
-					strDate = str[2] + "-" + str[1] + "-" + str[0];
-					date = df.parse(strDate);
-					open = Double.valueOf(splitString[1]);
-					high = Double.valueOf(splitString[2]);
-					low = Double.valueOf(splitString[3]);
-					close = Double.valueOf(splitString[4]);
-					volume = Double.valueOf(splitString[5]);
-					
-					PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low);
-					priceManager.add(priceEntity);
-					
-					for (int i = 0; i < splitString.length; i++)
-						System.out.println(splitString[i]);
-				}
-			} 
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return false;
+				PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low);
+				priceManager.add(priceEntity);
+				
+				for (int i = 0; i < splitString.length; i++)
+					System.out.println(splitString[i]);
 			}
-
 		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
 		// TODO Auto-generated method stub
 		return true;
 	}
