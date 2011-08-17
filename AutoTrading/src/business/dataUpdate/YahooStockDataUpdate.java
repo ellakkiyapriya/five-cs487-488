@@ -146,9 +146,6 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 				
 				PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low);
 				priceManager.add(priceEntity);
-				
-				for (int i = 0; i < splitString.length; i++)
-					System.out.println(splitString[i]);
 			}
 		}
 		catch (Exception e) {
