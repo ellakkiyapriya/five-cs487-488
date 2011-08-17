@@ -1,7 +1,7 @@
 package business.dataUpdate;
 
 public class Utility {
-	public static final String[] ONLINE_RESOURCES = {"Cophieu68"};
+	public static final String[] ONLINE_RESOURCES = {"Cophieu68", "YahooStockDataUpdate"};
 	
 	public static AbstractDataUpdate getDataUpdate(String str)
 	{
