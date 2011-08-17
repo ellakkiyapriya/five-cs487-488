@@ -69,6 +69,8 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		for (AssetEntity assetEntity : assetEntityList)
 		{
 			latestDate = priceManager.getLatestDateOfAsset((int)assetEntity.getAssetID());
+			if (latestDate == null)
+				latestDate = oldestDate;
 			updateDateFromDateToDate(assetEntity, utility.Utility.increaseDate(latestDate), new Date());
 		}
 		return true;
