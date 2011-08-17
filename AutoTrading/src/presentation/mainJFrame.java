@@ -101,14 +101,6 @@ public class mainJFrame extends javax.swing.JFrame {
     private void initOtherComponents() {
         JScrollPane jScrollPane;
 
-        DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
-        jScrollPane = new JScrollPane(dataUpdateJPanel);
-        mainJTabbedPane.addTab("Data Update", jScrollPane);
-
-        VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
-        jScrollPane = new JScrollPane(virtualTradingJPanel);
-        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
-
         DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
         jScrollPane = new JScrollPane(dataVisualizationJPanel);
         mainJTabbedPane.addTab("Data Visualization", jScrollPane);
@@ -120,6 +112,14 @@ public class mainJFrame extends javax.swing.JFrame {
         PredictionAlgorithmEvaluationJPanel predictionAlgorithmEvaluationJPanel = new PredictionAlgorithmEvaluationJPanel();
         jScrollPane = new JScrollPane(predictionAlgorithmEvaluationJPanel);
         mainJTabbedPane.addTab("Prediction Algorithm Evaluation", jScrollPane);
+
+        VirtualTradingJPanel virtualTradingJPanel = new VirtualTradingJPanel();
+        jScrollPane = new JScrollPane(virtualTradingJPanel);
+        mainJTabbedPane.addTab("Virtual Trading", jScrollPane);
+        
+        DataUpdateJPanel dataUpdateJPanel = new DataUpdateJPanel();
+        jScrollPane = new JScrollPane(dataUpdateJPanel);
+        mainJTabbedPane.addTab("Data Update", jScrollPane);
 
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
     }

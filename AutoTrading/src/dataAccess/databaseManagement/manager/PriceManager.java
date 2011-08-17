@@ -474,5 +474,22 @@ public class PriceManager {
 
 		return latestDate;
 	}
+	
+	public Date getLatestDateOfAsset(int assetID) {
+		Date latestDate = null;
+
+		try {
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT max(date) FROM price WHERE asset_id=" + assetID);
+			resultSet.next();
+			latestDate = resultSet.getDate(1);
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return latestDate;
+	}
 
 }
