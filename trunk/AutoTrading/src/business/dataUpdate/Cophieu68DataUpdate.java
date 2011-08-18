@@ -303,6 +303,59 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		return true;
 	}
 
+	
+	
+	@Override
+	public boolean updateDateFromDateToDate(AssetEntity assetEntity,
+			Date fromDate, Date toDate) {
+		// TODO Auto-generated method stub
+		ExchangeManager exchangeManager = new ExchangeManager();
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByID(assetEntity.getExchangeID());
+		PriceManager priceManager = new PriceManager();
+		Date currentDate = fromDate;
+		HttpURLConnection uc;
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		while (!currentDate.after(toDate))
+		{
+			uc = initConnection(exchangeEntity.getName(), currentDate);
+			try {
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(uc.getInputStream()));
+
+				double open, high, low, close;
+				double volume;
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				String strLine, symbol;
+				
+				String strDate = dateFormat.format(this.latestDate);
+				String[] splitString;
+				// Open an output stream
+				br.readLine();
+				while ((strLine = br.readLine()) != null) {
+					splitString = strLine.split(",");
+					if (splitString[0].equals(assetEntity.getSymbol())) {
+						symbol = splitString[0];
+						open = Double.valueOf(splitString[2]);
+						high = Double.valueOf(splitString[3]);
+						low = Double.valueOf(splitString[4]);
+						close = Double.valueOf(splitString[5]);
+						volume = Integer.valueOf(splitString[6]);
+						PriceEntity priceEntity = new PriceEntity(
+								assetEntity.getAssetID(),
+								new java.sql.Date(currentDate.getTime()),
+								null, volume, close, open, high, low);
+						priceManager.add(priceEntity);
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			currentDate = utility.Utility.increaseDate(currentDate);
+		}
+		return true;
+	}
+
 	public HttpURLConnection initConnection(String exchangeName, Date date) {
 		try {
 			String fileLink = null;
