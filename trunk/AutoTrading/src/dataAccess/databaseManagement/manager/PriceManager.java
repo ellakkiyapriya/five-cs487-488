@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import dataAccess.databaseManagement.ConnectionFactory;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import java.sql.Date;
