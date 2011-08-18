@@ -29,7 +29,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try 
 		{
-			this.oldestDate = dateFormat.parse("1-1-1990");
+			this.oldestDate = dateFormat.parse("1-1-2011");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,14 +76,14 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		return true;
 	}
 
-	public static boolean initExchangeMarketsAndAssets() {
+	public static boolean initExchangeMarketsAndAssets(String fileName) {
 		// TODO Auto-generated method stub
 		String symbol, companyname;
 
 		// create BufferedReader to read csv file
 		BufferedReader br;
 		try {
-			br = new BufferedReader(new FileReader("NASDAQ_companylist.csv"));
+			br = new BufferedReader(new FileReader(fileName));
 
 			// TODO Auto-generated catch block
 			String strLine = "";
