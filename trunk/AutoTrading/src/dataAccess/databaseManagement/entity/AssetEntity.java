@@ -8,6 +8,7 @@ public class AssetEntity implements Serializable, Comparable<AssetEntity> {
      *
      */
     private static final long serialVersionUID = -1106350892914906725L;
+    
     private long assetID;
     private String name;
     private String symbol;

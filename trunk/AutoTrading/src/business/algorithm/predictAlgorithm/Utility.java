@@ -20,8 +20,6 @@ public class Utility {
 			dateList.add(priceEntity.getDate());
 		}
 		
-		Collections.sort(dateList);
-		
 		if (dateList.size() == 0)
 			dateList.add(startPredictingDate);
 		
