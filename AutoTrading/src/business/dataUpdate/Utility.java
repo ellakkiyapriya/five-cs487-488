@@ -1,5 +1,11 @@
 package business.dataUpdate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import dataAccess.databaseManagement.manager.AssetManager;
+
 public class Utility {
 	public static final String[] ONLINE_RESOURCES = {"Cophieu68", "YahooStockDataUpdate"};
 	
@@ -19,13 +25,25 @@ public class Utility {
 	public static void main(String args[])
 	{
 
-//		Cophieu68DataUpdate.initExchangeMarketsAndAssets("company.csv");
-//		Cophieu68DataUpdate cophieu68 = new Cophieu68DataUpdate();
-//		cophieu68.updateHistoricalData();		
+		Cophieu68DataUpdate.initExchangeMarketsAndAssets("company.csv");
+		Cophieu68DataUpdate cophieu68 = new Cophieu68DataUpdate();
+		cophieu68.updateHistoricalData();		
 	
 		YahooStockDataUpdate.initExchangeMarketsAndAssets("NASDAQ_companylist.csv");
 		YahooStockDataUpdate yahoo = new YahooStockDataUpdate();
 		yahoo.updateHistoricalData();		
-		
+
+/*		try {
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+			Date fromDate = df.parse("1-1-2010");
+			Date toDate = df.parse("6-6-2010");
+			AssetManager assetManager = new AssetManager();
+			Cophieu68DataUpdate cophieu68 = new Cophieu68DataUpdate();
+			cophieu68.updateDateFromDateToDate(assetManager.getAssetBySymbolAndExchange("AAM", "HOSE"), fromDate, toDate);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}*/
 	}
 }

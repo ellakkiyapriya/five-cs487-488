@@ -1,6 +1,9 @@
 package business.dataUpdate;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import dataAccess.databaseManagement.entity.AssetEntity;
 
 public abstract class AbstractDataUpdate {
 	protected String description;
@@ -40,4 +43,5 @@ public abstract class AbstractDataUpdate {
 	}
 	public abstract boolean updateHistoricalData();
 	public abstract boolean updateData();
+	public abstract boolean updateDateFromDateToDate(AssetEntity assetEntity, Date fromDate, Date toDate);
 }

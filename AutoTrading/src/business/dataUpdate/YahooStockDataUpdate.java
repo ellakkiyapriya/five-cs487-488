@@ -114,7 +114,8 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		return true;
 	}
 
-	private boolean updateDateFromDateToDate(AssetEntity assetEntity, Date fromDate, Date toDate)
+	@Override
+	public boolean updateDateFromDateToDate(AssetEntity assetEntity, Date fromDate, Date toDate)
 	{
 		// TODO Auto-generated method stub		
 		PriceManager priceManager = new PriceManager();
