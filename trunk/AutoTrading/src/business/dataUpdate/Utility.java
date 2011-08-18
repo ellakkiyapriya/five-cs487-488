@@ -18,9 +18,14 @@ public class Utility {
 	
 	public static void main(String args[])
 	{
-		YahooStockDataUpdate.initExchangeMarketsAndAssets();
+
+//		Cophieu68DataUpdate.initExchangeMarketsAndAssets("company.csv");
+//		Cophieu68DataUpdate cophieu68 = new Cophieu68DataUpdate();
+//		cophieu68.updateHistoricalData();		
+	
+		YahooStockDataUpdate.initExchangeMarketsAndAssets("NASDAQ_companylist.csv");
+		YahooStockDataUpdate yahoo = new YahooStockDataUpdate();
+		yahoo.updateHistoricalData();		
 		
-		//YahooStockDataUpdate yahoo = new YahooStockDataUpdate();
-		//yahoo.updateHistoricalData();		
 	}
 }

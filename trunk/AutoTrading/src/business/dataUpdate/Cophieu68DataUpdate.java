@@ -55,14 +55,15 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		this.fileNameList.add("HASTC.csv");
 	}
 
-	public static boolean initExchangeMarketsAndAssets() {
+	public static boolean initExchangeMarketsAndAssets(String fileName) {
 		// TODO Auto-generated method stub
 		String symbol, exchangemarket, companyname;
 
 		// create BufferedReader to read csv file
 		BufferedReader br;
 		try {
-			br = new BufferedReader(new FileReader("company.csv"));
+//			String fileName = "company.csv";
+			br = new BufferedReader(new FileReader(fileName));
 
 			// TODO Auto-generated catch block
 			String strLine = "";
@@ -192,7 +193,6 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
 	@Override
 	public boolean updateData() {
-		ExchangeManager exchangeManager = new ExchangeManager();
 		AssetManager assetManager = new AssetManager();
 		PriceManager priceManager = new PriceManager();
 
