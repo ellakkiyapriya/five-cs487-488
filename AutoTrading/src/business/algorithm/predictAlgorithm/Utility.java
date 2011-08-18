@@ -1,5 +1,6 @@
 package business.algorithm.predictAlgorithm;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -12,13 +13,25 @@ public class Utility {
 	{
 		PriceManager priceManager = new PriceManager();
 		ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(asset.getAssetID(), new java.sql.Date(startPredictingDate.getTime()), new java.sql.Date(priceManager.getLatestDate().getTime()));
+		
 		ArrayList<PriceEntry> priceEntryList = new ArrayList<PriceEntry>();
 		ArrayList<Date> dateList = new ArrayList<Date>();
-		for (PriceEntity priceEntity : priceEntityList)
+		for (PriceEntity priceEntity : priceEntityList) {
 			dateList.add(priceEntity.getDate());
+		}
+		
+		Collections.sort(dateList);
+		
+		if (dateList.size() == 0)
+			dateList.add(startPredictingDate);
+		
 		while (dateList.size() < priceList.size())
 			dateList.add(utility.Utility.increaseDate(dateList.get(dateList.size() - 1)));				
 		int i = 0;
+		System.out.println(String.valueOf(priceList.size()));
+		
+		for (Date date : dateList)
+			System.out.println(date.toString());
 		for (double d : priceList) {
 			priceEntryList.add(new PriceEntry(dateList.get(i), d));
 			i++;

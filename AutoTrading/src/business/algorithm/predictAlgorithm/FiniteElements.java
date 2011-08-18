@@ -173,42 +173,59 @@ public class FiniteElements extends AbstractPredictAlgorithm{
 		ArrayList<PriceEntry> priceEntries = new ArrayList<PriceEntry>();
 		
 		//training price
-		for (int i = 0; i < priceEntityList.size()-1; ++i) {
-			Date date = priceEntityList.get(i).getDate();
-			
-			for (int j = 0; j < POINT_PER_INTERVAL; ++j) {
-				double x = (1.0/POINT_PER_INTERVAL)*j;
-				double price = U.get(i*2 + 3, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
-				price += U.get(i*2 + 2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
-				price += U.get(i*2 + 1, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
-				price += U.get(i*2, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));			
-				
-				PriceEntry priceEntry = new PriceEntry(date, price);
-				priceEntries.add(priceEntry);				
-				date = new Date(date.getTime() + DATE_MILLISECONDS/POINT_PER_INTERVAL);
-			}
-		}
+//		for (int i = 0; i < priceEntityList.size()-1; ++i) {
+//			Date date = priceEntityList.get(i).getDate();
+//			
+//			for (int j = 0; j < POINT_PER_INTERVAL; ++j) {
+//				double x = (1.0/POINT_PER_INTERVAL)*j;
+//				double price = U.get(i*2 + 3, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
+//				price += U.get(i*2 + 2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
+//				price += U.get(i*2 + 1, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
+//				price += U.get(i*2, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));			
+//				
+//				PriceEntry priceEntry = new PriceEntry(date, price);
+//				priceEntries.add(priceEntry);				
+//				date = new Date(date.getTime() + DATE_MILLISECONDS/POINT_PER_INTERVAL);
+//			}
+//		}
 		
 		//predicted price
-		Date lastDate = priceEntityList.get(priceEntityList.size()-1).getDate();
+//		Date lastDate = priceEntityList.get(priceEntityList.size()-1).getDate();
+//		for (int i = 0; i < futureInterval; ++i) {
+//			Date date = lastDate;
+//			double x = i + 1;
+//			
+//			for (int j = 0; j < POINT_PER_INTERVAL; ++j) {
+//				double price = U.get(U.getRowDimension()-1, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
+//				price += U.get(U.getRowDimension()-2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
+//				price += U.get(U.getRowDimension()-3, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
+//				price += U.get(U.getRowDimension()-4, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));
+//				
+//				PriceEntry priceEntry = new PriceEntry(date, price);
+//				priceEntries.add(priceEntry);	
+//				date = new Date(date.getTime() + DATE_MILLISECONDS/POINT_PER_INTERVAL);
+//				x += (1.0/POINT_PER_INTERVAL);
+//			}	
+//			
+//			lastDate = utility.Utility.increaseDate(lastDate);
+//		}
+
+		ArrayList<Double> predictedPrice = new ArrayList<Double>();
 		for (int i = 0; i < futureInterval; ++i) {
-			Date date = lastDate;
 			double x = i + 1;
 			
-			for (int j = 0; j < POINT_PER_INTERVAL; ++j) {
-				double price = U.get(U.getRowDimension()-1, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
-				price += U.get(U.getRowDimension()-2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
-				price += U.get(U.getRowDimension()-3, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
-				price += U.get(U.getRowDimension()-4, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));
-				
-				PriceEntry priceEntry = new PriceEntry(date, price);
-				priceEntries.add(priceEntry);	
-				date = new Date(date.getTime() + DATE_MILLISECONDS/POINT_PER_INTERVAL);
-				x += (1.0/POINT_PER_INTERVAL);
-			}	
+			double price = U.get(U.getRowDimension()-1, 0)*(cubicTrialFunctions.get(3)[0] + cubicTrialFunctions.get(3)[1]*x + cubicTrialFunctions.get(3)[2]*Math.pow(x,2) + cubicTrialFunctions.get(3)[3]*Math.pow(x,3));
+			price += U.get(U.getRowDimension()-2, 0)*(cubicTrialFunctions.get(2)[0] + cubicTrialFunctions.get(2)[1]*x + cubicTrialFunctions.get(2)[2]*Math.pow(x,2) + cubicTrialFunctions.get(2)[3]*Math.pow(x,3));
+			price += U.get(U.getRowDimension()-3, 0)*(cubicTrialFunctions.get(1)[0] + cubicTrialFunctions.get(1)[1]*x + cubicTrialFunctions.get(1)[2]*Math.pow(x,2) + cubicTrialFunctions.get(1)[3]*Math.pow(x,3));
+			price += U.get(U.getRowDimension()-4, 0)*(cubicTrialFunctions.get(0)[0] + cubicTrialFunctions.get(0)[1]*x + cubicTrialFunctions.get(0)[2]*Math.pow(x,2) + cubicTrialFunctions.get(0)[3]*Math.pow(x,3));
 			
-			lastDate = utility.Utility.increaseDate(lastDate);
+			predictedPrice.add(price);
 		}
+
+		Date lastDate = priceEntityList.get(priceEntityList.size()-1).getDate();
+		lastDate = utility.Utility.increaseDate(lastDate);
+		
+		priceEntries = Utility.constructPriceList(asset, predictedPrice, lastDate);
 		
 		predictionPriceList.put(asset, priceEntries);
 		

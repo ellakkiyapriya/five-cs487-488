@@ -3,7 +3,7 @@ package dataAccess.databaseManagement.entity;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class PriceEntity implements Serializable{
+public class PriceEntity implements Serializable, Comparable<PriceEntity>{
 	/**
 	 * 
 	 */
@@ -88,5 +88,11 @@ public class PriceEntity implements Serializable{
 	}
 	public double getLow() {
 		return low;
+	}
+
+	@Override
+	public int compareTo(PriceEntity o) {
+		// TODO Auto-generated method stub
+		return this.date.compareTo(o.date);
 	}
 }

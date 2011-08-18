@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import dataAccess.databaseManagement.ConnectionFactory;
 import dataAccess.databaseManagement.entity.PriceEntity;
@@ -312,6 +313,8 @@ public class PriceManager {
 				listPrices.add(priceEntity);
 			}
 
+			Collections.sort(listPrices);
+			
 			return listPrices;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -364,6 +367,8 @@ public class PriceManager {
 				listPrices.add(priceEntity);
 			}
 
+			Collections.sort(listPrices);
+			
 			return listPrices;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -416,6 +421,8 @@ public class PriceManager {
 				listAllPrices.add(priceEntity);
 			}
 
+			Collections.sort(listAllPrices);
+			
 			return listAllPrices;
 		} catch (SQLException e) {
 			e.printStackTrace();
