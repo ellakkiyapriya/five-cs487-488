@@ -28,6 +28,7 @@ public abstract class AbstractPredictAlgorithm {
 		this.futureInterval = futureInterval;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public TreeMap<String, Class> getParametersList() {
 		TreeMap<String, Class> map = new TreeMap<String, Class>();
 		map.put("Price list", TreeMap.class);
@@ -35,6 +36,7 @@ public abstract class AbstractPredictAlgorithm {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setParametersValue(TreeMap<String, Object> map) {
 		this.priceList = (TreeMap<AssetEntity, ArrayList<PriceEntity>>) map
 				.get("Price list");
