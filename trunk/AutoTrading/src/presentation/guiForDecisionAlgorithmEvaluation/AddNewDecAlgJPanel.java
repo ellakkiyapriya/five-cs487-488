@@ -15,7 +15,7 @@ import java.util.TreeMap;
 
 import javax.swing.JDialog;
 
-import presentation.guiForDataVisualization.ParameterJPanel;
+import presentation.ParameterJPanel;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 
 /**

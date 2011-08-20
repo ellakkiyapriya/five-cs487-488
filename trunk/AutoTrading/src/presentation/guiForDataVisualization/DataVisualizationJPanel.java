@@ -10,6 +10,7 @@
  */
 package presentation.guiForDataVisualization;
 
+import presentation.ParameterJPanel;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import business.dataVisualization.ChartStyle;
