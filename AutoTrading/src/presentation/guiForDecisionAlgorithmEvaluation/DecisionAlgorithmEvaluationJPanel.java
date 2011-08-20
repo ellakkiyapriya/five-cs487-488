@@ -10,8 +10,26 @@
  */
 package presentation.guiForDecisionAlgorithmEvaluation;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TreeMap;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+
+import layout.TableLayout;
+import presentation.ComboKeyHandler;
+import presentation.mainJFrame;
+import presentation.guiForDataVisualization.DataVisualizationJPanel;
+import presentation.guiForVirtualTrading.PortfolioTableModel;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
-import business.algorithm.decisionAlgorithm.Order;
 import business.decisionAlgorithmEvaluation.DecisionCriteria;
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
@@ -20,23 +38,6 @@ import dataAccess.databaseManagement.entity.ExchangeEntity;
 import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TreeMap;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import layout.TableLayout;
-import presentation.ComboKeyHandler;
-import presentation.guiForDataVisualization.DataVisualizationJPanel;
-import presentation.guiForVirtualTrading.PortfolioTableModel;
-import presentation.mainJFrame;
 
 /**
  *
