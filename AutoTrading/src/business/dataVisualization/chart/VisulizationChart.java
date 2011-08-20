@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package business.dataVisualization;
+package business.dataVisualization.chart;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

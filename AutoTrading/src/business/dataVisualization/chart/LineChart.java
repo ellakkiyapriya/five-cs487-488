@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.dataVisualization;
+package business.dataVisualization.chart;
 
 import dataAccess.databaseManagement.entity.PriceEntity;
 import java.awt.Color;
@@ -24,6 +24,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYDataset;
+
 
 
 /**
