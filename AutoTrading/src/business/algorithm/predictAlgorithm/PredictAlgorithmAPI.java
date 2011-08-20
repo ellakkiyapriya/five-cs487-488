@@ -1,8 +1,5 @@
 package business.algorithm.predictAlgorithm;
 
-import java.util.ArrayList;
-
-import dataAccess.databaseManagement.entity.AssetEntity;
 
 public class PredictAlgorithmAPI {
 

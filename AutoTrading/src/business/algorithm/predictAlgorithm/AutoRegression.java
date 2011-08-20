@@ -39,6 +39,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		AR_period = aR_period;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public TreeMap<String, Class> getParametersList() {
 		// TODO Auto-generated method stub

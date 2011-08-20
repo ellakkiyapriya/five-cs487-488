@@ -31,6 +31,7 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 		MA_period = mA_period;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public TreeMap<String, Class> getParameterList() {
 		// TODO Auto-generated method stub

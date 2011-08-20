@@ -27,6 +27,7 @@ public abstract class AbstractDecisionAlgorithm {
 		this.priceList = priceList;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public TreeMap<String, Class> getParameterList() {
 		TreeMap<String, Class> map = new TreeMap<String, Class>();
 		map.put("Price list", TreeMap.class);

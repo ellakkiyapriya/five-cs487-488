@@ -1,8 +1,7 @@
 package business.algorithm.predictAlgorithm;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
