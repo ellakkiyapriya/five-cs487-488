@@ -314,7 +314,7 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		PriceManager priceManager = new PriceManager();
 		Date currentDate = fromDate;
 		HttpURLConnection uc;
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+//		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		while (!currentDate.after(toDate))
 		{
 			uc = initConnection(exchangeEntity.getName(), currentDate);
@@ -324,17 +324,18 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
 				double open, high, low, close;
 				double volume;
-				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-				String strLine, symbol;
+//				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				String strLine;
+//				String symbol;
 				
-				String strDate = dateFormat.format(this.latestDate);
+//				String strDate = dateFormat.format(this.latestDate);
 				String[] splitString;
 				// Open an output stream
 				br.readLine();
 				while ((strLine = br.readLine()) != null) {
 					splitString = strLine.split(",");
 					if (splitString[0].equals(assetEntity.getSymbol())) {
-						symbol = splitString[0];
+//						symbol = splitString[0];
 						open = Double.valueOf(splitString[2]);
 						high = Double.valueOf(splitString[3]);
 						low = Double.valueOf(splitString[4]);

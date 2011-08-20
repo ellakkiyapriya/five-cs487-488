@@ -34,6 +34,7 @@ public abstract class AbstractDecisionAlgorithm {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setParameterValue(TreeMap<String, Object> map) {
 		this.priceList = (TreeMap<AssetEntity, ArrayList<PriceEntity>>) map
 				.get("Price list");

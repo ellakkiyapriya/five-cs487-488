@@ -24,6 +24,7 @@ public class SumSquare extends PredictionCriteria{
 	public TreeMap<String,Double> evaluate() {
 		PriceManager priceManager = new PriceManager();
 		AssetEntity assetEntity = (AssetEntity) paramOfPreditionCriteria.get("Asset");
+		@SuppressWarnings("unchecked")
 		TreeMap<Date, Double> priceList = (TreeMap<Date, Double>) paramOfPreditionCriteria.get("PriceList");
 		
 			
@@ -54,6 +55,7 @@ public class SumSquare extends PredictionCriteria{
 		paramOfPreditionCriteria.put("Asset",map.get("Asset"));
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public TreeMap<String, Class> getParametersList() {
 		// TODO Auto-generated method stub

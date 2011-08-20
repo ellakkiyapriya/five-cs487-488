@@ -28,11 +28,13 @@ import layout.TableLayout;
  */
 public class ParameterJPanel extends javax.swing.JPanel {
 
-    private TreeMap<String, Class> parameterList;
+    @SuppressWarnings("rawtypes")
+	private TreeMap<String, Class> parameterList;
     private TreeMap<String, JComponent> componentList;
 
     /** Creates new form parameterJPanel */
-    public ParameterJPanel(TreeMap<String, Class> parameterList) {
+    @SuppressWarnings("rawtypes")
+	public ParameterJPanel(TreeMap<String, Class> parameterList) {
         this.parameterList = parameterList;
         initComponents();
         initOtherComponents();

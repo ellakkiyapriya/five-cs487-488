@@ -52,6 +52,7 @@ public abstract class DecisionCriteria {
 	
 	public abstract TreeMap<String, Double> evaluate();
 	public abstract void setParametersValue(TreeMap<String, Object> map);
+	@SuppressWarnings("rawtypes")
 	public abstract TreeMap<String, Class> getParametersList();
 	public abstract void setParametersValue(User user, ArrayList<Order> orderList, AssetEntity assetEntity);
 	public abstract String toString();

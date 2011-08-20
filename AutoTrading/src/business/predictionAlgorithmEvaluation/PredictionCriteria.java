@@ -1,12 +1,5 @@
 package business.predictionAlgorithmEvaluation;
 
-import business.algorithm.predictAlgorithm.OutputForPredictionAlgorithm;
-import business.algorithm.predictAlgorithm.PriceEntry;
-import dataAccess.databaseManagement.entity.AssetEntity;
-import dataAccess.databaseManagement.entity.PriceEntity;
-import dataAccess.databaseManagement.manager.PriceManager;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.TreeMap;
 
 
@@ -46,7 +39,8 @@ public abstract class PredictionCriteria {
 
     public abstract void setParametersValue(TreeMap<String, Object> map);
 
-    public abstract TreeMap<String, Class> getParametersList();
+    @SuppressWarnings("rawtypes")
+	public abstract TreeMap<String, Class> getParametersList();
 
     public abstract String toString();
 }
