@@ -14,6 +14,8 @@ import org.jfree.chart.JFreeChart;
 
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
+import business.dataVisualization.chart.ChartStyle;
+import business.dataVisualization.chart.VisulizationChart;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
