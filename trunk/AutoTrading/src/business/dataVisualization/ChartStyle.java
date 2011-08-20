@@ -11,13 +11,16 @@ package business.dataVisualization;
  */
 public class ChartStyle {
 
-    private Class chartClass;
+    @SuppressWarnings("rawtypes")
+	private Class chartClass;
 
-    public ChartStyle(Class chartClass) {
+    @SuppressWarnings("rawtypes")
+	public ChartStyle(Class chartClass) {
         this.chartClass = chartClass;
     }
 
-    public Class getChartClass() {
+    @SuppressWarnings("rawtypes")
+	public Class getChartClass() {
         return chartClass;
     }
 

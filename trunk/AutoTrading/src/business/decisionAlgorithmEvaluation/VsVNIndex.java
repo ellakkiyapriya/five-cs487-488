@@ -49,6 +49,7 @@ public class VsVNIndex extends DecisionCriteria {
 		return map;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public TreeMap<String, Class> getParametersList() {
 		// TODO Auto-generated method stub
