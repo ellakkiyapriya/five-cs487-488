@@ -30,6 +30,7 @@ import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import business.dataVisualization.ChartStyle;
 import business.dataVisualization.DataVisualizationProcessor;
+import business.dataVisualization.VisulizationChart;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 
@@ -510,7 +511,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         now.add(Calendar.MONTH, -6);
         fromDateJSpinner.setValue(now.getTime());
 
-        charStyleJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationProcessor.CHART_STYLES));
+        charStyleJComboBox.setModel(new DefaultComboBoxModel(VisulizationChart.CHART_STYLES));
 
         exchangeJComboBox.setModel(new DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.keySet().toArray()));
         exchangeComboKeyHandler = new ComboKeyHandler(exchangeJComboBox);
