@@ -47,15 +47,15 @@ public class PerfectAlgorithm extends AbstractDecisionAlgorithm {
     				bottomIndexList.add(i);
     		}
     		
-//    		for (int index : peakIndexList)
-//    		{
-//    			Order order = new Order(Order.ORDER_SELL, priceEntityList.get(index-1).getClose(), priceEntityList.get(index).getDate());
-//    		}
-//    		
-//    		for (int index : bottomIndexList)
-//    		{
-//    			Order order = new Order(Order.ORDER_BUY, priceEntityList.get(index-1).getClose(), priceEntityList.get(index).getDate());
-//    		}
+    		for (int index : peakIndexList)
+    		{
+    			orderList.add(new Order(Order.ORDER_SELL, priceEntityList.get(index-1).getClose(), priceEntityList.get(index).getDate()));
+    		}
+    		
+    		for (int index : bottomIndexList)
+    		{
+    			orderList.add(new Order(Order.ORDER_BUY, priceEntityList.get(index-1).getClose(), priceEntityList.get(index).getDate()));
+    		}
 
     	}
     	return new OutputForDecisionAlgorithm(orderList);
