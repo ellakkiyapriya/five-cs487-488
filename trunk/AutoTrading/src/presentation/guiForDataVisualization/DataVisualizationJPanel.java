@@ -28,9 +28,9 @@ import presentation.ParameterJPanel;
 import presentation.mainJFrame;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
-import business.dataVisualization.DataVisualizationProcessor;
 import business.dataVisualization.chart.ChartStyle;
 import business.dataVisualization.chart.VisulizationChart;
+import business.dataVisualization.dataProcessing.DataVisualizationProcessor;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
 
