@@ -10,20 +10,15 @@
  */
 package presentation.guiForVirtualTrading;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
 
 import presentation.ComboKeyHandler;
-import presentation.guiForDataVisualization.DataVisualizationJPanel;
+import presentation.mainJFrame;
 import business.virtualTrading.Order;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
-import dataAccess.databaseManagement.manager.AssetManager;
-import dataAccess.databaseManagement.manager.ExchangeManager;
 
 /**
  *
@@ -205,7 +200,7 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
     private void exchangeJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeJComboBoxActionPerformed
         if (exchangeJComboBox.getSelectedIndex() != -1) {
-            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(DataVisualizationJPanel.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+            assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
             assetComboKeyHandler.updateListObjects();
             assetJComboBox.setSelectedIndex(0);
         }
@@ -235,21 +230,21 @@ public class AddNewOrderJPanel extends javax.swing.JPanel {
 
     private void initOtherComponents() {
 
-        if (DataVisualizationJPanel.mappingExchangeID_Assets == null) {
-            DataVisualizationJPanel.mappingExchangeID_Assets = new TreeMap<ExchangeEntity, Object[]>();
-            ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
-            for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
-                ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
-                DataVisualizationJPanel.mappingExchangeID_Assets.put(exchangeEntity, listAssets.toArray());
-            }
-        }
+//        if (DataVisualizationJPanel.mappingExchangeID_Assets == null) {
+//            DataVisualizationJPanel.mappingExchangeID_Assets = new TreeMap<ExchangeEntity, Object[]>();
+//            ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
+//            for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
+//                ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
+//                DataVisualizationJPanel.mappingExchangeID_Assets.put(exchangeEntity, listAssets.toArray());
+//            }
+//        }
 
-        exchangeJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationJPanel.mappingExchangeID_Assets.keySet().toArray()));
+        exchangeJComboBox.setModel(new DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.keySet().toArray()));
         exchangeComboKeyHandler = new ComboKeyHandler(exchangeJComboBox);
         JTextField fieldExchange = (JTextField) exchangeJComboBox.getEditor().getEditorComponent();
         fieldExchange.addKeyListener(exchangeComboKeyHandler);
 
-        assetJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationJPanel.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+        assetJComboBox.setModel(new DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
         assetComboKeyHandler = new ComboKeyHandler(assetJComboBox);
         JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
         fieldSymbol.addKeyListener(assetComboKeyHandler);

@@ -15,13 +15,20 @@
 package presentation;
 
 import java.awt.Frame;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.ExchangeEntity;
+import dataAccess.databaseManagement.manager.AssetManager;
+import dataAccess.databaseManagement.manager.ExchangeManager;
 
 import presentation.guiForDataUpdate.DataUpdateJPanel;
 import presentation.guiForDataVisualization.DataVisualizationJPanel;
@@ -40,6 +47,7 @@ public class mainJFrame extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static JFrame mainFrame;
+	public static TreeMap<ExchangeEntity, Object[]> mappingExchangeID_Assets = null;
 
     /** Creates new form mainJFrame */
     public mainJFrame() {
@@ -102,7 +110,16 @@ public class mainJFrame extends javax.swing.JFrame {
     }
 
     private void initOtherComponents() {
-        JScrollPane jScrollPane;
+        if (mappingExchangeID_Assets == null) {
+            mappingExchangeID_Assets = new TreeMap<ExchangeEntity, Object[]>();
+            ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
+            for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
+                ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
+                mappingExchangeID_Assets.put(exchangeEntity, listAssets.toArray());
+            }
+        }
+    	
+    	JScrollPane jScrollPane;
 
         DataVisualizationJPanel dataVisualizationJPanel = new DataVisualizationJPanel();
         jScrollPane = new JScrollPane(dataVisualizationJPanel);

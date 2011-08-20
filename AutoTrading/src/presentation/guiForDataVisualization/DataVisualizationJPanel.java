@@ -10,27 +10,28 @@
  */
 package presentation.guiForDataVisualization;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TreeMap;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+
+import org.jfree.chart.ChartPanel;
+
+import presentation.ComboKeyHandler;
 import presentation.ParameterJPanel;
+import presentation.mainJFrame;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import business.dataVisualization.ChartStyle;
 import business.dataVisualization.DataVisualizationProcessor;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
-import dataAccess.databaseManagement.manager.AssetManager;
-import dataAccess.databaseManagement.manager.ExchangeManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TreeMap;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import org.jfree.chart.ChartPanel;
-import presentation.ComboKeyHandler;
 
 /**
  *
@@ -373,7 +374,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
             return;
         }
         
-        assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+        assetJComboBox.setModel(new javax.swing.DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
         assetComboKeyHandler.updateListObjects();
         assetJComboBox.setSelectedIndex(0);
     }//GEN-LAST:event_exchangeJComboBoxActionPerformed
@@ -490,7 +491,6 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     private javax.swing.JSpinner toDateJSpinner;
     private javax.swing.JPanel visualizationChartJPanel;
     // End of variables declaration//GEN-END:variables
-    public static TreeMap<ExchangeEntity, Object[]> mappingExchangeID_Assets;
     private DataVisualizationProcessor dataVisualizationProcessor;
     private ComboKeyHandler exchangeComboKeyHandler;
     private ComboKeyHandler assetComboKeyHandler;
@@ -510,23 +510,14 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         now.add(Calendar.MONTH, -6);
         fromDateJSpinner.setValue(now.getTime());
 
-        if (mappingExchangeID_Assets == null) {
-            mappingExchangeID_Assets = new TreeMap<ExchangeEntity, Object[]>();
-            ArrayList<ExchangeEntity> listAllExchangeEntitys = (new ExchangeManager()).getAllExchanges();
-            for (ExchangeEntity exchangeEntity : listAllExchangeEntitys) {
-                ArrayList<AssetEntity> listAssets = (new AssetManager()).getAssetsByExchange(exchangeEntity.getExchangeID());
-                mappingExchangeID_Assets.put(exchangeEntity, listAssets.toArray());
-            }
-        }
-
         charStyleJComboBox.setModel(new DefaultComboBoxModel(DataVisualizationProcessor.CHART_STYLES));
 
-        exchangeJComboBox.setModel(new DefaultComboBoxModel(mappingExchangeID_Assets.keySet().toArray()));
+        exchangeJComboBox.setModel(new DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.keySet().toArray()));
         exchangeComboKeyHandler = new ComboKeyHandler(exchangeJComboBox);
         JTextField fieldExchange = (JTextField) exchangeJComboBox.getEditor().getEditorComponent();
         fieldExchange.addKeyListener(exchangeComboKeyHandler);
 
-        assetJComboBox.setModel(new DefaultComboBoxModel(mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
+        assetJComboBox.setModel(new DefaultComboBoxModel(mainJFrame.mappingExchangeID_Assets.get((ExchangeEntity) exchangeJComboBox.getSelectedItem())));
         assetComboKeyHandler = new ComboKeyHandler(assetJComboBox);
         JTextField fieldSymbol = (JTextField) assetJComboBox.getEditor().getEditorComponent();
         fieldSymbol.addKeyListener(assetComboKeyHandler);
