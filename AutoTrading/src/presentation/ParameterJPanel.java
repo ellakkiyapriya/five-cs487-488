@@ -8,7 +8,7 @@
  *
  * Created on Jun 24, 2011, 6:23:51 PM
  */
-package presentation.guiForDataVisualization;
+package presentation;
 
 import java.util.Date;
 import java.util.TreeMap;

@@ -14,7 +14,7 @@ package presentation.guiForPredictionAlgorithmEvaluation;
 import business.algorithm.predictAlgorithm.AbstractPredictAlgorithm;
 import java.util.TreeMap;
 import javax.swing.JDialog;
-import presentation.guiForDataVisualization.ParameterJPanel;
+import presentation.ParameterJPanel;
 
 /**
  *
