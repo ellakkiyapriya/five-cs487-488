@@ -24,7 +24,6 @@ import dataAccess.databaseManagement.manager.PriceManager;
  */
 public class DataVisualizationProcessor {
 
-    public static final ChartStyle[] CHART_STYLES = {new ChartStyle(LineChart.class), new ChartStyle(CandleStickChart.class)};
     private static PriceManager priceManager = new PriceManager();
     private AssetEntity asset;
     private Date fromDate;

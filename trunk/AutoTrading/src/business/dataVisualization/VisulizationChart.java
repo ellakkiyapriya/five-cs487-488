@@ -34,6 +34,8 @@ import dataAccess.databaseManagement.entity.PriceEntity;
  * @author Dinh
  */
 public abstract class VisulizationChart {
+	public static final ChartStyle[] CHART_STYLES = {new ChartStyle(LineChart.class), new ChartStyle(CandleStickChart.class)};
+	
     protected static final ArrayList<Color> predictingLineColors = new ArrayList<Color>();
     protected JFreeChart chart;
     protected XYDataset predictionDataset = new YIntervalSeriesCollection(),
