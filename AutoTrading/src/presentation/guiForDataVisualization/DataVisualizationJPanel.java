@@ -429,7 +429,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_decAlgJComboBoxActionPerformed
 
     private void runPreAlgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runPreAlgJButtonActionPerformed
-        dataVisualizationProcessor.removePreAlg(preAlg);
+        dataVisualizationProcessor.removeAllPreAlg();
 
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
         for (String name : preAlg.getParametersList().keySet()) {
@@ -441,7 +441,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_runPreAlgJButtonActionPerformed
 
     private void runDecAlgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runDecAlgJButtonActionPerformed
-        dataVisualizationProcessor.removeDecAlg(decAlg);
+        dataVisualizationProcessor.removeAllDecAlg();
 
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
         for (String name : decAlg.getParameterList().keySet()) {
