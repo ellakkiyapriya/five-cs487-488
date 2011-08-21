@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import dataAccess.databaseManagement.entity.AssetEntity;
 
 public class OutputForAutoRegression extends OutputForPredictionAlgorithm {
-	public double lambda;
+	private double lambda;
 
 	public double getLambda() {
 		return lambda;

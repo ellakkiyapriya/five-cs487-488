@@ -6,7 +6,6 @@ import java.util.TreeMap;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
-
 public abstract class AbstractPredictAlgorithm {
 	protected TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList;
 	protected Integer futureInterval;
@@ -27,7 +26,7 @@ public abstract class AbstractPredictAlgorithm {
 	public void setFutureInterval(Integer futureInterval) {
 		this.futureInterval = futureInterval;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public TreeMap<String, Class> getParametersList() {
 		TreeMap<String, Class> map = new TreeMap<String, Class>();
@@ -43,8 +42,6 @@ public abstract class AbstractPredictAlgorithm {
 		this.futureInterval = (Integer) map.get("Future interval");
 	}
 
-	
-	
 	public AbstractPredictAlgorithm(
 			TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
 			Integer futureInterval) {
@@ -53,5 +50,6 @@ public abstract class AbstractPredictAlgorithm {
 		this.futureInterval = futureInterval;
 	}
 
-	public abstract OutputForPredictionAlgorithm runAlgorithm() throws Exception;
+	public abstract OutputForPredictionAlgorithm runAlgorithm()
+			throws Exception;
 }

@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import dataAccess.databaseManagement.entity.AssetEntity;
 
 public abstract class OutputForPredictionAlgorithm {
-	TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceList;
+	protected TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceList;
 
 	public TreeMap<AssetEntity, ArrayList<PriceEntry>> getPredictionPriceList() {
 		return predictionPriceList;

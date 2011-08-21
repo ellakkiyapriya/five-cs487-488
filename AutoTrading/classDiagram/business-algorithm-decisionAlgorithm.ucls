@@ -3,7 +3,7 @@
   <class id="1" corner="BOTTOM_RIGHT" language="java" 
     name="business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm" project="AutoTrading" 
     file="/AutoTrading/src/business/algorithm/decisionAlgorithm/AbstractDecisionAlgorithm.java" binary="false">    
-    <position height="163" width="377" x="41" y="176"/>    
+    <position height="163" width="377" x="41" y="208"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -12,7 +12,7 @@
   <class id="2" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI" 
     project="AutoTrading" file="/AutoTrading/src/business/algorithm/decisionAlgorithm/DecisionAlgorithmAPI.java" 
     binary="false">    
-    <position height="99" width="291" x="439" y="37"/>    
+    <position height="131" width="291" x="439" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -20,7 +20,7 @@
   </class>  
   <class id="3" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.decisionAlgorithm.MovingAverage" 
     project="AutoTrading" file="/AutoTrading/src/business/algorithm/decisionAlgorithm/MovingAverage.java" binary="false">    
-    <position height="179" width="361" x="450" y="379"/>    
+    <position height="195" width="361" x="62" y="411"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -28,7 +28,7 @@
   </class>  
   <class id="4" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.decisionAlgorithm.Order" 
     project="AutoTrading" file="/AutoTrading/src/business/algorithm/decisionAlgorithm/Order.java" binary="false">    
-    <position height="243" width="161" x="329" y="737"/>    
+    <position height="243" width="161" x="319" y="785"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -37,7 +37,7 @@
   <class id="5" corner="BOTTOM_RIGHT" language="java" 
     name="business.algorithm.decisionAlgorithm.OutputForDecisionAlgorithm" project="AutoTrading" 
     file="/AutoTrading/src/business/algorithm/decisionAlgorithm/OutputForDecisionAlgorithm.java" binary="false">    
-    <position height="99" width="250" x="58" y="598"/>    
+    <position height="99" width="250" x="48" y="646"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -46,35 +46,12 @@
   <class id="6" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.decisionAlgorithm.PerfectAlgorithm" 
     project="AutoTrading" file="/AutoTrading/src/business/algorithm/decisionAlgorithm/PerfectAlgorithm.java" 
     binary="false">    
-    <position height="99" width="329" x="81" y="379"/>    
+    <position height="115" width="329" x="463" y="411"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <dependency>    
-    <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="5"/>  
-  </dependency>  
-  <dependency>    
-    <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="5"/>  
-  </dependency>  
-  <dependency>    
-    <bendpoint x="469" y="176"/>    
-    <end type="SOURCE" nodeId="2"/>    
-    <end type="TARGET" nodeId="3"/>  
-  </dependency>  
-  <dependency>    
-    <bendpoint x="338" y="598"/>    
-    <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="4"/>  
-  </dependency>  
-  <dependency>    
-    <bendpoint x="398" y="598"/>    
-    <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="4"/>  
-  </dependency>  
   <association>    
     <end type="SOURCE" nodeId="5" navigable="false">      
       <attribute name="orderList">        
@@ -88,26 +65,49 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <dependency>    
-    <bendpoint x="448" y="176"/>    
-    <end type="SOURCE" nodeId="2"/>    
-    <end type="TARGET" nodeId="6"/>  
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="5"/>  
   </dependency>  
-  <generalization>    
-    <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </generalization>  
+  <dependency>    
+    <bendpoint x="31" y="411"/>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
   <generalization>    
     <end type="SOURCE" nodeId="6"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <dependency>    
-    <bendpoint x="50" y="379"/>    
-    <end type="SOURCE" nodeId="1"/>    
-    <end type="TARGET" nodeId="5"/>  
+    <bendpoint x="469" y="208"/>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="6"/>  
   </dependency>  
   <dependency>    
     <end type="SOURCE" nodeId="2"/>    
     <end type="TARGET" nodeId="1"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <bendpoint x="448" y="208"/>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </generalization>  
+  <dependency>    
+    <bendpoint x="400" y="646"/>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </dependency>  
+  <dependency>    
+    <bendpoint x="328" y="646"/>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="4"/>  
   </dependency>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    

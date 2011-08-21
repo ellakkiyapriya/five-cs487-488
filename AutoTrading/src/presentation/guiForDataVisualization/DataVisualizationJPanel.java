@@ -89,7 +89,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         decAlgJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Decision Algorithm"));
 
-        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.decisionAlgorithmList));
+        decAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.DECISION_ALGORITHM_LIST));
         decAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decAlgJComboBoxActionPerformed(evt);
@@ -134,7 +134,7 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
 
         preAlgJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Prediction Algorithm"));
 
-        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.PredictAlgorithmAPI.predictionAlgorithmList));
+        preAlgJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.algorithm.predictAlgorithm.PredictAlgorithmAPI.PREDICTION_ALGORITHM_LIST));
         preAlgJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preAlgJComboBoxActionPerformed(evt);

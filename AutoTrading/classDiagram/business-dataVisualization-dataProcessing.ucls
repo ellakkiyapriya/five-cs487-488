@@ -3,7 +3,7 @@
   <class id="1" corner="BOTTOM_RIGHT" language="java" 
     name="business.dataVisualization.dataProcessing.DataVisualizationProcessor" project="AutoTrading" 
     file="/AutoTrading/src/business/dataVisualization/dataProcessing/DataVisualizationProcessor.java" binary="false">    
-    <position height="-1" width="-1" x="270" y="312"/>    
+    <position height="563" width="321" x="41" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    

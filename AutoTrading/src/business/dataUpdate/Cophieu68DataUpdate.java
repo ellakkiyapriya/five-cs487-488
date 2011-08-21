@@ -22,7 +22,7 @@ import dataAccess.databaseManagement.manager.PriceManager;
 public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
 	private Date latestDate;
-	
+
 	public Cophieu68DataUpdate() {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -62,7 +62,7 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		// create BufferedReader to read csv file
 		BufferedReader br;
 		try {
-//			String fileName = "company.csv";
+			// String fileName = "company.csv";
 			br = new BufferedReader(new FileReader(fileName));
 
 			// TODO Auto-generated catch block
@@ -202,7 +202,8 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		this.latestDate = utility.Utility.increaseDate(this.latestDate);
 		while (this.latestDate.before(currentDate)) {
 			for (String exchangeName : this.exchangeNameList) {
-				HttpURLConnection uc = initConnection(exchangeName, this.latestDate);
+				HttpURLConnection uc = initConnection(exchangeName,
+						this.latestDate);
 				try {
 					BufferedReader br = new BufferedReader(
 							new InputStreamReader(uc.getInputStream()));
@@ -236,9 +237,10 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 							if (assetEntity != null) {
 								PriceEntity priceEntity = new PriceEntity(
 										assetEntity.getAssetID(),
-										new java.sql.Date(this.latestDate.getTime()),
+										new java.sql.Date(this.latestDate
+												.getTime()),
 										null, volume, close, open, high, low);
-								
+
 								priceManager.add(priceEntity);
 							}
 						}
@@ -283,7 +285,8 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 				while ((strLine = br.readLine()) != null) {
 					splitString = strLine.split(",");
 					tempDate = df.parse(splitString[1]);
-					if ((tempDate.after(currentDate)) || (tempDate.before(lastDate)))
+					if ((tempDate.after(currentDate))
+							|| (tempDate.before(lastDate)))
 						break;
 					open = Double.valueOf(splitString[2]);
 					high = Double.valueOf(splitString[3]);
@@ -303,48 +306,46 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		return true;
 	}
 
-	
-	
 	@Override
 	public boolean updateDateFromDateToDate(AssetEntity assetEntity,
 			Date fromDate, Date toDate) {
 		// TODO Auto-generated method stub
 		ExchangeManager exchangeManager = new ExchangeManager();
-		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByID(assetEntity.getExchangeID());
+		ExchangeEntity exchangeEntity = exchangeManager
+				.getExchangeByID(assetEntity.getExchangeID());
 		PriceManager priceManager = new PriceManager();
 		Date currentDate = fromDate;
 		HttpURLConnection uc;
-//		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-		while (!currentDate.after(toDate))
-		{
+		// DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		while (!currentDate.after(toDate)) {
 			uc = initConnection(exchangeEntity.getName(), currentDate);
 			try {
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(uc.getInputStream()));
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						uc.getInputStream()));
 
 				double open, high, low, close;
 				double volume;
-//				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				// DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 				String strLine;
-//				String symbol;
-				
-//				String strDate = dateFormat.format(this.latestDate);
+				// String symbol;
+
+				// String strDate = dateFormat.format(this.latestDate);
 				String[] splitString;
 				// Open an output stream
 				br.readLine();
 				while ((strLine = br.readLine()) != null) {
 					splitString = strLine.split(",");
 					if (splitString[0].equals(assetEntity.getSymbol())) {
-//						symbol = splitString[0];
+						// symbol = splitString[0];
 						open = Double.valueOf(splitString[2]);
 						high = Double.valueOf(splitString[3]);
 						low = Double.valueOf(splitString[4]);
 						close = Double.valueOf(splitString[5]);
 						volume = Integer.valueOf(splitString[6]);
 						PriceEntity priceEntity = new PriceEntity(
-								assetEntity.getAssetID(),
-								new java.sql.Date(currentDate.getTime()),
-								null, volume, close, open, high, low);
+								assetEntity.getAssetID(), new java.sql.Date(
+										currentDate.getTime()), null, volume,
+								close, open, high, low);
 						priceManager.add(priceEntity);
 					}
 				}
