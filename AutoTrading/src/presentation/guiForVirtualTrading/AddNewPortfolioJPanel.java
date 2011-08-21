@@ -20,6 +20,7 @@ import presentation.mainJFrame;
 import business.virtualTrading.PortfolioEntry;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
+import java.util.Date;
 
 /**
  *
@@ -32,6 +33,7 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
 	private JDialog parent = null;
     private PortfolioEntry portfolioEntry;
+    private Date currentDate;
     private boolean add = false;
 
     public boolean isAdd() {
@@ -43,8 +45,9 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
     }
     
     /** Creates new form AddNewPortfolioJPanel */
-    public AddNewPortfolioJPanel(JDialog jDialog) {
+    public AddNewPortfolioJPanel(JDialog jDialog, Date currentDate) {
         this.parent = jDialog;
+        this.currentDate = currentDate;
         initComponents();
         initOtherComponents();
     }
@@ -180,6 +183,7 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
         add = true;
         
         portfolioEntry = new PortfolioEntry((AssetEntity) assetJComboBox.getSelectedItem(), (Double)buyPriceJSpinner.getValue(), (Double)volumeJSpinner.getValue());
+        portfolioEntry.updateCurrentPriceToDate(currentDate);
 
         this.parent.dispose();
     }//GEN-LAST:event_addJButtonActionPerformed

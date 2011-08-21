@@ -14,6 +14,7 @@ package presentation.guiForDecisionAlgorithmEvaluation;
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JDialog;
 import presentation.guiForVirtualTrading.AddNewPortfolioJPanel;
 import presentation.guiForVirtualTrading.PortfolioTableModel;
@@ -30,12 +31,14 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
 	private JDialog parent = null;
     private User newUser;
+    private Date currentDate;
     private ArrayList<PortfolioEntry> portfolioEntryList = new ArrayList<PortfolioEntry>();
     private boolean ok = false;
     
     /** Creates new form ImportPortfolioJPanel */
-    public ImportPortfolioJPanel(JDialog jDialog) {
+    public ImportPortfolioJPanel(JDialog jDialog, Date currentDate) {
          this.parent = jDialog;
+         this.currentDate = currentDate;
         initComponents();
         initOtherComponents();
     }
@@ -208,7 +211,7 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
 
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
-        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog);
+        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog, currentDate);
         jDialog.add(addNewPortfolioJPanel);
         jDialog.pack();
         return jDialog;

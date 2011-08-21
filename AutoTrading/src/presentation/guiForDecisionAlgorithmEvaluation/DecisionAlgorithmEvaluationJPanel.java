@@ -570,7 +570,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
     public JDialog newImportPortfolioJDialog() {
         JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
-        importPortfolioJPanel = new ImportPortfolioJPanel(jDialog);
+        importPortfolioJPanel = new ImportPortfolioJPanel(jDialog, fromDate);
         jDialog.add(importPortfolioJPanel);
         jDialog.pack();
         return jDialog;
