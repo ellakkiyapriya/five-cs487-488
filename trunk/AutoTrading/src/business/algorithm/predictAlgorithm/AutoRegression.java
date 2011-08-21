@@ -11,9 +11,9 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 
 public class AutoRegression extends AbstractPredictAlgorithm {
 
-	public Double confidenceLevel;
-	public Integer MA_period;
-	public Integer AR_period;
+	private Double confidenceLevel;
+	private Integer MA_period;
+	private Integer AR_period;
 
 	public Double getConfidenceLevel() {
 		return confidenceLevel;
@@ -77,6 +77,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		this.MA_period = null;
 		this.AR_period = null;
 	}
+	
 	@Override
 	public OutputForPredictionAlgorithm runAlgorithm() throws Exception {
 		// TODO Auto-generated method stub
@@ -98,6 +99,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 			}
 			movingAverage.add(temp / MA_period);
 		}
+		
 		/*
 		 * Auto Regression step
 		 */
@@ -184,50 +186,50 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Auto Regression";
+		return "Auto Regression (MA)";
 	}
 
 	// need to revise here
-	public Date setStartPredictionDate(Date lastDate) {
-		return null;
-	}
+//	public Date setStartPredictionDate(Date lastDate) {
+//		return null;
+//	}
 
-	public static void main(String args[]) {
-		ArrayList<Double> priceList = new ArrayList<Double>();
-		priceList.add(23.0);
-		priceList.add(23.1);
-		priceList.add(24.0);
-		priceList.add(25.2);
-		priceList.add(24.8);
-		priceList.add(24.9);
-		priceList.add(24.7);
-		priceList.add(24.4);
-		priceList.add(24.4);
-		priceList.add(24.4);
-		int futureInterval = 10;
-		Double confidence_level = 0.9;
-		int MA_period = 3;
-		int AR_period = 3;
-		TreeMap<String, Object> map = new TreeMap<String, Object>();
-		map.put("Future interval", futureInterval);
-		map.put("Confidence level", confidence_level);
-		map.put("MA period", MA_period);
-		map.put("AR period", AR_period);
-		// AutoRegression ar = new AutoRegression();
-		/*
-		 * ar.setParametersValue(map); ar.setPriceList(priceList);
-		 */
-		try {
-
-			/*
-			 * ParamList output = ar.runAlgorithm(); for (int i = 0; i <
-			 * futureInterval; ++i) { OutputForAutoRegression temp =
-			 * (OutputForAutoRegression) output;
-			 * System.out.println(temp.getPredictionPrice().get(i)); }
-			 */
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
+//	public static void main(String args[]) {
+//		ArrayList<Double> priceList = new ArrayList<Double>();
+//		priceList.add(23.0);
+//		priceList.add(23.1);
+//		priceList.add(24.0);
+//		priceList.add(25.2);
+//		priceList.add(24.8);
+//		priceList.add(24.9);
+//		priceList.add(24.7);
+//		priceList.add(24.4);
+//		priceList.add(24.4);
+//		priceList.add(24.4);
+//		int futureInterval = 10;
+//		Double confidence_level = 0.9;
+//		int MA_period = 3;
+//		int AR_period = 3;
+//		TreeMap<String, Object> map = new TreeMap<String, Object>();
+//		map.put("Future interval", futureInterval);
+//		map.put("Confidence level", confidence_level);
+//		map.put("MA period", MA_period);
+//		map.put("AR period", AR_period);
+//		// AutoRegression ar = new AutoRegression();
+//		/*
+//		 * ar.setParametersValue(map); ar.setPriceList(priceList);
+//		 */
+//		try {
+//
+//			/*
+//			 * ParamList output = ar.runAlgorithm(); for (int i = 0; i <
+//			 * futureInterval; ++i) { OutputForAutoRegression temp =
+//			 * (OutputForAutoRegression) output;
+//			 * System.out.println(temp.getPredictionPrice().get(i)); }
+//			 */
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+//	}
 }

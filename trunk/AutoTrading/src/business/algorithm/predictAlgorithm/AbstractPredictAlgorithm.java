@@ -8,8 +8,8 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 
 
 public abstract class AbstractPredictAlgorithm {
-	TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList;
-	Integer futureInterval;
+	protected TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList;
+	protected Integer futureInterval;
 
 	public TreeMap<AssetEntity, ArrayList<PriceEntity>> getPriceList() {
 		return priceList;
