@@ -377,4 +377,15 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 			return null;
 		}
 	}
+	
+	public static void main (String[] args) {
+		AssetManager assetManager = new AssetManager();
+		ExchangeManager exchangeManager = new ExchangeManager();
+		
+		ArrayList<AssetEntity> listAssetEntities = assetManager.getAssetsByExchange(exchangeManager.getExchangeByName("HASTC").getExchangeID());
+		
+		for (AssetEntity assetEntity : listAssetEntities) {
+			
+		}
+	}
 }
