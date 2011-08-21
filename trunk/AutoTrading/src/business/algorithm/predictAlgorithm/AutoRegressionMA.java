@@ -187,7 +187,7 @@ public class AutoRegressionMA extends AbstractPredictAlgorithm {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Auto Regression (MA)";
+		return "Auto Regression (Moving Average)";
 	}
 
 	// need to revise here
