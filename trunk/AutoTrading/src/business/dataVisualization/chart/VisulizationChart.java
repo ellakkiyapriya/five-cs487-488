@@ -30,114 +30,137 @@ import business.algorithm.predictAlgorithm.PriceEntry;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
 /**
- *
+ * 
  * @author Dinh
  */
 public abstract class VisulizationChart {
-	public static final ChartStyle[] CHART_STYLES = {new ChartStyle(LineChart.class), new ChartStyle(CandleStickChart.class)};
-	
-    protected static final ArrayList<Color> predictingLineColors = new ArrayList<Color>();
-    protected JFreeChart chart;
-    protected XYDataset predictionDataset = new YIntervalSeriesCollection(),
-            markPointsDataset = new TimeSeriesCollection();
-    private HashMap<Object, Integer> mappingOrderSeries = new HashMap<Object, Integer>();
-    private HashMap<Object, Integer> mappingPredictionPriceSeries = new HashMap<Object, Integer>();
+	public static final ChartStyle[] CHART_STYLES = {
+			new ChartStyle(LineChart.class),
+			new ChartStyle(CandleStickChart.class) };
 
-    public void addOrders(AbstractDecisionAlgorithm decAlgo, ArrayList<Order> orders) {
+	protected static final ArrayList<Color> predictingLineColors = new ArrayList<Color>();
+	protected JFreeChart chart;
+	protected XYDataset predictionDataset = new YIntervalSeriesCollection(),
+			markPointsDataset = new TimeSeriesCollection();
+	private HashMap<Object, Integer> mappingOrderSeries = new HashMap<Object, Integer>();
+	private HashMap<Object, Integer> mappingPredictionPriceSeries = new HashMap<Object, Integer>();
 
-        //Utility.debug(orders.size());
+	public void addOrders(AbstractDecisionAlgorithm decAlgo,
+			ArrayList<Order> orders) {
 
-        TimeSeries buySeries = new TimeSeries("Buy Signals - "
-                + decAlgo.toString());
-        TimeSeries sellSeries = new TimeSeries("Sell Signals - "
-                + decAlgo.toString());
+		// Utility.debug(orders.size());
 
-        for (Order order : orders) {
-            if (order.isOrderType() == Order.ORDER_BUY) {
-                buySeries.add(new Day(order.getDate()), order.getPrice());
-            } else {
-                sellSeries.add(new Day(order.getDate()), order.getPrice());
-            }
-        }
+		TimeSeries buySeries = new TimeSeries("Buy Signals - "
+				+ decAlgo.toString());
+		TimeSeries sellSeries = new TimeSeries("Sell Signals - "
+				+ decAlgo.toString());
 
-        mappingOrderSeries.put(decAlgo, markPointsDataset.getSeriesCount());
-        ((TimeSeriesCollection) markPointsDataset).addSeries(buySeries);
-        ((TimeSeriesCollection) markPointsDataset).addSeries(sellSeries);
+		for (Order order : orders) {
+			if (order.isOrderType() == Order.ORDER_BUY) {
+				buySeries.add(new Day(order.getDate()), order.getPrice());
+			} else {
+				sellSeries.add(new Day(order.getDate()), order.getPrice());
+			}
+		}
 
-        XYPlot plot = chart.getXYPlot();
-        XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot.getRenderer(3);
-        xYLineAndShapeRenderer.setSeriesLinesVisible(
-                markPointsDataset.getSeriesCount() - 1, false);
-        xYLineAndShapeRenderer.setSeriesLinesVisible(
-                markPointsDataset.getSeriesCount() - 2, false);
-    }
+		mappingOrderSeries.put(decAlgo, markPointsDataset.getSeriesCount());
+		((TimeSeriesCollection) markPointsDataset).addSeries(buySeries);
+		((TimeSeriesCollection) markPointsDataset).addSeries(sellSeries);
 
-    public void addPredictionPrices(AbstractPredictAlgorithm algo,
-            ArrayList<PriceEntry> output) {
+		XYPlot plot = chart.getXYPlot();
+		XYLineAndShapeRenderer xYLineAndShapeRenderer = (XYLineAndShapeRenderer) plot
+				.getRenderer(3);
+		xYLineAndShapeRenderer.setSeriesLinesVisible(
+				markPointsDataset.getSeriesCount() - 1, false);
+		xYLineAndShapeRenderer.setSeriesLinesVisible(
+				markPointsDataset.getSeriesCount() - 2, false);
+	}
 
-        YIntervalSeries yintervalseries = new YIntervalSeries("Predict - " + algo.toString());
+	public void addPredictionPrices(AbstractPredictAlgorithm algo,
+			ArrayList<PriceEntry> output) {
 
-        for (PriceEntry entry : output) {
-            yintervalseries.add(entry.getDate().getTime(), entry.getPrice(),
-            		entry.getPrice(), entry.getPrice());
-        }
+		YIntervalSeries yintervalseries = new YIntervalSeries("Predict - "
+				+ algo.toString());
 
-        mappingPredictionPriceSeries.put(algo, predictionDataset.getSeriesCount());
-        ((YIntervalSeriesCollection) predictionDataset).addSeries(yintervalseries);
+		for (PriceEntry entry : output) {
+			yintervalseries.add(entry.getDate().getTime(), entry.getPrice(),
+					entry.getPrice(), entry.getPrice());
+		}
 
-        XYPlot plot = chart.getXYPlot();
-        DeviationRenderer deviationRenderer = (DeviationRenderer) plot.getRenderer(2);
-        deviationRenderer.setSeriesStroke(predictionDataset.getSeriesCount() - 1, new BasicStroke(3F, 1, 1));
+		mappingPredictionPriceSeries.put(algo,
+				predictionDataset.getSeriesCount());
+		((YIntervalSeriesCollection) predictionDataset)
+				.addSeries(yintervalseries);
 
-        Random random = new Random(Calendar.getInstance().getTimeInMillis());
-        while (predictingLineColors.size() < predictionDataset.getSeriesCount()) {
-            Color color = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-            while (predictingLineColors.contains(color)) {
-                color = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-            }
-            predictingLineColors.add(color);
-        }
+		XYPlot plot = chart.getXYPlot();
+		DeviationRenderer deviationRenderer = (DeviationRenderer) plot
+				.getRenderer(2);
+		deviationRenderer.setSeriesStroke(
+				predictionDataset.getSeriesCount() - 1, new BasicStroke(3F, 1,
+						1));
 
-        deviationRenderer.setSeriesFillPaint(predictionDataset.getSeriesCount() - 1, predictingLineColors.get(predictionDataset.getSeriesCount() - 1));
-        deviationRenderer.setSeriesPaint(predictionDataset.getSeriesCount() - 1, predictingLineColors.get(predictionDataset.getSeriesCount() - 1));
-    }
+		Random random = new Random(Calendar.getInstance().getTimeInMillis());
+		while (predictingLineColors.size() < predictionDataset.getSeriesCount()) {
+			Color color = new Color(random.nextInt(256), random.nextInt(256),
+					random.nextInt(256));
+			while (predictingLineColors.contains(color)) {
+				color = new Color(random.nextInt(256), random.nextInt(256),
+						random.nextInt(256));
+			}
+			predictingLineColors.add(color);
+		}
 
-    public void removeOrder(AbstractDecisionAlgorithm decAlgo) {
-        if (mappingOrderSeries.get(decAlgo) == null) {
-            return;
-        }
+		deviationRenderer.setSeriesFillPaint(
+				predictionDataset.getSeriesCount() - 1, predictingLineColors
+						.get(predictionDataset.getSeriesCount() - 1));
+		deviationRenderer.setSeriesPaint(
+				predictionDataset.getSeriesCount() - 1, predictingLineColors
+						.get(predictionDataset.getSeriesCount() - 1));
+	}
 
-        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
-        ((TimeSeriesCollection) markPointsDataset).removeSeries(mappingOrderSeries.get(decAlgo));
+	public void removeOrder(AbstractDecisionAlgorithm decAlgo) {
+		if (mappingOrderSeries.get(decAlgo) == null) {
+			return;
+		}
 
-        mappingOrderSeries.remove(decAlgo);
-    }
+		((TimeSeriesCollection) markPointsDataset)
+				.removeSeries(mappingOrderSeries.get(decAlgo));
+		((TimeSeriesCollection) markPointsDataset)
+				.removeSeries(mappingOrderSeries.get(decAlgo));
 
-    public void removeAllOrders() {
-        ((TimeSeriesCollection) markPointsDataset).removeAllSeries();
-        mappingOrderSeries.clear();
-    }
+		mappingOrderSeries.remove(decAlgo);
+	}
 
-    public void removePredictionPrice(AbstractPredictAlgorithm abstractPredictAlgorithm) {
-        if (mappingPredictionPriceSeries.get(abstractPredictAlgorithm) == null) {
-            return;
-        }
+	public void removeAllOrders() {
+		((TimeSeriesCollection) markPointsDataset).removeAllSeries();
+		mappingOrderSeries.clear();
+	}
 
-        ((YIntervalSeriesCollection) predictionDataset).removeSeries(mappingPredictionPriceSeries.get(abstractPredictAlgorithm));
+	public void removePredictionPrice(
+			AbstractPredictAlgorithm abstractPredictAlgorithm) {
+		if (mappingPredictionPriceSeries.get(abstractPredictAlgorithm) == null) {
+			return;
+		}
 
-        mappingPredictionPriceSeries.remove(abstractPredictAlgorithm);
-    }
+		((YIntervalSeriesCollection) predictionDataset)
+				.removeSeries(mappingPredictionPriceSeries
+						.get(abstractPredictAlgorithm));
 
-    public void removeAllPredictionPrice() {
-        ((YIntervalSeriesCollection) predictionDataset).removeAllSeries();
-        mappingPredictionPriceSeries.clear();
-    }
+		mappingPredictionPriceSeries.remove(abstractPredictAlgorithm);
+	}
 
-    public JFreeChart getChart() {
-        return chart;
-    };
+	public void removeAllPredictionPrice() {
+		((YIntervalSeriesCollection) predictionDataset).removeAllSeries();
+		mappingPredictionPriceSeries.clear();
+	}
 
-    public abstract void setPrices(ArrayList<PriceEntity> prices);
-    public abstract void initalChart();
-    public abstract void updateChart();
+	public JFreeChart getChart() {
+		return chart;
+	};
+
+	public abstract void setPrices(ArrayList<PriceEntity> prices);
+
+	public abstract void initalChart();
+
+	public abstract void updateChart();
 }

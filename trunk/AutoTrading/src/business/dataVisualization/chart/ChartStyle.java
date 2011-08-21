@@ -6,27 +6,27 @@
 package business.dataVisualization.chart;
 
 /**
- *
+ * 
  * @author Dinh
  */
 public class ChartStyle {
 
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	private Class chartClass;
 
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	public ChartStyle(Class chartClass) {
-        this.chartClass = chartClass;
-    }
+		this.chartClass = chartClass;
+	}
 
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	public Class getChartClass() {
-        return chartClass;
-    }
+		return chartClass;
+	}
 
-    @Override
-    public String toString() {
-        return chartClass.getSimpleName();
-    }
-    
+	@Override
+	public String toString() {
+		return chartClass.getSimpleName();
+	}
+
 }

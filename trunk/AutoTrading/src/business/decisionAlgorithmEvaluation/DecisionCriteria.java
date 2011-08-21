@@ -41,19 +41,25 @@ import business.virtualTrading.User;
  */
 
 /**
- * Use the following method to convert an order of OutputOfDecisionAlgorithm to parameter of DecisionCiriteria
- * <li> // if the order does not associate with a specific asset then it will use this AssetEntity  
- * <li> TreeMap<String, Object> toParamOfDecisionCriteria(AssetEntity)
+ * Use the following method to convert an order of OutputOfDecisionAlgorithm to
+ * parameter of DecisionCiriteria <li>// if the order does not associate with a
+ * specific asset then it will use this AssetEntity <li>TreeMap<String, Object>
+ * toParamOfDecisionCriteria(AssetEntity)
  * 
  */
 public abstract class DecisionCriteria {
-	User user;
-	TreeMap<String, Object> paramList;
-	
+	protected User user;
+	protected TreeMap<String, Object> paramList;
+
 	public abstract TreeMap<String, Double> evaluate();
+
 	public abstract void setParametersValue(TreeMap<String, Object> map);
+
 	@SuppressWarnings("rawtypes")
 	public abstract TreeMap<String, Class> getParametersList();
-	public abstract void setParametersValue(User user, ArrayList<Order> orderList, AssetEntity assetEntity);
+
+	public abstract void setParametersValue(User user,
+			ArrayList<Order> orderList, AssetEntity assetEntity);
+
 	public abstract String toString();
 }
