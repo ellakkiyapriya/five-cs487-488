@@ -1000,13 +1000,13 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 					AbstractPredictAlgorithm curPreAlg = (AbstractPredictAlgorithm) algListModel
 							.getElementAt(algIndex);
 
-					// curPreCriteria.setParametersValue(curPreAlg.runAlgorithm().getOutputValue());
-					curPreCriteria.setParametersValue(PredictionCriteria
+					curPreCriteria.setParametersValue(curPreAlg.runAlgorithm().getOutputValue());
+					/*curPreCriteria.setParametersValue(PredictionCriteria
 							.toParamOfPredictionCriteria(
 									(AssetEntity) assetJComboBox
 											.getSelectedItem(),
 									new java.sql.Date(startPreDate.getTime()),
-									curPreAlg.runAlgorithm()));
+									curPreAlg.runAlgorithm()));*/
 					output = curPreCriteria.evaluate();
 					CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(
 							output);
