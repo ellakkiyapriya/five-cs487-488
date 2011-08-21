@@ -307,6 +307,7 @@ public class AutoRegressionFE extends AbstractPredictAlgorithm{
 		 */
 
 		Date startPredictionDate = priceEntityList.get(priceEntityList.size() - 1).getDate();
+//		startPredictionDate = new java.sql.Date(utility.Utility.increaseDate(startPredictionDate).getTime());
 		ArrayList<PriceEntry> priceEntryList = Utility.constructPriceList(
 				asset, predictionPriceList, startPredictionDate);
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
