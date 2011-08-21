@@ -28,6 +28,7 @@ public class User {
 	private double profit;
 	private ArrayList<Order> curOrderList;
 	private ArrayList<PortfolioEntry> curPortfolioList;
+	private Date portfolioLatestDate;
 
 	/**
 	 * Constructor <li>userID is automatically created
@@ -135,6 +136,19 @@ public class User {
 							new java.util.Date().getTime())));
 		}
 	}
+	
+	public void addPortfolioToDatabase(Date date) {
+		PortfolioManager portfolioManager = new PortfolioManager();
+
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
+			portfolioManager.add(new PortfolioEntity(user.getUserID(),
+					curPortfolioEntry.getAsset().getAssetID(),
+					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
+							.getVolume(), date));
+		}
+		
+		portfolioLatestDate = new Date(date.getTime());
+	}
 
 	/**
 	 * Add orders to database and update portfolio in database <li>Note: this
@@ -144,6 +158,53 @@ public class User {
 		Calendar cal = Calendar.getInstance();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = Date.valueOf(dateFormat.format(cal.getTime()));
+
+		OrderManager orderManager = new OrderManager();
+		for (Order order : curOrderList) {
+			orderManager.add(new OrderEntity(order.getOrderType(), user
+					.getUserID(), date, order.getAsset().getAssetID(), order
+					.getPrice(), order.getVolume(), true));
+		}
+
+		this.executeOrder();
+
+		/*
+		 * Update portfolio
+		 */
+		PortfolioManager portfolioManager = new PortfolioManager();
+		Date latestDate = portfolioManager.getPortfolioLatestDateOfUserID(user
+				.getUserID());
+
+		if (latestDate.equals(date)) { // remove today's porfolio in database
+			ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
+					.getPortfolioByDateAndUserID(user.getUserID(),
+							portfolioManager.getLatestDate());
+			for (int i = 0; i < portfolioEntityList.size(); i++) {
+				portfolioManager.delete(portfolioEntityList.get(i)
+						.getPortfolioID());
+			}
+		}
+
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) { // add
+																	// today's
+																	// portfolio
+																	// entries
+			portfolioManager.add(new PortfolioEntity(user.getUserID(),
+					curPortfolioEntry.getAsset().getAssetID(),
+					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
+							.getVolume(), date));
+		}
+
+	}
+	
+	/**
+	 * Add orders to database and update portfolio in database <li>Note: this
+	 * method updates database
+	 */
+	public void addOrderToDatabase(Date date) {
+//		Calendar cal = Calendar.getInstance();
+//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = Date.valueOf(dateFormat.format(cal.getTime()));
 
 		OrderManager orderManager = new OrderManager();
 		for (Order order : curOrderList) {
