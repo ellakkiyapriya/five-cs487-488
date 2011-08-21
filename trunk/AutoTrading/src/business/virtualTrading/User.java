@@ -125,7 +125,7 @@ public class User {
 		return portfolioList;
 	}
 
-	public void addPortfolioToDatabase() {
+/*	public void addPortfolioToDatabase() {
 		PortfolioManager portfolioManager = new PortfolioManager();
 
 		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
@@ -135,7 +135,7 @@ public class User {
 							.getVolume(), new java.sql.Date(
 							new java.util.Date().getTime())));
 		}
-	}
+	}*/
 	
 	public void addPortfolioToDatabase(Date date) {
 		PortfolioManager portfolioManager = new PortfolioManager();
@@ -154,7 +154,7 @@ public class User {
 	 * Add orders to database and update portfolio in database <li>Note: this
 	 * method updates database
 	 */
-	public void addOrderToDatabase() {
+	/*public void addOrderToDatabase() {
 		Calendar cal = Calendar.getInstance();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = Date.valueOf(dateFormat.format(cal.getTime()));
@@ -168,9 +168,9 @@ public class User {
 
 		this.executeOrder();
 
-		/*
+		
 		 * Update portfolio
-		 */
+		 
 		PortfolioManager portfolioManager = new PortfolioManager();
 		Date latestDate = portfolioManager.getPortfolioLatestDateOfUserID(user
 				.getUserID());
@@ -195,7 +195,7 @@ public class User {
 							.getVolume(), date));
 		}
 
-	}
+	}*/
 	
 	/**
 	 * Add orders to database and update portfolio in database <li>Note: this
