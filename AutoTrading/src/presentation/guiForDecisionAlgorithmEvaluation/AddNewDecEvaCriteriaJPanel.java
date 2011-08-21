@@ -50,7 +50,7 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
         decEvlCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         decEvlCriJLabel.setText("Decision Evaluation Criteria:");
 
-        decEvlCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.decisionAlgorithmEvaluation.Utility.PREDICTION_CRITERIA_LIST));
+        decEvlCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.decisionAlgorithmEvaluation.DecisionAlgorithmEvaluationAPI.DECISION_CRITERIA_LIST));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +107,7 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         ok = true;
         
-        decisionCriteria = business.decisionAlgorithmEvaluation.Utility.getPredictionAlgorithm((String)decEvlCriJComboBox.getSelectedItem());
+        decisionCriteria = business.decisionAlgorithmEvaluation.DecisionAlgorithmEvaluationAPI.getPredictionAlgorithm((String)decEvlCriJComboBox.getSelectedItem());
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed

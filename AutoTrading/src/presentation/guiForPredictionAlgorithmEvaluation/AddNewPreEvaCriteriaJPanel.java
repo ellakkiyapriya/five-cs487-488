@@ -60,7 +60,7 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
         preEvaCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         preEvaCriJLabel.setText("Prediction Evaluation Criteria:");
 
-        preEvaCriJComboBox.setModel(new DefaultComboBoxModel(business.predictionAlgorithmEvaluation.Utility.predictionCriteriaList));
+        preEvaCriJComboBox.setModel(new DefaultComboBoxModel(business.predictionAlgorithmEvaluation.Utility.PREDICTION_CRITERIA_LIST));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
