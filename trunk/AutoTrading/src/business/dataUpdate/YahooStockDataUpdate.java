@@ -23,36 +23,36 @@ import dataAccess.databaseManagement.manager.PriceManager;
 public class YahooStockDataUpdate extends AbstractDataUpdate {
 
 	private Date oldestDate = null;
-	
-	public YahooStockDataUpdate()
-	{
+
+	public YahooStockDataUpdate() {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		try 
-		{
+		try {
 			this.oldestDate = dateFormat.parse("1-1-2011");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		this.exchangeNameList = new ArrayList<String>();
-		this.exchangeNameList.add("NASDAQ");		
-		
+		this.exchangeNameList.add("NASDAQ");
+
 		this.fileNameList = null;
 		this.description = null;
 	}
-	
+
 	@Override
 	public boolean updateHistoricalData() {
 		AssetManager assetManager = new AssetManager();
 		ExchangeManager exchangeManager = new ExchangeManager();
-		
-		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
-		
-		ArrayList<AssetEntity> assetEntityList = assetManager.getAssetsByExchange(exchangeEntity.getExchangeID());
+
+		ExchangeEntity exchangeEntity = exchangeManager
+				.getExchangeByName(this.exchangeNameList.get(0));
+
+		ArrayList<AssetEntity> assetEntityList = assetManager
+				.getAssetsByExchange(exchangeEntity.getExchangeID());
 		for (AssetEntity assetEntity : assetEntityList)
 			updateDateFromDateToDate(assetEntity, oldestDate, new Date());
-		return true;		
+		return true;
 	}
 
 	@Override
@@ -61,17 +61,20 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		AssetManager assetManager = new AssetManager();
 		PriceManager priceManager = new PriceManager();
 		ExchangeManager exchangeManager = new ExchangeManager();
-		
-		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName(this.exchangeNameList.get(0));
-		
-		ArrayList<AssetEntity> assetEntityList = assetManager.getAssetsByExchange(exchangeEntity.getExchangeID());
+
+		ExchangeEntity exchangeEntity = exchangeManager
+				.getExchangeByName(this.exchangeNameList.get(0));
+
+		ArrayList<AssetEntity> assetEntityList = assetManager
+				.getAssetsByExchange(exchangeEntity.getExchangeID());
 		Date latestDate;
-		for (AssetEntity assetEntity : assetEntityList)
-		{
-			latestDate = priceManager.getLatestDateOfAsset((int)assetEntity.getAssetID());
+		for (AssetEntity assetEntity : assetEntityList) {
+			latestDate = priceManager.getLatestDateOfAsset((int) assetEntity
+					.getAssetID());
 			if (latestDate == null)
 				latestDate = oldestDate;
-			updateDateFromDateToDate(assetEntity, utility.Utility.increaseDate(latestDate), new Date());
+			updateDateFromDateToDate(assetEntity,
+					utility.Utility.increaseDate(latestDate), new Date());
 		}
 		return true;
 	}
@@ -115,15 +118,16 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 	}
 
 	@Override
-	public boolean updateDateFromDateToDate(AssetEntity assetEntity, Date fromDate, Date toDate)
-	{
-		// TODO Auto-generated method stub		
+	public boolean updateDateFromDateToDate(AssetEntity assetEntity,
+			Date fromDate, Date toDate) {
+		// TODO Auto-generated method stub
 		PriceManager priceManager = new PriceManager();
-				
+
 		HttpURLConnection uc = initConnection(assetEntity, fromDate, toDate);
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-			
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					uc.getInputStream()));
+
 			double open, high, low, close;
 			double volume;
 			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -132,7 +136,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 			String[] splitString;
 			String[] str;
 			br.readLine();
-			
+
 			while ((strLine = br.readLine()) != null) {
 				splitString = strLine.split(",");
 				strDate = splitString[0];
@@ -144,40 +148,47 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 				low = Double.valueOf(splitString[3]);
 				close = Double.valueOf(splitString[4]);
 				volume = Double.valueOf(splitString[5]);
-				
-				PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(), new java.sql.Date(date.getTime()), null, volume, close, open, high, low);
+
+				PriceEntity priceEntity = new PriceEntity(
+						assetEntity.getAssetID(), new java.sql.Date(
+								date.getTime()), null, volume, close, open,
+						high, low);
 				priceManager.add(priceEntity);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
-	public HttpURLConnection initConnection(AssetEntity assetEntity, Date fromDate, Date toDate) {
+
+	public HttpURLConnection initConnection(AssetEntity assetEntity,
+			Date fromDate, Date toDate) {
 		try {
 			String link = "http://ichart.finance.yahoo.com/table.csv?s=";
 			Calendar cal = Calendar.getInstance();
-			
+
 			link = link.concat(assetEntity.getSymbol() + "&d=");
-			
+
 			cal.setTime(toDate);
-			
-			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1) + "&e=");
+
+			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1)
+					+ "&e=");
 			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&f=");
-			link = link.concat(String.valueOf(cal.get(Calendar.YEAR)) + "&g=d&a=");
-			
+			link = link.concat(String.valueOf(cal.get(Calendar.YEAR))
+					+ "&g=d&a=");
+
 			cal.setTime(fromDate);
-			
-			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1) + "&b=");
+
+			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1)
+					+ "&b=");
 			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&c=");
-			link = link.concat(String.valueOf(cal.get(Calendar.YEAR)) + "&ignore=.csv");
-			
+			link = link.concat(String.valueOf(cal.get(Calendar.YEAR))
+					+ "&ignore=.csv");
+
 			URL url = new URL(link);
 			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
 			uc.setRequestProperty("User-Agent", "");
@@ -187,5 +198,5 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 			return null;
 		}
 	}
-	
+
 }

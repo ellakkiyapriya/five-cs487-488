@@ -16,7 +16,7 @@ public abstract class AbstractDecisionAlgorithm {
 		this.priceList = priceList;
 	}
 
-	TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList;
+	protected TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList;
 
 	public TreeMap<AssetEntity, ArrayList<PriceEntity>> getPriceList() {
 		return priceList;
