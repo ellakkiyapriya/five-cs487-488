@@ -3,15 +3,16 @@
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="business.decisionAlgorithmEvaluation.DecisionCriteria" 
     project="AutoTrading" file="/AutoTrading/src/business/decisionAlgorithmEvaluation/DecisionCriteria.java" 
     binary="false">    
-    <position height="179" width="322" x="41" y="176"/>    
+    <position height="179" width="322" x="41" y="192"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="business.decisionAlgorithmEvaluation.Utility" 
-    project="AutoTrading" file="/AutoTrading/src/business/decisionAlgorithmEvaluation/Utility.java" binary="false">    
-    <position height="99" width="244" x="384" y="37"/>    
+  <class id="2" corner="BOTTOM_RIGHT" language="java" 
+    name="business.decisionAlgorithmEvaluation.DecisionAlgorithmEvaluationAPI" project="AutoTrading" 
+    file="/AutoTrading/src/business/decisionAlgorithmEvaluation/DecisionAlgorithmEvaluationAPI.java" binary="false">    
+    <position height="115" width="244" x="384" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -19,7 +20,7 @@
   </class>  
   <class id="3" corner="BOTTOM_RIGHT" language="java" name="business.decisionAlgorithmEvaluation.VsVNIndex" 
     project="AutoTrading" file="/AutoTrading/src/business/decisionAlgorithmEvaluation/VsVNIndex.java" binary="false">    
-    <position height="179" width="319" x="309" y="395"/>    
+    <position height="179" width="319" x="309" y="411"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -34,7 +35,7 @@
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <dependency>    
-    <bendpoint x="393" y="176"/>    
+    <bendpoint x="393" y="192"/>    
     <end type="SOURCE" nodeId="2"/>    
     <end type="TARGET" nodeId="3"/>  
   </dependency>  
