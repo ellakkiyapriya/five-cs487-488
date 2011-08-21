@@ -1,6 +1,14 @@
 package business.predictionAlgorithmEvaluation;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.TreeMap;
+
+import business.algorithm.predictAlgorithm.OutputForPredictionAlgorithm;
+import business.algorithm.predictAlgorithm.PriceEntry;
+import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.PriceEntity;
+import dataAccess.databaseManagement.manager.PriceManager;
 
 
 /*
@@ -20,20 +28,20 @@ public abstract class PredictionCriteria {
 
     TreeMap<String, Object> paramOfPreditionCriteria = new TreeMap<String, Object>();
 
-//    public static TreeMap<String, Object> toParamOfPredictionCriteria(AssetEntity assetEntity, Date startPredictingDate, OutputForPredictionAlgorithm output) {
-//        PriceManager priceManager = new PriceManager();
-//        ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
-//        TreeMap<Date, Double> priceList = new TreeMap<Date, Double>();
-//        int i = 0;
-//        for (PriceEntry priceEntry : output.getPredictionPriceList().firstEntry().getValue()) {
-//            priceList.put(priceEntityList.get(i).getDate(), priceEntry.getPrice());
-//            i++;
-//        }
-//        TreeMap<String, Object> map = new TreeMap<String, Object>();
-//        map.put("PriceList", priceList);
-//        map.put("Asset", assetEntity);
-//        return map;
-//    }
+    public static TreeMap<String, Object> toParamOfPredictionCriteria(AssetEntity assetEntity, Date startPredictingDate, OutputForPredictionAlgorithm output) {
+        PriceManager priceManager = new PriceManager();
+        ArrayList<PriceEntity> priceEntityList = priceManager.getPriceInInterval(assetEntity.getAssetID(), (java.sql.Date) startPredictingDate, priceManager.getLatestDate());
+        TreeMap<Date, Double> priceList = new TreeMap<Date, Double>();
+        int i = 0;
+        for (PriceEntry priceEntry : output.getPredictionPriceList().firstEntry().getValue()) {
+            priceList.put(priceEntityList.get(i).getDate(), priceEntry.getPrice());
+            i++;
+        }
+        TreeMap<String, Object> map = new TreeMap<String, Object>();
+        map.put("PriceList", priceList);
+        map.put("Asset", assetEntity);
+        return map;
+    }
 
     public abstract TreeMap<String, Double> evaluate();
 
