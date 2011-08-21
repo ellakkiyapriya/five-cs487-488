@@ -14,11 +14,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JDialog;
+import javax.swing.JSpinner;
 
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
-import javax.swing.JSpinner;
-import javax.swing.event.ChangeEvent;
 
 /**
  *
