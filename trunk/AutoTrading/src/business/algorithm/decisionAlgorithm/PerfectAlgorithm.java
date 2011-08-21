@@ -61,4 +61,9 @@ public class PerfectAlgorithm extends AbstractDecisionAlgorithm {
     	return new OutputForDecisionAlgorithm(orderList);
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Perfect Algorithm";
+	}
 }

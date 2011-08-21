@@ -113,4 +113,10 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
     	}
     	return new OutputForDecisionAlgorithm(orderList);
     }
+    
+    @Override
+    public String toString() {
+    	// TODO Auto-generated method stub
+    	return "Moving Average - " + MA_period ;
+    }
 }
