@@ -147,7 +147,7 @@ public class User {
 							.getVolume(), date));
 		}
 		
-		portfolioLatestDate = new Date(date.getTime());
+		setPortfolioLatestDate(new Date(date.getTime()));
 	}
 
 	/**
@@ -500,6 +500,14 @@ public class User {
 
 	public void setProfit(double profit) {
 		this.profit = profit;
+	}
+
+	public void setPortfolioLatestDate(Date portfolioLatestDate) {
+		this.portfolioLatestDate = portfolioLatestDate;
+	}
+
+	public Date getPortfolioLatestDate() {
+		return portfolioLatestDate;
 	}
 
 }
