@@ -9,16 +9,18 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.predictAlgorithm.AutoRegression" 
-    project="AutoTrading" file="/AutoTrading/src/business/algorithm/predictAlgorithm/AutoRegression.java" binary="false">    
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.predictAlgorithm.AutoRegressionMA" 
+    project="AutoTrading" file="/AutoTrading/src/business/algorithm/predictAlgorithm/AutoRegressionMA.java" 
+    binary="false">    
     <position height="323" width="469" x="1338" y="427"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="3" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.predictAlgorithm.FiniteElements" 
-    project="AutoTrading" file="/AutoTrading/src/business/algorithm/predictAlgorithm/FiniteElements.java" binary="false">    
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="business.algorithm.predictAlgorithm.AutoRegressionFE" 
+    project="AutoTrading" file="/AutoTrading/src/business/algorithm/predictAlgorithm/AutoRegressionFE.java" 
+    binary="false">    
     <position height="195" width="353" x="945" y="427"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      

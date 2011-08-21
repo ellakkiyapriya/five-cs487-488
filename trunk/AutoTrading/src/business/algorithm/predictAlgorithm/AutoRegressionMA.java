@@ -9,7 +9,7 @@ import Jama.Matrix;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
-public class AutoRegression extends AbstractPredictAlgorithm {
+public class AutoRegressionMA extends AbstractPredictAlgorithm {
 
 	private Double confidenceLevel;
 	private Integer MA_period;
@@ -61,7 +61,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 	
 	
 	
-	public AutoRegression(
+	public AutoRegressionMA(
 			TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
 			Integer futureInterval, Double confidenceLevel, Integer MA_period,
 			Integer AR_period) {
@@ -71,7 +71,7 @@ public class AutoRegression extends AbstractPredictAlgorithm {
 		this.AR_period = AR_period;
 	}
 
-	public AutoRegression() {
+	public AutoRegressionMA() {
 		super(null, null);
 		this.confidenceLevel = null;
 		this.MA_period = null;
