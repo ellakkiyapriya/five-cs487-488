@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -307,13 +308,11 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 	}
 
 	@Override
-	public boolean updateDateFromDateToDate(AssetEntity assetEntity,
+	public boolean updateDataFromDateToDate(ExchangeEntity exchangeEntity,
 			Date fromDate, Date toDate) {
 		// TODO Auto-generated method stub
-		ExchangeManager exchangeManager = new ExchangeManager();
-		ExchangeEntity exchangeEntity = exchangeManager
-				.getExchangeByID(assetEntity.getExchangeID());
 		PriceManager priceManager = new PriceManager();
+		AssetManager assetManager = new AssetManager();
 		Date currentDate = fromDate;
 		HttpURLConnection uc;
 		// DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -327,7 +326,7 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 				double volume;
 				// DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 				String strLine;
-				// String symbol;
+				String symbol;
 
 				// String strDate = dateFormat.format(this.latestDate);
 				String[] splitString;
@@ -335,19 +334,18 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 				br.readLine();
 				while ((strLine = br.readLine()) != null) {
 					splitString = strLine.split(",");
-					if (splitString[0].equals(assetEntity.getSymbol())) {
-						// symbol = splitString[0];
-						open = Double.valueOf(splitString[2]);
-						high = Double.valueOf(splitString[3]);
-						low = Double.valueOf(splitString[4]);
-						close = Double.valueOf(splitString[5]);
-						volume = Integer.valueOf(splitString[6]);
-						PriceEntity priceEntity = new PriceEntity(
-								assetEntity.getAssetID(), new java.sql.Date(
-										currentDate.getTime()), null, volume,
-								close, open, high, low);
-						priceManager.add(priceEntity);
-					}
+					symbol = splitString[0];
+					open = Double.valueOf(splitString[2]);
+					high = Double.valueOf(splitString[3]);
+					low = Double.valueOf(splitString[4]);
+					close = Double.valueOf(splitString[5]);
+					volume = Integer.valueOf(splitString[6]);
+					PriceEntity priceEntity = new PriceEntity(assetManager
+							.getAssetBySymbolAndExchange(symbol,
+									exchangeEntity.getName()).getAssetID(),
+							new java.sql.Date(currentDate.getTime()), null,
+							volume, close, open, high, low);
+					priceManager.add(priceEntity);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -377,15 +375,20 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 			return null;
 		}
 	}
-	
-	public static void main (String[] args) {
-		AssetManager assetManager = new AssetManager();
+
+	public static void main(String[] args) {
 		ExchangeManager exchangeManager = new ExchangeManager();
-		
-		ArrayList<AssetEntity> listAssetEntities = assetManager.getAssetsByExchange(exchangeManager.getExchangeByName("HASTC").getExchangeID());
-		
-		for (AssetEntity assetEntity : listAssetEntities) {
-			
-		}
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.set(2011, 6, 1);
+		Date startDate = calendar.getTime();
+
+		calendar.set(2011, 7, 1);
+		Date endDate = calendar.getTime();
+
+		Cophieu68DataUpdate cophieu68DataUpdate = new Cophieu68DataUpdate();
+
+		cophieu68DataUpdate.updateDataFromDateToDate(exchangeManager.getExchangeByName("HASTC"), startDate,
+				endDate);
 	}
 }
