@@ -9,7 +9,7 @@ import Jama.Matrix;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
-public class FiniteElements extends AbstractPredictAlgorithm{
+public class AutoRegressionFE extends AbstractPredictAlgorithm{
 
 	private ArrayList<double[]> cubicTrialFunctions = new ArrayList<double[]>();
 	private Matrix coMatrix1; // coefficient matrix of linear system: phi(0)=?; phi'(0)=?;phi(1)=?; phi'(1)=?
@@ -203,7 +203,7 @@ public class FiniteElements extends AbstractPredictAlgorithm{
 	
 	
 	
-	public FiniteElements(
+	public AutoRegressionFE(
 			TreeMap<AssetEntity, ArrayList<PriceEntity>> priceList,
 			Integer futureInterval, Double confidenceLevel, Integer MA_period,
 			Integer AR_period) {
@@ -212,7 +212,7 @@ public class FiniteElements extends AbstractPredictAlgorithm{
 		this.AR_period = AR_period;
 	}
 
-	public FiniteElements() {
+	public AutoRegressionFE() {
 		super(null, null);
 		this.confidenceLevel = null;
 		this.AR_period = null;

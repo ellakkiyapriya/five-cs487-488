@@ -7,9 +7,9 @@ public class PredictAlgorithmAPI {
 
 	public static AbstractPredictAlgorithm getPredictionAlgorithm(String str) {
 		if (str.equals("Auto Regression")) {
-			return (new AutoRegression());
+			return (new AutoRegressionMA());
 		} else if (str.equals("Finite Elements")) {
-			return (new FiniteElements());
+			return (new AutoRegressionFE());
 		}
 		return null;
 	}
