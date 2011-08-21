@@ -50,7 +50,7 @@ public class AddNewDecEvaCriteriaJPanel extends javax.swing.JPanel {
         decEvlCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         decEvlCriJLabel.setText("Decision Evaluation Criteria:");
 
-        decEvlCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.decisionAlgorithmEvaluation.Utility.predictionCriteriaList));
+        decEvlCriJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.decisionAlgorithmEvaluation.Utility.PREDICTION_CRITERIA_LIST));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {

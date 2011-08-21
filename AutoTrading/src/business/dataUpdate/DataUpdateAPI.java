@@ -1,6 +1,6 @@
 package business.dataUpdate;
 
-public class Utility {
+public class DataUpdateAPI {
 	private static final String COPHIEU68 = "Cophieu68";
 	private static final String YAHOO_STOCK = "YahooStockDataUpdate";
 	

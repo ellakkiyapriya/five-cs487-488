@@ -11,7 +11,7 @@
 package presentation.guiForDataUpdate;
 
 import business.dataUpdate.AbstractDataUpdate;
-import business.dataUpdate.Utility;
+import business.dataUpdate.DataUpdateAPI;
 import dataAccess.databaseManagement.manager.PriceManager;
 
 /**
@@ -54,7 +54,7 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 
         sourceJLabel.setText("Source:");
 
-        sourceJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.dataUpdate.Utility.ONLINE_RESOURCES));
+        sourceJComboBox.setModel(new javax.swing.DefaultComboBoxModel(business.dataUpdate.DataUpdateAPI.ONLINE_RESOURCES));
 
         lastUpdateJLabel.setText("Last Update:");
 
@@ -95,7 +95,7 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
             @Override
             public void run() {
                 lastUpdateJLabel.setText("Updating ....");
-                AbstractDataUpdate dataUpdate = Utility.getDataUpdate((String) sourceJComboBox.getSelectedItem());
+                AbstractDataUpdate dataUpdate = DataUpdateAPI.getDataUpdate((String) sourceJComboBox.getSelectedItem());
                 dataUpdate.updateData();                
                 lastUpdateJLabel.setText("Last Update: " + priceManager.getLatestDate().toString());
             }
