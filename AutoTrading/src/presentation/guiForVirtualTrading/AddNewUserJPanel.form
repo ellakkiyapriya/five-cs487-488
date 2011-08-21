@@ -34,8 +34,18 @@
                           <Component id="cashRemainJSpinner" max="32767" attributes="1"/>
                           <Component id="userNameJTextField" alignment="0" pref="143" max="32767" attributes="1"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="vndJLabel" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="vndJLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                              <Component id="currentDateJLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="currentDateJSpinner" pref="144" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -51,7 +61,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace pref="407" max="32767" attributes="0"/>
@@ -69,6 +79,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="userNameJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="userNameJTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="currentDateJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="currentDateJSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -87,12 +99,12 @@
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="162" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelJButton" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="okJButton" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -190,5 +202,18 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="currentDateJLabel">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Current Date:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="currentDateJSpinner">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="currentDateJSpinner.setEditor(new JSpinner.DateEditor(currentDateJSpinner, &quot;MM/dd/yyyy&quot;));"/>
+      </AuxValues>
+    </Component>
   </SubComponents>
 </Form>

@@ -300,7 +300,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="783" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="809" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -337,7 +337,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="chartContainerJPanel" alignment="0" pref="783" max="32767" attributes="0"/>
+                      <Component id="chartContainerJPanel" alignment="0" pref="809" max="32767" attributes="0"/>
                       <Component id="refreshJButton1" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="symbolOptionJPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -377,11 +377,11 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="fromJLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fromDateJSpinner" min="-2" pref="91" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="fromDateJSpinner" linkSize="5" min="-2" pref="121" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="toDateJLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="toDateJSpinner" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="toDateJSpinner" linkSize="5" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="chartStyleJLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
