@@ -17,8 +17,9 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="3" corner="BOTTOM_RIGHT" language="java" name="business.predictionAlgorithmEvaluation.Utility" 
-    project="AutoTrading" file="/AutoTrading/src/business/predictionAlgorithmEvaluation/Utility.java" binary="false">    
+  <class id="3" corner="BOTTOM_RIGHT" language="java" 
+    name="business.predictionAlgorithmEvaluation.PredictionAlgorithmEvaluationAPI" project="AutoTrading" 
+    file="/AutoTrading/src/business/predictionAlgorithmEvaluation/PredictionAlgorithmEvaluationAPI.java" binary="false">    
     <position height="99" width="250" x="566" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      

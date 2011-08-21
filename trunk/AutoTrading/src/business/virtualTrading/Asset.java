@@ -10,7 +10,7 @@ import dataAccess.databaseManagement.entity.AssetEntity;
  * @author Xuan Ngoc
  */
 public class Asset {
-	AssetEntity assetEntity;
+	private AssetEntity assetEntity;
 
 	public Asset(String name, String symbol, long exchangeID, String assetInfo,
 			double fluctuationRange) {
@@ -21,11 +21,11 @@ public class Asset {
 	public Asset(AssetEntity assetEntity) {
 		this.assetEntity = assetEntity;
 	}
-	
+
 	public Asset(Asset assetEntity) {
 		this.assetEntity = assetEntity.getAssetEntity();
 	}
-	
+
 	public AssetEntity getAssetEntity() {
 		return assetEntity;
 	}
@@ -53,15 +53,15 @@ public class Asset {
 	public String getSymbol() {
 		return assetEntity.getSymbol();
 	}
-	
+
 	public long getExchangeID() {
 		return assetEntity.getExchangeID();
 	}
-	
+
 	public String getAssetInfo() {
 		return assetEntity.getAssetInfo();
 	}
-	
+
 	public double getFluctuationRange() {
 		return assetEntity.getFluctuationRange();
 	}

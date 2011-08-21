@@ -28,22 +28,22 @@ public class ExchangeManager {
 		String queryString = "INSERT INTO exchange(exchange_id, name, fluctuation_range) VALUES(?,?,?)";
 		try {
 			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+			ptmt = connection.prepareStatement(queryString,
+					Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
 			ptmt.setString(2, exchangeEntity.getName());
 			ptmt.setDouble(3, exchangeEntity.getFluctuationRange());
 			ptmt.executeUpdate();
-			
+
 			ResultSet rs = ptmt.getGeneratedKeys();
 			long autoIncValue = -1;
-			
+
 			if (rs.next()) {
 				autoIncValue = rs.getLong(1);
 			}
-			
+
 			exchangeEntity.setExchangeID(autoIncValue);
 
-			
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -156,7 +156,7 @@ public class ExchangeManager {
 		}
 		return null;
 	}
-	
+
 	public ExchangeEntity getExchangeByName(String exchangeName) {
 		try {
 			ExchangeEntity exchangeEntity = null;
@@ -195,7 +195,6 @@ public class ExchangeManager {
 		}
 		return null;
 	}
-
 
 	public ArrayList<ExchangeEntity> getAllExchanges() {
 		try {

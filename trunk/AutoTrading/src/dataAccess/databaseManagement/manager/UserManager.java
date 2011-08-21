@@ -17,7 +17,7 @@ public class UserManager {
 
 	public UserManager() {
 	}
-	
+
 	private Connection getConnection() throws SQLException {
 		Connection conn;
 		conn = ConnectionFactory.getInstance().getConnection();
@@ -28,21 +28,22 @@ public class UserManager {
 		String queryString = "INSERT INTO user(user_id, name, cash) VALUES(?,?,?)";
 		try {
 			connection = getConnection();
-			ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+			ptmt = connection.prepareStatement(queryString,
+					Statement.RETURN_GENERATED_KEYS);
 			ptmt.setNull(1, java.sql.Types.INTEGER);
 			ptmt.setString(2, userEntity.getName());
 			ptmt.setDouble(3, userEntity.getCash());
 			ptmt.executeUpdate();
-			
+
 			ResultSet rs = ptmt.getGeneratedKeys();
 			long autoIncValue = -1;
-			
+
 			if (rs.next()) {
 				autoIncValue = rs.getLong(1);
 			}
-			
+
 			userEntity.setUserID(autoIncValue);
-			
+
 			System.out.println("Data Added Successfully");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -131,8 +132,7 @@ public class UserManager {
 				userEntity = new UserEntity();
 				userEntity.setUserID(userID);
 				userEntity.setName(resultSet.getString("name"));
-				userEntity.setCash(resultSet
-						.getDouble("cash"));
+				userEntity.setCash(resultSet.getDouble("cash"));
 			}
 
 			return userEntity;
@@ -170,8 +170,7 @@ public class UserManager {
 
 				userEntity.setUserID(resultSet.getLong("user_id"));
 				userEntity.setName(resultSet.getString("name"));
-				userEntity.setCash(resultSet
-						.getDouble("cash"));
+				userEntity.setCash(resultSet.getDouble("cash"));
 
 				listAllUsers.add(userEntity);
 			}
