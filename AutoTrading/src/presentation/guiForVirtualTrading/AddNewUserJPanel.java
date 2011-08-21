@@ -116,9 +116,10 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         portfolioJTable.setModel(new PortfolioTableModel());
         jScrollPane1.setViewportView(portfolioJTable);
 
-        currentDateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        currentDateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         currentDateJLabel.setText("Current Date:");
 
+        currentDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         currentDateJSpinner.setEditor(new JSpinner.DateEditor(currentDateJSpinner, "MM/dd/yyyy"));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
