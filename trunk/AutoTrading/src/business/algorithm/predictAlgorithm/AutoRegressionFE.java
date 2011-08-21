@@ -285,6 +285,8 @@ public class AutoRegressionFE extends AbstractPredictAlgorithm{
 		for (int i = AR_period; i > 0; --i) {
 			predictionPriceList.remove(0);
 		}
+		
+		predictionPriceList.set(0, priceEntityList.get(priceEntityList.size() - 1).getClose());
 
 		Matrix matrixC = matrixX.transpose().times(matrixX).inverse();
 		Double variance = utility.Utility.variance(smootingCurve);
@@ -304,9 +306,7 @@ public class AutoRegressionFE extends AbstractPredictAlgorithm{
 		 * lambda);
 		 */
 
-		Date lastDate = priceEntityList.get(priceEntityList.size() - 1)
-				.getDate();
-		Date startPredictionDate = new Date(utility.Utility.increaseDate(lastDate).getTime());
+		Date startPredictionDate = priceEntityList.get(priceEntityList.size() - 1).getDate();
 		ArrayList<PriceEntry> priceEntryList = Utility.constructPriceList(
 				asset, predictionPriceList, startPredictionDate);
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
