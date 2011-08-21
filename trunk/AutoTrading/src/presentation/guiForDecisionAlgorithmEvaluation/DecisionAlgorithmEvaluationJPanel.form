@@ -16,20 +16,20 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" max="-2" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="evaluationCriteriaJPanel" linkSize="7" max="32767" attributes="1"/>
                   <Component id="algorithmjPanel" linkSize="7" max="32767" attributes="1"/>
+                  <Component id="evaluationCriteriaJPanel" linkSize="7" max="32767" attributes="1"/>
                   <Component id="jPanel1" linkSize="7" alignment="0" max="32767" attributes="1"/>
                   <Component id="dateJPanel" linkSize="7" alignment="0" pref="323" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="initalPortfolioJPanel" linkSize="8" min="-2" max="-2" attributes="0"/>
-                  <Component id="comparisonTableJPanel" linkSize="8" alignment="0" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="initalPortfolioJPanel" max="32767" attributes="0"/>
+                  <Component id="comparisonTableJPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,10 +49,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="algorithmjPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="evaluationCriteriaJPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="evaluationCriteriaJPanel" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="38" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -172,17 +172,17 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane1" alignment="0" pref="191" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="addDecAlgjButton" linkSize="4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="removeDecAlgjButton" linkSize="4" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane1" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -378,7 +378,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="172" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="304" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -421,15 +421,15 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Component id="jScrollPane3" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="addDecEvaCriteriajButton" linkSize="6" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="removeDecEvaCriteriajButton" linkSize="6" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane3" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
