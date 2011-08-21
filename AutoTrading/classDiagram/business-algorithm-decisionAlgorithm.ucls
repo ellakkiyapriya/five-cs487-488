@@ -52,31 +52,25 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <association>    
-    <end type="SOURCE" nodeId="5" navigable="false">      
-      <attribute name="orderList">        
-        <position height="14" width="47" x="277" y="722"/>      
-      </attribute>      
-      <multiplicity minimum="0" maximum="2147483647">        
-        <position height="14" width="16" x="271" y="751"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" nodeId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <dependency>    
-    <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="5"/>  
+    <bendpoint x="448" y="208"/>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="3"/>  
   </dependency>  
   <dependency>    
     <bendpoint x="31" y="411"/>    
     <end type="SOURCE" nodeId="1"/>    
     <end type="TARGET" nodeId="5"/>  
   </dependency>  
-  <generalization>    
+  <dependency>    
+    <bendpoint x="400" y="646"/>    
     <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </generalization>  
+    <end type="TARGET" nodeId="4"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
   <dependency>    
     <bendpoint x="469" y="208"/>    
     <end type="SOURCE" nodeId="2"/>    
@@ -86,28 +80,34 @@
     <end type="SOURCE" nodeId="2"/>    
     <end type="TARGET" nodeId="1"/>  
   </dependency>  
+  <association>    
+    <end type="SOURCE" nodeId="5" navigable="false">      
+      <attribute name="orderList">        
+        <position height="14" width="47" x="267" y="770"/>      
+      </attribute>      
+      <multiplicity minimum="0" maximum="2147483647">        
+        <position height="14" width="16" x="251" y="791"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" nodeId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </generalization>  
   <dependency>    
+    <bendpoint x="328" y="646"/>    
     <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="5"/>  
-  </dependency>  
-  <dependency>    
-    <bendpoint x="448" y="208"/>    
-    <end type="SOURCE" nodeId="2"/>    
-    <end type="TARGET" nodeId="3"/>  
+    <end type="TARGET" nodeId="4"/>  
   </dependency>  
   <generalization>    
     <end type="SOURCE" nodeId="3"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <dependency>    
-    <bendpoint x="400" y="646"/>    
     <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="4"/>  
-  </dependency>  
-  <dependency>    
-    <bendpoint x="328" y="646"/>    
-    <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="4"/>  
+    <end type="TARGET" nodeId="5"/>  
   </dependency>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    
