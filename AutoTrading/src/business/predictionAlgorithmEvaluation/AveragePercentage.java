@@ -24,6 +24,7 @@ public class AveragePercentage extends PredictionCriteria {
 	public TreeMap<String, Double> evaluate() {
 		PriceManager priceManager = new PriceManager();
 
+		@SuppressWarnings("unchecked")
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> assetList = (TreeMap<AssetEntity, ArrayList<PriceEntry>>) paramOfPreditionCriteria
 				.get("Prediction price list");
 

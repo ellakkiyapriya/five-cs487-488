@@ -3,7 +3,7 @@ package business.dataUpdate;
 import java.util.ArrayList;
 import java.util.Date;
 
-import dataAccess.databaseManagement.entity.AssetEntity;
+import dataAccess.databaseManagement.entity.ExchangeEntity;
 
 public abstract class AbstractDataUpdate {
 	protected String description;
@@ -50,6 +50,6 @@ public abstract class AbstractDataUpdate {
 
 	public abstract boolean updateData();
 
-	public abstract boolean updateDateFromDateToDate(AssetEntity assetEntity,
+	public abstract boolean updateDataFromDateToDate(ExchangeEntity exchangeEntity,
 			Date fromDate, Date toDate);
 }

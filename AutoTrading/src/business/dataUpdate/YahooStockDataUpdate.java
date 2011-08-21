@@ -51,7 +51,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		ArrayList<AssetEntity> assetEntityList = assetManager
 				.getAssetsByExchange(exchangeEntity.getExchangeID());
 		for (AssetEntity assetEntity : assetEntityList)
-			updateDateFromDateToDate(assetEntity, oldestDate, new Date());
+			updateDataFromDateToDate(assetEntity, oldestDate, new Date());
 		return true;
 	}
 
@@ -73,7 +73,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 					.getAssetID());
 			if (latestDate == null)
 				latestDate = oldestDate;
-			updateDateFromDateToDate(assetEntity,
+			updateDataFromDateToDate(assetEntity,
 					utility.Utility.increaseDate(latestDate), new Date());
 		}
 		return true;
@@ -117,10 +117,8 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 		return true;
 	}
 
-	@Override
-	public boolean updateDateFromDateToDate(AssetEntity assetEntity,
+	public boolean updateDataFromDateToDate(AssetEntity assetEntity,
 			Date fromDate, Date toDate) {
-		// TODO Auto-generated method stub
 		PriceManager priceManager = new PriceManager();
 
 		HttpURLConnection uc = initConnection(assetEntity, fromDate, toDate);
@@ -161,7 +159,21 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 			return false;
 		}
 
-		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean updateDataFromDateToDate(ExchangeEntity exchangeEntity,
+			Date fromDate, Date toDate) {
+		AssetManager assetManager = new AssetManager();
+
+		ArrayList<AssetEntity> assetEntities = assetManager
+				.getAssetsByExchange(exchangeEntity.getExchangeID());
+
+		for (AssetEntity assetEntity : assetEntities) {
+			updateDataFromDateToDate(assetEntity, fromDate, toDate);
+		}
+
 		return true;
 	}
 
