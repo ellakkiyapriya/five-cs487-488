@@ -1,8 +1,8 @@
 package business.predictionAlgorithmEvaluation;
 
-public class Utility {
+public class PredictionAlgorithmEvaluationAPI {
 	private static final String RESIDUAL_SUM_SQUARES = "Residual Sum of Squares";
-		
+
 	public static final String[] PREDICTION_CRITERIA_LIST = { RESIDUAL_SUM_SQUARES };
 
 	public static PredictionCriteria getPredictionAlgorithm(String str) {

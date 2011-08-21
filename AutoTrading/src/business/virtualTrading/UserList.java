@@ -8,14 +8,14 @@ import dataAccess.databaseManagement.manager.PortfolioManager;
 import dataAccess.databaseManagement.manager.UserManager;
 
 public class UserList {
-	ArrayList<User> userList;
-	
+	private ArrayList<User> userList;
+
 	public UserList() {
 		UserManager userManager = new UserManager();
 		PortfolioManager portfolioManager = new PortfolioManager();
 		userList = new ArrayList<User>();
 		UserEntity curUser;
-		
+
 		ArrayList<UserEntity> userEntityList = userManager.getAllUsers();
 		for (int i = 0; i < userEntityList.size(); i++) {
 			curUser = userEntityList.get(i);
@@ -28,20 +28,20 @@ public class UserList {
 			userList.add(new User(curUser, portfolioEntityList));
 		}
 	}
-	
+
 	public void removeUser(User user) {
 		this.userList.remove(user);
 	}
-	
+
 	public void removeUserFromDatabase(User user) {
-            user.removeFromDatabase();
-            userList.remove(user);
-        }
-	
+		user.removeFromDatabase();
+		userList.remove(user);
+	}
+
 	public ArrayList<User> getUserList() {
 		return userList;
 	}
-	
+
 	public void setUserList(ArrayList<User> userList) {
 		this.userList = userList;
 	}

@@ -33,8 +33,9 @@ public class PortfolioEntry {
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), priceManager.getLatestDate()).getClose()); // TODO getLatestPriceByAssetID(assetID)
-		profit = (this.currentPrice - this.buyPrice) / this.buyPrice*100;
+				asset.getAssetID(), priceManager.getLatestDate()).getClose()); // TODO
+																				// getLatestPriceByAssetID(assetID)
+		profit = (this.currentPrice - this.buyPrice) / this.buyPrice * 100;
 	}
 
 	public PortfolioEntry(AssetEntity asset, double buyPrice, double volume) {
@@ -46,35 +47,37 @@ public class PortfolioEntry {
 				asset.getAssetID(), priceManager.getLatestDate()).getClose());
 		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
-	
-	public PortfolioEntry(PortfolioEntity portfolioEntity ) {
+
+	public PortfolioEntry(PortfolioEntity portfolioEntity) {
 		PriceManager priceManager = new PriceManager();
 		AssetManager assetManager = new AssetManager();
-		this.asset = new Asset(assetManager.getAssetByID(portfolioEntity.getAssetID()));
+		this.asset = new Asset(assetManager.getAssetByID(portfolioEntity
+				.getAssetID()));
 		this.buyPrice = portfolioEntity.getPrice();
 		this.volume = portfolioEntity.getVolume();
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), portfolioEntity.getDate()).getClose());
 		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
-	
+
 	/**
 	 * 
-	 * @param volume < 0 if buyOrderType, volume > 0 if sellOrderType
+	 * @param volume
+	 *            < 0 if buyOrderType, volume > 0 if sellOrderType
 	 * @param price
-	 * @return
-	 *  > 0 if sell all  
+	 * @return > 0 if sell all
 	 */
-	public double updatePortfolio(double volume, double price) { 
+	public double updatePortfolio(double volume, double price) {
 		double validVolume = this.volume + volume;
-		if (validVolume > 0) { 
-			this.buyPrice = (price*volume +this.buyPrice * this.volume) /validVolume;
+		if (validVolume > 0) {
+			this.buyPrice = (price * volume + this.buyPrice * this.volume)
+					/ validVolume;
 			this.volume = validVolume;
 			return -1;
 		}
 		return this.volume;
 	}
-	
+
 	public double getPortfolioValue() {
 		return buyPrice * volume;
 	}
@@ -123,15 +126,16 @@ public class PortfolioEntry {
 	public void setCurrentPrice(double currentPrice) {
 		this.currentPrice = currentPrice;
 	}
-	
+
 	public void updateCurrentPriceToDate(Date date) {
 		PriceManager priceManager = new PriceManager();
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), new java.sql.Date (date.getTime())).getClose());
+				asset.getAssetID(), new java.sql.Date(date.getTime()))
+				.getClose());
 	}
 
 	public double getCurrentPrice() {
 		return currentPrice;
 	}
-	
+
 }

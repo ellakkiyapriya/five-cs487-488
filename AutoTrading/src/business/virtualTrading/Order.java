@@ -1,7 +1,5 @@
 package business.virtualTrading;
 
-
-
 import dataAccess.databaseManagement.entity.AssetEntity;
 
 /**
@@ -26,7 +24,7 @@ public class Order {
 	private boolean matched;
 
 	public static final int USE_ALL_CASH = -1;
-	
+
 	public Order() {
 
 	}
@@ -39,8 +37,9 @@ public class Order {
 		this.setValue(price * volume);
 		this.setMatched(false);
 	}
-	
-	public Order(AssetEntity asset, boolean orderType, double price, double volume) {
+
+	public Order(AssetEntity asset, boolean orderType, double price,
+			double volume) {
 		this.asset = new Asset(asset);
 		this.setOrderType(orderType);
 		this.setPrice(price);
@@ -56,7 +55,7 @@ public class Order {
 	public boolean isOrderType() {
 		return orderType;
 	}
-	
+
 	public boolean getOrderType() {
 		return orderType;
 	}
@@ -102,5 +101,5 @@ public class Order {
 	public boolean getMatched() {
 		return matched;
 	}
-	
+
 }

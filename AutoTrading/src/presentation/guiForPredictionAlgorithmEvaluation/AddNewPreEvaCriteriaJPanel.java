@@ -60,7 +60,7 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
         preEvaCriJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         preEvaCriJLabel.setText("Prediction Evaluation Criteria:");
 
-        preEvaCriJComboBox.setModel(new DefaultComboBoxModel(business.predictionAlgorithmEvaluation.Utility.PREDICTION_CRITERIA_LIST));
+        preEvaCriJComboBox.setModel(new DefaultComboBoxModel(business.predictionAlgorithmEvaluation.PredictionAlgorithmEvaluationAPI.PREDICTION_CRITERIA_LIST));
 
         cancelJButton.setText("Cancel");
         cancelJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +117,7 @@ public class AddNewPreEvaCriteriaJPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         ok = true;
 
-        predictionCriteria = business.predictionAlgorithmEvaluation.Utility.getPredictionAlgorithm((String)preEvaCriJComboBox.getSelectedItem());
+        predictionCriteria = business.predictionAlgorithmEvaluation.PredictionAlgorithmEvaluationAPI.getPredictionAlgorithm((String)preEvaCriJComboBox.getSelectedItem());
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed

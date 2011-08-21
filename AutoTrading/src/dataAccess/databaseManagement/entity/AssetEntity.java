@@ -4,84 +4,85 @@ import java.io.Serializable;
 
 public class AssetEntity implements Serializable, Comparable<AssetEntity> {
 
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = -1106350892914906725L;
-    
-    private long assetID;
-    private String name;
-    private String symbol;
-    private long exchangeID;
-    private String assetInfo;
-    private double fluctuationRange;
+	private static final long serialVersionUID = -1106350892914906725L;
 
-    public AssetEntity() {
-    }
+	private long assetID;
+	private String name;
+	private String symbol;
+	private long exchangeID;
+	private String assetInfo;
+	private double fluctuationRange;
 
-    public AssetEntity(String name, String symbol, long exchangeID, String assetInfo, double fluctuationRange) {
-        this.name = name;
-        this.symbol = symbol;
-        this.exchangeID = exchangeID;
-        this.assetInfo = assetInfo;
-        this.fluctuationRange = fluctuationRange;
-    }
+	public AssetEntity() {
+	}
 
-    public void setAssetID(long assetID) {
-        this.assetID = assetID;
-    }
+	public AssetEntity(String name, String symbol, long exchangeID,
+			String assetInfo, double fluctuationRange) {
+		this.name = name;
+		this.symbol = symbol;
+		this.exchangeID = exchangeID;
+		this.assetInfo = assetInfo;
+		this.fluctuationRange = fluctuationRange;
+	}
 
-    public long getAssetID() {
-        return assetID;
-    }
+	public void setAssetID(long assetID) {
+		this.assetID = assetID;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public long getAssetID() {
+		return assetID;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getSymbol() {
-        return symbol;
-    }
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
 
-    public void setExchangeID(long exchangeID) {
-        this.exchangeID = exchangeID;
-    }
+	public String getSymbol() {
+		return symbol;
+	}
 
-    public long getExchangeID() {
-        return exchangeID;
-    }
+	public void setExchangeID(long exchangeID) {
+		this.exchangeID = exchangeID;
+	}
 
-    public void setAssetInfo(String assetInfo) {
-        this.assetInfo = assetInfo;
-    }
+	public long getExchangeID() {
+		return exchangeID;
+	}
 
-    public String getAssetInfo() {
-        return assetInfo;
-    }
+	public void setAssetInfo(String assetInfo) {
+		this.assetInfo = assetInfo;
+	}
 
-    public void setFluctuationRange(double fluctuationRange) {
-        this.fluctuationRange = fluctuationRange;
-    }
+	public String getAssetInfo() {
+		return assetInfo;
+	}
 
-    public double getFluctuationRange() {
-        return fluctuationRange;
-    }
+	public void setFluctuationRange(double fluctuationRange) {
+		this.fluctuationRange = fluctuationRange;
+	}
 
-    @Override
-    public String toString() {
-        return symbol;
-    }
+	public double getFluctuationRange() {
+		return fluctuationRange;
+	}
 
-    @Override
-    public int compareTo(AssetEntity o) {
-        return new Long(assetID).compareTo(o.assetID);
-    }
+	@Override
+	public String toString() {
+		return symbol;
+	}
+
+	@Override
+	public int compareTo(AssetEntity o) {
+		return new Long(assetID).compareTo(o.assetID);
+	}
 }
