@@ -17,6 +17,8 @@ import javax.swing.JSpinner;
 
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
+import dataAccess.databaseManagement.entity.PriceEntity;
+import dataAccess.databaseManagement.manager.PriceManager;
 
 /**
  *
@@ -32,6 +34,9 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     private User newUser;
     private ArrayList<PortfolioEntry> portfolioEntryList;
     private boolean add = false;
+    private boolean hasData;
+
+    private static PriceManager priceManager = new PriceManager();
 
     public boolean isAdd() {
         return add;
@@ -70,6 +75,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         portfolioJTable = new javax.swing.JTable();
         currentDateJLabel = new javax.swing.JLabel();
         currentDateJSpinner = new javax.swing.JSpinner();
+        notificationJLabel = new javax.swing.JLabel();
 
         userNameJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         userNameJLabel.setText("User Name:");
@@ -120,6 +126,13 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
         currentDateJSpinner.setModel(new javax.swing.SpinnerDateModel());
         currentDateJSpinner.setEditor(new JSpinner.DateEditor(currentDateJSpinner, "MM/dd/yyyy"));
+        currentDateJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                currentDateJSpinnerStateChanged(evt);
+            }
+        });
+
+        notificationJLabel.setText("We don't have data on this date");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -142,7 +155,9 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(vndJLabel))
+                                .addComponent(vndJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                                .addComponent(notificationJLabel))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(76, 76, 76)
                                 .addComponent(currentDateJLabel)
@@ -184,7 +199,8 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cashRemainJLabel)
                     .addComponent(cashRemainJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vndJLabel))
+                    .addComponent(vndJLabel)
+                    .addComponent(notificationJLabel))
                 .addGap(18, 18, 18)
                 .addComponent(portfolioJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -256,6 +272,15 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
 //GEN-LAST:event_portfolioDateJSpinnerStateChanged
 
+    private void currentDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_currentDateJSpinnerStateChanged
+        java.util.Date currentDate = (java.util.Date) currentDateJSpinner.getValue();
+        ArrayList<PriceEntity> priceEntities = priceManager.getPriceByDate(new java.sql.Date(currentDate.getTime()));
+        hasData = (priceEntities.size() > 0);
+        addPortfolioEntryJButton.setVisible(hasData);
+        removePortfolioEntryJButton.setVisible(hasData);
+        notificationJLabel.setVisible(!hasData);
+    }//GEN-LAST:event_currentDateJSpinnerStateChanged
+
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
         addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog, (java.util.Date) currentDateJSpinner.getValue());
@@ -272,6 +297,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel currentDateJLabel;
     private javax.swing.JSpinner currentDateJSpinner;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel notificationJLabel;
     private javax.swing.JButton okJButton;
     private javax.swing.JLabel portfolioJLabel;
     private javax.swing.JTable portfolioJTable;
@@ -286,6 +312,10 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     private void initOtherComponents() {
         newAddNewPortfolioJDialog();
         portfolioEntryList = new ArrayList<PortfolioEntry>();
+        
+        hasData = false;
+        addPortfolioEntryJButton.setVisible(hasData);
+        removePortfolioEntryJButton.setVisible(hasData);
     }
 
     public JDialog getParentDialog() {

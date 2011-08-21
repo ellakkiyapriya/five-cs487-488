@@ -38,6 +38,8 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="vndJLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="94" max="32767" attributes="0"/>
+                              <Component id="notificationJLabel" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
@@ -87,6 +89,7 @@
                   <Component id="cashRemainJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cashRemainJSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="vndJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="notificationJLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="portfolioJLabel" min="-2" max="-2" attributes="0"/>
@@ -216,9 +219,17 @@
           <SpinnerModel initial="now" stepSize="5" type="date"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="currentDateJSpinnerStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="currentDateJSpinner.setEditor(new JSpinner.DateEditor(currentDateJSpinner, &quot;MM/dd/yyyy&quot;));"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="notificationJLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="We don&apos;t have data on this date"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

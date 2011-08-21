@@ -234,9 +234,59 @@ public class PriceManager {
 		return null;
 	}
 
+        public ArrayList<PriceEntity> getPriceByDate(Date date) {
+		try {
+			ArrayList<PriceEntity> priceEntities = new ArrayList<PriceEntity>();
+
+			String queryString = "SELECT * FROM price WHERE date=?";
+			connection = getConnection();
+			ptmt = connection.prepareStatement(queryString);
+			ptmt.setDate(2, date);
+			resultSet = ptmt.executeQuery();
+
+                        while (resultSet.next()) {
+				PriceEntity priceEntity = new PriceEntity();
+				priceEntity.setPriceID(resultSet.getLong("price_id"));
+				priceEntity.setAssetID(resultSet.getLong("asset_id"));
+				priceEntity.setDate(resultSet.getDate("date"));
+				priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
+				priceEntity.setVolume(resultSet.getDouble("volume"));
+				priceEntity.setOpen(resultSet.getDouble("open"));
+				priceEntity.setClose(resultSet.getDouble("close"));
+				priceEntity.setHigh(resultSet.getDouble("high"));
+				priceEntity.setLow(resultSet.getDouble("low"));
+
+                                priceEntities.add(priceEntity);
+			}
+
+			return priceEntities;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (ptmt != null) {
+					ptmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+	}
+
+
 	// public PriceEntity getStartedPriceOfAssetID(long assetID) {
 	// try {
-	// PriceEntity priceEntity = null;
+	// PriceEntity priceEntities = null;
 	//
 	// String queryString =
 	// "SELECT min(date) FROM (SELECT * FROM price WHERE asset_id=?)";
@@ -247,19 +297,19 @@ public class PriceManager {
 	// resultSet = ptmt.executeQuery();
 	//
 	// if (resultSet.next()) {
-	// priceEntity = new PriceEntity();
-	// priceEntity.setPriceID(resultSet.getLong("price_id"));
-	// priceEntity.setAssetID(resultSet.getLong("asset_id"));
-	// priceEntity.setDate(resultSet.getDate("date"));
-	// priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
-	// priceEntity.setVolume(resultSet.getDouble("volume"));
-	// priceEntity.setOpen(resultSet.getDouble("open"));
-	// priceEntity.setClose(resultSet.getDouble("close"));
-	// priceEntity.setHigh(resultSet.getDouble("high"));
-	// priceEntity.setLow(resultSet.getDouble("low"));
+	// priceEntities = new PriceEntity();
+	// priceEntities.setPriceID(resultSet.getLong("price_id"));
+	// priceEntities.setAssetID(resultSet.getLong("asset_id"));
+	// priceEntities.setDate(resultSet.getDate("date"));
+	// priceEntities.setDeliveryDate(resultSet.getDate("delivery_date"));
+	// priceEntities.setVolume(resultSet.getDouble("volume"));
+	// priceEntities.setOpen(resultSet.getDouble("open"));
+	// priceEntities.setClose(resultSet.getDouble("close"));
+	// priceEntities.setHigh(resultSet.getDouble("high"));
+	// priceEntities.setLow(resultSet.getDouble("low"));
 	// }
 	//
-	// return priceEntity;
+	// return priceEntities;
 	// } catch (SQLException e) {
 	// e.printStackTrace();
 	// } finally {
