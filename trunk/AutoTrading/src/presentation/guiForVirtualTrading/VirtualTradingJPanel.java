@@ -477,6 +477,10 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_executeJButtonActionPerformed
 
     private void nextCurrentDateJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextCurrentDateJButtonActionPerformed
+        if (selectedUser == null) {
+            return;
+        }
+
         OrderTableModel orderTableModel = (OrderTableModel) todayOrderJTable.getModel();
         selectedUser.setCurOrderList(new ArrayList<Order>());
         orderTableModel.setData(selectedUser.getCurOrderList());
