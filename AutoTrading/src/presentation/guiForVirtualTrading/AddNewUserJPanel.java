@@ -10,7 +10,6 @@
  */
 package presentation.guiForVirtualTrading;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JDialog;
@@ -223,7 +222,8 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
         //Add user to database
         newUser.add();
-        newUser.addPortfolioToDatabase((Date) currentDateJSpinner.getValue());
+        java.util.Date currentDate = (java.util.Date) currentDateJSpinner.getValue();
+        newUser.addPortfolioToDatabase(new java.sql.Date(currentDate.getTime()));
 
         this.parent.dispose();
     }//GEN-LAST:event_okJButtonActionPerformed
