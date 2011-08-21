@@ -258,7 +258,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
-        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog);
+        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog, (java.util.Date) currentDateJSpinner.getValue());
         jDialog.add(addNewPortfolioJPanel);
         jDialog.pack();
         return jDialog;
