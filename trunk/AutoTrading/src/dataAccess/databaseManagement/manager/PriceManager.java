@@ -513,6 +513,24 @@ public class PriceManager {
 		return latestDate;
 	}
 
+	public Date getNextDate(Date date) {
+		Date nextDate = null;
+
+		try {
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT min(date) FROM price WHERE date > " + date.toString());
+			resultSet.next();
+			nextDate = resultSet.getDate(1);
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return nextDate;
+	}
+
+
 	public Date getLatestDateOfExchange(long exchangeID) {
 		Date latestDate = null;
 
