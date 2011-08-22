@@ -28,11 +28,12 @@ public class Utility {
 		while (dateList.size() < priceList.size())
 			dateList.add(utility.Utility.increaseDate(dateList.get(dateList
 					.size() - 1)));
+		
+//		System.out.println(String.valueOf(priceList.size()));
+//		for (Date date : dateList)
+//			System.out.println(date.toString());
+		
 		int i = 0;
-		System.out.println(String.valueOf(priceList.size()));
-
-		for (Date date : dateList)
-			System.out.println(date.toString());
 		for (double d : priceList) {
 			priceEntryList.add(new PriceEntry(dateList.get(i), d));
 			i++;
