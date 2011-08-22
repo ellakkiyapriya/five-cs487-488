@@ -2,7 +2,7 @@
   associations="true" dependencies="true" nesting-relationships="true">  
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="presentation.guiForDataUpdate.DataUpdateJPanel" 
     project="AutoTrading" file="/AutoTrading/src/presentation/guiForDataUpdate/DataUpdateJPanel.java" binary="false">    
-    <position height="211" width="262" x="41" y="37"/>    
+    <position height="579" width="298" x="41" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    

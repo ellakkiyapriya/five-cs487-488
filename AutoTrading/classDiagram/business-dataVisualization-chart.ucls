@@ -36,6 +36,10 @@
     <end type="SOURCE" nodeId="3"/>    
     <end type="TARGET" nodeId="4"/>  
   </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
   <association>    
     <end type="SOURCE" nodeId="4" navigable="false">      
       <attribute name="CHART_STYLES"/>      
@@ -44,10 +48,6 @@
     <end type="TARGET" nodeId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization>    
-    <end type="SOURCE" nodeId="1"/>    
-    <end type="TARGET" nodeId="4"/>  
-  </generalization>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    
     <operations public="true" package="true" protected="true" private="true"/>  
