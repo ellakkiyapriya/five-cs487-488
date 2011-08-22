@@ -434,6 +434,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void importJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importJButtonActionPerformed
+        importPortfolioJPanel.setCurrentDate(fromDate);
         importPortfolioJPanel.getParentDialog().setVisible(true);
 
         if (!importPortfolioJPanel.isOk()) {
@@ -570,7 +571,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
     public JDialog newImportPortfolioJDialog() {
         JDialog jDialog = new JDialog(mainJFrame.mainFrame, true);
-        importPortfolioJPanel = new ImportPortfolioJPanel(jDialog, fromDate);
+        importPortfolioJPanel = new ImportPortfolioJPanel(jDialog);
         jDialog.add(importPortfolioJPanel);
         jDialog.pack();
         return jDialog;

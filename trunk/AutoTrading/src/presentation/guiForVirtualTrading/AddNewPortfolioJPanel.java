@@ -40,14 +40,22 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
         return add;
     }
 
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+        currentDateJLabel.setText(currentDate.toString());
+    }
+
     public PortfolioEntry getPortfolioEntry() {
         return portfolioEntry;
     }
     
     /** Creates new form AddNewPortfolioJPanel */
-    public AddNewPortfolioJPanel(JDialog jDialog, Date currentDate) {
+    public AddNewPortfolioJPanel(JDialog jDialog) {
         this.parent = jDialog;
-        this.currentDate = currentDate;
         initComponents();
         initOtherComponents();
     }
@@ -71,6 +79,7 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
         exchangeJComboBox = new javax.swing.JComboBox();
         assetJLabel = new javax.swing.JLabel();
         assetJComboBox = new javax.swing.JComboBox();
+        currentDateJLabel = new javax.swing.JLabel();
 
         buyPriceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         buyPriceJLabel.setText("Buy Price:");
@@ -118,13 +127,15 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
             }
         });
 
+        currentDateJLabel.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(exchangeJLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -144,6 +155,8 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(volumeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(currentDateJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addJButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelJButton)))
@@ -169,7 +182,8 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelJButton)
-                    .addComponent(addJButton))
+                    .addComponent(addJButton)
+                    .addComponent(currentDateJLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -209,6 +223,7 @@ public class AddNewPortfolioJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel buyPriceJLabel;
     private javax.swing.JSpinner buyPriceJSpinner;
     private javax.swing.JButton cancelJButton;
+    private javax.swing.JLabel currentDateJLabel;
     private javax.swing.JComboBox exchangeJComboBox;
     private javax.swing.JLabel exchangeJLabel;
     private javax.swing.JLabel vndJLabel;

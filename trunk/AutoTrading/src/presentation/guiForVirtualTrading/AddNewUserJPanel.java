@@ -237,7 +237,6 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
         //Add user to database
         newUser.add();
-        java.util.Date currentDate = (java.util.Date) currentDateJSpinner.getValue();
         newUser.addPortfolioToDatabase(new java.sql.Date(currentDate.getTime()));
 
         this.parent.dispose();
@@ -249,6 +248,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelJButtonActionPerformed
 
     private void addPortfolioEntryJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPortfolioEntryJButtonActionPerformed
+        addNewPortfolioJPanel.setCurrentDate(currentDate);
         addNewPortfolioJPanel.getDialogParent().setVisible(true);
 
         if (!addNewPortfolioJPanel.isAdd()) {
@@ -272,16 +272,17 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 //GEN-LAST:event_portfolioDateJSpinnerStateChanged
 
     private void currentDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_currentDateJSpinnerStateChanged
-        java.util.Date currentDate = (java.util.Date) currentDateJSpinner.getValue();
+        currentDate = (java.util.Date) currentDateJSpinner.getValue();
         hasData = priceManager.isAvailableDate(new java.sql.Date(currentDate.getTime()));
         addPortfolioEntryJButton.setVisible(hasData);
         removePortfolioEntryJButton.setVisible(hasData);
         notificationJLabel.setVisible(!hasData);
+        addNewPortfolioJPanel.setCurrentDate(currentDate);
     }//GEN-LAST:event_currentDateJSpinnerStateChanged
 
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
-        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog, (java.util.Date) currentDateJSpinner.getValue());
+        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog);
         jDialog.add(addNewPortfolioJPanel);
         jDialog.pack();
         return jDialog;
@@ -306,6 +307,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private AddNewPortfolioJPanel addNewPortfolioJPanel;
+    java.util.Date currentDate;
 
     private void initOtherComponents() {
         newAddNewPortfolioJDialog();
