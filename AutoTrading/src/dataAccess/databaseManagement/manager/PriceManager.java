@@ -241,7 +241,7 @@ public class PriceManager {
 			String queryString = "SELECT * FROM price WHERE date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setDate(2, date);
+			ptmt.setDate(1, date);
 			resultSet = ptmt.executeQuery();
 
                         while (resultSet.next()) {
