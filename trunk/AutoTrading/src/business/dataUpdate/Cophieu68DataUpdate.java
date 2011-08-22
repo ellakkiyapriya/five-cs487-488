@@ -9,7 +9,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -376,19 +375,21 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 		}
 	}
 
-	public static void main(String[] args) {
-		ExchangeManager exchangeManager = new ExchangeManager();
-		Calendar calendar = Calendar.getInstance();
-
-		calendar.set(2011, 6, 1);
-		Date startDate = calendar.getTime();
-
-		calendar.set(2011, 7, 1);
-		Date endDate = calendar.getTime();
-
-		Cophieu68DataUpdate cophieu68DataUpdate = new Cophieu68DataUpdate();
-
-		cophieu68DataUpdate.updateDataFromDateToDate(exchangeManager.getExchangeByName("HASTC"), startDate,
-				endDate);
-	}
+//	public static void main(String[] args) {
+//		ExchangeManager exchangeManager = new ExchangeManager();
+//		Calendar calendar = Calendar.getInstance();
+//
+//		calendar.set(2011, 5, 1);
+//		Date startDate = calendar.getTime();
+//		System.out.println(startDate.toString());
+//
+//		calendar.set(2011, 6, 1);
+//		Date endDate = calendar.getTime();
+//		System.out.println(endDate.toString());
+//
+//		Cophieu68DataUpdate cophieu68DataUpdate = new Cophieu68DataUpdate();
+//
+//		cophieu68DataUpdate.updateDataFromDateToDate(exchangeManager.getExchangeByName("HASTC"), startDate,
+//				endDate);
+//	}
 }
