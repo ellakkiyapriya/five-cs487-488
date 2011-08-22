@@ -274,8 +274,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
 
     private void currentDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_currentDateJSpinnerStateChanged
         java.util.Date currentDate = (java.util.Date) currentDateJSpinner.getValue();
-        ArrayList<PriceEntity> priceEntities = priceManager.getPriceByDate(new java.sql.Date(currentDate.getTime()));
-        hasData = (priceEntities.size() > 0);
+        hasData = priceManager.isAvailableDate(new java.sql.Date(currentDate.getTime()));
         addPortfolioEntryJButton.setVisible(hasData);
         removePortfolioEntryJButton.setVisible(hasData);
         notificationJLabel.setVisible(!hasData);

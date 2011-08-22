@@ -234,32 +234,15 @@ public class PriceManager {
 		return null;
 	}
 
-        public ArrayList<PriceEntity> getPriceByDate(Date date) {
+        public boolean isAvailableDate(Date date) {
 		try {
-			ArrayList<PriceEntity> priceEntities = new ArrayList<PriceEntity>();
-
 			String queryString = "SELECT * FROM price WHERE date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
 			ptmt.setDate(1, date);
 			resultSet = ptmt.executeQuery();
 
-                        while (resultSet.next()) {
-				PriceEntity priceEntity = new PriceEntity();
-				priceEntity.setPriceID(resultSet.getLong("price_id"));
-				priceEntity.setAssetID(resultSet.getLong("asset_id"));
-				priceEntity.setDate(resultSet.getDate("date"));
-				priceEntity.setDeliveryDate(resultSet.getDate("delivery_date"));
-				priceEntity.setVolume(resultSet.getDouble("volume"));
-				priceEntity.setOpen(resultSet.getDouble("open"));
-				priceEntity.setClose(resultSet.getDouble("close"));
-				priceEntity.setHigh(resultSet.getDouble("high"));
-				priceEntity.setLow(resultSet.getDouble("low"));
-
-                                priceEntities.add(priceEntity);
-			}
-
-			return priceEntities;
+			return resultSet.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -280,7 +263,7 @@ public class PriceManager {
 			}
 
 		}
-		return null;
+		return false;
 	}
 
 
