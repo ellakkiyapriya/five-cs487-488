@@ -153,7 +153,8 @@ public class AutoRegressionMA extends AbstractPredictAlgorithm {
 		for (int i = AR_period; i > 0; --i) {
 			predictionPriceList.remove(0);
 		}
-		predictionPriceList.set(0,
+		
+		predictionPriceList.add(0,
 				priceEntityList.get(priceEntityList.size() - 1).getClose());
 
 		Matrix matrixC = matrixX.transpose().times(matrixX).inverse();
