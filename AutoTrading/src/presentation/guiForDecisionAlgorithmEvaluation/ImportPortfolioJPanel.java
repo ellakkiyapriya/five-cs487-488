@@ -34,11 +34,21 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
     private Date currentDate;
     private ArrayList<PortfolioEntry> portfolioEntryList = new ArrayList<PortfolioEntry>();
     private boolean ok = false;
-    
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+        addNewPortfolioJPanel.setCurrentDate(currentDate);
+        currentDateJLabel.setText(currentDate.toString());
+    }
+
+
     /** Creates new form ImportPortfolioJPanel */
-    public ImportPortfolioJPanel(JDialog jDialog, Date currentDate) {
-         this.parent = jDialog;
-         this.currentDate = currentDate;
+    public ImportPortfolioJPanel(JDialog jDialog) {
+        this.parent = jDialog;
         initComponents();
         initOtherComponents();
     }
@@ -61,6 +71,7 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
         removeJButton = new javax.swing.JButton();
         cancelJButton = new javax.swing.JButton();
         okJButton = new javax.swing.JButton();
+        currentDateJLabel = new javax.swing.JLabel();
 
         cashRemainJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         cashRemainJLabel.setText("Cash Remain:");
@@ -103,6 +114,8 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
             }
         });
 
+        currentDateJLabel.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,7 +130,9 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cashRemainJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(vndJLabel))
+                                .addComponent(vndJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 270, Short.MAX_VALUE)
+                                .addComponent(currentDateJLabel))
                             .addComponent(portfolioJLabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -125,13 +140,12 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(removeJButton)
-                            .addComponent(addJButton))))
-                .addContainerGap(12, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(411, Short.MAX_VALUE)
-                .addComponent(okJButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelJButton)
+                            .addComponent(addJButton)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(411, Short.MAX_VALUE)
+                        .addComponent(okJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cancelJButton)))
                 .addContainerGap())
         );
 
@@ -146,7 +160,8 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cashRemainJLabel)
                     .addComponent(cashRemainJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vndJLabel))
+                    .addComponent(vndJLabel)
+                    .addComponent(currentDateJLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(portfolioJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -211,7 +226,7 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
 
     public JDialog newAddNewPortfolioJDialog() {
         JDialog jDialog = new JDialog(parent, true);
-        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog, currentDate);
+        addNewPortfolioJPanel = new AddNewPortfolioJPanel(jDialog);
         jDialog.add(addNewPortfolioJPanel);
         jDialog.pack();
         return jDialog;
@@ -236,6 +251,7 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
     private javax.swing.JButton cancelJButton;
     private javax.swing.JLabel cashRemainJLabel;
     private javax.swing.JSpinner cashRemainJSpinner;
+    private javax.swing.JLabel currentDateJLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okJButton;
     private javax.swing.JLabel portfolioJLabel;
