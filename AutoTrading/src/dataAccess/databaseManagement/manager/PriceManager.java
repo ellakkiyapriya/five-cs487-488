@@ -502,7 +502,7 @@ public class PriceManager {
 		try {
 			connection = getConnection();
 			Statement statement = connection.createStatement();
-			resultSet = statement.executeQuery("SELECT min(date) FROM price WHERE date > " + date.toString());
+			resultSet = statement.executeQuery("SELECT min(date) FROM price WHERE date > '" + date.toString() + "'");
 			resultSet.next();
 			nextDate = resultSet.getDate(1);
 
