@@ -22,6 +22,7 @@ import javax.swing.JSpinner;
 import presentation.mainJFrame;
 import business.virtualTrading.User;
 import business.virtualTrading.UserList;
+import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.ArrayList;
 import utility.Utility;
 
@@ -486,7 +487,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         orderTableModel.setData(selectedUser.getCurOrderList());
         todayOrderJTable.updateUI();
 
-        currentDate = Utility.increaseDate(currentDate);
+        currentDate = priceManager.getNextDate(new java.sql.Date(currentDate.getTime()));
         currentDateJLabel.setText(currentDate.toString());
     }//GEN-LAST:event_nextCurrentDateJButtonActionPerformed
 
@@ -553,6 +554,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
     private AddNewOrderJPanel addNewOrderJPanel;
     private User selectedUser;
     private Date currentDate;
+    private static PriceManager priceManager = new PriceManager();
 
     private void initOtherComponents() {
         newAddNewUserJDialog();
