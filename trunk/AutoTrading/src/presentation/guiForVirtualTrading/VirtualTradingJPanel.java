@@ -11,8 +11,8 @@
 
 package presentation.guiForVirtualTrading;
 
-import business.virtualTrading.Order;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
@@ -20,11 +20,10 @@ import javax.swing.JDialog;
 import javax.swing.JSpinner;
 
 import presentation.mainJFrame;
+import business.virtualTrading.Order;
 import business.virtualTrading.User;
 import business.virtualTrading.UserList;
 import dataAccess.databaseManagement.manager.PriceManager;
-import java.util.ArrayList;
-import utility.Utility;
 
 /**
  *
