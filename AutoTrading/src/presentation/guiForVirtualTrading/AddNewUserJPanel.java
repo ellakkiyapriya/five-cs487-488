@@ -17,7 +17,6 @@ import javax.swing.JSpinner;
 
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
-import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 
 /**
