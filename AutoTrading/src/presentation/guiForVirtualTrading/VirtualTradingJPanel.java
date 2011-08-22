@@ -459,12 +459,20 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
 }//GEN-LAST:event_userJComboBoxActionPerformed
 
     private void portfolioDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_portfolioDateJSpinnerStateChanged
+        if (selectedUser == null) {
+            return;
+        }
+
         PortfolioTableModel portfolioTableModel = (PortfolioTableModel) portfolioJTable.getModel();
         portfolioTableModel.setData(selectedUser.getPortfolioByDate(new java.sql.Date(((Date) portfolioDateJSpinner.getValue()).getTime())));
         portfolioJTable.updateUI();
 }//GEN-LAST:event_portfolioDateJSpinnerStateChanged
 
     private void orderLogDateJSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_orderLogDateJSpinnerStateChanged
+        if (selectedUser == null) {
+            return;
+        }
+
         OrderTableModel orderTableModel = (OrderTableModel) orderLogJTable.getModel();
         orderTableModel.setData(selectedUser.getOrderByDate(new java.sql.Date(((Date) orderLogDateJSpinner.getValue()).getTime())));
         orderLogJTable.updateUI();
@@ -487,6 +495,8 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         todayOrderJTable.updateUI();
 
         currentDate = new Date(priceManager.getNextDate(new java.sql.Date(currentDate.getTime())).getTime());
+        portfolioDateJSpinner.getModel().setValue(currentDate);
+        orderLogDateJSpinner.getModel().setValue(currentDate);
         currentDateJLabel.setText(currentDate.toString());
     }//GEN-LAST:event_nextCurrentDateJButtonActionPerformed
 
@@ -587,6 +597,8 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         } else {
             currentDate = new Date(currentDate.getTime());
         }
+        portfolioDateJSpinner.getModel().setValue(currentDate);
+        orderLogDateJSpinner.getModel().setValue(currentDate);
         currentDateJLabel.setText(currentDate.toString());
     }
 }
