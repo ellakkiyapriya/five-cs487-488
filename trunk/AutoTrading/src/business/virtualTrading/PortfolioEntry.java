@@ -56,7 +56,7 @@ public class PortfolioEntry {
 		this.buyPrice = portfolioEntity.getPrice();
 		this.volume = portfolioEntity.getVolume();
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), priceManager.getLatestDate()).getClose());
+				asset.getAssetID(), priceManager.getLatestDateOfAsset(asset.getAssetID())).getClose());
 		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
 
