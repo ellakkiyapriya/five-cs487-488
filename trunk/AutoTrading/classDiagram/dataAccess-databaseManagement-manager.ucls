@@ -2,7 +2,7 @@
   associations="true" dependencies="true" nesting-relationships="true">  
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="dataAccess.databaseManagement.manager.AssetManager" 
     project="AutoTrading" file="/AutoTrading/src/dataAccess/databaseManagement/manager/AssetManager.java" binary="false">    
-    <position height="-1" width="-1" x="195" y="488"/>    
+    <position height="259" width="308" x="1069" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -36,7 +36,7 @@
   </class>  
   <class id="5" corner="BOTTOM_RIGHT" language="java" name="dataAccess.databaseManagement.manager.PriceManager" 
     project="AutoTrading" file="/AutoTrading/src/dataAccess/databaseManagement/manager/PriceManager.java" binary="false">    
-    <position height="-1" width="-1" x="855" y="514"/>    
+    <position height="355" width="293" x="1653" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -44,7 +44,7 @@
   </class>  
   <class id="6" corner="BOTTOM_RIGHT" language="java" name="dataAccess.databaseManagement.manager.UserManager" 
     project="AutoTrading" file="/AutoTrading/src/dataAccess/databaseManagement/manager/UserManager.java" binary="false">    
-    <position height="-1" width="-1" x="523" y="468"/>    
+    <position height="211" width="196" x="1417" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    

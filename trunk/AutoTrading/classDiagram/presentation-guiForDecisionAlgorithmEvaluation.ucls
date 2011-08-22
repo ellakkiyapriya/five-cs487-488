@@ -41,7 +41,7 @@
   <class id="5" corner="BOTTOM_RIGHT" language="java" 
     name="presentation.guiForDecisionAlgorithmEvaluation.ImportPortfolioJPanel" project="AutoTrading" 
     file="/AutoTrading/src/presentation/guiForDecisionAlgorithmEvaluation/ImportPortfolioJPanel.java" binary="false">    
-    <position height="483" width="265" x="41" y="1008"/>    
+    <position height="547" width="265" x="41" y="1008"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -59,7 +59,7 @@
   <class id="7" corner="BOTTOM_RIGHT" language="java" 
     name="presentation.guiForDecisionAlgorithmEvaluation.ViewOrderJPanel" project="AutoTrading" 
     file="/AutoTrading/src/presentation/guiForDecisionAlgorithmEvaluation/ViewOrderJPanel.java" binary="false">    
-    <position height="147" width="206" x="800" y="1531"/>    
+    <position height="147" width="206" x="800" y="1595"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -68,7 +68,7 @@
   <class id="8" corner="BOTTOM_RIGHT" language="java" 
     name="presentation.guiForDecisionAlgorithmEvaluation.ViewPortfolioJPanel" project="AutoTrading" 
     file="/AutoTrading/src/presentation/guiForDecisionAlgorithmEvaluation/ViewPortfolioJPanel.java" binary="false">    
-    <position height="147" width="219" x="541" y="1531"/>    
+    <position height="147" width="219" x="541" y="1595"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -86,18 +86,18 @@
     <end type="TARGET" nodeId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="6"/>  
-  </dependency>  
-  <dependency>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="3"/>  
-  </dependency>  
-  <dependency>    
-    <end type="SOURCE" nodeId="6"/>    
-    <end type="TARGET" nodeId="7"/>  
-  </dependency>  
+  <association>    
+    <end type="SOURCE" nodeId="4" navigable="false">      
+      <attribute name="addNewDecAlgJPanel">        
+        <position height="14" width="111" x="475" y="971"/>      
+      </attribute>      
+      <multiplicity minimum="0" maximum="1">        
+        <position height="14" width="18" x="605" y="968"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" nodeId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association>    
     <end type="SOURCE" nodeId="4" navigable="false">      
       <attribute name="addNewDecEvaCriteriaJPanel">        
@@ -111,21 +111,21 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <dependency>    
     <end type="SOURCE" nodeId="6"/>    
     <end type="TARGET" nodeId="8"/>  
   </dependency>  
-  <association>    
-    <end type="SOURCE" nodeId="4" navigable="false">      
-      <attribute name="addNewDecAlgJPanel">        
-        <position height="14" width="111" x="475" y="971"/>      
-      </attribute>      
-      <multiplicity minimum="0" maximum="1">        
-        <position height="14" width="18" x="605" y="968"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" nodeId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    
     <operations public="true" package="true" protected="true" private="true"/>  

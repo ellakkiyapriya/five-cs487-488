@@ -2,7 +2,7 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="dataAccess.databaseManagement.entity.AssetEntity" 
     project="AutoTrading" file="/AutoTrading/src/dataAccess/databaseManagement/entity/AssetEntity.java" binary="false">    
-    <position height="-1" width="-1" x="159" y="825"/>    
+    <position height="419" width="234" x="1026" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -11,7 +11,7 @@
   <class id="2" corner="BOTTOM_RIGHT" language="java" name="dataAccess.databaseManagement.entity.ExchangeEntity" 
     project="AutoTrading" file="/AutoTrading/src/dataAccess/databaseManagement/entity/ExchangeEntity.java" 
     binary="false">    
-    <position height="-1" width="-1" x="406" y="753"/>    
+    <position height="275" width="184" x="1300" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -44,7 +44,7 @@
   </class>  
   <class id="6" corner="BOTTOM_RIGHT" language="java" name="dataAccess.databaseManagement.entity.UserEntity" 
     project="AutoTrading" file="/AutoTrading/src/dataAccess/databaseManagement/entity/UserEntity.java" binary="false">    
-    <position height="-1" width="-1" x="749" y="737"/>    
+    <position height="243" width="177" x="1524" y="37"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
