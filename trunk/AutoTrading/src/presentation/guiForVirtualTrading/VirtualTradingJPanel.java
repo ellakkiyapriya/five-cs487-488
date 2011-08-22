@@ -299,7 +299,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
                     .addComponent(removeOrderJButton)
                     .addComponent(addOrderJButton)
                     .addComponent(executeJButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addOrderJButton, executeJButton, removeOrderJButton});
@@ -486,7 +486,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         orderTableModel.setData(selectedUser.getCurOrderList());
         todayOrderJTable.updateUI();
 
-        currentDate = priceManager.getNextDate(new java.sql.Date(currentDate.getTime()));
+        currentDate = new Date(priceManager.getNextDate(new java.sql.Date(currentDate.getTime())).getTime());
         currentDateJLabel.setText(currentDate.toString());
     }//GEN-LAST:event_nextCurrentDateJButtonActionPerformed
 
@@ -582,7 +582,11 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         todayOrderJTable.updateUI();
 
         currentDate = selectedUser.getPortfolioLatestDate();
-        if (currentDate == null) currentDate = new Date();
+        if (currentDate == null) {
+            currentDate = new Date();
+        } else {
+            currentDate = new Date(currentDate.getTime());
+        }
         currentDateJLabel.setText(currentDate.toString());
     }
 }
