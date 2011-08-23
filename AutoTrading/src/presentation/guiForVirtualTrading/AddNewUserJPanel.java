@@ -278,6 +278,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         hasData = priceManager.isAvailableDate(new java.sql.Date(currentDate.getTime()));
         addPortfolioEntryJButton.setVisible(hasData);
         removePortfolioEntryJButton.setVisible(hasData);
+        okJButton.setVisible(hasData);
         notificationJLabel.setVisible(!hasData);
         addNewPortfolioJPanel.setCurrentDate(currentDate);
     }//GEN-LAST:event_currentDateJSpinnerStateChanged
@@ -318,6 +319,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         hasData = false;
         addPortfolioEntryJButton.setVisible(hasData);
         removePortfolioEntryJButton.setVisible(hasData);
+        okJButton.setVisible(hasData);
     }
 
     public JDialog getParentDialog() {

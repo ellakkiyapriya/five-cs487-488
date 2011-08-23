@@ -28,7 +28,7 @@ public class PortfolioEntry {
 	}
 
 	public PortfolioEntry(Asset asset, double buyPrice, double volume) {
-		PriceManager priceManager = new PriceManager();
+//		PriceManager priceManager = new PriceManager();
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
@@ -39,7 +39,7 @@ public class PortfolioEntry {
 	}
 
 	public PortfolioEntry(AssetEntity asset, double buyPrice, double volume) {
-		PriceManager priceManager = new PriceManager();
+//		PriceManager priceManager = new PriceManager();
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
@@ -49,7 +49,7 @@ public class PortfolioEntry {
 	}
 
 	public PortfolioEntry(PortfolioEntity portfolioEntity) {
-		PriceManager priceManager = new PriceManager();
+//		PriceManager priceManager = new PriceManager();
 		AssetManager assetManager = new AssetManager();
 		this.asset = new Asset(assetManager.getAssetByID(portfolioEntity
 				.getAssetID()));
