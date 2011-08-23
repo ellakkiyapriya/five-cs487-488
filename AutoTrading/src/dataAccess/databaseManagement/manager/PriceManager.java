@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import dataAccess.databaseManagement.ConnectionFactory;
+import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import java.sql.Date;
 
@@ -236,13 +237,21 @@ public class PriceManager {
 
         public boolean isAvailableDate(Date date) {
 		try {
-			String queryString = "SELECT * FROM price WHERE date=?";
+                        AssetManager assetManager = new AssetManager();
+                        AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange("SSI", "HOSE");
+
+			String queryString = "SELECT * FROM price WHERE asset_id=? AND date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
-			ptmt.setDate(1, date);
+                        ptmt.setLong(1, assetEntity.getAssetID());
+			ptmt.setDate(2, date);
 			resultSet = ptmt.executeQuery();
 
-			return resultSet.next();
+                        if (resultSet.next()) {
+                            return true;
+                        }
+
+			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
