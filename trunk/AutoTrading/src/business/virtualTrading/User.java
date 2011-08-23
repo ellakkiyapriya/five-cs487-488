@@ -129,17 +129,25 @@ public class User {
 		PortfolioManager portfolioManager = new PortfolioManager();
 		AssetManager assetManager = new AssetManager();
 		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
-				.getPortfolioByDateAndUserID(user.getUserID(), date);
+				.getPortfoliosOfUserIDUntilDate(user.getUserID(), date);
+
 		PortfolioEntry curPortfolioEntry;
 		AssetEntity assetEntity;
 
-		for (PortfolioEntity portfolioEntity : portfolioEntityList) {
-			assetEntity = assetManager.getAssetByID(portfolioEntity
-					.getAssetID());
-			curPortfolioEntry = new PortfolioEntry(new Asset(assetEntity),
-					portfolioEntity.getPrice(), portfolioEntity.getVolume());
-			portfolioList.add(curPortfolioEntry);
+		if (portfolioEntityList != null) {
+			Date curDate = portfolioEntityList.get(0).getDate();
+
+			for (PortfolioEntity portfolioEntity : portfolioEntityList) {
+				assetEntity = assetManager.getAssetByID(portfolioEntity
+						.getAssetID());
+				curPortfolioEntry = new PortfolioEntry(new Asset(assetEntity),
+						portfolioEntity.getPrice(), portfolioEntity.getVolume());
+
+				curPortfolioEntry.updateCurrentPriceToDate(curDate);
+				portfolioList.add(curPortfolioEntry);
+			}
 		}
+		
 
 		return portfolioList;
 	}
@@ -259,9 +267,6 @@ public class User {
 					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
 							.getVolume(), date));
 		}
-		
-		setPortfolioLatestDate(new Date(date.getTime()));
-
 
 		/*
 		 * Update user cash
@@ -394,12 +399,17 @@ public class User {
 		PriceManager priceManager = new PriceManager();
 
 		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
-				.getPortfolioByDateAndUserID(user.getUserID(), date);
+				.getPortfoliosOfUserIDUntilDate(user.getUserID(), date);
+		
+		if (portfolioEntityList != null) {  
+			Date curDate = portfolioEntityList.get(0).getDate();
 		for (PortfolioEntity portfolioEntity : portfolioEntityList) {
-			double curPrice = priceManager.getPriceByAssetIDAndDate(portfolioEntity.getAssetID(), date).getClose();
+			
+			double curPrice = priceManager.getPriceByAssetIDAndDate(portfolioEntity.getAssetID(), curDate).getClose();
 			totalCash += curPrice
 					* portfolioEntity.getVolume();
 		} 
+		}
 		return totalCash;
 	}
 
