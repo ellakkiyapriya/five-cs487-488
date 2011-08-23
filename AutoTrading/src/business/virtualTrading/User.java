@@ -137,7 +137,7 @@ public class User {
 		PortfolioEntry curPortfolioEntry;
 		AssetEntity assetEntity;
 
-		if (portfolioEntityList != null) {
+		if (portfolioEntityList != null && portfolioEntityList.size() > 0) {
 			Date curDate = portfolioEntityList.get(0).getDate();
 
 			for (PortfolioEntity portfolioEntity : portfolioEntityList) {
