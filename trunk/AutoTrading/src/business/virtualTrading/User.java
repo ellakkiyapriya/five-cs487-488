@@ -152,8 +152,6 @@ public class User {
 				portfolioList.add(curPortfolioEntry);
 			}
 		}
-		
-
 		return portfolioList;
 	}
 
@@ -228,6 +226,7 @@ public class User {
 							.getVolume(), date));
 		}
 		
+
 		UserManager usermanager = new UserManager();
 		usermanager.update(user);
 
@@ -274,6 +273,8 @@ public class User {
 					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
 							.getVolume(), date));
 		}
+
+		setPortfolioLatestDate(date);
 
 		/*
 		 * Update user cash
@@ -499,12 +500,22 @@ public class User {
 			
 		}
 		
-		double curCapital = getCapitalByDate(portfolioManager
-				.getPortfolioLatestDateOfUserID(user.getUserID()));
+//		double curCapital = getCapitalByDate(portfolioManager
+//				.getPortfolioLatestDateOfUserID(user.getUserID()));
 		
+		double curCapital = user.getCash();
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
+			curCapital += curPortfolioEntry.getCurrentPrice() * curPortfolioEntry.getVolume();
+		}
 		System.out.println(initialCapital + " " + curCapital);
 		System.out.println((curCapital - initialCapital) / initialCapital);
 		return (curCapital - initialCapital) / initialCapital * 100;
+	}
+	
+	public void updatePortfolioCurrentPrice (Date date) {
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
+			curPortfolioEntry.updateCurrentPriceToDate(date);
+		}
 	}
 
 	public void removeFromDatabase() {
