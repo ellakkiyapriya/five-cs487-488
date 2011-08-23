@@ -266,16 +266,15 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
             }
             this.latestDate = utility.Utility.increaseDate(this.latestDate);
         }
-
-        return updateIndexData();
-    }
-
-    public boolean updateIndexData() {
-        AssetManager assetManager = new AssetManager();
-        PriceManager priceManager = new PriceManager();
         String assetName[] = {"VNINDEX", "HASTCINDEX"};
         String exchangeName[] = {"HOSE", "HASTC"};
-        for (int i = 0; i < 2; ++i) {
+        return updateIndexData(assetName, exchangeName);
+    }
+
+    public boolean updateIndexData(String assetName[], String exchangeName[]) {
+        AssetManager assetManager = new AssetManager();
+        PriceManager priceManager = new PriceManager();
+        for (int i = 0; i < assetName.length; ++i) {
             AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(
                     assetName[i], exchangeName[i]);
             Date lastDate = priceManager.getLatestDateOfAsset((int) assetEntity.getAssetID());
@@ -284,8 +283,13 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
             Double open, high, close, low, volume;
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
             String splitString[];
-
-            String fileLink = "http://www.cophieu68.com/export/metastock.php?id=^vnindex";
+            
+            String fileLink;
+            if (assetName[i].equals("VNINDEX"))
+            	fileLink = "http://www.cophieu68.com/export/metastock.php?id=^vnindex";
+            else
+            	fileLink = "http://www.cophieu68.com/export/metastock.php?id=^hastc";
+            
             try {
                 URL url = new URL(fileLink);
                 HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -324,11 +328,24 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
     public boolean updateDataFromDateToDate(ExchangeEntity exchangeEntity,
             Date fromDate, Date toDate) {
         // TODO Auto-generated method stub
+    	if (exchangeEntity.getName().equals("HOSE"))
+    	{
+    		String assetName[] = {"VNINDEX"};
+            String exchangeName[] = {"HOSE"};
+            updateIndexData(assetName, exchangeName);
+    	}
+    	else
+    	{
+    		String assetName[] = {"HASTCINDEX"};
+            String exchangeName[] = {"HASTC"};
+            updateIndexData(assetName, exchangeName);
+    	}
+    	
         PriceManager priceManager = new PriceManager();
         AssetManager assetManager = new AssetManager();
         Date currentDate = fromDate;
         HttpURLConnection uc;
-        // DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
         while (!currentDate.after(toDate)) {
             uc = initConnection(exchangeEntity.getName(), currentDate);
             try {
@@ -337,34 +354,35 @@ public class Cophieu68DataUpdate extends AbstractDataUpdate {
 
                 double open, high, low, close;
                 double volume;
-                // DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+                
                 String strLine;
                 String symbol;
 
-                // String strDate = dateFormat.format(this.latestDate);
+                //String strDate = dateFormat.format(this.latestDate);
                 String[] splitString;
                 // Open an output stream
                 br.readLine();
                 while ((strLine = br.readLine()) != null) {
                     splitString = strLine.split(",");
-                    symbol = splitString[0];
-                    open = Double.valueOf(splitString[2]);
-                    high = Double.valueOf(splitString[3]);
-                    low = Double.valueOf(splitString[4]);
-                    close = Double.valueOf(splitString[5]);
-                    volume = Integer.valueOf(splitString[6]);
+                    
+                    if (splitString[1].equals(df.format(currentDate)))
+                    {
+                    	symbol = splitString[0];
+                    	open = Double.valueOf(splitString[2]);
+                        high = Double.valueOf(splitString[3]);
+                        low = Double.valueOf(splitString[4]);
+                        close = Double.valueOf(splitString[5]);
+                        volume = Integer.valueOf(splitString[6]);
 
-                    System.out.println(symbol + "_" + exchangeEntity.getName());
-
-                    AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol,exchangeEntity.getName());
-                    if (assetEntity == null) {
-                        continue;
+                        AssetEntity assetEntity = assetManager.getAssetBySymbolAndExchange(symbol,exchangeEntity.getName());
+                        if (assetEntity == null) {
+                            continue;
+                        }
+                        PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(),
+                                new java.sql.Date(currentDate.getTime()), null,
+                                volume, close, open, high, low);
+                        priceManager.add(priceEntity);
                     }
-
-                    PriceEntity priceEntity = new PriceEntity(assetEntity.getAssetID(),
-                            new java.sql.Date(currentDate.getTime()), null,
-                            volume, close, open, high, low);
-                    priceManager.add(priceEntity);
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
