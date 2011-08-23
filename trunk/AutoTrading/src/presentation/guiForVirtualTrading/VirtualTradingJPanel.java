@@ -451,7 +451,8 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         ((User)userJComboBox.getSelectedItem()).addCash((Double)addCashJSpinner.getValue());
 
         cashRemainJTextField.setText((new DecimalFormat("###,###")).format(selectedUser.getCash()*1000) + " VND");
-        gainLossJTextField.setText(selectedUser.profit() + " %");
+        gainLossJTextField.setText((new DecimalFormat("##.##")).format(selectedUser.profit()) + " %");
+
 }//GEN-LAST:event_addCashJButtonActionPerformed
 
     private void userJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userJComboBoxActionPerformed
@@ -498,6 +499,8 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         portfolioDateJSpinner.getModel().setValue(currentDate);
         orderLogDateJSpinner.getModel().setValue(currentDate);
         currentDateJLabel.setText(currentDate.toString());
+        selectedUser.updatePortfolioCurrentPrice(new java.sql.Date(currentDate.getTime()));
+        gainLossJTextField.setText((new DecimalFormat("##.##")).format(selectedUser.profit()) + " %");
     }//GEN-LAST:event_nextCurrentDateJButtonActionPerformed
 
 //    public JDialog getAddNewUserJDialog() {
