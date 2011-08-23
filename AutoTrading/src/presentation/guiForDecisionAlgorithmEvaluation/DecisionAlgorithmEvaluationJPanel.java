@@ -30,7 +30,6 @@ import presentation.mainJFrame;
 import presentation.guiForVirtualTrading.PortfolioTableModel;
 import business.algorithm.decisionAlgorithm.AbstractDecisionAlgorithm;
 import business.decisionAlgorithmEvaluation.DecisionCriteria;
-import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;

@@ -319,7 +319,7 @@ public class PortfolioManager {
 			connection = getConnection();
 			Statement statement = connection.createStatement();
 			String statementStr = "SELECT MAX(`date`) FROM `portfolio` WHERE `user_id`="
-					+ userID + " AND `date` < '" + date.toString() + "'";
+					+ userID + " AND `date` <= '" + date.toString() + "'";
 			resultSet = statement.executeQuery(statementStr);
 			resultSet.next();
 			latestDate = resultSet.getDate(1);
