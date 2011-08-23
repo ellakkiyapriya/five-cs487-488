@@ -29,8 +29,14 @@ public class UserList {
 			for (PortfolioEntity portfolioEntity : portfolioEntityList) {
 	            portfolioEntryList.add(new PortfolioEntry(portfolioEntity));
 	        }
+			
+			
 			userList.add(new User(curUser, portfolioEntryList));
 			
+		}
+		
+		for (User user : userList) {
+			user.setPortfolioLatestDate(portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID()));
 		}
 	}
 
