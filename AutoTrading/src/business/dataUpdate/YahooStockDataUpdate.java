@@ -1,6 +1,7 @@
 package business.dataUpdate;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
@@ -141,24 +144,31 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 				str = strDate.split("-");
 				strDate = str[2] + "-" + str[1] + "-" + str[0];
 				date = df.parse(strDate);
-				open = Double.valueOf(splitString[1]);
-				high = Double.valueOf(splitString[2]);
-				low = Double.valueOf(splitString[3]);
-				close = Double.valueOf(splitString[4]);
-				volume = Double.valueOf(splitString[5]);
+				if ((date.compareTo(fromDate) >= 0) && (date.compareTo(toDate) <= 0))
+				{
+					open = Double.valueOf(splitString[1]);
+					high = Double.valueOf(splitString[2]);
+					low = Double.valueOf(splitString[3]);
+					close = Double.valueOf(splitString[4]);
+					volume = Double.valueOf(splitString[5]);
 
-				PriceEntity priceEntity = new PriceEntity(
-						assetEntity.getAssetID(), new java.sql.Date(
-								date.getTime()), null, volume, close, open,
-						high, low);
-				priceManager.add(priceEntity);
+					PriceEntity priceEntity = new PriceEntity(
+							assetEntity.getAssetID(), new java.sql.Date(
+									date.getTime()), null, volume, close, open,
+							high, low);
+					priceManager.add(priceEntity);
+				}
 			}
-		} catch (Exception e) {
+		} 
+		catch (FileNotFoundException e) {
+			// TODO: handle exception
+			return false;
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-
 		return true;
 	}
 
@@ -187,7 +197,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 
 			cal.setTime(toDate);
 			
-			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1)
+			link = link.concat(String.valueOf(cal.get(Calendar.MONTH))
 					+ "&e=");
 			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&f=");
 			link = link.concat(String.valueOf(cal.get(Calendar.YEAR))
@@ -195,7 +205,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 
 			cal.setTime(fromDate);
 
-			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1)
+			link = link.concat(String.valueOf(cal.get(Calendar.MONTH))
 					+ "&b=");
 			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&c=");
 			link = link.concat(String.valueOf(cal.get(Calendar.YEAR))
@@ -210,5 +220,24 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 			return null;
 		}
 	}
-
+	
+	public static void main(String args[])
+	{
+		/*
+		YahooStockDataUpdate yahoo = new YahooStockDataUpdate();
+		
+		ExchangeManager exchangeManager = new ExchangeManager();
+		ExchangeEntity exchangeEntity = exchangeManager.getExchangeByName("NASDAQ");
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		try
+		{
+			Date fromDate = df.parse("01-01-1990");
+			Date toDate = df.parse("31-12-1990");
+			yahoo.updateDataFromDateToDate(exchangeEntity, fromDate, toDate);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}*/
+	}
 }
