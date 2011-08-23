@@ -577,7 +577,7 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
             return;
         }
         cashRemainJTextField.setText((new DecimalFormat("###,###")).format(selectedUser.getCash()*1000) + " VND");
-        gainLossJTextField.setText(selectedUser.profit() + " %");
+        gainLossJTextField.setText((new DecimalFormat("##.##")).format(selectedUser.profit()) + " %");
 
         PortfolioTableModel portfolioTableModel = (PortfolioTableModel) portfolioJTable.getModel();
         portfolioTableModel.setData(selectedUser.getPortfolioByDate(new java.sql.Date(((Date) portfolioDateJSpinner.getValue()).getTime())));
