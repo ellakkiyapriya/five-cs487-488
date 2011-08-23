@@ -653,10 +653,10 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             AbstractDecisionAlgorithm alg = (AbstractDecisionAlgorithm) algListModel.getElementAt(algIndex);
             alg.setPriceList(map);
 
-            User user = new User(alg.toString(), currentUser.getCash());
-            for (PortfolioEntry portfolioEntry : currentUser.getCurPortfolioList()) {
-                user.addPortfolio(portfolioEntry);
-            }
+            User user = new User(alg.toString(), currentUser.getCash(), currentUser.getCurPortfolioList());
+//            for (PortfolioEntry portfolioEntry : currentUser.getCurPortfolioList()) {
+//                user.addPortfolio(portfolioEntry);
+//            }
 
             decAlg_ResultMap.put(alg, user);
 

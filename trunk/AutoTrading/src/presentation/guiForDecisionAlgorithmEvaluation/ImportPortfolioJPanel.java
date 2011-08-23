@@ -200,10 +200,10 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
     private void okJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJButtonActionPerformed
         ok = true;
         //Add new user
-        newUser = new User("",(Double)cashRemainJSpinner.getValue());
-        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
-            newUser.addPortfolio(portfolioEntry);
-        }
+        newUser = new User("",(Double)cashRemainJSpinner.getValue(), portfolioEntryList);
+//        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
+//            newUser.addPortfolio(portfolioEntry);
+//        }
 
         portfolioEntryList.clear();
         PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
