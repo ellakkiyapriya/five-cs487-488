@@ -32,10 +32,10 @@ public class PortfolioEntry {
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
-		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), priceManager.getLatestDate()).getClose()); // TODO
-																				// getLatestPriceByAssetID(assetID)
-		profit = (this.currentPrice - this.buyPrice) / this.buyPrice * 100;
+//		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
+//				asset.getAssetID(), priceManager.getLatestDate()).getClose()); // TODO
+//																				// getLatestPriceByAssetID(assetID)
+//		profit = (this.currentPrice - this.buyPrice) / this.buyPrice * 100;
 	}
 
 	public PortfolioEntry(AssetEntity asset, double buyPrice, double volume) {
@@ -43,9 +43,9 @@ public class PortfolioEntry {
 		this.setAsset(new Asset(asset));
 		this.setBuyPrice(buyPrice);
 		this.setVolume(volume);
-		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), priceManager.getLatestDate()).getClose());
-		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
+//		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
+//				asset.getAssetID(), priceManager.getLatestDate()).getClose());
+//		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
 
 	public PortfolioEntry(PortfolioEntity portfolioEntity) {
@@ -55,9 +55,9 @@ public class PortfolioEntry {
 				.getAssetID()));
 		this.buyPrice = portfolioEntity.getPrice();
 		this.volume = portfolioEntity.getVolume();
-		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
-				asset.getAssetID(), priceManager.getLatestDateOfAsset(asset.getAssetID())).getClose());
-		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
+//		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
+//				asset.getAssetID(), priceManager.getLatestDateOfAsset(asset.getAssetID())).getClose());
+//		profit = (this.currentPrice - this.buyPrice) / this.buyPrice;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class PortfolioEntry {
 	}
 
 	public void setVolume(double volume) {
-		this.volume = volume;
+		this.volume = (long) volume;
 	}
 
 	public double getVolume() {
@@ -129,11 +129,11 @@ public class PortfolioEntry {
 
 	public void updateCurrentPriceToDate(Date date) {
 		PriceManager priceManager = new PriceManager();
-		System.out.println(date.toString());
-		System.out.println(asset.getAssetID());
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), new java.sql.Date(date.getTime()))
 				.getClose());
+		System.out.println(date + " --- " + currentPrice);
+		profit = (currentPrice - buyPrice)/buyPrice *100;
 	}
 
 	public double getCurrentPrice() {
