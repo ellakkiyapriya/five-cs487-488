@@ -136,7 +136,7 @@
                                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                   <Component id="toDateJLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="toDatejSpinner" linkSize="1" max="32767" attributes="1"/>
+                                  <Component id="toDatejSpinner" linkSize="1" pref="107" max="32767" attributes="1"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -274,6 +274,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exchangeUpdateJComboBoxActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

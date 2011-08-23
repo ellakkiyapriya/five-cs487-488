@@ -60,6 +60,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        notificationJLabel1 = new javax.swing.JLabel();
         userNameJLabel = new javax.swing.JLabel();
         userNameJTextField = new javax.swing.JTextField();
         cashRemainJLabel = new javax.swing.JLabel();
@@ -75,6 +76,10 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         currentDateJLabel = new javax.swing.JLabel();
         currentDateJSpinner = new javax.swing.JSpinner();
         notificationJLabel = new javax.swing.JLabel();
+
+        notificationJLabel1.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        notificationJLabel1.setForeground(new java.awt.Color(255, 0, 51));
+        notificationJLabel1.setText("We don't have data on this date. Please choose another!");
 
         userNameJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         userNameJLabel.setText("User Name:");
@@ -131,7 +136,9 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
             }
         });
 
-        notificationJLabel.setText("We don't have data on this date");
+        notificationJLabel.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        notificationJLabel.setForeground(new java.awt.Color(255, 0, 51));
+        notificationJLabel.setText("We don't have data on this date.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -155,13 +162,13 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(vndJLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                                 .addComponent(notificationJLabel))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(76, 76, 76)
                                 .addComponent(currentDateJLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(currentDateJSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))))
+                                .addComponent(currentDateJSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(portfolioJLabel))
@@ -174,7 +181,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
                             .addComponent(removePortfolioEntryJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(14, 14, 14))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(407, Short.MAX_VALUE)
+                .addContainerGap(439, Short.MAX_VALUE)
                 .addComponent(okJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelJButton)
@@ -300,6 +307,7 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
     private javax.swing.JSpinner currentDateJSpinner;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel notificationJLabel;
+    private javax.swing.JLabel notificationJLabel1;
     private javax.swing.JButton okJButton;
     private javax.swing.JLabel portfolioJLabel;
     private javax.swing.JTable portfolioJTable;

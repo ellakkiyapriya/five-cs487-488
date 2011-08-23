@@ -123,7 +123,7 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
             }
         });
 
-        sourceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        sourceJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         sourceJLabel.setText("Source:");
 
         fromDatejSpinner.setModel(new javax.swing.SpinnerDateModel());
@@ -150,10 +150,15 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 
         updateStatusjLabel.setText("Last updated date is ...");
 
-        exchangeUpdateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        exchangeUpdateJLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         exchangeUpdateJLabel.setText("Exchange:");
 
         exchangeUpdateJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        exchangeUpdateJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exchangeUpdateJComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout updateJPanelLayout = new javax.swing.GroupLayout(updateJPanel);
         updateJPanel.setLayout(updateJPanelLayout);
@@ -175,7 +180,7 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
                                 .addGap(10, 10, 10)
                                 .addComponent(toDateJLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(toDatejSpinner))
+                                .addComponent(toDatejSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
                             .addGroup(updateJPanelLayout.createSequentialGroup()
                                 .addGroup(updateJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(exchangeUpdateJComboBox, 0, 340, Short.MAX_VALUE)
@@ -313,7 +318,17 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 
         exchangeUpdateJComboBox.setModel(new DefaultComboBoxModel(listExchangeName));
         exchangeUpdateJComboBox.updateUI();
+
+        String exchangeName = (String) exchangeUpdateJComboBox.getSelectedItem();
+        long exchangeID =  exchangeManager.getExchangeByName(exchangeName).getExchangeID();
+        fromDatejSpinner.getModel().setValue(new Date(priceManager.getLatestDateOfExchange(exchangeID).getTime()));
     }//GEN-LAST:event_sourceJComboBoxActionPerformed
+
+    private void exchangeUpdateJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeUpdateJComboBoxActionPerformed
+        String exchangeName = (String) exchangeUpdateJComboBox.getSelectedItem();
+        long exchangeID =  exchangeManager.getExchangeByName(exchangeName).getExchangeID();
+        fromDatejSpinner.getModel().setValue(new Date(priceManager.getLatestDateOfExchange(exchangeID).getTime()));
+    }//GEN-LAST:event_exchangeUpdateJComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dataStatusJLabel;
@@ -349,9 +364,6 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
         JTextField fieldExchange = (JTextField) exchangeJComboBox.getEditor().getEditorComponent();
         fieldExchange.addKeyListener(exchangeComboKeyHandler);
 
-        fromDatejSpinner.getModel().setValue(new Date(priceManager.getLatestDate().getTime()));
-        toDatejSpinner.getModel().setValue(new Date());
-
         dataUpdate = DataUpdateAPI.getDataUpdate((String) sourceJComboBox.getSelectedItem());
 
         String[] listExchangeName = new String[dataUpdate.getExchangeNameList().size()];
@@ -361,6 +373,9 @@ public class DataUpdateJPanel extends javax.swing.JPanel {
 
         exchangeUpdateJComboBox.setModel(new DefaultComboBoxModel(listExchangeName));
         exchangeUpdateJComboBox.updateUI();
+        
+        fromDatejSpinner.getModel().setValue(new Date(priceManager.getLatestDateOfExchange(exchangeManager.getExchangeByName(listExchangeName[0]).getExchangeID()).getTime()));
+        toDatejSpinner.getModel().setValue(new Date());
 
         new Thread(new Runnable() {
 
