@@ -186,7 +186,7 @@ public class YahooStockDataUpdate extends AbstractDataUpdate {
 			link = link.concat(assetEntity.getSymbol() + "&d=");
 
 			cal.setTime(toDate);
-
+			
 			link = link.concat(String.valueOf(cal.get(Calendar.MONTH) + 1)
 					+ "&e=");
 			link = link.concat(String.valueOf(cal.get(Calendar.DATE)) + "&f=");
