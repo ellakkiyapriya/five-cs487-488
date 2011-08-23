@@ -16,9 +16,9 @@ public class AveragePercentage extends PredictionCriteria {
 	}
 
 	/**
-	 * Residual Sum of Squares (RSS) is the sum of squares of residuals. It is a
+	 * Average Percentage Error (AP) is the average of error. It is a
 	 * measure of the discrepancy between the data and an estimation model. A
-	 * small RSS indicates a tight fit of the model to the data.
+	 * small AP indicates a tight fit of the model to the data.
 	 */
 	@Override
 	public TreeMap<String, Double> evaluate() {
