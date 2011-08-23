@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dataAccess.databaseManagement.entity.PortfolioEntity;
 import dataAccess.databaseManagement.entity.UserEntity;
 import dataAccess.databaseManagement.manager.PortfolioManager;
+import dataAccess.databaseManagement.manager.PriceManager;
 import dataAccess.databaseManagement.manager.UserManager;
 
 public class UserList {
@@ -36,7 +37,13 @@ public class UserList {
 		}
 		
 		for (User user : userList) {
-			user.setPortfolioLatestDate(portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID()));
+			java.sql.Date startDate = portfolioManager.getPortfolioStartDateOfUserID(user.getUserID());
+			java.sql.Date latestDate = portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID());
+			if (startDate != latestDate) {
+				user.setPortfolioLatestDate(startDate);
+			} else {
+				user.setPortfolioLatestDate((new PriceManager()).getNextDate(startDate));
+			}
 		}
 	}
 
