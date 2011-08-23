@@ -169,6 +169,7 @@ public class User {
 	
 	public void addPortfolioToDatabase(Date date) {
 		PortfolioManager portfolioManager = new PortfolioManager();
+		PriceManager priceManager = new PriceManager();
 
 		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
 			portfolioManager.add(new PortfolioEntity(user.getUserID(),
@@ -177,7 +178,7 @@ public class User {
 							.getVolume(), date));
 		}
 		
-		setPortfolioLatestDate(new Date(date.getTime()));
+		setPortfolioLatestDate(priceManager.getNextDate(new Date(date.getTime())) );
 	}
 
 	/**
