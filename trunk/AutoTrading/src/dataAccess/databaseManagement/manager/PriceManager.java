@@ -521,6 +521,24 @@ public class PriceManager {
 
 		return nextDate;
 	}
+	
+	public Date getLatestPriceOfAssetIDUntiltDate(long assetID, Date date) {
+		Date latestDate = null;
+
+		try {
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT max(date) FROM price WHERE `asset_id`="
+					+ assetID + " AND `date` <= '" + date.toString() + "'");
+			resultSet.next();
+			latestDate = resultSet.getDate(1);
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return latestDate;
+	}
 
 
 	public Date getLatestDateOfExchange(long exchangeID) {
