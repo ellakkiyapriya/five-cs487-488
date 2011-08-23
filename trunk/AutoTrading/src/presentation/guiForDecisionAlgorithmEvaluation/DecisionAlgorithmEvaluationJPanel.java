@@ -92,6 +92,10 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         exchangeJComboBox = new javax.swing.JComboBox();
         assetJLabel = new javax.swing.JLabel();
         assetJComboBox = new javax.swing.JComboBox();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        assetJList = new javax.swing.JList();
+        addAssetJButton = new javax.swing.JButton();
+        removeAssetJButton = new javax.swing.JButton();
 
         dateJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DATE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
@@ -188,12 +192,12 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             .addGroup(algorithmjPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(algorithmjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(algorithmjPanelLayout.createSequentialGroup()
                         .addComponent(addDecAlgjButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(removeDecAlgjButton)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         algorithmjPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addDecAlgjButton, removeDecAlgjButton});
@@ -225,7 +229,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             .addGroup(initalPortfolioJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(initalPortfolioJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
                     .addGroup(initalPortfolioJPanelLayout.createSequentialGroup()
                         .addGroup(initalPortfolioJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(portfoliojLabel)
@@ -233,7 +237,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                                 .addComponent(cashRemainjLabel)
                                 .addGap(18, 18, 18)
                                 .addComponent(cashRemainjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                         .addComponent(importJButton)))
                 .addContainerGap())
         );
@@ -257,11 +261,11 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         tableJPanel.setLayout(tableJPanelLayout);
         tableJPanelLayout.setHorizontalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 414, Short.MAX_VALUE)
+            .addGap(0, 418, Short.MAX_VALUE)
         );
         tableJPanelLayout.setVerticalGroup(
             tableJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 304, Short.MAX_VALUE)
+            .addGap(0, 321, Short.MAX_VALUE)
         );
 
         refreshJButton.setText("Refresh");
@@ -332,14 +336,13 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         evaluationCriteriaJPanelLayout.setVerticalGroup(
             evaluationCriteriaJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(evaluationCriteriaJPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(evaluationCriteriaJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(evaluationCriteriaJPanelLayout.createSequentialGroup()
                         .addComponent(addDecEvaCriteriajButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeDecEvaCriteriajButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(removeDecEvaCriteriajButton))))
         );
 
         evaluationCriteriaJPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addDecEvaCriteriajButton, removeDecEvaCriteriajButton});
@@ -366,21 +369,50 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             }
         });
 
+        assetJList.setModel(new DefaultListModel());
+        jScrollPane4.setViewportView(assetJList);
+
+        addAssetJButton.setText("Add");
+        addAssetJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addAssetJButtonActionPerformed(evt);
+            }
+        });
+
+        removeAssetJButton.setText("Remove");
+        removeAssetJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeAssetJButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(exchangeJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(assetJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(addAssetJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(removeAssetJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(exchangeJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(assetJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addAssetJButton, removeAssetJButton});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -389,8 +421,17 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                     .addComponent(exchangeJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(assetJLabel)
                     .addComponent(assetJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(addAssetJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(removeAssetJButton))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addAssetJButton, removeAssetJButton});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -398,12 +439,12 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(algorithmjPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                     .addComponent(evaluationCriteriaJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dateJPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(algorithmjPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(initalPortfolioJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(comparisonTableJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -423,11 +464,11 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(dateJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(algorithmjPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(evaluationCriteriaJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(evaluationCriteriaJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -519,12 +560,31 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     private void toDatejSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_toDatejSpinnerStateChanged
         toDate = (Date) toDatejSpinner.getValue();
     }//GEN-LAST:event_toDatejSpinnerStateChanged
+
+    private void addAssetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAssetJButtonActionPerformed
+        DefaultListModel defaultListModel = (DefaultListModel) this.assetJList.getModel();
+        defaultListModel.addElement(asset);
+    }//GEN-LAST:event_addAssetJButtonActionPerformed
+
+    private void removeAssetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAssetJButtonActionPerformed
+        DefaultListModel model = (DefaultListModel) this.assetJList.getModel();
+        int[] selectedIndices = this.assetJList.getSelectedIndices();
+        int j = 0;
+        for (int i : selectedIndices) {
+            model.remove(i - j);
+            ++j;
+        }
+        this.assetJList.updateUI();
+    }//GEN-LAST:event_removeAssetJButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addAssetJButton;
     private javax.swing.JButton addDecAlgjButton;
     private javax.swing.JButton addDecEvaCriteriajButton;
     private javax.swing.JPanel algorithmjPanel;
     private javax.swing.JComboBox assetJComboBox;
     private javax.swing.JLabel assetJLabel;
+    private javax.swing.JList assetJList;
     private javax.swing.JLabel cashRemainjLabel;
     private javax.swing.JTextField cashRemainjTextField;
     private javax.swing.JPanel comparisonTableJPanel;
@@ -542,9 +602,11 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable portfolioJTable;
     private javax.swing.JLabel portfoliojLabel;
     private javax.swing.JButton refreshJButton;
+    private javax.swing.JButton removeAssetJButton;
     private javax.swing.JButton removeDecAlgjButton;
     private javax.swing.JButton removeDecEvaCriteriajButton;
     private javax.swing.JPanel tableJPanel;
@@ -640,12 +702,18 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
         
         DefaultListModel algListModel = (DefaultListModel) decAlgsJList.getModel();
         DefaultListModel criteriaListModel = (DefaultListModel) decEvaCrisJList.getModel();
-        System.out.println(asset.getAssetID());
-        System.out.println(toDate);
-        System.out.println(fromDate);
-        ArrayList<PriceEntity> prices = (new PriceManager()).getPriceInInterval(asset.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
+//        System.out.println(asset.getAssetID());
+//        System.out.println(toDate);
+//        System.out.println(fromDate);
+
         TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
-        map.put(asset, prices);
+
+        DefaultListModel defaultListModel = (DefaultListModel) this.assetJList.getModel();
+        for (int i = 0; i < defaultListModel.size(); ++i) {
+            AssetEntity assetEntity = (AssetEntity) defaultListModel.get(i);
+            ArrayList<PriceEntity> prices = (new PriceManager()).getPriceInInterval(assetEntity.getAssetID(), new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()));
+            map.put(assetEntity, prices);
+        }
 
         for (int algIndex = 0; algIndex < size[1].length - 1; ++algIndex) {
             //set price list for algorithm
