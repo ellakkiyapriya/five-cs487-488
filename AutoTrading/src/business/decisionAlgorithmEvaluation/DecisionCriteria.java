@@ -26,7 +26,7 @@ import business.virtualTrading.User;
  *  for (AbstractDecisionAlgorithm curAlgorithm :  algorithmList) {
  *  	User curUser = algoUser.clone(); // different user for each algorithm
  *  	for (DecisionCriteria curCriteria : criteriaList) {
- *  		curCriteria.setParamatersValue(curUser, curAlgorithm.runAlgorithm(), assetEntity);
+ *  		curCriteria.setParametersValue(curUser, curAlgorithm.runAlgorithm(), assetEntity);
  *  
  * 			table[curAlgorithm][curCriteria] = curCriteria.evaluate();
  * 		}
