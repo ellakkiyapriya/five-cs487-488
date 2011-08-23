@@ -226,10 +226,12 @@ public class AddNewUserJPanel extends javax.swing.JPanel {
         add = true;
 
         //Add new user
-        newUser = new User(userNameJTextField.getText(),(Double)cashRemainJSpinner.getValue());
-        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
-            newUser.addPortfolio(portfolioEntry);
-        }
+        newUser = new User(userNameJTextField.getText(),(Double)cashRemainJSpinner.getValue(), portfolioEntryList);
+//        for (PortfolioEntry portfolioEntry : portfolioEntryList) {
+//            newUser.addPortfolio(portfolioEntry);
+//        }
+        
+        
 
         portfolioEntryList.clear();
         PortfolioTableModel portfolioTableModel = (PortfolioTableModel) this.portfolioJTable.getModel();
