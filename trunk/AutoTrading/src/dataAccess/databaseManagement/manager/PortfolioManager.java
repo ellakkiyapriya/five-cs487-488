@@ -175,6 +175,10 @@ public class PortfolioManager {
 		try {
 			ArrayList<PortfolioEntity> listPortfolios = new ArrayList<PortfolioEntity>();
 
+			if (date == null) {
+				return listPortfolios;
+			}
+			
 			String queryString = "SELECT * FROM portfolio WHERE user_id=? AND date=?";
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
@@ -308,6 +312,28 @@ public class PortfolioManager {
 		return latestDate;
 	}
 
+	public ArrayList<PortfolioEntity> getPortfoliosOfUserIDUntilDate(long userID, Date date) {
+		try {
+			Date latestDate = null;
+			
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			String statementStr = "SELECT MAX(`date`) FROM `portfolio` WHERE `user_id`="
+					+ userID + " AND `date` < '" + date.toString() + "'";
+			resultSet = statement.executeQuery(statementStr);
+			resultSet.next();
+			latestDate = resultSet.getDate(1);
+
+			ArrayList<PortfolioEntity> liPortfolioEntities = getPortfolioByDateAndUserID(userID, latestDate);
+			
+			return liPortfolioEntities;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return null;
+	}
+	
 	public ArrayList<PortfolioEntity> getAllPortfolios() {
 		try {
 			ArrayList<PortfolioEntity> listAllPortfolios = new ArrayList<PortfolioEntity>();
@@ -355,7 +381,7 @@ public class PortfolioManager {
 
 		return null;
 	}
-
+	
 	public Date getLatestDate() {
 		Date latestDate = null;
 
