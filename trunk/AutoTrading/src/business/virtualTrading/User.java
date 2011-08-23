@@ -13,6 +13,7 @@ import dataAccess.databaseManagement.entity.UserEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.OrderManager;
 import dataAccess.databaseManagement.manager.PortfolioManager;
+import dataAccess.databaseManagement.manager.PriceManager;
 import dataAccess.databaseManagement.manager.UserManager;
 
 /**
@@ -25,6 +26,7 @@ import dataAccess.databaseManagement.manager.UserManager;
 
 public class User {
 	private UserEntity user;
+	private double initialCapital;
 	private double profit;
 	private ArrayList<Order> curOrderList;
 	private ArrayList<PortfolioEntry> curPortfolioList;
@@ -37,24 +39,9 @@ public class User {
 		user = new UserEntity(name, cash);
 		curOrderList = new ArrayList<Order>();
 		curPortfolioList = new ArrayList<PortfolioEntry>();
+		initialCapital = cash;
 	}
-
-	/**
-	 * Constructor for user get from database <li>userID is automatically
-	 * created
-	 */
-	public User(UserEntity userEntity,
-			ArrayList<PortfolioEntity> portfolioEntityList) {
-		user = userEntity;
-		curOrderList = new ArrayList<Order>();
-		curPortfolioList = new ArrayList<PortfolioEntry>();
-		for (int i = 0; i < portfolioEntityList.size(); i++) {
-			curPortfolioList
-					.add(new PortfolioEntry(portfolioEntityList.get(i)));
-		}
-
-	}
-
+	
 	/**
 	 * Constructor <li>userID is automatically created
 	 */
@@ -62,7 +49,39 @@ public class User {
 		user = userEntity;
 		curOrderList = new ArrayList<Order>();
 		curPortfolioList = new ArrayList<PortfolioEntry>();
+		initialCapital = userEntity.getCash();
 	}
+
+	/**
+	 * Constructor for user get from database <li>userID is automatically
+	 * created
+	 */
+	public User(UserEntity userEntity,
+			ArrayList<PortfolioEntry> portfolioEntryList) {
+		user = userEntity;
+		curOrderList = new ArrayList<Order>();
+		curPortfolioList = new ArrayList<PortfolioEntry>();
+		initialCapital = -1;
+
+		for (PortfolioEntry curPortfolioEntry : portfolioEntryList) {
+			curPortfolioList.add(curPortfolioEntry);
+		}
+	}
+	
+	/**
+	 * Constructor <li>userID is automatically created
+	 */
+	public User(String name, double cash, ArrayList<PortfolioEntry> portfolioEntryList) {
+		user = new UserEntity(name, cash);
+		curOrderList = new ArrayList<Order>();
+		curPortfolioList = new ArrayList<PortfolioEntry>();
+		initialCapital = -1;
+		for (PortfolioEntry curPortfolioEntry : portfolioEntryList) {
+			curPortfolioList.add(curPortfolioEntry);
+		}
+	}
+
+	
 
 	/**
 	 * Constructor get user's information from database by userID
@@ -194,6 +213,9 @@ public class User {
 					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
 							.getVolume(), date));
 		}
+		
+		UserManager usermanager = new UserManager();
+		usermanager.update(user);
 
 	}
 	
@@ -202,10 +224,6 @@ public class User {
 	 * method updates database
 	 */
 	public void addOrderToDatabase(Date date) {
-//		Calendar cal = Calendar.getInstance();
-//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//		Date date = Date.valueOf(dateFormat.format(cal.getTime()));
-
 		OrderManager orderManager = new OrderManager();
 		for (Order order : curOrderList) {
 			orderManager.add(new OrderEntity(order.getOrderType(), user
@@ -241,7 +259,17 @@ public class User {
 					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
 							.getVolume(), date));
 		}
+		
+		setPortfolioLatestDate(new Date(date.getTime()));
 
+
+		/*
+		 * Update user cash
+		 */
+		
+		UserManager usermanager = new UserManager();
+		usermanager.update(user);
+		
 	}
 
 	/**
@@ -363,13 +391,15 @@ public class User {
 	public double portfolioValue(Date date) {
 		double totalCash = 0;
 		PortfolioManager portfolioManager = new PortfolioManager();
+		PriceManager priceManager = new PriceManager();
 
 		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
 				.getPortfolioByDateAndUserID(user.getUserID(), date);
 		for (PortfolioEntity portfolioEntity : portfolioEntityList) {
-			totalCash += portfolioEntity.getPrice()
+			double curPrice = priceManager.getPriceByAssetIDAndDate(portfolioEntity.getAssetID(), date).getClose();
+			totalCash += curPrice
 					* portfolioEntity.getVolume();
-		}
+		} 
 		return totalCash;
 	}
 
@@ -408,6 +438,10 @@ public class User {
 		return spentCash;
 	}
 
+	/**
+	 * @param date
+	 * @return cash in a specific date between begin date and present 
+	 */
 	public double getCashByDate(Date date) {
 		return user.getCash() + this.spentCash(date);
 	}
@@ -429,11 +463,27 @@ public class User {
 	 */
 	public double profit() {
 		PortfolioManager portfolioManager = new PortfolioManager();
-		double initialCapital = getCapitalByDate(portfolioManager
-				.getPortfolioStartDateOfUserID(user.getUserID()));
+		
+		if (initialCapital == -1) {
+			
+			initialCapital = initialCash(); 
+			
+			ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
+			.getPortfolioByDateAndUserID(user.getUserID(), portfolioManager.getPortfolioStartDateOfUserID(user.getUserID()));
+			
+			for (PortfolioEntity portfolioEntity : portfolioEntityList) {
+				initialCapital += portfolioEntity.getPrice()
+				* portfolioEntity.getVolume();
+			} 
+			
+		}
+		
 		double curCapital = getCapitalByDate(portfolioManager
 				.getPortfolioLatestDateOfUserID(user.getUserID()));
-		return (curCapital - initialCapital) / initialCapital;
+		
+		System.out.println(initialCapital + " " + curCapital);
+		System.out.println((curCapital - initialCapital) / initialCapital);
+		return (curCapital - initialCapital) / initialCapital * 100;
 	}
 
 	public void removeFromDatabase() {
