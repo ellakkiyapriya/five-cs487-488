@@ -96,6 +96,9 @@ public class User {
 	 */
 	public void addCash(double cash) {
 		user.setCash(user.getCash() + cash);
+		UserManager userManager = new UserManager();
+		userManager.update(user);
+		
 	}
 
 	/**
