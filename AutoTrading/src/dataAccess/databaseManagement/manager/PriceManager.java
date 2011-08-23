@@ -584,12 +584,14 @@ public class PriceManager {
     public java.util.Date getOldestDateOfExchange(long exchangeID) {
 		Date oldestDate = null;
 
+                AssetManager assetManager = new AssetManager();
+		AssetEntity assetEntity = assetManager.getAssetsByExchange(exchangeID).get(0);
+
 		try {
 			connection = getConnection();
 			Statement statement = connection.createStatement();
 			resultSet = statement
-					.executeQuery("SELECT min(date) FROM price as t1, asset as t2 WHERE t1.asset_id = t2.asset_id AND t2.exchange_id="
-							+ exchangeID);
+					.executeQuery("SELECT min(date) FROM price WHERE asset_id=" + assetEntity.getAssetID());
 			resultSet.next();
 			oldestDate = resultSet.getDate(1);
 

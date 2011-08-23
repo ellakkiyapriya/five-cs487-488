@@ -128,6 +128,10 @@ public class PortfolioEntry {
 	}
 
 	public void updateCurrentPriceToDate(Date date) {
+            if (date == null) {
+                return;
+            }
+
 		PriceManager priceManager = new PriceManager();
 		this.setCurrentPrice(priceManager.getPriceByAssetIDAndDate(
 				asset.getAssetID(), new java.sql.Date(date.getTime()))

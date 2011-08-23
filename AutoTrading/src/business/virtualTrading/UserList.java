@@ -40,8 +40,10 @@ public class UserList {
 			java.sql.Date startDate = portfolioManager.getPortfolioStartDateOfUserID(user.getUserID());
 			java.sql.Date latestDate = portfolioManager.getPortfolioLatestDateOfUserID(user.getUserID());
 			java.sql.Date curDate;
-			
-			if (!startDate.equals(latestDate) ) {
+
+                        if (startDate == null) {
+                            curDate = null;
+                        } else if (!startDate.equals(latestDate) ) {
 				curDate = latestDate;
 			} else {
 				curDate = (new PriceManager()).getNextDate(startDate);

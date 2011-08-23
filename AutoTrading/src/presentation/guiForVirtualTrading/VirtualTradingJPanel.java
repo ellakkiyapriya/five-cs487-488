@@ -428,6 +428,8 @@ public class VirtualTradingJPanel extends javax.swing.JPanel {
         DefaultComboBoxModel model = (DefaultComboBoxModel) userJComboBox.getModel();
         model.addElement(addNewUserJPanel.getNewUser());
         userJComboBox.updateUI();
+
+        userJComboBox.setSelectedIndex(userJComboBox.getModel().getSize()-1);
 }//GEN-LAST:event_addUserJButtonActionPerformed
 
     private void removeUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserJButtonActionPerformed
