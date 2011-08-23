@@ -70,8 +70,8 @@ public class Order {
 	}
 
 	public void setVolume(double volume) {
-		this.volume = volume;
-		this.value = volume * price;
+		this.volume =(long) volume;
+		this.value = this.volume * price;
 	}
 
 	public double getVolume() {

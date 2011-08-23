@@ -98,7 +98,7 @@ public class User {
 		user.setCash(user.getCash() + cash);
 		UserManager userManager = new UserManager();
 		userManager.update(user);
-		
+		initialCapital += cash;
 	}
 
 	/**
@@ -138,15 +138,17 @@ public class User {
 		AssetEntity assetEntity;
 
 		if (portfolioEntityList != null && portfolioEntityList.size() > 0) {
-			Date curDate = portfolioEntityList.get(0).getDate();
+			
 
 			for (PortfolioEntity portfolioEntity : portfolioEntityList) {
+				Date latestDate = new PriceManager().getLatestPriceOfAssetIDUntiltDate(portfolioEntity
+						.getAssetID(), date);
 				assetEntity = assetManager.getAssetByID(portfolioEntity
 						.getAssetID());
 				curPortfolioEntry = new PortfolioEntry(new Asset(assetEntity),
 						portfolioEntity.getPrice(), portfolioEntity.getVolume());
 
-				curPortfolioEntry.updateCurrentPriceToDate(curDate);
+				curPortfolioEntry.updateCurrentPriceToDate(latestDate);
 				portfolioList.add(curPortfolioEntry);
 			}
 		}
@@ -237,13 +239,16 @@ public class User {
 	 */
 	public void addOrderToDatabase(Date date) {
 		OrderManager orderManager = new OrderManager();
-		for (Order order : curOrderList) {
-			orderManager.add(new OrderEntity(order.getOrderType(), user
-					.getUserID(), date, order.getAsset().getAssetID(), order
-					.getPrice(), order.getVolume(), true));
-		}
 
 		this.executeOrder();
+		
+		for (Order order : curOrderList) {
+			if (order.getMatched()) {
+				orderManager.add(new OrderEntity(order.getOrderType(), user
+						.getUserID(), date, order.getAsset().getAssetID(),
+						order.getPrice(), order.getVolume(), true));
+			}
+		}
 
 		/*
 		 * Update portfolio
@@ -261,11 +266,9 @@ public class User {
 						.getPortfolioID());
 			}
 		}
-
-		for (PortfolioEntry curPortfolioEntry : curPortfolioList) { // add
-																	// today's
-																	// portfolio
-																	// entries
+		
+		// add today's portfolio entries
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) { 
 			portfolioManager.add(new PortfolioEntity(user.getUserID(),
 					curPortfolioEntry.getAsset().getAssetID(),
 					curPortfolioEntry.getBuyPrice(), curPortfolioEntry
@@ -275,7 +278,6 @@ public class User {
 		/*
 		 * Update user cash
 		 */
-		
 		UserManager usermanager = new UserManager();
 		usermanager.update(user);
 		
@@ -285,6 +287,7 @@ public class User {
 	 * excute orders and update portfolio
 	 */
 	public void executeOrder() {
+//		for(int k = 0; k < curOrderList.size(); k++) {
 		for (Order curOrder : curOrderList) {
 
 			/*
@@ -306,43 +309,47 @@ public class User {
 						user.setCash(validCash);
 					else {
 						curOrder.setVolume(user.getCash() / curOrder.getPrice());
-						user.setCash(0);
+						user.setCash(user.getCash() - curOrder.getValue());
 					}
 				}
+				
+				if (curOrder.getVolume() > 0) {
+					// Update user's portfolio
+					int i = 0;
+					PortfolioEntry curPortfolioEntry = null;
+					for (i = 0; i < curPortfolioList.size(); i++) {
+						curPortfolioEntry = curPortfolioList.get(i);
+						if (curPortfolioEntry.getAsset().getAssetID() == curOrder
+								.getAsset().getAssetID())
+							break;
+					}
 
-				// Update user's portfolio
-				int i = 0;
-				PortfolioEntry curPortfolioEntry = null;
-				for (i = 0; i < curPortfolioList.size(); i++) {
-					curPortfolioEntry = curPortfolioList.get(i);
-					if (curPortfolioEntry.getAsset().getAssetID() == curOrder
-							.getAsset().getAssetID())
-						break;
-				}
-
-				// Portfolio does not have asset in the Order
-				if ((i >= curPortfolioList.size()) && (curOrder.getOrderType())) { // buyOrder
-																					// Type
-					curPortfolioList.add(new PortfolioEntry(
-							curOrder.getAsset(), curOrder.getPrice(), curOrder
-									.getVolume()));
-					curOrder.setMatched(true);
-				}
-
-				// Portfolio has the same asset in the Order
-				if (i < curPortfolioList.size()) {
-					if (curOrder.getOrderType()) { // buyOrder Type
-						curPortfolioEntry.updatePortfolio(curOrder.getVolume(),
-								curOrder.getPrice());
-					} else { // sellOrder Type
-						if (curPortfolioEntry.updatePortfolio(
-								-curOrder.getVolume(), curOrder.getPrice()) > 0) {
-							curOrder.setVolume(curPortfolioEntry.getVolume());
-							curPortfolioList.remove(curPortfolioEntry);
+					// Portfolio does not have asset in the Order
+					if ((i >= curPortfolioList.size())
+							&& (curOrder.getOrderType())) { // buyOrder Type
+						curPortfolioList.add(new PortfolioEntry(curOrder
+								.getAsset(), curOrder.getPrice(), curOrder
+								.getVolume()));
+						curOrder.setMatched(true);
+					} else {
+						// Portfolio has the same asset in the Order
+						if (i < curPortfolioList.size()) {
+							if (curOrder.getOrderType()) { // buyOrder Type
+								curPortfolioEntry.updatePortfolio(curOrder
+										.getVolume(), curOrder.getPrice());
+							} else { // sellOrder Type
+								if (curPortfolioEntry.updatePortfolio(-curOrder
+										.getVolume(), curOrder.getPrice()) > 0) {
+									curOrder.setVolume(curPortfolioEntry
+											.getVolume());
+									curPortfolioList.remove(curPortfolioEntry);
+								}
+								user.setCash(user.getCash()
+										+ curOrder.getValue());
+							}
+							curOrder.setMatched(true);
 						}
-						user.setCash(user.getCash() + curOrder.getValue());
 					}
-					curOrder.setMatched(true);
 				}
 			}
 		}
@@ -404,15 +411,15 @@ public class User {
 
 		ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
 				.getPortfoliosOfUserIDUntilDate(user.getUserID(), date);
-		
-		if (portfolioEntityList != null) {  
+
+		if (portfolioEntityList != null && portfolioEntityList.size() > 0) {
 			Date curDate = portfolioEntityList.get(0).getDate();
-		for (PortfolioEntity portfolioEntity : portfolioEntityList) {
-			
-			double curPrice = priceManager.getPriceByAssetIDAndDate(portfolioEntity.getAssetID(), curDate).getClose();
-			totalCash += curPrice
-					* portfolioEntity.getVolume();
-		} 
+			for (PortfolioEntity portfolioEntity : portfolioEntityList) {
+
+				double curPrice = priceManager.getPriceByAssetIDAndDate(
+						portfolioEntity.getAssetID(), curDate).getClose();
+				totalCash += curPrice * portfolioEntity.getVolume();
+			}
 		}
 		return totalCash;
 	}
