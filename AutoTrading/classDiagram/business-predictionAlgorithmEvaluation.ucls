@@ -27,17 +27,17 @@
     </display>  
   </class>  
   <dependency>    
-    <bendpoint x="575" y="208"/>    
     <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="2"/>  
+    <end type="TARGET" nodeId="1"/>  
   </dependency>  
   <generalization>    
     <end type="SOURCE" nodeId="2"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <dependency>    
+    <bendpoint x="575" y="208"/>    
     <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="1"/>  
+    <end type="TARGET" nodeId="2"/>  
   </dependency>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    
