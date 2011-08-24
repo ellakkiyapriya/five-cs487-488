@@ -275,6 +275,7 @@ public class User {
 		}
 
 		setPortfolioLatestDate(date);
+		updatePortfolioCurrentPrice(date);
 
 		/*
 		 * Update user cash
