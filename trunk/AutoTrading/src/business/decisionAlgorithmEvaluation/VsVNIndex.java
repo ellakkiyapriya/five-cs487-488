@@ -1,12 +1,8 @@
 package business.decisionAlgorithmEvaluation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.TreeMap;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import business.algorithm.decisionAlgorithm.Order;
 import business.virtualTrading.User;
