@@ -34,13 +34,30 @@ public class VsVNIndex extends DecisionCriteria {
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = (TreeMap<Date, ArrayList<business.virtualTrading.Order>>) paramList
 				.get("Order List");
 
+		user.setInitialCapital();		
 		for (Date date : allOrderList.keySet()) {
+			for (business.virtualTrading.Order curOder : allOrderList.get(date)) {
+				System.out.println(curOder.getAsset().getSymbol() + " == " + curOder.getPrice() + " == " + curOder.getVolume() + " == " + curOder.getOrderType() + " == " + date);
+			} 
 			user.setCurOrderList(allOrderList.get(date));
 			user.executeAlgorithmOrder();
+			
+			System.out.println("Cash :" + user.getCash());
+			
+			for (business.virtualTrading.Order curOder : user.getCurOrderList()) {
+				if (curOder.getMatched()) {
+					orderHistory.add(curOder);
+					System.out.println(curOder.getAsset().getSymbol() + " == " + curOder.getPrice() + " == " + curOder.getVolume() + " == " + curOder.getOrderType());
+				}
+			}
+			
 		}
-
+		//TODO : parameter of end date
+		user.updatePortfolioCurrentPrice(new PriceManager().getLatestDate());
+		
+		
 		TreeMap<String, Double> map = new TreeMap<String, Double>();
-		map.put("Ratio", user.profit() / vnIndexGrowth()); 
+		map.put("Ratio", user.profit() ); 
 
 		return map;
 	}
@@ -64,6 +81,7 @@ public class VsVNIndex extends DecisionCriteria {
 	@Override
 	public void setParametersValue(User user, ArrayList<Order> orderList) {
 //		debug("orderList.size():", orderList.size());
+		orderHistory = new ArrayList<business.virtualTrading.Order>();
 
 		this.paramList = new TreeMap<String, Object>();
 		this.user = user;
