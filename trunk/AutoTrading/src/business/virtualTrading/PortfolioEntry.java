@@ -63,19 +63,23 @@ public class PortfolioEntry {
 	/**
 	 * 
 	 * @param volume
-	 *            < 0 if buyOrderType, volume > 0 if sellOrderType
+	 *            > 0 if buyOrderType, volume < 0 if sellOrderType
 	 * @param price
 	 * @return > 0 if sell all
 	 */
 	public double updatePortfolio(double volume, double price) {
 		double validVolume = this.volume + volume;
-		if (validVolume > 0) {
+		if (volume > 0) { // buy OrderType
 			this.buyPrice = (price * volume + this.buyPrice * this.volume)
-					/ validVolume;
+				/ validVolume;
+			this.volume += volume;
+			return -1;
+		}
+		if (validVolume > 0) { // sell Order Type
 			this.volume = validVolume;
 			return -1;
 		}
-		return this.volume;
+		return this.volume; // sell all
 	}
 
 	public double getPortfolioValue() {

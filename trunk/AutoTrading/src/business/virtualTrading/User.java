@@ -357,55 +357,59 @@ public class User {
 	}
 
 	public void executeAlgorithmOrder() {
-		if (curPortfolioList.get(0).getVolume() == -1) {
+		if (curOrderList.get(0).getVolume() == -1) {
 			for (Order curOrder : curOrderList) {
 				// Update Cash
 				if (curOrder.getOrderType()) { // buy all
 					curOrder.setVolume(user.getCash() / curOrder.getPrice());
-					user.setCash(0);
+					user.setCash(user.getCash() - curOrder.getValue());
 				}
 
-				// Update user's portfolio
-				int i = 0;
-				PortfolioEntry curPortfolioEntry = null;
-				for (i = 0; i < curPortfolioList.size(); i++) {
-					curPortfolioEntry = curPortfolioList.get(i);
-					if (curPortfolioEntry.getAsset().getAssetID() == curOrder
-							.getAsset().getAssetID())
-						break;
-				}
-
-				// Portfolio does not have asset in the Order
-				if ((i >= curPortfolioList.size()) && (curOrder.getOrderType())) { // buyOrder
-																					// Type
-					curPortfolioList.add(new PortfolioEntry(
-							curOrder.getAsset(), curOrder.getPrice(), curOrder
-									.getVolume()));
-					curOrder.setMatched(true);
-				}
-
-				// Portfolio has the same asset in the Order
-				if (i < curPortfolioList.size()) {
-					if (curOrder.getOrderType()) { // buyOrder Type
-						curPortfolioEntry.updatePortfolio(curOrder.getVolume(),
-								curOrder.getPrice());
-					} else { // sellOrder Type
-						if (curPortfolioEntry.updatePortfolio(
-								-curOrder.getVolume(), curOrder.getPrice()) > 0) {
-							curOrder.setVolume(curPortfolioEntry.getVolume());
-							curPortfolioList.remove(curPortfolioEntry);
-						}
-						user.setCash(user.getCash() + curOrder.getValue());
+				if (curOrder.getVolume() > 0 || curOrder.getVolume() == -1) {
+					// Update user's portfolio
+					int i = 0;
+					PortfolioEntry curPortfolioEntry = null;
+					for (i = 0; i < curPortfolioList.size(); i++) {
+						curPortfolioEntry = curPortfolioList.get(i);
+						if (curPortfolioEntry.getAsset().getAssetID() == curOrder
+								.getAsset().getAssetID())
+							break;
 					}
-					curOrder.setMatched(true);
-				}
 
+					// Portfolio does not have asset in the Order
+					if ((i >= curPortfolioList.size())
+							&& (curOrder.getOrderType())) { // buyOrder
+						// Type
+						curPortfolioList.add(new PortfolioEntry(curOrder
+								.getAsset(), curOrder.getPrice(), curOrder
+								.getVolume()));
+						curOrder.setMatched(true);
+					} else {
+
+						// Portfolio has the same asset in the Order
+						if (i < curPortfolioList.size()) {
+							if (curOrder.getOrderType()) { // buyOrder Type
+								curPortfolioEntry.updatePortfolio(curOrder
+										.getVolume(), curOrder.getPrice());
+							} else { // sellOrder Type
+								if (curPortfolioEntry.updatePortfolio(-curPortfolioEntry.getVolume(), curOrder.getPrice()) > 0) {
+									curOrder.setVolume(curPortfolioEntry
+											.getVolume());
+									curPortfolioList.remove(curPortfolioEntry);
+								}
+								user.setCash(user.getCash()
+										+ curOrder.getValue());
+							}
+							curOrder.setMatched(true);
+						}
+					}
+				}
 			}
 		} else
 			executeOrder();
 	}
 
-	public double portfolioValue(Date date) {
+	public double portfolioValueAtDate(Date date) {
 		double totalCash = 0;
 		PortfolioManager portfolioManager = new PortfolioManager();
 		PriceManager priceManager = new PriceManager();
@@ -421,6 +425,22 @@ public class User {
 						portfolioEntity.getAssetID(), curDate).getClose();
 				totalCash += curPrice * portfolioEntity.getVolume();
 			}
+		}
+		return totalCash;
+	}
+	
+	public double portfolioBuyValue() {
+		double totalCash = 0;
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
+			totalCash += curPortfolioEntry.getBuyPrice()* curPortfolioEntry.getVolume();
+		}
+		return totalCash;
+	}
+	
+	public double portfolioCurrentValue() {
+		double totalCash = 0;
+		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
+			totalCash += curPortfolioEntry.getCurrentPrice() * curPortfolioEntry.getVolume();
 		}
 		return totalCash;
 	}
@@ -477,7 +497,7 @@ public class User {
 	 * @return total capital = cash + porfolio value
 	 */
 	public double getCapitalByDate(Date date) {
-		return getCashByDate(date) + portfolioValue(date);
+		return getCashByDate(date) + portfolioValueAtDate(date);
 	}
 
 	/**
@@ -487,7 +507,6 @@ public class User {
 		PortfolioManager portfolioManager = new PortfolioManager();
 		
 		if (initialCapital == -1) {
-			
 			initialCapital = initialCash(); 
 			
 			ArrayList<PortfolioEntity> portfolioEntityList = portfolioManager
@@ -497,16 +516,10 @@ public class User {
 				initialCapital += portfolioEntity.getPrice()
 				* portfolioEntity.getVolume();
 			} 
-			
 		}
 		
-//		double curCapital = getCapitalByDate(portfolioManager
-//				.getPortfolioLatestDateOfUserID(user.getUserID()));
+		double curCapital = user.getCash() + portfolioCurrentValue();
 		
-		double curCapital = user.getCash();
-		for (PortfolioEntry curPortfolioEntry : curPortfolioList) {
-			curCapital += curPortfolioEntry.getCurrentPrice() * curPortfolioEntry.getVolume();
-		}
 		System.out.println(initialCapital + " " + curCapital);
 		System.out.println((curCapital - initialCapital) / initialCapital);
 		return (curCapital - initialCapital) / initialCapital * 100;
@@ -590,6 +603,13 @@ public class User {
 
 	public Date getPortfolioLatestDate() {
 		return portfolioLatestDate;
+	}
+	
+	/**
+	 * only use this function iff user & his portfilio are first created
+	 */
+	public void setInitialCapital() {
+		initialCapital = user.getCash() + portfolioBuyValue();
 	}
 
 }
