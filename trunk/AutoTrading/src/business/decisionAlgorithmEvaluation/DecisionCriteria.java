@@ -47,15 +47,10 @@ import business.virtualTrading.User;
  */
 public abstract class DecisionCriteria {
 	protected User user;
-	protected ArrayList<business.virtualTrading.Order> orderHistory;
 	protected TreeMap<String, Object> paramList;
 
 	public abstract TreeMap<String, Double> evaluate();
 	
-	public ArrayList<business.virtualTrading.Order> getOrderHistory() {
-		return orderHistory;
-	}
-
 	public abstract void setParametersValue(TreeMap<String, Object> map);
 
 	@SuppressWarnings("rawtypes")

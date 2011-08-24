@@ -33,25 +33,27 @@ public class VsVNIndex extends DecisionCriteria {
 	public TreeMap<String, Double> evaluate() {
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = (TreeMap<Date, ArrayList<business.virtualTrading.Order>>) paramList
 				.get("Order List");
+		
+		ArrayList<business.virtualTrading.Order> orderHistory = new ArrayList<business.virtualTrading.Order>();
+
 
 		user.setInitialCapital();		
 		for (Date date : allOrderList.keySet()) {
-			for (business.virtualTrading.Order curOder : allOrderList.get(date)) {
-				System.out.println(curOder.getAsset().getSymbol() + " == " + curOder.getPrice() + " == " + curOder.getVolume() + " == " + curOder.getOrderType() + " == " + date);
-			} 
 			user.setCurOrderList(allOrderList.get(date));
 			user.executeAlgorithmOrder();
 			
-			System.out.println("Cash :" + user.getCash());
+//			System.out.println("Cash :" + user.getCash());
 			
 			for (business.virtualTrading.Order curOder : user.getCurOrderList()) {
 				if (curOder.getMatched()) {
 					orderHistory.add(curOder);
-					System.out.println(curOder.getAsset().getSymbol() + " == " + curOder.getPrice() + " == " + curOder.getVolume() + " == " + curOder.getOrderType());
+//					System.out.println(curOder.getAsset().getSymbol() + " == " + curOder.getPrice() + " == " + curOder.getVolume() + " == " + curOder.getOrderType());
 				}
 			}
 			
 		}
+		
+		user.setCurOrderList(orderHistory);
 		//TODO : parameter of end date
 		user.updatePortfolioCurrentPrice(new PriceManager().getLatestDate());
 		
@@ -81,7 +83,6 @@ public class VsVNIndex extends DecisionCriteria {
 	@Override
 	public void setParametersValue(User user, ArrayList<Order> orderList) {
 //		debug("orderList.size():", orderList.size());
-		orderHistory = new ArrayList<business.virtualTrading.Order>();
 
 		this.paramList = new TreeMap<String, Object>();
 		this.user = user;
