@@ -73,7 +73,7 @@ public class VsVNIndex extends DecisionCriteria {
 	@Override
 	public void setParametersValue(User user, ArrayList<Order> orderList,
 			AssetEntity assetEntity) {
-		debug("orderList.size():", orderList.size());
+//		debug("orderList.size():", orderList.size());
 		this.paramList = new TreeMap<String, Object>();
 		this.user = user;
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = new TreeMap<Date, ArrayList<business.virtualTrading.Order>>();
@@ -102,8 +102,8 @@ public class VsVNIndex extends DecisionCriteria {
 		paramList.put("Order List", allOrderList);
 	}
 
-	public static void debug(Object... os) {
-		JOptionPane.showMessageDialog(new JFrame(), Arrays.deepToString(os));
-	}
+//	public static void debug(Object... os) {
+//		JOptionPane.showMessageDialog(new JFrame(), Arrays.deepToString(os));
+//	}
 
 }
