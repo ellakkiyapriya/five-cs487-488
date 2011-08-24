@@ -22,8 +22,6 @@ public class VsVNIndex extends DecisionCriteria {
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = (TreeMap<Date, ArrayList<business.virtualTrading.Order>>) paramList
 				.get("Order List");
 
-		// TODO priceManager.getStartedPriceOfAssetID(assetID)
-		// TODO priceManager.getLatestPriceOfAssetID(assetID)
 		ArrayList<PriceEntity> price = priceManager.getPriceInInterval(
 				vnIndexID,
 				new java.sql.Date(allOrderList.firstKey().getTime()),
@@ -43,7 +41,7 @@ public class VsVNIndex extends DecisionCriteria {
 		}
 
 		TreeMap<String, Double> map = new TreeMap<String, Double>();
-		map.put("Ratio", user.profit() / vnIndexGrowth());
+		map.put("Ratio", user.profit() / vnIndexGrowth()); 
 
 		return map;
 	}
@@ -51,13 +49,11 @@ public class VsVNIndex extends DecisionCriteria {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public TreeMap<String, Class> getParametersList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setParametersValue(TreeMap<String, Object> map) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -67,9 +63,9 @@ public class VsVNIndex extends DecisionCriteria {
 	}
 
 	@Override
-	public void setParametersValue(User user, ArrayList<Order> orderList,
-			AssetEntity assetEntity) {
+	public void setParametersValue(User user, ArrayList<Order> orderList) {
 //		debug("orderList.size():", orderList.size());
+
 		this.paramList = new TreeMap<String, Object>();
 		this.user = user;
 		TreeMap<Date, ArrayList<business.virtualTrading.Order>> allOrderList = new TreeMap<Date, ArrayList<business.virtualTrading.Order>>();
@@ -86,11 +82,7 @@ public class VsVNIndex extends DecisionCriteria {
 			ArrayList<business.virtualTrading.Order> curDateOrderList = new ArrayList<business.virtualTrading.Order>();
 			for (Order curOrder : orderList) {
 				if (curOrder.getDate().equals(date))
-					// curDateOrderList.add(curOrder.toOrder(assetEntity));
-					curDateOrderList.add(new business.virtualTrading.Order(
-							assetEntity, curOrder.isOrderType(), curOrder
-									.getPrice(),
-							business.virtualTrading.Order.USE_ALL_CASH));
+					curDateOrderList.add(curOrder.toOrder());
 			}
 			allOrderList.put(date, curDateOrderList);
 		}

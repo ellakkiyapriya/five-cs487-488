@@ -59,7 +59,7 @@ public abstract class DecisionCriteria {
 	public abstract TreeMap<String, Class> getParametersList();
 
 	public abstract void setParametersValue(User user,
-			ArrayList<Order> orderList, AssetEntity assetEntity);
+			ArrayList<Order> orderList);
 
 	public abstract String toString();
 }
