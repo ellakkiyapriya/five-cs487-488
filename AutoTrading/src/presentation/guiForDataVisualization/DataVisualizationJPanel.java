@@ -448,6 +448,8 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         dataVisualizationProcessor.removeAllPreAlg();
 
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+        preAlg = business.algorithm.predictAlgorithm.PredictAlgorithmAPI.getPredictionAlgorithm((String) preAlgJComboBox.getSelectedItem());
+         
         for (String name : preAlg.getParametersList().keySet()) {
             valueMap.put(name, preAlgParameterJPanel.getValue(name));
         }
@@ -460,6 +462,8 @@ public class DataVisualizationJPanel extends javax.swing.JPanel {
         dataVisualizationProcessor.removeAllDecAlg();
 
         TreeMap<String, Object> valueMap = new TreeMap<String, Object>();
+        decAlg = business.algorithm.decisionAlgorithm.DecisionAlgorithmAPI.getDecisionAlgorithm((String) decAlgJComboBox.getSelectedItem());
+        
         for (String name : decAlg.getParameterList().keySet()) {
             valueMap.put(name, decAlgParameterJPanel.getValue(name));
         }

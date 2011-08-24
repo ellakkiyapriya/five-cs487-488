@@ -51,7 +51,7 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 	@Override
 	public OutputForDecisionAlgorithm runAlgorithm() {
 		// TODO Auto-generated method stub
-		ArrayList<Order> orderList = new ArrayList<Order>();
+            ArrayList<Order> orderList = new ArrayList<Order>();
 
 		Set<AssetEntity> assetSet = priceList.keySet();
 
@@ -67,6 +67,13 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 				}
 				MA.add(temp / MA_period);
 			}
+
+                        ArrayList<PriceEntity> tempArray = new ArrayList<PriceEntity>();
+                        for (PriceEntity price : priceEntityList) {
+                            tempArray.add(price);
+                        }
+
+                        priceEntityList = tempArray;
 
 			for (int i = 0; i < MA_period - 1; ++i) {
 				priceEntityList.remove(0);
