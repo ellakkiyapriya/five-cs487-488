@@ -580,6 +580,16 @@ public class User {
 	public ArrayList<Order> getCurOrderList() {
 		return curOrderList;
 	}
+	
+	public ArrayList<OrderEntity> getCurOrderEntityList() {
+		ArrayList<OrderEntity> curOrderEntityList = new ArrayList<OrderEntity>();
+		for (Order curOrder : curOrderList) {
+			curOrderEntityList.add(new OrderEntity(curOrder.getOrderType(),
+					user.getUserID(), null, curOrder.getAsset().getAssetID(),
+					curOrder.getPrice(), curOrder.getVolume(), true));
+		}
+		return curOrderEntityList;
+	}
 
 	public void setCurOrderList(ArrayList<Order> orderList) {
 		this.curOrderList = orderList;
