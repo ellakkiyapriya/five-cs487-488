@@ -6,7 +6,6 @@ import java.util.TreeMap;
 
 import business.algorithm.decisionAlgorithm.Order;
 import business.virtualTrading.User;
-import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.AssetManager;
 import dataAccess.databaseManagement.manager.PriceManager;
