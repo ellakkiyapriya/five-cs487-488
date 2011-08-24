@@ -740,7 +740,12 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 
         for (int i = 1; i < size[1].length; ++i) {
             AbstractDecisionAlgorithm decAlg = (AbstractDecisionAlgorithm) decAlgsJList.getModel().getElementAt(i - 1);
-            RowHeaderJPanel rowHeaderJPanel = new RowHeaderJPanel(decAlg, new ArrayList<OrderEntity>(), decAlg_ResultMap.get(decAlg).getCurPortfolioList());
+            // TODO type of order list is ArrayList<OrderEntity> or ArrayList<Order> ( Order.java in virtualTrading)
+            // i try ArrayList<Order> but it does not work
+            // if it is ArrayList<Order> then replace
+            // decAlg_ResultMap.get(decAlg).getCurOrderEntityList()
+            // --> decAlg_ResultMap.get(decAlg).getCurOrderList()
+            RowHeaderJPanel rowHeaderJPanel = new RowHeaderJPanel(decAlg, decAlg_ResultMap.get(decAlg).getCurOrderEntityList(), decAlg_ResultMap.get(decAlg).getCurPortfolioList());
             rowHeaderJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             tableJPanel.add(rowHeaderJPanel, "0, " + i);
         }
