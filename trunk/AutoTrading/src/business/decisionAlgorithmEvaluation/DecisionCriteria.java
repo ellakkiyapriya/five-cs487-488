@@ -3,8 +3,6 @@ package business.decisionAlgorithmEvaluation;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import dataAccess.databaseManagement.entity.AssetEntity;
-
 import business.algorithm.decisionAlgorithm.Order;
 import business.virtualTrading.User;
 
