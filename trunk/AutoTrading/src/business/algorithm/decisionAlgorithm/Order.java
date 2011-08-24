@@ -2,17 +2,21 @@ package business.algorithm.decisionAlgorithm;
 
 import java.util.Date;
 
+import dataAccess.databaseManagement.entity.AssetEntity;
+
 public class Order {
 
 	public static final boolean ORDER_BUY = true;
 	public static final boolean ORDER_SELL = false;
 
+	private AssetEntity asset;
 	private boolean orderType;
 	private double price;
 	private Date date;
 
-	public Order(boolean orderType, double price, Date date) {
+	public Order(AssetEntity asset, boolean orderType, double price, Date date) {
 		super();
+		this.setAsset(asset);
 		this.orderType = orderType;
 		this.price = price;
 		this.date = date;
@@ -42,12 +46,16 @@ public class Order {
 		this.date = date;
 	}
 
-	/*
-	 * public business.virtualTrading.Order toOrder( AssetEntity assetEntity) {
-	 * // TreeMap<Date, business.virtualTrading.Order> order = new TreeMap<Date,
-	 * business.virtualTrading.Order>(); // order.put(date, new
-	 * business.virtualTrading.Order(assetEntity, // orderType, price, -1));
-	 * return new business.virtualTrading.Order(assetEntity, orderType, price,
-	 * business.virtualTrading.Order.USE_ALL_CASH); }
-	 */
+	public void setAsset(AssetEntity asset) {
+		this.asset = asset;
+	}
+
+	public AssetEntity getAsset() {
+		return asset;
+	}
+	 
+	public business.virtualTrading.Order toOrder() {
+		return new business.virtualTrading.Order(asset, orderType, price,
+				business.virtualTrading.Order.USE_ALL_CASH);
+	}
 }

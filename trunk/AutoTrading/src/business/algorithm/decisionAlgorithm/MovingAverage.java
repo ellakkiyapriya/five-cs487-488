@@ -91,18 +91,18 @@ public class MovingAverage extends AbstractDecisionAlgorithm {
 				if (todayMA > yesterdayMA) {
 					if (todayPrice > todayMA) {
 						if (previous_buy_order == false) {
-							Order order = new Order(Order.ORDER_BUY,
+							Order order = new Order(asset, Order.ORDER_BUY,
 									yesterdayPrice, priceEntityList.get(i)
 											.getDate());
 							orderList.add(order);
 							previous_buy_order = true;
 							previous_sell_order = false;
-						}
+			 			}
 					}
 				} else {
 					if (todayPrice < todayMA) {
 						if (previous_sell_order == false) {
-							Order order = new Order(Order.ORDER_SELL,
+							Order order = new Order(asset, Order.ORDER_SELL,
 									yesterdayPrice, priceEntityList.get(i)
 											.getDate());
 							orderList.add(order);
