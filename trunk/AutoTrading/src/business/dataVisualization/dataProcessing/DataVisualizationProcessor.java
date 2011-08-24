@@ -136,11 +136,15 @@ public class DataVisualizationProcessor {
 
     public void addDecAlg(AbstractDecisionAlgorithm abstractDecisionAlgorithm) {
         decAlgList.add(abstractDecisionAlgorithm);
+
         TreeMap<AssetEntity, ArrayList<PriceEntity>> map = new TreeMap<AssetEntity, ArrayList<PriceEntity>>();
         map.put(asset, prices);
+
         abstractDecisionAlgorithm.setPriceList(map);
+
         visualizationChart.addOrders(abstractDecisionAlgorithm,
                 abstractDecisionAlgorithm.runAlgorithm().getOrderList());
+
         visualizationChart.updateChart();
     }
 
