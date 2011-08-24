@@ -10,14 +10,11 @@
  */
 package presentation.guiForDataVisualization;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeMap;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
