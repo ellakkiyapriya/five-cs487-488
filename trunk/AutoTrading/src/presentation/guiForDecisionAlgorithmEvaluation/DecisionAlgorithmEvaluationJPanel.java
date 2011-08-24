@@ -745,7 +745,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             // if it is ArrayList<Order> then replace
             // decAlg_ResultMap.get(decAlg).getCurOrderEntityList()
             // --> decAlg_ResultMap.get(decAlg).getCurOrderList()
-            RowHeaderJPanel rowHeaderJPanel = new RowHeaderJPanel(decAlg, decAlg_ResultMap.get(decAlg).getCurOrderEntityList(), decAlg_ResultMap.get(decAlg).getCurPortfolioList());
+            RowHeaderJPanel rowHeaderJPanel = new RowHeaderJPanel(decAlg, decAlg_ResultMap.get(decAlg).getCurOrderList(), decAlg_ResultMap.get(decAlg).getCurPortfolioList());
             rowHeaderJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             tableJPanel.add(rowHeaderJPanel, "0, " + i);
         }
