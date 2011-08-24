@@ -555,7 +555,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 		if (dataVisualizationProcessor == null) {
 			return;
 		}
-		dataVisualizationProcessor.setStartPreDate(startPreDate);
+		dataVisualizationProcessor.setStartPredictionDate(startPreDate);
 		dataVisualizationProcessor.updateChartData();
 	}// GEN-LAST:event_startPredictionDateJSpinnerStateChanged
 
@@ -664,7 +664,7 @@ public class PredictionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
 				(Date) toDateJSpinner.getValue(),
 				(ChartStyle) charStyleJComboBox.getSelectedItem());
 		startPreDate = (Date) startPredictionDateJSpinner.getValue();
-		dataVisualizationProcessor.setStartPreDate(startPreDate);
+		dataVisualizationProcessor.setStartPredictionDate(startPreDate);
 
 		jFreeChartPanel = new ChartPanel(dataVisualizationProcessor.getChart());
 		chartContainerJPanel.add(jFreeChartPanel);
