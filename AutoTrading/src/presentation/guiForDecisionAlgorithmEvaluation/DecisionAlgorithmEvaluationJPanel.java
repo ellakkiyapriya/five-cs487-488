@@ -730,7 +730,7 @@ public class DecisionAlgorithmEvaluationJPanel extends javax.swing.JPanel {
             for (int criteriaIndex = 0; criteriaIndex < size[0].length - 1; ++criteriaIndex) {
                 DecisionCriteria curCriteria = (DecisionCriteria) criteriaListModel.getElementAt(criteriaIndex);
 
-                curCriteria.setParametersValue(user, alg.runAlgorithm().getOrderList(), (AssetEntity) assetJComboBox.getSelectedItem());
+                curCriteria.setParametersValue(user, alg.runAlgorithm().getOrderList());
 
                 CriteriaOutputJPanel criteriaOutputJPanel = new CriteriaOutputJPanel(curCriteria.evaluate());
                 criteriaOutputJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
