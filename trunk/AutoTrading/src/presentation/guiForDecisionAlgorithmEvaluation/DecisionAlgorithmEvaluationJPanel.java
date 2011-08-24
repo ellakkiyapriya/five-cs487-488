@@ -33,7 +33,6 @@ import business.decisionAlgorithmEvaluation.DecisionCriteria;
 import business.virtualTrading.User;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.ExchangeEntity;
-import dataAccess.databaseManagement.entity.OrderEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 
