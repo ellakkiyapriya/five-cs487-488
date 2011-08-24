@@ -429,4 +429,24 @@ public class OrderManager {
 
 		return null;
 	}
+
+        public Date getLatestDateUntilDateOfOrderOfUserID (long userID, Date date) {
+		try {
+			Date latestDate = null;
+
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			String statementStr = "SELECT MAX(`date`) FROM `order` WHERE `user_id`="
+					+ userID + " AND `date` <= '" + date.toString() + "'";
+			resultSet = statement.executeQuery(statementStr);
+			resultSet.next();
+			latestDate = resultSet.getDate(1);
+
+			return latestDate;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return null;
+	}
 }
