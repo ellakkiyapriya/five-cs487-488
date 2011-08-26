@@ -13,6 +13,7 @@ package presentation.guiForDecisionAlgorithmEvaluation;
 
 import business.virtualTrading.PortfolioEntry;
 import business.virtualTrading.User;
+import dataAccess.databaseManagement.manager.PriceManager;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JDialog;
@@ -34,15 +35,22 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
     private Date currentDate;
     private ArrayList<PortfolioEntry> portfolioEntryList = new ArrayList<PortfolioEntry>();
     private boolean ok = false;
+    private PriceManager priceManager = new PriceManager();
 
     public Date getCurrentDate() {
         return currentDate;
     }
 
     public void setCurrentDate(Date currentDate) {
-        this.currentDate = currentDate;
-        addNewPortfolioJPanel.setCurrentDate(currentDate);
-        currentDateJLabel.setText(currentDate.toString());
+        java.sql.Date date = new java.sql.Date(currentDate.getTime());
+        while (!priceManager.isAvailableDate(date)) {
+            date = priceManager.getNextDate(date);
+        }
+
+        this.currentDate = new Date(date.getTime());
+
+        addNewPortfolioJPanel.setCurrentDate(date);
+        currentDateJLabel.setText(date.toString());
     }
 
 
@@ -264,5 +272,6 @@ public class ImportPortfolioJPanel extends javax.swing.JPanel {
 
     private void initOtherComponents() {
         newAddNewPortfolioJDialog();
+
     }
 }
