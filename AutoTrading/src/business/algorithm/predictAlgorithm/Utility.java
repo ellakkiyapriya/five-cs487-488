@@ -8,9 +8,10 @@ import dataAccess.databaseManagement.entity.PriceEntity;
 import dataAccess.databaseManagement.manager.PriceManager;
 
 public class Utility {
+	public static final PriceManager priceManager = new PriceManager();
+	
 	public static ArrayList<PriceEntry> constructPriceList(AssetEntity asset,
 			ArrayList<Double> priceList, Date startPredictingDate) {
-		PriceManager priceManager = new PriceManager();
 		ArrayList<PriceEntity> priceEntityList = priceManager
 				.getPriceInInterval(asset.getAssetID(), new java.sql.Date(
 						startPredictingDate.getTime()), new java.sql.Date(

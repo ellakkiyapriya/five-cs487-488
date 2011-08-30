@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="lib/jsci-wavelet.jar"/>
 	<classpathentry kind="lib" path="lib/jsci-xtra.jar"/>
 	<classpathentry kind="lib" path="lib/TableLayout.jar"/>
+	<classpathentry kind="lib" path="lib/ssj.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
