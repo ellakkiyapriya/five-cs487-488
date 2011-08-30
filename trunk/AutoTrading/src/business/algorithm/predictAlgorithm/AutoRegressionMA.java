@@ -119,6 +119,7 @@ public class AutoRegressionMA extends AbstractPredictAlgorithm {
 			}
 			y[i] = movingAverage.get(i + AR_period);
 		}
+		
 		Matrix matrixX = new Matrix(x);
 		Matrix matrixY = new Matrix(y, nMovingAverage - AR_period);
 		Matrix matrixB = matrixX.transpose();
@@ -129,6 +130,7 @@ public class AutoRegressionMA extends AbstractPredictAlgorithm {
 		} catch (Exception e) {
 			throw new RuntimeException("Matrix is singular");
 		}
+		
 		matrixB = matrixB.times(matrixX.transpose());
 		matrixB = matrixB.times(matrixY);
 
