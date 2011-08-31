@@ -42,7 +42,7 @@ public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
 		var = var / (list.size() - 1);
 		
 		if (var == 0) {
-			return Double.MIN_VALUE;
+			return 10e-5;
 		}
 		
 		return var;
