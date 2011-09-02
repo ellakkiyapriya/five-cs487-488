@@ -42,7 +42,6 @@ public class AutoRegressionMA extends AbstractPredictAlgorithm {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public TreeMap<String, Class> getParametersList() {
-		// TODO Auto-generated method stub
 		TreeMap<String, Class> map = super.getParametersList();
 		map.put("Confidence level", Double.class);
 		map.put("MA period", Integer.class);
@@ -52,7 +51,6 @@ public class AutoRegressionMA extends AbstractPredictAlgorithm {
 
 	@Override
 	public void setParametersValue(TreeMap<String, Object> map) {
-		// TODO Auto-generated method stub
 		super.setParametersValue(map);
 		this.confidenceLevel = (Double) map.get("Confidence level");
 		this.MA_period = (Integer) map.get("MA period");

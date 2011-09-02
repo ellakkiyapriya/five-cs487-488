@@ -7,11 +7,13 @@ public class PredictAlgorithmAPI {
 	private static final String ARFE_PF = "ARFE_ParticleFilter";
 	private static final String LAGRANGE_EXTRAPOLATION = "Lagrange Extrapolation";
 	private static final String LAGRANGE_FE = "Lagrange_FE";
+	private static final String LAGRANGE_MA = "Lagrange_MA";
 	private static final String BARYCENTRIC_EXTRAPOLATION = "Barycentric Extrapolation";
 	private static final String BARYCENTRIC_FE = "Barycentric_FE";
+	
 
 	public static final String[] PREDICTION_ALGORITHM_LIST = {
-			AUTOREGRESSION_MA, AUTOREGRESSION_FE, PARTICLE_FILTER, ARFE_PF, LAGRANGE_EXTRAPOLATION, LAGRANGE_FE, BARYCENTRIC_EXTRAPOLATION, BARYCENTRIC_FE };
+			AUTOREGRESSION_MA, AUTOREGRESSION_FE, PARTICLE_FILTER, ARFE_PF, LAGRANGE_EXTRAPOLATION, LAGRANGE_FE, BARYCENTRIC_EXTRAPOLATION, BARYCENTRIC_FE, LAGRANGE_MA };
 
 	public static AbstractPredictAlgorithm getPredictionAlgorithm(String str) {
 		if (str.equals(AUTOREGRESSION_MA)) {
@@ -24,13 +26,15 @@ public class PredictAlgorithmAPI {
 			return (new ARFE_ParticleFilter());
 		} else if (str.equals(LAGRANGE_EXTRAPOLATION)) {
 			return (new LagrangeExtrapolation());
+		} else if (str.equals(LAGRANGE_MA)) {
+			return (new LagrangeExtrapolation());
 		} else if (str.equals(LAGRANGE_FE)) {
 			return (new LagrangeFE());
 		} else if (str.equals(BARYCENTRIC_EXTRAPOLATION)) {
 			return (new BarycentricRationalExtrapolation());
 		} else if (str.equals(BARYCENTRIC_FE)) {
 			return (new BarycentricRationalFE());
-		} 
+		}
 		
 		return null;
 	}
