@@ -55,7 +55,6 @@ public class LagrangeMA extends AbstractPredictAlgorithm{
 		
 		int n = movingAverage.size();
 		Matrix A = null;
-		
 		//Lagrange extrapolation function
 		{
 			double[] y = new double[n];
@@ -98,7 +97,7 @@ public class LagrangeMA extends AbstractPredictAlgorithm{
 				asset, predictionPriceList, startPredictionDate);
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
 		predictionPriceMap.put(asset, priceEntryList);
-		return new OutputForParticleFilter(predictionPriceMap);	
+		return new CommonOutputForPredictionAlgorithm(predictionPriceMap);	
 	}
 
 	public int getMA_period() {

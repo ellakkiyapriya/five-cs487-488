@@ -5,9 +5,9 @@ import java.util.TreeMap;
 
 import dataAccess.databaseManagement.entity.AssetEntity;
 
-public class OutputForParticleFilter extends OutputForPredictionAlgorithm{
+public class CommonOutputForPredictionAlgorithm extends OutputForPredictionAlgorithm{
 
-	public OutputForParticleFilter(
+	public CommonOutputForPredictionAlgorithm(
 			TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceList) {
 		super(predictionPriceList);
 	}
