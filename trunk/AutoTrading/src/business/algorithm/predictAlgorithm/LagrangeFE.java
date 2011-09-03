@@ -262,7 +262,7 @@ public class LagrangeFE extends AbstractPredictAlgorithm{
 				asset, predictionPriceList, startPredictionDate);
 		TreeMap<AssetEntity, ArrayList<PriceEntry>> predictionPriceMap = new TreeMap<AssetEntity, ArrayList<PriceEntry>>();
 		predictionPriceMap.put(asset, priceEntryList);
-		return new OutputForParticleFilter(predictionPriceMap);	
+		return new CommonOutputForPredictionAlgorithm(predictionPriceMap);	
 	}
 
 }
