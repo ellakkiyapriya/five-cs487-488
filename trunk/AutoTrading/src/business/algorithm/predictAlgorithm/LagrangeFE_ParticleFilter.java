@@ -7,17 +7,13 @@ import java.util.TreeMap;
 import dataAccess.databaseManagement.entity.AssetEntity;
 import dataAccess.databaseManagement.entity.PriceEntity;
 
-
-public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
+public class LagrangeFE_ParticleFilter extends AbstractPredictAlgorithm{
 
 	private int numTrial;
 	private int numPar;
 	private int numTrainingPF;
-	private double confidenceLevel;
-	private int AR_period;
-
 	
-	public ARFE_ParticleFilter() {
+	public LagrangeFE_ParticleFilter() {
 		super(null, null);
 	}
 	
@@ -55,16 +51,14 @@ public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
 				.firstKey());
 		ParticleFilter particleFilter = new ParticleFilter();
 		
-		//ARFE part
-		AutoRegressionFE autoRegressionFE = new AutoRegressionFE();
-		autoRegressionFE.setFutureInterval(futureInterval);
-		autoRegressionFE.setAR_period(AR_period);
-		autoRegressionFE.setConfidenceLevel(confidenceLevel);
-		autoRegressionFE.setPriceEntityList(priceList);
-		ArrayList<PriceEntry> arfeResult = autoRegressionFE.runAlgorithm().getPredictionPriceList().firstEntry().getValue();
-		ArrayList<Double> arfePredictedPriceList = new ArrayList<Double>();
-		for (PriceEntry priceEntry : arfeResult) {
-			arfePredictedPriceList.add(priceEntry.getPrice());
+		//LagrangeFE part
+		LagrangeFE lagrangeFE = new LagrangeFE();
+		lagrangeFE.setFutureInterval(futureInterval);
+		lagrangeFE.setPriceEntityList(priceList);
+		ArrayList<PriceEntry> lagrangeFEResult = lagrangeFE.runAlgorithm().getPredictionPriceList().firstEntry().getValue();
+		ArrayList<Double> lagrangeFEPredictedPriceList = new ArrayList<Double>();
+		for (PriceEntry priceEntry : lagrangeFEResult) {
+			lagrangeFEPredictedPriceList.add(priceEntry.getPrice());
 		}
 		
 		//Particle Filter part
@@ -83,7 +77,7 @@ public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
 
 			for (int j = 0; j < futureInterval; j++) {
 				double newPredictedPrice = particleFilter.doPrediction(
-						arfePredictedPriceList.get(j), mean(dataList),
+						lagrangeFEPredictedPriceList.get(j), mean(dataList),
 						variance(dataList), numPar);
 
 				predictionPriceList.set(j, predictionPriceList.get(j)
@@ -114,8 +108,6 @@ public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
 	public TreeMap<String, Class> getParametersList() {
 		// TODO Auto-generated method stub
 		TreeMap<String, Class> map = super.getParametersList();
-		map.put("Confidence level", Double.class);
-		map.put("AR period", Integer.class);
 		map.put("Number of Trial", Integer.class);
 		map.put("Number of Particle", Integer.class);
 		map.put("NoTrainingSamples For ParticleFilter", Integer.class);
@@ -126,8 +118,6 @@ public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
 	public void setParametersValue(TreeMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		super.setParametersValue(map);
-		this.confidenceLevel = (Double) map.get("Confidence level");
-		this.AR_period = (Integer) map.get("AR period");
 		this.numTrial = (Integer) map.get("Number of Trial");
 		this.numPar = (Integer) map.get("Number of Particle");
 		this.numTrainingPF = (Integer) map.get("NoTrainingSamples For ParticleFilter");
@@ -148,22 +138,6 @@ public class ARFE_ParticleFilter extends AbstractPredictAlgorithm{
 
 	public void setNumPar(int numPar) {
 		this.numPar = numPar;
-	}
-
-	public double getConfidenceLevel() {
-		return confidenceLevel;
-	}
-
-	public void setConfidenceLevel(double confidenceLevel) {
-		this.confidenceLevel = confidenceLevel;
-	}
-
-	public int getAR_period() {
-		return AR_period;
-	}
-
-	public void setAR_period(int aR_period) {
-		AR_period = aR_period;
 	}
 	
 	@Override

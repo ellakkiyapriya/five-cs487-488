@@ -198,7 +198,7 @@ public class AutoRegressionFE extends AbstractPredictAlgorithm {
 		ArrayList<Double> smootingCurve = new ArrayList<Double>();
 
 		// training price
-		for (int i = 0; i < priceEntityList.size() - 1; ++i) {
+		for (int i = 0; i < priceEntityList.size(); ++i) {
 			smootingCurve.add(U.get(i * 2, 0));
 		}
 
